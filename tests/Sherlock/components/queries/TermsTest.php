@@ -68,14 +68,14 @@ class TermsTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testBuild()
 	{
-		$ret = $this->object->terms(array("term","term2"))->field("field")->boost("boost")->minimum_match(1);
+		$ret = $this->object->terms(array("term","term2"))->field("field");
 		$this->assertInstanceOf('sherlock\components\queries\Terms', $ret);
 
 		$final = $ret->build();
 		$expectedFinal = array("terms" =>
 							array("field" =>
 								array("value" => array("term","term2"),
-									"boost" => "boost",
+									"boost" => 1,
 									"minimum_match" => 1
 								)
 							)

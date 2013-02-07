@@ -21,8 +21,8 @@ class Terms implements QueryInterface
 
 	public function __construct()
 	{
-		$params['boost'] = 1;
-		$params['minimum_match'] = 1;
+		$this->params['boost'] = 1;
+		$this->params['minimum_match'] = 1;
 	}
 
 	/**
