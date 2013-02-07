@@ -10,10 +10,10 @@ use sherlock\components\QueryInterface;
 use sherlock\common\exceptions;
 
 /**
- * @method field() field($name)  Field to search
- * @method term() term($term)    Term to search
- * @method minimum_match() minimum_match($int) Optional min number of terms to match
- * @method boost() boost($value) Optional boosting for term value. Default = 1
+ * @method \sherlock\components\queries\Terms field() field($name)  Field to search
+ * @method \sherlock\components\queries\Terms term() term($term)    Term to search
+ * @method \sherlock\components\queries\Terms minimum_match() minimum_match($int) Optional min number of terms to match
+ * @method \sherlock\components\queries\Terms boost() boost($value) Optional boosting for term value. Default = 1
  */
 class Terms implements QueryInterface
 {

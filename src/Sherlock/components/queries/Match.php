@@ -10,17 +10,17 @@ use sherlock\components\QueryInterface;
 use sherlock\common\exceptions;
 
 /**
- * @method field() field($name)  Field to search
- * @method query() query($term)    query to search
- * @method boost() boost($value) Optional boosting for term value. Default = 1
- * @method operator() operator($operator) Optional operator for match query. Default = 'and'
- * @method analyzer() analyzer($analyzer) Optional analyzer for match query. Default to 'default'
- * @method fuzziness() fuzziness($value) Optional amount of fuzziness. Default to 0.5
- * @method fuzzy_rewrite() fuzzy_rewrite($value) Default to 'constant_score_default'
- * @method lenient() lenient($value) Default to 1
- * @method max_expansions() max_expansions($value) Default to 100
- * @method minimum_should_match() minimum_should_match($value) Default to 2
- * @method prefix_length() prefix_length($value) Default to 2
+ * @method \sherlock\components\queries\Match field() field($name)  Field to search
+ * @method \sherlock\components\queries\Match query() query($term)    query to search
+ * @method \sherlock\components\queries\Match boost() boost($value) Optional boosting for term value. Default = 1
+ * @method \sherlock\components\queries\Match operator() operator($operator) Optional operator for match query. Default = 'and'
+ * @method \sherlock\components\queries\Match analyzer() analyzer($analyzer) Optional analyzer for match query. Default to 'default'
+ * @method \sherlock\components\queries\Match fuzziness() fuzziness($value) Optional amount of fuzziness. Default to 0.5
+ * @method \sherlock\components\queries\Match fuzzy_rewrite() fuzzy_rewrite($value) Default to 'constant_score_default'
+ * @method \sherlock\components\queries\Match lenient() lenient($value) Default to 1
+ * @method \sherlock\components\queries\Match max_expansions() max_expansions($value) Default to 100
+ * @method \sherlock\components\queries\Match minimum_should_match() minimum_should_match($value) Default to 2
+ * @method \sherlock\components\queries\Match prefix_length() prefix_length($value) Default to 2
  */
 
 class Match implements QueryInterface

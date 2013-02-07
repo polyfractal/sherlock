@@ -10,20 +10,20 @@ use sherlock\components\QueryInterface;
 use sherlock\common\exceptions;
 
 /**
- * @method field() field($name)  Field to search
- * @method query() query($term)    query to search
+ * @method \sherlock\components\queries\MultiMatch field() field($name)  Field to search
+ * @method \sherlock\components\queries\MultiMatch query() query($term)    query to search
  *
- * @method use_dis_max() use_dis_max($value) Default 1
- * @method tie_breaker() tie_breaker($value) Default 0.7
- * @method boost() boost($value) Optional boosting for term value. Default = 1
- * @method operator() operator($operator) Optional operator for match query. Default = 'and'
- * @method analyzer() analyzer($analyzer) Optional analyzer for match query. Default to 'default'
- * @method fuzziness() fuzziness($value) Optional amount of fuzziness. Default to 0.5
- * @method fuzzy_rewrite() fuzzy_rewrite($value) Default to 'constant_score_default'
- * @method lenient() lenient($value) Default to 1
- * @method max_expansions() max_expansions($value) Default to 100
- * @method minimum_should_match() minimum_should_match($value) Default to 2
- * @method prefix_length() prefix_length($value) Default to 2
+ * @method \sherlock\components\queries\MultiMatch use_dis_max() use_dis_max($value) Default 1
+ * @method \sherlock\components\queries\MultiMatch tie_breaker() tie_breaker($value) Default 0.7
+ * @method \sherlock\components\queries\MultiMatch boost() boost($value) Optional boosting for term value. Default = 1
+ * @method \sherlock\components\queries\MultiMatch operator() operator($operator) Optional operator for match query. Default = 'and'
+ * @method \sherlock\components\queries\MultiMatch analyzer() analyzer($analyzer) Optional analyzer for match query. Default to 'default'
+ * @method \sherlock\components\queries\MultiMatch fuzziness() fuzziness($value) Optional amount of fuzziness. Default to 0.5
+ * @method \sherlock\components\queries\MultiMatch fuzzy_rewrite() fuzzy_rewrite($value) Default to 'constant_score_default'
+ * @method \sherlock\components\queries\MultiMatch lenient() lenient($value) Default to 1
+ * @method \sherlock\components\queries\MultiMatch max_expansions() max_expansions($value) Default to 100
+ * @method \sherlock\components\queries\MultiMatch minimum_should_match() minimum_should_match($value) Default to 2
+ * @method \sherlock\components\queries\MultiMatch prefix_length() prefix_length($value) Default to 2
  */
 
 class MultiMatch implements QueryInterface
