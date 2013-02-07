@@ -57,14 +57,14 @@ class TermTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testBuild()
 	{
-		$ret = $this->object->term("term")->field("field")->boost("boost");
+		$ret = $this->object->term("term")->field("field");
 		$this->assertInstanceOf('sherlock\components\queries\Term', $ret);
 
 		$final = $ret->build();
 		$expectedFinal = array("term" =>
 							array("field" =>
 								array("value" => "term",
-									"boost" => "boost"
+									"boost" => 1
 								)
 							)
 						);

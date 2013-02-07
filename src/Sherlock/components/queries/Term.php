@@ -20,7 +20,7 @@ class Term implements QueryInterface
 
 	public function __construct()
 	{
-		$params['boost'] = 1;
+		$this->params['boost'] = 1;
 	}
 
 	/**
