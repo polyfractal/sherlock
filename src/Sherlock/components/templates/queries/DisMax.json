@@ -1,0 +1,7 @@
+{
+    "dis_max" : {
+        "tie_breaker" : $tie_breaker,
+        "boost" : $boost,
+        "queries" : $queries
+    }
+}  

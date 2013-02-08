@@ -1,0 +1,8 @@
+{
+    "boosting" : {
+        "positive" : $positive,
+        "negative" : $negative
+        },
+        "negative_boost" : $negative_boost
+    }
+}

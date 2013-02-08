@@ -1,0 +1,6 @@
+{
+    "constant_score" : {
+        "filter" : $filter,
+        "boost" : $boost
+    }
+}
