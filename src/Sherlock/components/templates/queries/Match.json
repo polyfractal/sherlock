@@ -1,0 +1,16 @@
+{
+    "match":{
+        $field:{
+            "query" : $query,
+            "boost" : $boost,
+            "operator" : $operator,
+            "analyzer" : $analyzer,
+            "fuzziness" : $fuzziness,
+            "fuzzy_rewrite" : $fuzzy_rewrite,
+            "lenient" : $lenient,
+            "max_expansions" : $max_expansions,
+            "minimum_should_match" : $minimum_should_match,
+            "prefix_length" : $prefix_length
+        }
+    }
+}

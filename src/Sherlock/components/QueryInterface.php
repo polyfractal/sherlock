@@ -6,7 +6,7 @@
  */
 namespace sherlock\components;
 
-interface QueryInterface extends ComponentInterface
+interface QueryInterface
 {
 
 }

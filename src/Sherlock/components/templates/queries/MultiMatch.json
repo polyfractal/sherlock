@@ -1,0 +1,17 @@
+{
+    "multi_match":{
+        "fields" : $fields,
+        "query" : $query,
+        "boost" : $boost,
+        "operator" : $operator,
+        "analyzer" : $analyzer,
+        "fuzziness" : $fuzziness,
+        "fuzzy_rewrite" : $fuzzy_rewrite,
+        "lenient" : $lenient,
+        "max_expansions" : $max_expansions,
+        "minimum_should_match" : $minimum_should_match,
+        "prefix_length" : $prefix_length,
+        "use_dis_max" : $use_dis_max,
+        "tie_breaker" : $tie_breaker
+    }
+}

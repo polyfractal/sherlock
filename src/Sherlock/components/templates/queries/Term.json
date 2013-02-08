@@ -1,0 +1,7 @@
+{
+    "term":{
+        $field:{
+            "value":$term
+        }
+    }
+}
