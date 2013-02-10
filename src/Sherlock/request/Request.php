@@ -9,5 +9,13 @@ namespace sherlock\Request;
 
 class Request
 {
+	public function __construct()
+	{
 
+	}
+
+	public function execute()
+	{
+
+	}
 }

@@ -6,7 +6,7 @@
  */
 namespace sherlock\components;
 
-interface FilterInterface extends ComponentInterface
+interface FilterInterface
 {
 
 }

@@ -10,13 +10,11 @@ namespace sherlock;
 use sherlock\Template;
 use sherlock\Request;
 use sherlock\components;
+use sherlock\common\exceptions;
 
 class Sherlock
 {
 
-
-
-	private $nodes = array();
 	protected $settings;
 	protected $templates = array();
 
@@ -25,7 +23,7 @@ class Sherlock
 	public function __construct($userSettings = array())
 	{
 		$this->settings = array_merge(static::getDefaultSettings(), $userSettings);
-		$this->loadTemplates();
+		//$this->loadTemplates();
 	}
 
 	public static function getDefaultSettings()
@@ -38,6 +36,21 @@ class Sherlock
 			'templates.extension' => array('yml')
 			);
 	}
+
+	public static function search()
+	{
+		return new \sherlock\Request\SearchRequest();
+	}
+
+	public static function query()
+	{
+		return new \sherlock\Request\QueryWrapper();
+	}
+
+
+
+
+
 
 
 	public function loadTemplates($path = "", $merge = true)
@@ -73,27 +86,34 @@ class Sherlock
 	 * Add a new node to the ES cluster
 	 * @param string $host server host address (either IP or domain)
 	 * @param int $port ElasticSearch port (defaults to 9200)
-	 * @throws MissingValue
+	 * @throws common\exceptions\BadMethodCallException
+	 * @throws common\exceptions\InvalidArgumentException
 	 */
 	public function addNode($host, $port = 9200)
 	{
 		if (!isset($host))
-			throw new MissingValue("A server address must be provided when adding a node.");
+			throw new exceptions\BadMethodCallException("A server address must be provided when adding a node.");
 
 		if(!is_numeric($port))
-			throw new MissingValue("Port argument must be a number");
+			throw new exceptions\InvalidArgumentException("Port argument must be a number");
 
 		$this->settings['nodes'][] = array($host, $port);
 	}
 	public function setNodes($nodes)
 	{
-		$this->nodes = $nodes;
+		$this->settings['nodes'] = $nodes;
 	}
 
 	public function getNodes()
 	{
-		return $this->nodes;
+		return $this->settings['nodes'];
 	}
+
+
+
+
+
+
 
 
 
@@ -101,16 +121,16 @@ class Sherlock
 	/**
 	 * Recursively scans a directory and returns the files
 	 * @param $dir Path to directory to scan
-	 * @throws MissingValue
-	 * @throws DirectoryNotReadable
+	 * @throws common\exceptions\RuntimeException
+	 * @throws common\exceptions\BadMethodCallException
 	 * @return array
 	 */
 	private function directoryScan($dir) {
 		if (!isset($dir))
-			 throw new MissingValue("Directory path cannot be empty");
+			 throw new exceptions\BadMethodCallException("Directory path cannot be empty");
 
 		if (!is_readable($dir))
-			throw new DirectoryNotReadable("Directory is not readable.");
+			throw new exceptions\RuntimeException("Directory is not readable.");
 
 		$files = Array();
 		$dir = realpath($dir);

@@ -29,74 +29,22 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers sherlock\Sherlock::getDefaultSettings
-     * @todo   Implement testGetDefaultSettings().
+     * @covers sherlock\Sherlock::query
      */
-    public function testGetDefaultSettings()
+    public function testBuildQuery()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$req = sherlock::search();
+		$req->indices('test', 'test2');
+		$req->query = sherlock::query()->Term();
+
+
+		$req->query()->Term()->field("testField")->term("testTerm");
+		$req->execute();
+
+
+
     }
 
-    /**
-     * @covers sherlock\Sherlock::loadTemplates
-     * @todo   Implement testLoadTemplates().
-     */
-    public function testLoadTemplates()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
 
-    /**
-     * @covers sherlock\Sherlock::getTemplate
-     * @todo   Implement testGetTemplate().
-     */
-    public function testGetTemplate()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
 
-    /**
-     * @covers sherlock\Sherlock::addNode
-     * @todo   Implement testAddNode().
-     */
-    public function testAddNode()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers sherlock\Sherlock::setNodes
-     * @todo   Implement testSetNodes().
-     */
-    public function testSetNodes()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers sherlock\Sherlock::getNodes
-     * @todo   Implement testGetNodes().
-     */
-    public function testGetNodes()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
 }
