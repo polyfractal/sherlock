@@ -1,0 +1,7 @@
+{
+    "indices" : {
+        "indices" : $indices,
+        "query" : $query,
+        "no_match_query" : $no_match_query
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "range" : {
+        $field : { 
+            "from" : $from, 
+            "to" : $to, 
+            "include_lower" : $include_lower, 
+            "include_upper": $include_upper, 
+            "boost" : $boost
+        }
+    }
+}

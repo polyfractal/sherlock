@@ -1,6 +1,6 @@
 {
-    "fuzzy_like_this" : {
-        "fields" : $fields,
+    "fuzzy_like_this_field" : {
+        "field" : $field,
         "like_text" : $like_text,
         "max_query_terms" : $max_query_terms,
 		"min_similarity" : $min_similarity,

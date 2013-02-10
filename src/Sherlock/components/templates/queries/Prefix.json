@@ -1,0 +1,11 @@
+{
+    "prefix" : { 
+		$field :  { 
+			"value" : $value, 
+			"boost" : $boost,
+			"analyzer" : $analyzer,
+			"slop" : $slop,
+			"max_expansions" : $max_expansions
+		} 
+	}
+}

@@ -12,15 +12,15 @@ use sherlock\common\exceptions;
 
 
 /**
- * @method \sherlock\components\queries\Ids type() type(string $value)
- * @method \sherlock\components\queries\Ids values() values(array $value)
+ * @method \sherlock\components\queries\MatchAll boost() boost(float $value) Default: 1
 
  */
-class Ids extends \sherlock\components\BaseComponent implements \sherlock\components\QueryInterface
+class MatchAll extends \sherlock\components\BaseComponent implements \sherlock\components\QueryInterface
 {
 	public function __construct()
 	{
-		
+		$this->params['$boost'] = 1;
+
 	}
 }
 
