@@ -4,7 +4,7 @@
  * Date: 2/10/13
  * Time: 1:05 PM
  */
-namespace sherlock\Request;
+namespace sherlock\requests;
 
 use sherlock\components\queries;
 use sherlock\common\exceptions;

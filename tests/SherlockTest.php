@@ -46,7 +46,7 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildQuery()
     {
-		$ret = $this->object->addNode('loopback.com');
+		$ret = $this->object->addNode('loopback.com', '9200');
 		$req = $this->object->search();
 		$req->index("test")->type("benchmark");
 		$req->query($this->object->query()->Term()->field("field1")->term("town"));

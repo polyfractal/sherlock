@@ -5,7 +5,7 @@
  * Time: 8:54 AM
  */
 
-namespace sherlock\Request;
+namespace sherlock\requests;
 use sherlock\common\exceptions;
 use sherlock\responses\Response;
 use Guzzle\Http\Client;

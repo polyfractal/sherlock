@@ -5,7 +5,7 @@
  * Time: 7:27 PM
  */
 
-namespace sherlock\Responses;
+namespace sherlock\responses;
 use Guzzle\Http\Message;
 
 class Response

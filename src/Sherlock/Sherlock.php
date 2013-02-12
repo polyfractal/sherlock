@@ -8,7 +8,7 @@
 namespace sherlock;
 
 use sherlock\Template;
-use sherlock\Request;
+use sherlock\requests;
 use sherlock\components;
 use sherlock\common\exceptions;
 use Guzzle\Http\Client;
@@ -49,7 +49,7 @@ class Sherlock
 			'log.file' => '../sherlock.log',
 			'templates.path' => '../templates',
 			'templates.extension' => array('yml'),
-			'autodetect.cluster' => true
+			'autodetect.cluster' => false
 			);
 	}
 
@@ -58,13 +58,13 @@ class Sherlock
 		\Analog\Analog::log("Sherlock->search()", \Analog\Analog::DEBUG);
 		$randInt = rand(0,count($this->settings['nodes'])-1);
 		$randomNode = $this->settings['nodes'][$randInt];
-		return new \sherlock\Request\SearchRequest($randomNode);
+		return new \sherlock\requests\SearchRequest($randomNode);
 	}
 
 	public function query()
 	{
 		\Analog\Analog::log("Sherlock->query()", \Analog\Analog::DEBUG);
-		return new \sherlock\Request\QueryWrapper();
+		return new \sherlock\requests\QueryWrapper();
 	}
 
 
@@ -208,7 +208,6 @@ class Sherlock
 				$level = Analog::ALERT;
 				break;
 		}
-		print_r($this->settings['base'] . $this->settings['log.file']);
 		Analog::handler(\Analog\Handler\LevelBuffer::init (\Analog\Handler\File::init ($this->settings['base'] . $this->settings['log.file']),$level));
 		Analog::log("--------------------------------------------------------", Analog::ALERT);
 		Analog::log("Logging setup at ".date("Y-m-d H:i:s.u"), Analog::INFO);

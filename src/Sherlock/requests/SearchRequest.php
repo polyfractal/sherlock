@@ -4,18 +4,18 @@
  * Date: 2/10/13
  * Time: 12:10 PM
  */
-namespace sherlock\Request;
+namespace sherlock\requests;
 
 use sherlock\components\queries;
 use sherlock\common\exceptions;
 use Guzzle\Http\Client;
 
 /**
- * @method \sherlock\request\SearchRequest timeout() timeout(int $value)
- * @method \sherlock\request\SearchRequest from() from(int $value)
- * @method \sherlock\request\SearchRequest to() to(int $value)
- * @method \sherlock\request\SearchRequest search_type() search_type(int $value)
- * @method \sherlock\request\SearchRequest routing() routing(mixed $value)
+ * @method \sherlock\requests\SearchRequest timeout() timeout(int $value)
+ * @method \sherlock\requests\SearchRequest from() from(int $value)
+ * @method \sherlock\requests\SearchRequest to() to(int $value)
+ * @method \sherlock\requests\SearchRequest search_type() search_type(int $value)
+ * @method \sherlock\requests\SearchRequest routing() routing(mixed $value)
  */
 class SearchRequest extends Request
 {
@@ -137,7 +137,6 @@ class SearchRequest extends Request
 		else
 			$queryParams = '';
 
-		print_r($this->node);
 
 
 		$uri = 'http://'.$this->node['host'].':'.$this->node['port'].'/'.$index.'/'.$type.'/_search'.$queryParams;
