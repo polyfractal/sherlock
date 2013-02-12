@@ -83,11 +83,11 @@ The library interface is still under flux...this section will be updated once _S
 
    $should_not = $sherlock->query()->Term()
                                    ->field("message")
-                                   ->term("Solr")
+                                   ->term("Solr");
 
    $bool = $sherlock->query()->Bool->must($must)
                                    ->should($should)
-                                   ->must_not($must_not)
+                                   ->must_not($must_not);
    $request->query($bool);
    $request->execute();
 
