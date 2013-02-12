@@ -11,6 +11,8 @@ use sherlock\Template;
 use sherlock\Request;
 use sherlock\components;
 use sherlock\common\exceptions;
+use Guzzle\Http\Client;
+use Analog\Analog;
 
 class Sherlock
 {
@@ -20,37 +22,65 @@ class Sherlock
 
 
 
+
 	public function __construct($userSettings = array())
 	{
+
+
 		$this->settings = array_merge(static::getDefaultSettings(), $userSettings);
+
+
 		//$this->loadTemplates();
+
+		//setup logging
+		$this->setupLogging();
+		Analog::log("Settings: ".print_r($this->settings, true), Analog::DEBUG);
+
+		$this->autodetect();
 	}
 
 	public static function getDefaultSettings()
 	{
         return array(
 			// Application
+			'base' => __DIR__.'/',
 			'mode' => 'development',
-			'debug' => true,
+			'log.level' => 'debug',
+			'log.file' => '../sherlock.log',
 			'templates.path' => '../templates',
-			'templates.extension' => array('yml')
+			'templates.extension' => array('yml'),
+			'autodetect.cluster' => true
 			);
 	}
 
-	public static function search()
+	public function search()
 	{
-		return new \sherlock\Request\SearchRequest();
+		\Analog\Analog::log("Sherlock->search()", \Analog\Analog::DEBUG);
+		$randInt = rand(0,count($this->settings['nodes'])-1);
+		$randomNode = $this->settings['nodes'][$randInt];
+		return new \sherlock\Request\SearchRequest($randomNode);
 	}
 
-	public static function query()
+	public function query()
 	{
+		\Analog\Analog::log("Sherlock->query()", \Analog\Analog::DEBUG);
 		return new \sherlock\Request\QueryWrapper();
 	}
 
 
+	/**
+	 * @todo refactor cluster autodetection into it's own set of components, etc
+	 */
+	public function autodetect()
+	{
+		Analog::log("Start autodetect.", Analog::DEBUG);
 
-
-
+		//If we have nodes and are supposed to detect cluster settings/configuration
+		if (isset($this->settings['nodes']) && $this->settings['autodetect.cluster'] == true)
+		{
+			$this->autodetect_parseNodes();
+		}
+	}
 
 
 	public function loadTemplates($path = "", $merge = true)
@@ -86,30 +116,25 @@ class Sherlock
 	 * Add a new node to the ES cluster
 	 * @param string $host server host address (either IP or domain)
 	 * @param int $port ElasticSearch port (defaults to 9200)
+	 * @return \sherlock\Sherlock
 	 * @throws common\exceptions\BadMethodCallException
 	 * @throws common\exceptions\InvalidArgumentException
 	 */
 	public function addNode($host, $port = 9200)
 	{
+		Analog::log("Sherlock->addNode(): ".print_r(func_get_args(), true), Analog::DEBUG);
+
 		if (!isset($host))
 			throw new exceptions\BadMethodCallException("A server address must be provided when adding a node.");
 
 		if(!is_numeric($port))
 			throw new exceptions\InvalidArgumentException("Port argument must be a number");
 
-		$this->settings['nodes'][] = array($host, $port);
-	}
-	public function setNodes($nodes)
-	{
-		$this->settings['nodes'] = $nodes;
-	}
+		$this->settings['nodes'][] = array('host' => $host, 'port' => $port);
+		$this->autodetect();
 
-	public function getNodes()
-	{
-		return $this->settings['nodes'];
+		return $this;
 	}
-
-
 
 
 
@@ -155,7 +180,74 @@ class Sherlock
 
 	}
 
+	private function setupLogging()
+	{
+		$level = Analog::DEBUG;
 
+		switch ($this->settings['log.level'])
+		{
+			case 'debug':
+				$level = Analog::DEBUG;
+				break;
+			case 'info':
+				$level = Analog::INFO;
+				break;
+			case 'notice':
+				$level = Analog::NOTICE;
+				break;
+			case 'warning':
+				$level = Analog::WARNING;
+				break;
+			case 'error':
+				$level = Analog::ERROR;
+				break;
+			case 'critical':
+				$level = Analog::CRITICAL;
+				break;
+			case 'alert':
+				$level = Analog::ALERT;
+				break;
+		}
+		print_r($this->settings['base'] . $this->settings['log.file']);
+		Analog::handler(\Analog\Handler\LevelBuffer::init (\Analog\Handler\File::init ($this->settings['base'] . $this->settings['log.file']),$level));
+		Analog::log("--------------------------------------------------------", Analog::ALERT);
+		Analog::log("Logging setup at ".date("Y-m-d H:i:s.u"), Analog::INFO);
+	}
+
+	private function autodetect_parseNodes()
+	{
+		Analog::log("Autodetecting nodes in cluster...", Analog::DEBUG);
+		foreach($this->settings['nodes'] as $node)
+		{
+			Analog::log("Contacting node: ".print_r($node, true), Analog::DEBUG);
+			try {
+				$client = new Client('http://'.$node['host'].':'.$node['port']);
+				$request = $client->get('/_nodes/http');
+				$response = $request->send()->json();
+
+				$this->settings['nodes'] = array();
+				foreach($response['nodes'] as $newNode)
+				{
+					if (!isset($newNode['http_address']))
+						continue;
+
+					preg_match('/inet\[\/([0-9\.]+):([0-9]+)\]/i', $newNode['http_address'], $match);
+
+					$tNode = array('host' => $match[1], 'port' => $match[2]);
+					$this->settings['nodes'][] = $tNode;
+					Analog::log("Autodetected node: ".print_r($tNode, true), Analog::INFO);
+				}
+
+				//we have the complete node list, no need to keep hitting nodes
+				break;
+
+			} catch (\Guzzle\Http\Exception\BadResponseException $e) {
+				//error with this node, continue onto the next one
+				Analog::log("Node inaccessible, trying next node in list.", Analog::DEBUG);
+			}
+
+		}
+	}
 
 }
 

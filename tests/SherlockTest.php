@@ -28,17 +28,28 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
     {
     }
 
+
+	/**
+	 * @covers sherlock\Sherlock::addNode
+	 */
+	public function testAddNode()
+	{
+		$ret = $this->object->addNode('loopback.com');
+		$this->assertInstanceOf('\sherlock\sherlock', $ret);
+
+	}
+
+
+
     /**
      * @covers sherlock\Sherlock::query
      */
     public function testBuildQuery()
     {
-		$req = sherlock::search();
-		$req->indices('test', 'test2');
-		$req->query = sherlock::query()->Term();
-
-
-		$req->query()->Term()->field("testField")->term("testTerm");
+		$ret = $this->object->addNode('loopback.com');
+		$req = $this->object->search();
+		$req->index("test")->type("benchmark");
+		$req->query($this->object->query()->Term()->field("field1")->term("town"));
 		$req->execute();
 
 

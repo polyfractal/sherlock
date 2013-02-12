@@ -47,7 +47,8 @@ class QueryWrapper
 
 	public function __call($name, $arguments)
 	{
-		$this->query =  new $name();
+		$class = '\\sherlock\\components\\queries\\'.$name;
+		$this->query =  new $class();
 		return $this->query;
 	}
 

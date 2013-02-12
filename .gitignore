@@ -1,10 +1,13 @@
 #composer related
 composer.json
+composer.lock
 vendor/
 
 #editor related
 .idea
 
+#other
+src/sherlock.log
 
 # OS generated files
 .DS_Store
