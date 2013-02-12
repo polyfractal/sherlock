@@ -43,14 +43,22 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers sherlock\Sherlock::query
+	 * @todo make this test actually assert things
      */
     public function testBuildQuery()
     {
-		$ret = $this->object->addNode('loopback.com', '9200');
+		$this->object->addNode('loopback.com', '9200');
 		$req = $this->object->search();
 		$req->index("test")->type("benchmark");
 		$req->query($this->object->query()->Term()->field("field1")->term("town"));
-		$req->execute();
+		$resp = $req->execute();
+
+		echo $resp->took;
+		foreach($resp as $hit)
+		{
+			echo $hit['score'].' - '.$hit['source']['field1']."\r\n";
+		}
+
 
 
 

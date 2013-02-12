@@ -7,7 +7,7 @@
 
 namespace sherlock;
 
-use sherlock\Template;
+
 use sherlock\requests;
 use sherlock\components;
 use sherlock\common\exceptions;
@@ -80,35 +80,6 @@ class Sherlock
 		{
 			$this->autodetect_parseNodes();
 		}
-	}
-
-
-	public function loadTemplates($path = "", $merge = true)
-	{
-		if($path == "") {
-			$path = $this->settings['templates.path'];
-		}
-
-		$files = $this->directoryScan($path);
-		$newTemplates = array();
-		foreach($files as $file => $fullPath){
-			$newTemplates[$file] = new \sherlock\Template\Template($path.$fullPath);
-		}
-
-		if ($merge == true)
-			$this->templates = array_merge($this->templates, $newTemplates);
-		else
-			$this->templates = $newTemplates;
-
-	}
-
-	/**
-	 * @param $key
-	 * @return \sherlock\Template\Template
-	 */
-	public function getTemplate($key)
-	{
-		return $this->templates[$key];
 	}
 
 

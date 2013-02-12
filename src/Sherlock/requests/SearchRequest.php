@@ -145,7 +145,7 @@ class SearchRequest extends Request
 		//parent and children under Strict
 		$this->_uri = $uri;
 		$this->_data = $finalQuery;
-		parent::execute();
+		return parent::execute();
 	}
 }
 
