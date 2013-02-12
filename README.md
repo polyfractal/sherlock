@@ -60,10 +60,8 @@ The library interface is still under flux...this section will be updated once _S
             ->to(10);
 
    //Set the query to a term query, execute and display results
-   $request->query($sherlock->query()
-                             ->Term()
-                             ->field("message")
-                             ->term("ElasticSearch"));
+   $request->query($sherlock->query()->Term()->field("message")
+                                             ->term("ElasticSearch"));
 
    $response = $request->execute();
 
@@ -78,18 +76,15 @@ The library interface is still under flux...this section will be updated once _S
 
    //Let's try a more advanced query now.
    //Each section is it's own variable to help show how everything fits together
-   $must = $sherlock->query()->Term()
-                             ->field("message")
-                             ->term("ElasticSearch");
+   $must = $sherlock->query()->Term()->field("message")
+                                     ->term("ElasticSearch");
 
-   $should = $sherlock->query()->Match()
-                               ->field("author")
-                               ->query("Zachary Tong")
-                               ->boost(2.5);
+   $should = $sherlock->query()->Match()->field("author")
+                                        ->query("Zachary Tong")
+                                        ->boost(2.5);
 
-   $should_not = $sherlock->query()->Term()
-                                   ->field("message")
-                                   ->term("Solr");
+   $should_not = $sherlock->query()->Term()->field("message")
+                                           ->term("Solr");
 
    $bool = $sherlock->query()->Bool->must($must)
                                    ->should($should)
