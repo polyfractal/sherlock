@@ -70,7 +70,8 @@ The library interface is still under flux...this section will be updated once _S
    }
 
 
-   //Let's try a more advanced query now:
+   //Let's try a more advanced query now.
+   //Each section is it's own variable to help show how everything fits together
    $must = $sherlock->query()->Term()
                              ->field("message")
                              ->term("ElasticSearch");
@@ -84,9 +85,12 @@ The library interface is still under flux...this section will be updated once _S
                                    ->field("message")
                                    ->term("Solr")
 
-    $request->query($sherlock->query()->Bool->must($must)
-                                            ->should($should)
-                                            ->must_not($must_not));
+   $bool = $sherlock->query()->Bool->must($must)
+                                   ->should($should)
+                                   ->must_not($must_not)
+   $request->query($bool);
+   $request->execute();
+
 
 ```
 
