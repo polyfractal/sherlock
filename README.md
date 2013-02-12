@@ -54,10 +54,16 @@ The library interface is still under flux...this section will be updated once _S
    $request = $sherlock->search();
 
    //Set the index, type and from/to parameters of the search
-   $request->index("test")->type("tweet")->from(0)->to(10);
+   $request->index("test")
+            ->type("tweet")
+            ->from(0)
+            ->to(10);
 
    //Set the query to a term query, execute and display results
-   $request->query($sherlock->query()->Term()->field("message")->term("ElasticSearch"));
+   $request->query($sherlock->query()
+                             ->Term()
+                             ->field("message")
+                             ->term("ElasticSearch"));
 
    $response = $request->execute();
 
