@@ -53,21 +53,22 @@ The library interface is still under flux...this section will be updated once _S
    //Build a new search request
    $request = $sherlock->search();
 
-   //Set the index, type and from/to parameters of the search
+   //Set the index, type and from/to parameters of the request.
+   //The query is at at the end of the chain, although it could be placed anywhere
    $request->index("test")
             ->type("tweet")
             ->from(0)
             ->to(10);
+            ->query($sherlock->query()->Term()->field("message")
+                                              ->term("ElasticSearch"));
 
-   //Set the query to a term query, execute and display results
-   $request->query($sherlock->query()->Term()->field("message")
-                                             ->term("ElasticSearch"));
-
+   //Execute the search and return results
    $response = $request->execute();
 
    echo "Took: ".$response->took."\r\n";
-   echo "Hits: ".count($response)."\r\n";
+   echo "Number of Hits: ".count($response)."\r\n";
 
+   //Iterate over the hits and print out some data
    foreach($response as $hit)
    {
       echo $hit['score'].' - '.$hit['source']['message']."\r\n";
