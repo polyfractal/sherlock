@@ -96,6 +96,29 @@ The library interface is still under flux...this section will be updated once _S
 
 ```
 
+Not a fan of ORM style construction?  Don't worry, _Sherlock_ supports "raw" associative arrays
+```php
+    //Build a new search request
+    $request = $sherlock->search();
+
+    //We can compose queries using hashmaps instead of the ORM.
+    $manualData = array("field" => "field1", "term" => "town");
+    $request->query($sherlock->query()->Term($manualData));
+```
+
+Associative arrays too onerous?  Need to consume and use raw JSON?  No problem
+```php
+    //Build a new search request
+    $request = $sherlock->search();
+
+    //We can compose queries using hashmaps instead of the ORM.
+    $json = '{ "term" : { "field1" : "town" } }';
+
+    $request->query($sherlock->query()->Raw($json));
+```
+
+(There will be a RawQuery method soon, that lets you construct entirely arbitrary queries with arrays or JSON)
+
 
 Philosophy
 ----------
