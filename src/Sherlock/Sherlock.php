@@ -67,6 +67,26 @@ class Sherlock
 		return new \sherlock\requests\QueryWrapper();
 	}
 
+	/**
+	 * @param string $index Index to operate on
+	 * @param string $index,... Index to operate on
+	 * @return requests\IndexRequest
+	 */
+	public function index($index)
+	{
+		$args = func_get_args();
+		$index = array();
+		foreach($args as $arg)
+		{
+			$index[] = $arg;
+		}
+
+		\Analog\Analog::log("Sherlock->index()", \Analog\Analog::DEBUG);
+		$randInt = rand(0,count($this->settings['nodes'])-1);
+		$randomNode = $this->settings['nodes'][$randInt];
+		return new \sherlock\requests\IndexRequest($randomNode, $index);
+	}
+
 
 	/**
 	 * @todo refactor cluster autodetection into it's own set of components, etc

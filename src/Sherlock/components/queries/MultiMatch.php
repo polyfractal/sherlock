@@ -28,19 +28,21 @@ use sherlock\common\exceptions;
  */
 class MultiMatch extends \sherlock\components\BaseComponent implements \sherlock\components\QueryInterface
 {
-	public function __construct()
+	public function __construct($hashMap = null)
 	{
-		$this->params['$boost'] = 1;
-		$this->params['$operator'] = 'and';
-		$this->params['$analyzer'] = 'default';
-		$this->params['$fuzziness'] = 0.5;
-		$this->params['$fuzzy_rewrite'] = 'constant_score_default';
-		$this->params['$lenient'] = 1;
-		$this->params['$max_expansions'] = 100;
-		$this->params['$minimum_should_match'] = 2;
-		$this->params['$prefix_length'] = 2;
-		$this->params['$use_dis_max'] = 1;
-		$this->params['$tie_breaker'] = 0.7;
+
+		$this->params['boost'] = 1;
+		$this->params['operator'] = 'and';
+		$this->params['analyzer'] = 'default';
+		$this->params['fuzziness'] = 0.5;
+		$this->params['fuzzy_rewrite'] = 'constant_score_default';
+		$this->params['lenient'] = 1;
+		$this->params['max_expansions'] = 100;
+		$this->params['minimum_should_match'] = 2;
+		$this->params['prefix_length'] = 2;
+		$this->params['use_dis_max'] = 1;
+		$this->params['tie_breaker'] = 0.7;
+		parent::__construct($hashMap);
 	}
 
 }

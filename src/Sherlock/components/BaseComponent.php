@@ -14,8 +14,17 @@ class BaseComponent
 {
 	protected $params = array();
 
-	public function __construct()
+	public function __construct($hashMap = null)
 	{
+		if (is_array(($hashMap)) && count($hashMap) > 0)
+		{
+			//Raw array hash map provided
+			//Easiest way to populate the fields is to just call the magic methods internally
+			foreach($hashMap as $key => $value)
+			{
+				$this->$key($value);
+			}
+		}
 
 	}
 
@@ -27,39 +36,21 @@ class BaseComponent
 		//To get around this, we detect the type and either encode or not
 		//Arrays of values have to be handled recursively.
 		if ($arguments[0] instanceof BaseComponent){
-			$this->params['$'.$name] = (string)$arguments[0];
+			$this->params[$name] = (string)$arguments[0];
 		}
 		elseif (is_array($arguments[0])){
-			$this->params['$'.$name] = $this->parseArray($arguments[0]);
+			$this->params[$name] = $this->parseArray($arguments[0]);
 		}
 		else {
-			$this->params['$'.$name] = json_encode((string)$arguments[0]);
+			$this->params[$name] = json_encode((string)$arguments[0]);
 		}
 
 		return $this;
 	}
 
-	private function parseArray($argument)
-	{
-		if (is_array($argument)){
-			$temp = array();
-			foreach($argument as $value)
-			{
-				$temp[] = $this->parseArray($value);
-			}
-			$ret = "[".implode(",", $temp)."]";
-		}
-		elseif ($argument instanceof BaseComponent)
-			$ret = (string)$argument;
-		else
-			$ret = json_encode((string)$argument);
-
-		return $ret;
-	}
 
 	public function __toString()
 	{
-		$data = $this->params;
 
 		//Determine if this what type of component this is so we can find the template file
 		$reflector = new \ReflectionClass(get_class($this));
@@ -81,9 +72,37 @@ class BaseComponent
 		//grab the template data
 		$json = file_get_contents($path);
 
-		return strtr($json, $this->params);
+		//add $ to key names
+		$data = array();
+		foreach($this->params as $key => $value)
+		{
+			$data['$'.$key] = $value;
+		}
 
+		return strtr($json, $data);
 	}
+
+	private function parseArray($argument)
+	{
+		if (is_array($argument)){
+			$temp = array();
+			foreach($argument as $value)
+			{
+				$temp[] = $this->parseArray($value);
+			}
+			$ret = "[".implode(",", $temp)."]";
+		}
+		elseif ($argument instanceof BaseComponent)
+			$ret = (string)$argument;
+		else
+			$ret = json_encode((string)$argument);
+
+		return $ret;
+	}
+
+
+
+
 }
 
 

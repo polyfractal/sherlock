@@ -49,7 +49,7 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
     {
 		$this->object->addNode('loopback.com', '9200');
 		$req = $this->object->search();
-		$req->index("test")->type("benchmark");
+		$req->index("test3")->type("benchmark");
 		$req->query($this->object->query()->Term()->field("field1")->term("town"));
 		$resp = $req->execute();
 
@@ -58,12 +58,68 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 		{
 			echo $hit['score'].' - '.$hit['source']['field1']."\r\n";
 		}
-
-
-
-
     }
 
 
+	public function testHashBuilding()
+	{
+
+		$this->object->addNode('loopback.com', '9200');
+		$req = $this->object->search();
+		$req->index("test3")->type("benchmark");
+		$req->query($this->object->query()->Term()->field("field1")->term("town"));
+
+		//First, make sure the ORM query matches what we expect
+		$data = json_decode((string)$req, true);
+		$expectedData = array("query" => array("term" => array("field1" => array("value" => "town"))));
+		$this->assertEquals($expectedData, $data);
+
+		//Now provide an array hashmap instead of using the ORM, to make sure manual creation works
+		$manualData = array("field" => "field1", "term" => "town");
+		$req->query($this->object->query()->Term($manualData));
+		$data = json_decode((string)$req, true);
+		$this->assertEquals($expectedData, $data);
+
+	}
+
+
+	public function testRawQueryBuilding()
+	{
+
+		$this->object->addNode('loopback.com', '9200');
+		$req = $this->object->search();
+		$req->index("test3")->type("benchmark");
+
+		$expectedData = array("query" => array("term" => array("field1" => array("value" => "town"))));
+
+		//Now provide a raw JSON string
+		//Note that since this is a Raw Query, we don't include the top-level "query" field
+		$json = json_encode($expectedData['query']);
+		$req->query($this->object->query()->Raw($json));
+		$data = json_decode((string)$req, true);
+		$this->assertEquals($expectedData, $data);
+
+	}
+
+
+	/**
+	 * @covers sherlock\Sherlock::index
+	 * @todo make this test actually assert things
+	 */
+	public function testIndexOperations()
+	{
+		$this->object->addNode('loopback.com', '9200');
+		$sherlock = $this->object;
+
+		//$sherlock->index('test')->delete();
+
+		//$sherlock->index('test')->delete()->mapping(mapping stuff)->settings()->create();
+
+
+		//$index = $sherlock->index('test');
+		//$index->delete();
+
+
+	}
 
 }

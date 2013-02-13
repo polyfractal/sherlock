@@ -40,6 +40,7 @@ use sherlock\common\exceptions;
  * @method \sherlock\components\queries\Terms Terms() Terms()
  * @method \sherlock\components\queries\TopChildren TopChildren() TopChildren()
  * @method \sherlock\components\queries\Wildcard Wildcard() Wildcard()
+ * @method \sherlock\components\queries\Raw Raw() Raw()
  */
 class QueryWrapper
 {
@@ -48,7 +49,12 @@ class QueryWrapper
 	public function __call($name, $arguments)
 	{
 		$class = '\\sherlock\\components\\queries\\'.$name;
-		$this->query =  new $class();
+
+		if (count($arguments) > 0)
+			$this->query =  new $class($arguments[0]);
+		else
+			$this->query =  new $class();
+
 		return $this->query;
 	}
 

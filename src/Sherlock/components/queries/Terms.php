@@ -18,10 +18,13 @@ use sherlock\common\exceptions;
  */
 class Terms extends \sherlock\components\BaseComponent implements \sherlock\components\QueryInterface
 {
-	public function __construct()
+	public function __construct($hashMap = null)
 	{
-		$this->params['$boost'] = 1;
-		$this->params['$minimum_match'] = 1;
+
+		$this->params['boost'] = 1;
+		$this->params['minimum_match'] = 1;
+
+		parent::__construct($hashMap);
 	}
 }
 

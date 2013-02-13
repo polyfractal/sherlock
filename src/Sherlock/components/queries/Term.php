@@ -17,9 +17,10 @@ use sherlock\common\exceptions;
  */
 class Term extends \sherlock\components\BaseComponent implements \sherlock\components\QueryInterface
 {
-	public function __construct()
+	public function __construct($hashMap = null)
 	{
-		$this->params['$boost'] = 1;
+		$this->params['boost'] = 1;
+		parent::__construct($hashMap);
 	}
 }
 

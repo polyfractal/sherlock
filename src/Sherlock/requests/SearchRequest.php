@@ -8,7 +8,7 @@ namespace sherlock\requests;
 
 use sherlock\components\queries;
 use sherlock\common\exceptions;
-use Guzzle\Http\Client;
+
 
 /**
  * @method \sherlock\requests\SearchRequest timeout() timeout(int $value)
@@ -89,29 +89,7 @@ class SearchRequest extends Request
 	{
 		\Analog\Analog::log("SearchRequest->execute() - ".print_r($this->params, true), \Analog\Analog::DEBUG);
 
-		$finalQuery = array();
-
-		if (count($this->params['query']) == 0)
-			throw new \sherlock\common\exceptions\RuntimeException("Search query cannot be empty.");
-
-		foreach($this->params['query'] as $query)
-		{
-			if ($query instanceof \sherlock\components\QueryInterface)
-				$finalQuery[] = '"query" : '.(string)$query;
-			elseif ($query instanceof \sherlock\components\FilterInterface)
-				$finalQuery[] = '"filter" : '.$query;
-		}
-
-		if (isset($this->params['from']))
-			$finalQuery[] = '"from" : "'.$this->params['from'].'"';
-
-		if (isset($this->params['to']))
-			$finalQuery[]=  '"to" : "'.$this->params['to'];
-
-		if (isset($this->params['timeout']))
-			$finalQuery[] =  '"timeout" : "'.$this->params['timeout'];
-
-		$finalQuery = '{'.implode(',', $finalQuery).'}';
+		$finalQuery = $this->composeFinalQuery();
 
 		if (isset($this->params['index']))
 			$index = implode(',', $this->params['index']);
@@ -145,8 +123,46 @@ class SearchRequest extends Request
 		//parent and children under Strict
 		$this->_uri = $uri;
 		$this->_data = $finalQuery;
+		$this->_action = 'post';
 		return parent::execute();
 	}
+
+	public function __toString()
+	{
+		$finalQuery = $this->composeFinalQuery();
+		return $finalQuery;
+	}
+
+
+	private function composeFinalQuery()
+	{
+		$finalQuery = array();
+
+		if (count($this->params['query']) == 0)
+			throw new \sherlock\common\exceptions\RuntimeException("Search query cannot be empty.");
+
+		foreach($this->params['query'] as $query)
+		{
+			if ($query instanceof \sherlock\components\QueryInterface)
+				$finalQuery[] = '"query" : '.(string)$query;
+			elseif ($query instanceof \sherlock\components\FilterInterface)
+				$finalQuery[] = '"filter" : '.$query;
+		}
+
+		if (isset($this->params['from']))
+			$finalQuery[] = '"from" : "'.$this->params['from'].'"';
+
+		if (isset($this->params['to']))
+			$finalQuery[]=  '"to" : "'.$this->params['to'];
+
+		if (isset($this->params['timeout']))
+			$finalQuery[] =  '"timeout" : "'.$this->params['timeout'];
+
+		$finalQuery = '{'.implode(',', $finalQuery).'}';
+
+		return $finalQuery;
+	}
+
 }
 
 

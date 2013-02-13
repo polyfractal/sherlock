@@ -7,7 +7,8 @@
 
 namespace sherlock\requests;
 use sherlock\common\exceptions;
-use sherlock\responses\Response;
+use sherlock\responses\IndexResponse;
+use Analog\Analog;
 use Guzzle\Http\Client;
 
 class Request
@@ -18,6 +19,7 @@ class Request
 	//parent and children under Strict
 	protected $_uri;
 	protected $_data;
+	protected $_action;
 
 	public function __construct($node)
 	{
@@ -38,11 +40,15 @@ class Request
 	}
 
 	/**
-	 * @return \sherlock\responses\Response
 	 * @throws \sherlock\common\exceptions\RuntimeException
+	 * @throws \Guzzle\Http\Exception\BadResponseException
+	 * @return \sherlock\responses\Response
 	 */
 	public function execute()
 	{
+		$reflector = new \ReflectionClass(get_class($this));
+		$class = $reflector->getShortName();
+
 		\Analog\Analog::log("Request->execute()", \Analog\Analog::DEBUG);
 
 		if (!isset($this->_uri))
@@ -55,8 +61,22 @@ class Request
 		\Analog\Analog::log("Request->_data: ".$this->_data, \Analog\Analog::DEBUG);
 
 		$client = new Client();
-		$response = $client->post($this->_uri, null, $this->_data)->send();
+		$action = $this->_action;
+		try {
+			$response = $client->$action($this->_uri, null, $this->_data)->send();
 
-		return new Response($response);
+		} catch (\Guzzle\Http\Exception\BadResponseException $e) {
+			//error!
+			Analog::log("Request->execute() - Request failed from ".$class.' '.print_r($e->getMessage(), true), Analog::ERROR);
+			throw $e;
+		}
+
+		//This is kinda gross...
+		if ($class == 'SearchRequest')
+			$ret =  new \sherlock\responses\QueryResponse($response);
+		elseif ($class == 'IndexRequest')
+			$ret =  new \sherlock\responses\IndexResponse($response);
+
+		return $ret;
 	}
 }
