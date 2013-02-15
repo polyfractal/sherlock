@@ -28,16 +28,21 @@ class Raw extends \sherlock\components\BaseComponent implements \sherlock\compon
 		if (is_array(($hashMap)) && count($hashMap) > 0)
 		{
 			//Raw array hash map provided
-			//Encode it into a JSON string first, then put into param
-			$this->params['json'] = json_encode($hashMap);
+			//put it right into the params
+			$this->params['hash'] = $hashMap;
 		}
 		elseif (is_string($hashMap))
 		{
 			//Raw JSON has been provided
-			//Put it right into the param
-			$this->params['json'] = $hashMap;
+			//Decode from JSON into array
+			$this->params['hash'] = json_decode($hashMap, true);
 		}
 
+	}
+
+	public function toArray()
+	{
+		return $this->params['hash'];
 	}
 }
 

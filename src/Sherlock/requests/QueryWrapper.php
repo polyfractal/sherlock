@@ -44,6 +44,9 @@ use sherlock\common\exceptions;
  */
 class QueryWrapper
 {
+	/**
+	 * @var \sherlock\components\QueryInterface
+	 */
 	protected $query;
 
 	public function __call($name, $arguments)

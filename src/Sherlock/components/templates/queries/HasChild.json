@@ -1,8 +1,0 @@
-{
-    "has_child" : {
-        "type" : $type,
-        "score_type" : $score_type,
-        "query" : $query
-        }
-    }
-}    

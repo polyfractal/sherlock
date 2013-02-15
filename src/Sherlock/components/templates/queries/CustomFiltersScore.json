@@ -1,8 +1,0 @@
-{
-    "custom_filters_score" : {
-        "query" : $query,
-        "filters" : $filters,
-        "score_mode" : $score_mode,
-		"max_boost" : $max_boost
-    }
-}

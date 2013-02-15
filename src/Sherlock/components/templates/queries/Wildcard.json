@@ -1,8 +1,0 @@
-{
-    "wildcard" : { 
-		"$field : { 
-			"value" : $value,
-			"boost" : $boost 
-		} 
-	}
-} 

@@ -1,8 +1,0 @@
-{
-    "terms":{
-        $field:{
-            "value": $term,
-            "minimum_match" : $minimum_match
-        }
-    }
-}

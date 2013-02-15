@@ -1,7 +1,0 @@
-{
-    "nested" : {
-        "path" : $path,
-        "score_mode" : $score_mode,
-        "query" : $query
-    }
-}

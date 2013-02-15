@@ -8,5 +8,5 @@ namespace sherlock\components;
 
 interface QueryInterface
 {
-
+	public function toArray();
 }

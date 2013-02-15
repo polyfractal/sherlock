@@ -1,6 +1,0 @@
-{
-    "filtered" : {
-        "query" : $query,
-        "filter" : $filter
-    }
-}

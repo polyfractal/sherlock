@@ -144,7 +144,7 @@ class SearchRequest extends Request
 		foreach($this->params['query'] as $query)
 		{
 			if ($query instanceof \sherlock\components\QueryInterface)
-				$finalQuery[] = '"query" : '.(string)$query;
+				$finalQuery[] = '"query" : '.$query;
 			elseif ($query instanceof \sherlock\components\FilterInterface)
 				$finalQuery[] = '"filter" : '.$query;
 		}

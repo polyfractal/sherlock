@@ -1,6 +1,0 @@
-{
-	"custom_boost_factor" : {
-		"query" : $query,
-		"boost_factor" : $boost_factor
-	}
-}

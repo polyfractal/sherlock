@@ -1,7 +1,0 @@
-{
-    "term":{
-        $field:{
-            "value":$term
-        }
-    }
-}

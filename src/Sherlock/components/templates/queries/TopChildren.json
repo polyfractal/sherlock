@@ -1,9 +1,0 @@
-{
-    "top_children" : {
-        "type": $type,
-        "query" : $query,
-        "score" : $score,
-        "factor" : $factor,
-        "incremental_factor" : $incremental_factor
-    }
-}

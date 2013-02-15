@@ -1,8 +1,0 @@
-{
-	"custom_score" : {
-		"query" : $query,
-		"params" : $params,
-		"script" : $script,
-		"lang" : $lang
-	}
-}

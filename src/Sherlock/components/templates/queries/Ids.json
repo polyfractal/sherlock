@@ -1,6 +1,0 @@
-{
-    "ids" : {
-        "type" : $type,
-        "values" : $values
-    }
-}   
