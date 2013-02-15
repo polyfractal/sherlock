@@ -18,12 +18,8 @@ abstract class BaseComponent
 	{
 		if (is_array(($hashMap)) && count($hashMap) > 0)
 		{
-			//Raw array hash map provided
-			//Easiest way to populate the fields is to just call the magic methods internally
-			foreach($hashMap as $key => $value)
-			{
-				$this->$key($value);
-			}
+			//merge the provided values with our param array, overwriting defaults where necessary
+			$this->params = array_merge($this->params, $hashMap);
 		}
 
 	}
