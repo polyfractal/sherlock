@@ -47,11 +47,26 @@ class Sherlock
 			'mode' => 'development',
 			'log.level' => 'debug',
 			'log.file' => '../sherlock.log',
-			'templates.path' => '../templates',
-			'templates.extension' => array('yml'),
 			'autodetect.cluster' => false
 			);
 	}
+
+	public static function query()
+	{
+		\Analog\Analog::log("Sherlock::query()", \Analog\Analog::DEBUG);
+		return new \sherlock\requests\QueryWrapper();
+	}
+
+	public static function indexSettings()
+	{
+		\Analog\Analog::log("Sherlock::indexSettings()", \Analog\Analog::DEBUG);
+		return new \sherlock\requests\IndexSettingsWrapper();
+	}
+
+
+
+
+
 
 	public function search()
 	{
@@ -61,18 +76,12 @@ class Sherlock
 		return new \sherlock\requests\SearchRequest($randomNode);
 	}
 
-	public function query()
-	{
-		\Analog\Analog::log("Sherlock->query()", \Analog\Analog::DEBUG);
-		return new \sherlock\requests\QueryWrapper();
-	}
-
 	/**
 	 * @param string $index Index to operate on
 	 * @param string $index,... Index to operate on
 	 * @return requests\IndexRequest
 	 */
-	public function index($index)
+	public function index($index = null)
 	{
 		$args = func_get_args();
 		$index = array();
@@ -86,6 +95,10 @@ class Sherlock
 		$randomNode = $this->settings['nodes'][$randInt];
 		return new \sherlock\requests\IndexRequest($randomNode, $index);
 	}
+
+
+
+
 
 
 	/**

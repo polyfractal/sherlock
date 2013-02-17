@@ -18,6 +18,7 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->object = new Sherlock;
+		$this->object->addNode('loopback.com', '9200');
     }
 
     /**
@@ -39,6 +40,19 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 
 	}
 
+	function assertThrowsException($exception_name, $code) {
+		$e = null;
+		try{
+			$code();
+		}catch (\Exception $e) {
+			// No more code, we only want to catch the exception in $e
+		}
+
+		$this->assertInstanceOf($exception_name, $e);
+	}
+
+
+
 
 
     /**
@@ -47,27 +61,24 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildQuery()
     {
-		$this->object->addNode('loopback.com', '9200');
 		$req = $this->object->search();
 		$req->index("test3")->type("benchmark");
-		$req->query($this->object->query()->Term()->field("field1")->term("town"));
+		$req->query(Sherlock::query()->Term()->field("field1")->term("town"));
 		$resp = $req->execute();
 
-		echo $resp->took;
-		foreach($resp as $hit)
-		{
-			echo $hit['score'].' - '.$hit['source']['field1']."\r\n";
-		}
+		$data = json_decode((string)$req, true);
+		$expectedData = array("query" => array("term" => array("field1" => array("value" => "town"))));
+		$this->assertEquals($expectedData, $data);
+
     }
 
 
 	public function testHashBuilding()
 	{
 
-		$this->object->addNode('loopback.com', '9200');
 		$req = $this->object->search();
 		$req->index("test3")->type("benchmark");
-		$req->query($this->object->query()->Term()->field("field1")->term("town"));
+		$req->query(Sherlock::query()->Term()->field("field1")->term("town"));
 
 		//First, make sure the ORM query matches what we expect
 		$data = json_decode((string)$req, true);
@@ -76,7 +87,7 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 
 		//Now provide an array hashmap instead of using the ORM, to make sure manual creation works
 		$manualData = array("field" => "field1", "term" => "town");
-		$req->query($this->object->query()->Term($manualData));
+		$req->query(Sherlock::query()->Term($manualData));
 		$data = json_decode((string)$req, true);
 		$this->assertEquals($expectedData, $data);
 
@@ -86,7 +97,6 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 	public function testRawQueryBuilding()
 	{
 
-		$this->object->addNode('loopback.com', '9200');
 		$req = $this->object->search();
 		$req->index("test3")->type("benchmark");
 
@@ -95,11 +105,47 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 		//Now provide a raw JSON string
 		//Note that since this is a Raw Query, we don't include the top-level "query" field
 		$json = json_encode($expectedData['query']);
-		$req->query($this->object->query()->Raw($json));
+		$req->query(Sherlock::query()->Raw($json));
 		$data = json_decode((string)$req, true);
 		$this->assertEquals($expectedData, $data);
 
 	}
+
+	public function testIndexSettings()
+	{
+		//no index
+		$req = $this->object->index();
+		$this->assertInstanceOf('\sherlock\requests\IndexRequest', $req);
+
+		//provide an index
+		$req = $this->object->index('test');
+		$this->assertInstanceOf('\sherlock\requests\IndexRequest', $req);
+
+		//provide incorrect class, should throw error
+		$this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () use ($req) {
+			$req->settings(sherlock::query());
+		});
+		//provide incorrect class with merge, should throw error
+		$this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () use ($req) {
+			$req->settings(sherlock::query(), true);
+		});
+
+		$settings = sherlock::indexSettings()->refresh_interval("1s");
+		$req = $req->settings($settings);
+		$this->assertInstanceOf('\sherlock\requests\IndexRequest', $req);
+
+		$req = $req->settings($settings, true);
+		$this->assertInstanceOf('\sherlock\requests\IndexRequest', $req);
+
+		$settings = array("refresh_interval"=>"1s");
+		$req = $req->settings($settings);
+		$this->assertInstanceOf('\sherlock\requests\IndexRequest', $req);
+
+		$req = $req->settings($settings, true);
+		$this->assertInstanceOf('\sherlock\requests\IndexRequest', $req);
+
+	}
+
 
 
 	/**
@@ -108,16 +154,26 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testIndexOperations()
 	{
-		$this->object->addNode('loopback.com', '9200');
 		$sherlock = $this->object;
 
-		//$sherlock->index('test')->delete();
+		//Create the index
+		$index = $sherlock->index('test123');
+		$response = $index->create();
+		$this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);
+		$this->assertEquals(true, $response->ok);
 
-		//$sherlock->index('test')->delete()->mapping(mapping stuff)->settings()->create();
+		$index->settings(sherlock::indexSettings()->refresh_interval("1s")) ;
+		$response = $index->updateSettings();
+		$this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);
+		$this->assertEquals(true, $response->ok);
 
 
-		//$index = $sherlock->index('test');
-		//$index->delete();
+		//Delete the index first
+		$response = $sherlock->index('test123')->delete();
+		$this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);
+		$this->assertEquals(true, $response->ok);
+
+
 
 
 	}

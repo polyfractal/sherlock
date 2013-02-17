@@ -83,8 +83,9 @@ class SearchRequest extends Request
 	}
 
 
-
-
+	/**
+	 * @return \sherlock\responses\QueryResponse
+	 */
 	public function execute()
 	{
 		\Analog\Analog::log("SearchRequest->execute() - ".print_r($this->params, true), \Analog\Analog::DEBUG);

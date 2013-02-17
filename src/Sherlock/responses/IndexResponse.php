@@ -27,8 +27,11 @@ class IndexResponse extends Response
 	{
 		parent::__construct($response);
 
-		$this->ok = $this->responseData['ok'];
-		$this->acknowledged = $this->responseData['acknowledged'];
+		if (isset($this->responseData['ok']))
+			$this->ok = $this->responseData['ok'];
+
+		if (isset($this->responseData['acknowledged']))
+			$this->acknowledged = $this->responseData['acknowledged'];
 	}
 
 }

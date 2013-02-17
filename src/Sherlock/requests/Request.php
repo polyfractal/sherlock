@@ -65,7 +65,18 @@ class Request
 		try {
 			$response = $client->$action($this->_uri, null, $this->_data)->send();
 
-		} catch (\Guzzle\Http\Exception\BadResponseException $e) {
+		}
+		/*catch (\Guzzle\Http\Exception\ClientErrorResponseException $e){
+			echo "Message----------------------------\r\n";
+			print_r($e->getMessage());
+
+			echo "Response Body----------------------------\r\n";
+
+
+			print_r($e->getResponse()->getBody(true));
+			throw $e;
+		}       */
+		catch (\Guzzle\Http\Exception\BadResponseException $e) {
 			//error!
 			Analog::log("Request->execute() - Request failed from ".$class.' '.print_r($e->getMessage(), true), Analog::ERROR);
 			throw $e;

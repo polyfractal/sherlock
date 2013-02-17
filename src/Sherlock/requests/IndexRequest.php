@@ -34,6 +34,9 @@ class IndexRequest extends Request
 		else
 			$this->params['index'] = $index;
 
+		$this->params['indexSettings'] = array();
+		$this->params['indexMappings'] = array();
+
 		parent::__construct($node);
 	}
 
@@ -43,6 +46,13 @@ class IndexRequest extends Request
 		return $this;
 	}
 
+
+	/**
+	 * ---- Settings / Parameters ----
+	 * Various settings and parameters to be set before invoking an action
+	 * Returns $this
+	 *
+	 */
 
 	/**
 	 * @param string $index indices to operate on
@@ -60,6 +70,51 @@ class IndexRequest extends Request
 		return $this;
 	}
 
+
+
+	public function mappings()
+	{
+
+	}
+
+	/**
+	 * @param array|IndexSettingsWrapper $settings
+	 * @param bool $merge
+	 * @throws \sherlock\common\exceptions\BadMethodCallException
+	 * @return IndexRequest
+	 */
+	public function settings($settings, $merge = false)
+	{
+		if ($settings instanceof IndexSettingsWrapper)
+			$newSettings = $settings->toArray();
+		else if (is_array($settings))
+			$newSettings = $settings;
+		else
+			throw new \sherlock\common\exceptions\BadMethodCallException("Unknown parameter provided to settings(). Must be array of settings or IndexSettingsWrapper.");
+
+
+		if ($merge)
+			$this->params['indexSettings'] = array_merge($this->params['indexSettings'], $newSettings);
+		else
+			$this->params['indexSettings'] = $newSettings;
+
+
+		return $this;
+	}
+
+
+
+
+	/*
+	 * ---- Actions -----
+	 * Actions are applied to the index through an HTTP request, and return a response
+	 *
+	 */
+
+	/**
+	 * @return \sherlock\responses\IndexResponse
+	 * @throws \sherlock\common\exceptions\RuntimeException
+	 */
 	public function delete()
 	{
 		\Analog\Analog::log("IndexRequest->execute() - ".print_r($this->params, true), \Analog\Analog::DEBUG);
@@ -78,23 +133,15 @@ class IndexRequest extends Request
 		$this->_action = 'delete';
 
 		$ret =  parent::execute();
-		print_r($ret);
+		return $ret;
 	}
-
-	public function mappings()
-	{
-
-	}
-
-	public function settings()
-	{
-
-	}
-
-
+	/**
+	 * @return \sherlock\responses\IndexResponse
+	 * @throws \sherlock\common\exceptions\RuntimeException
+	 */
 	public function create()
 	{
-		\Analog\Analog::log("IndexRequest->execute() - ".print_r($this->params, true), \Analog\Analog::DEBUG);
+		\Analog\Analog::log("IndexRequest->create() - ".print_r($this->params, true), \Analog\Analog::DEBUG);
 
 		if (!isset($this->params['index']))
 			throw new \sherlock\common\exceptions\RuntimeException("Index cannot be empty.");
@@ -106,12 +153,47 @@ class IndexRequest extends Request
 		//required since PHP doesn't allow argument differences between
 		//parent and children under Strict
 		$this->_uri = $uri;
-		$this->_data = null;
+
+		$body = array("settings" => $this->params['indexSettings'],
+						"mappings" => $this->params['indexMappings']);
 
 
+		//force JSON object when encoding because we may have empty parameters
+		$this->_data = json_encode($body, JSON_FORCE_OBJECT);
+		$this->_action = 'put';
+
+		/**
+		 * @var \sherlock\responses\IndexResponse
+		 */
+		$ret =  parent::execute();
+		return $ret;
+	}
+
+	/**
+	 * @todo allow updating settings of all indices
+	 *
+	 * @return \sherlock\responses\IndexResponse
+	 * @throws \sherlock\common\exceptions\RuntimeException
+	 */
+	public function updateSettings()
+	{
+		\Analog\Analog::log("IndexRequest->updateSettings() - ".print_r($this->params, true), \Analog\Analog::DEBUG);
+
+		if (!isset($this->params['index']))
+			throw new \sherlock\common\exceptions\RuntimeException("Index cannot be empty.");
+
+		$index = implode(',', $this->params['index']);
+
+		$uri = 'http://'.$this->node['host'].':'.$this->node['port'].'/'.$index.'/_settings';
+		$body = array("index" => $this->params['indexSettings']);
+
+
+		$this->_uri = $uri;
+		$this->_data = json_encode($body);
 		$this->_action = 'put';
 
 		$ret =  parent::execute();
-		print_r($ret);
+		return $ret;
+
 	}
 }
