@@ -14,6 +14,7 @@ use sherlock\common\exceptions;
  * @method \sherlock\components\mappings\Date field() field(\string $value)
  * @method \sherlock\components\mappings\Date store() store(\string $value)
  * @method \sherlock\components\mappings\Date index() index(\string $value)
+ * @method \sherlock\components\mappings\Date index_name() index_name(\string $value)
  * @method \sherlock\components\mappings\Date format() format(\string $value)
  * @method \sherlock\components\mappings\Date boost() boost(\float $value)
  * @method \sherlock\components\mappings\Date null_value() null_value(\string $value)

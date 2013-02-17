@@ -14,6 +14,7 @@ use sherlock\common\exceptions;
  * @method \sherlock\components\mappings\String field() field(\string $value)
  * @method \sherlock\components\mappings\String store() store(\string $value)
  * @method \sherlock\components\mappings\String index() index(\string $value)
+ * @method \sherlock\components\mappings\STring index_name() index_name(\string $value)
  * @method \sherlock\components\mappings\String term_vector() term_vector(\string $value)
  * @method \sherlock\components\mappings\String boost() boost(\float $value)
  * @method \sherlock\components\mappings\String null_value() null_value(\string $value)
