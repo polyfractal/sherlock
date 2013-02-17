@@ -207,7 +207,11 @@ class IndexRequest extends Request
 		\Analog\Analog::log("IndexRequest->updateSettings() - ".print_r($this->params, true), \Analog\Analog::DEBUG);
 
 		if (!isset($this->params['index']))
+		{
+			\Analog\Analog::log("Index cannot be empty.", \Analog\Analog::ERROR);
 			throw new \sherlock\common\exceptions\RuntimeException("Index cannot be empty.");
+		}
+
 
 		$index = implode(',', $this->params['index']);
 
