@@ -214,4 +214,26 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
 	}
 
+	public function testObjectMapping()
+	{
+		$sherlock = $this->object;
+
+		//Set the index
+		$index = $sherlock->index('test123');
+
+		$mapping1 = sherlock::mappingProperty('testType')->Date()->field('testField')->format("YYYY-MM-dd");
+		$mapping2 = sherlock::mappingProperty('testType2')->Object()->field("testField2")->object(($mapping1));
+
+		$data = $mapping2->toJSON();
+		$expected = '{"testType2":{"properties":{"testField2":{"properties":{"testType":{"properties":{"testField":{"type":"date","format":"YYYY-MM-dd"}}}},"type":"object"}}}}';
+		$this->assertEquals($expected, $data);
+
+		$mapping2->dynamic(true);
+		$data = $mapping2->toJSON();
+		$expected = '{"testType2":{"properties":{"testField2":{"properties":{"testType":{"properties":{"testField":{"type":"date","format":"YYYY-MM-dd"}}}},"type":"object","dynamic":true}}}}';
+		$this->assertEquals($expected, $data);
+
+
+	}
+
 }

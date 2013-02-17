@@ -17,6 +17,7 @@ use sherlock\common\exceptions;
  * @method \sherlock\components\mappings\Date Date() Date()
  * @method \sherlock\components\mappings\Boolean Boolean() Boolean()
  * @method \sherlock\components\mappings\Binary Binary() Binary()
+ * @method \sherlock\components\mappings\Object Object() Object()
  */
 class MappingPropertyWrapper
 {
