@@ -9,6 +9,7 @@ namespace sherlock\requests;
 
 use sherlock\components\queries;
 use sherlock\common\exceptions;
+use sherlock\wrappers;
 
 
 class IndexRequest extends Request
@@ -98,14 +99,14 @@ class IndexRequest extends Request
 	}
 
 	/**
-	 * @param array|IndexSettingsWrapper $settings
+	 * @param array|\sherlock\wrappers\IndexSettingsWrapper $settings
 	 * @param bool $merge
 	 * @throws \sherlock\common\exceptions\BadMethodCallException
 	 * @return IndexRequest
 	 */
 	public function settings($settings, $merge = false)
 	{
-		if ($settings instanceof IndexSettingsWrapper)
+		if ($settings instanceof \sherlock\wrappers\IndexSettingsWrapper)
 			$newSettings = $settings->toArray();
 		else if (is_array($settings))
 			$newSettings = $settings;
