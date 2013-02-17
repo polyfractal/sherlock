@@ -39,6 +39,8 @@ class String extends \sherlock\components\BaseComponent implements \sherlock\com
 		$ret = array($this->params['field'], $ret);
 		return $ret;
 	}
+
+
 }
 
 ?>

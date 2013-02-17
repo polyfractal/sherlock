@@ -10,4 +10,5 @@ namespace sherlock\components;
 interface MappingInterface
 {
 	public function toArray();
+	public function toJSON();
 }

@@ -64,7 +64,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 		//no field, expect error
 		$mapping = sherlock::mappingProperty()->String();
 		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
-			$data = (string)$mapping;
+			$data = $mapping->toJSON();
 		});
 
 

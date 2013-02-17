@@ -26,6 +26,9 @@ abstract class BaseComponent
 
 	public function __call($name, $arguments)
 	{
+		if ($name == 'toJSON')
+			return $this->toJSON();
+
 		$this->params[$name] = $arguments[0];
 		return $this;
 	}
