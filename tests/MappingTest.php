@@ -27,6 +27,13 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function tearDown()
 	{
+		try{
+			$this->object->index('test123')->delete();
+		}
+		catch(\Exception $e)
+		{
+
+		}
 	}
 
 
@@ -198,6 +205,9 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $response->ok);
 
 		//try to update the index
+		$index->mappings($mapping1)->type("testType");
+		$response = $index->updateMapping();
+		$this->assertEquals(true, $response->ok);
 
 		$response = $index->delete();
 		$this->assertEquals(true, $response->ok);

@@ -71,6 +71,22 @@ class IndexRequest extends Request
 		return $this;
 	}
 
+	/**
+	 * @param string $type indices to operate on
+	 * @param string $type,... indices to operate on
+	 * @return SearchRequest
+	 */
+	public function type($type)
+	{
+		$this->params['type'] = array();
+		$args = func_get_args();
+		foreach($args as $arg)
+		{
+			$this->params['type'][] = $arg;
+		}
+		return $this;
+	}
+
 
 	/**
 	 * @param array|\sherlock\components\MappingInterface|bool $mapping,...
@@ -243,8 +259,49 @@ class IndexRequest extends Request
 
 	}
 
+	/**
+	 * @return \sherlock\responses\IndexResponse
+	 * @throws \sherlock\common\exceptions\RuntimeException
+	 */
 	public function updateMapping()
 	{
+		\Analog\Analog::log("IndexRequest->updateMapping() - ".print_r($this->params, true), \Analog\Analog::DEBUG);
 
+		if (!isset($this->params['index']))
+		{
+			\Analog\Analog::log("Index cannot be empty.", \Analog\Analog::ERROR);
+			throw new \sherlock\common\exceptions\RuntimeException("Index cannot be empty.");
+		}
+
+		if (count($this->params['indexMappings']) > 1)
+		{
+			\Analog\Analog::log("May only update one mapping at a time.", \Analog\Analog::ERROR);
+			throw new \sherlock\common\exceptions\RuntimeException("May only update one mapping at a time.");
+		}
+
+		if (!isset($this->params['type']))
+		{
+			\Analog\Analog::log("Type must be specified.", \Analog\Analog::ERROR);
+			throw new \sherlock\common\exceptions\RuntimeException("Type must be specified.");
+		}
+
+		if (count($this->params['type']) > 1)
+		{
+			\Analog\Analog::log("Only one type may be updated at a time.", \Analog\Analog::ERROR);
+			throw new \sherlock\common\exceptions\RuntimeException("Only one type may be updated at a time.");
+		}
+
+
+		$index = implode(',', $this->params['index']);
+		$uri = 'http://'.$this->node['host'].':'.$this->node['port'].'/'.$index.'/'.$this->params['type'][0].'/_mapping';
+		$body = array($this->params['type'][0] => array("properties" => $this->params['indexMappings'][0]));
+
+
+		$this->_uri = $uri;
+		$this->_data = json_encode($body, JSON_FORCE_OBJECT);
+		$this->_action = 'put';
+
+		$ret =  parent::execute();
+		return $ret;
 	}
 }
