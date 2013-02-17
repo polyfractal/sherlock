@@ -61,7 +61,7 @@ class String extends \sherlock\components\BaseComponent implements \sherlock\com
 		}
 
 		if (!isset($this->params['field']))
-			throw new \sherlock\common\exceptions\RuntimeException("Field name must be set for mapping");
+			throw new \sherlock\common\exceptions\RuntimeException("Field name must be set for String mapping");
 
 		$ret = array($this->params['field'] => $ret);
 

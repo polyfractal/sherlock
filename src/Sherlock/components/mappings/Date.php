@@ -52,7 +52,7 @@ class Date extends \sherlock\components\BaseComponent implements \sherlock\compo
 		}
 
 		if (!isset($this->params['field']))
-			throw new \sherlock\common\exceptions\RuntimeException("Field name must be set for mapping");
+			throw new \sherlock\common\exceptions\RuntimeException("Field name must be set for Date mapping");
 
 		$ret = array($this->params['field'] => $ret);
 
