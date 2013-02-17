@@ -5,7 +5,7 @@
  * Time: 8:12 PM
  */
 
-namespace sherlock\requests;
+namespace sherlock\wrappers;
 
 use sherlock\components\queries;
 use sherlock\common\exceptions;

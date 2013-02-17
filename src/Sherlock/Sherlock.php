@@ -51,34 +51,38 @@ class Sherlock
 			);
 	}
 
+	/**
+	 * @return wrappers\QueryWrapper
+	 */
 	public static function query()
 	{
 		\Analog\Analog::log("Sherlock::query()", \Analog\Analog::DEBUG);
-		return new \sherlock\requests\QueryWrapper();
+		return new \sherlock\wrappers\QueryWrapper();
 	}
 
+	/**
+	 * @return wrappers\IndexSettingsWrapper
+	 */
 	public static function indexSettings()
 	{
 		\Analog\Analog::log("Sherlock::indexSettings()", \Analog\Analog::DEBUG);
-		return new \sherlock\requests\IndexSettingsWrapper();
+		return new \sherlock\wrappers\IndexSettingsWrapper();
 	}
 
 	/**
 	 * @param null|string $type
-	 * @return requests\MappingPropertyWrapper
+	 * @return wrappers\MappingPropertyWrapper
 	 */
 	public static function mappingProperty($type = null)
 	{
 		\Analog\Analog::log("Sherlock::mappingProperty()", \Analog\Analog::DEBUG);
-		return new \sherlock\requests\MappingPropertyWrapper($type);
+		return new \sherlock\wrappers\MappingPropertyWrapper($type);
 	}
 
 
-
-
-
-
-
+	/**
+	 * @return requests\SearchRequest
+	 */
 	public function search()
 	{
 		\Analog\Analog::log("Sherlock->search()", \Analog\Analog::DEBUG);

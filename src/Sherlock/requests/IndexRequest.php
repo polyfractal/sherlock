@@ -223,4 +223,9 @@ class IndexRequest extends Request
 		return $ret;
 
 	}
+
+	public function updateMapping()
+	{
+
+	}
 }
