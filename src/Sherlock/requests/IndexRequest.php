@@ -72,17 +72,27 @@ class IndexRequest extends Request
 
 
 	/**
-	 * @param \sherlock\components\MappingInterface $mapping
-	 * @param \sherlock\components\MappingInterface $mapping,...
+	 * @param array|\sherlock\components\MappingInterface $mapping,...
+	 * @throws \sherlock\common\exceptions\BadMethodCallException
 	 * @return \sherlock\requests\IndexRequest
 	 */
 	public function mappings($mapping)
 	{
+
 		$args = func_get_args();
-		foreach($mapping as $arg)
+
+		foreach ($args as $arg)
 		{
-			$this->params['indexMappings'][] = $arg->toArray();
+			if ($arg instanceof \sherlock\components\MappingInterface)
+				$this->params['indexMappings'][] = $arg->toArray();
+			elseif (is_array($arg))
+				$this->params['indexMappings'][] = $arg;
+			else
+				throw new \sherlock\common\exceptions\BadMethodCallException("Arguments must be an array or a Mapping Property.");
+
 		}
+
+
 
 		return $this;
 	}
@@ -160,17 +170,24 @@ class IndexRequest extends Request
 
 		$uri = 'http://'.$this->node['host'].':'.$this->node['port'].'/'.$index;
 
-		//required since PHP doesn't allow argument differences between
-		//parent and children under Strict
-		$this->_uri = $uri;
 
+
+
+		//Final JSON should be object properties, not an array.  So we need to iterate
+		//through the array members and merge into an associative array.
+		$mappings = array();
+		foreach($this->params['indexMappings'] as $mapping)
+		{
+			$mappings = array_merge($mappings, $mapping);
+		}
 		$body = array("settings" => $this->params['indexSettings'],
-						"mappings" => $this->params['indexMappings']);
+						"mappings" => $mappings);
 
 
 		//force JSON object when encoding because we may have empty parameters
 		$this->_data = json_encode($body, JSON_FORCE_OBJECT);
 		$this->_action = 'put';
+		$this->_uri = $uri;
 
 		/**
 		 * @var \sherlock\responses\IndexResponse

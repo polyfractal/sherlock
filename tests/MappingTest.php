@@ -182,4 +182,26 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
 	}
 
+	public function testMultiMapping()
+	{
+		$sherlock = $this->object;
+
+		//Set the index
+		$index = $sherlock->index('test123');
+
+		$mapping1 = sherlock::mappingProperty('testType')->Date()->field('testField')->format("YYYY-MM-dd");
+		$mapping2 = sherlock::mappingProperty('testType2')->String()->field('testField2');
+
+		//add both mappings and create the index
+		$index->mappings($mapping1, $mapping2);
+		$response = $index->create();
+		$this->assertEquals(true, $response->ok);
+
+		//try to update the index
+
+		$response = $index->delete();
+		$this->assertEquals(true, $response->ok);
+
+	}
+
 }
