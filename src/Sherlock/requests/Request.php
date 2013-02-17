@@ -59,7 +59,6 @@ class Request
 
 		\Analog\Analog::log("Request->_uri: ".$this->_uri, \Analog\Analog::DEBUG);
 		\Analog\Analog::log("Request->_data: ".$this->_data, \Analog\Analog::DEBUG);
-		\Analog\Analog::log("Request->_body: ".$this->_body, \Analog\Analog::DEBUG);
 
 		$client = new Client();
 		$action = $this->_action;
