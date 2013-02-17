@@ -75,4 +75,6 @@ class IndexSettingsWrapper
 	}
 
 
+
+
 }

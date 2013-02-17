@@ -158,15 +158,17 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 
 		//Create the index
 		$index = $sherlock->index('test123');
+		$this->assertInstanceOf('\sherlock\requests\IndexRequest', $index);
 		$response = $index->create();
 		$this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);
 		$this->assertEquals(true, $response->ok);
 
-		$index->settings(sherlock::indexSettings()->refresh_interval("1s")) ;
+		//set a setting
+		$index->settings(sherlock::indexSettings()->refresh_interval("1s"));
+		$this->assertInstanceOf('\sherlock\requests\IndexRequest', $index);
 		$response = $index->updateSettings();
 		$this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);
 		$this->assertEquals(true, $response->ok);
-
 
 		//Delete the index first
 		$response = $sherlock->index('test123')->delete();

@@ -71,10 +71,20 @@ class IndexRequest extends Request
 	}
 
 
-
-	public function mappings()
+	/**
+	 * @param \sherlock\components\MappingInterface $mapping
+	 * @param \sherlock\components\MappingInterface $mapping,...
+	 * @return \sherlock\requests\IndexRequest
+	 */
+	public function mappings($mapping)
 	{
+		$args = func_get_args();
+		foreach($mapping as $arg)
+		{
+			$this->params['indexMappings'][] = $arg->toArray();
+		}
 
+		return $this;
 	}
 
 	/**

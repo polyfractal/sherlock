@@ -30,10 +30,11 @@ abstract class BaseComponent
 		return $this;
 	}
 
-	public function __toString()
+	public function toJSON()
 	{
-		return json_encode($this->toArray());
+		return json_encode($this->toArray(), JSON_FORCE_OBJECT);
 	}
+
 
 	abstract function toArray();
 

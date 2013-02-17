@@ -63,6 +63,17 @@ class Sherlock
 		return new \sherlock\requests\IndexSettingsWrapper();
 	}
 
+	/**
+	 * @param null|string $type
+	 * @return requests\MappingPropertyWrapper
+	 */
+	public static function mappingProperty($type = null)
+	{
+		\Analog\Analog::log("Sherlock::mappingProperty()", \Analog\Analog::DEBUG);
+		return new \sherlock\requests\MappingPropertyWrapper($type);
+	}
+
+
 
 
 
