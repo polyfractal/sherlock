@@ -73,14 +73,26 @@ class IndexRequest extends Request
 
 
 	/**
-	 * @param array|\sherlock\components\MappingInterface $mapping,...
+	 * @param array|\sherlock\components\MappingInterface|bool $mapping,...
 	 * @throws \sherlock\common\exceptions\BadMethodCallException
 	 * @return \sherlock\requests\IndexRequest
 	 */
 	public function mappings($mapping)
 	{
-
+		$append = false;
 		$args = func_get_args();
+		foreach ($args as $arg)
+		{
+			//if there is a "false" bool in the arg list, append instead of overwrite
+			//Defaults to overwrite
+			if (is_bool($arg) && $arg == true)
+			{
+				$append = true;
+				break;
+			}
+		}
+		if ($append == false)
+			$this->params['indexMappings'] = array();
 
 		foreach ($args as $arg)
 		{
@@ -88,6 +100,8 @@ class IndexRequest extends Request
 				$this->params['indexMappings'][] = $arg->toArray();
 			elseif (is_array($arg))
 				$this->params['indexMappings'][] = $arg;
+			elseif (is_bool($arg))
+				continue;
 			else
 				throw new \sherlock\common\exceptions\BadMethodCallException("Arguments must be an array or a Mapping Property.");
 
