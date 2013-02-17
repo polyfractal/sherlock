@@ -14,6 +14,7 @@ use sherlock\common\exceptions;
 /**
  * @method \sherlock\components\mappings\String String() String()
  * @method \sherlock\components\mappings\Number Number() Number()
+ * @method \sherlock\components\mappings\Date Date() Date()
  */
 class MappingPropertyWrapper
 {

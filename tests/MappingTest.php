@@ -149,4 +149,37 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
 	}
 
+	public function testDateMapping()
+	{
+		$sherlock = $this->object;
+
+		//Set the index
+		$index = $sherlock->index('test123');
+
+		//no field, expect error
+		$mapping = sherlock::mappingProperty()->Date();
+		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
+			$data = $mapping->toJSON();
+		});
+
+		//type, but no field, expect error
+		$mapping = sherlock::mappingProperty('testType')->Date();
+		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
+			$data = $mapping->toJSON();
+		});
+
+		//type, field, format
+		$mapping = sherlock::mappingProperty('testType')->Date()->field('testField')->format("YYYY-MM-dd");
+		$data = $mapping->toJSON();
+		$expected = '{"testType":{"properties":{"testField":{"type":"date","format":"YYYY-MM-dd"}}}}';
+		$this->assertEquals($expected, $data);
+
+		//field, format
+		$mapping = sherlock::mappingProperty()->Date()->field('testField')->format("YYYY-MM-dd");
+		$data = $mapping->toJSON();
+		$expected = '{"testField":{"type":"date","format":"YYYY-MM-dd"}}';
+		$this->assertEquals($expected, $data);
+
+	}
+
 }
