@@ -116,4 +116,37 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
 	}
 
+	public function testNumberMapping()
+	{
+		$sherlock = $this->object;
+
+		//Set the index
+		$index = $sherlock->index('test123');
+
+		//no field, expect error
+		$mapping = sherlock::mappingProperty()->Number();
+		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
+			$data = $mapping->toJSON();
+		});
+
+		//type, but no field, expect error
+		$mapping = sherlock::mappingProperty('testType')->Number();
+		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
+			$data = $mapping->toJSON();
+		});
+
+		//type, field, but no number-type, expect error
+		$mapping = sherlock::mappingProperty('testType')->Number()->field("testField");
+		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
+			$data = $mapping->toJSON();
+		});
+
+		//type, field, number-type
+		$mapping = sherlock::mappingProperty('testType')->Number()->field('testField')->type("float");
+		$data = $mapping->toJSON();
+		$expected = '{"testType":{"properties":{"testField":{"type":"float"}}}}';
+		$this->assertEquals($expected, $data);
+
+	}
+
 }

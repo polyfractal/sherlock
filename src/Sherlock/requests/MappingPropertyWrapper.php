@@ -13,6 +13,7 @@ use sherlock\common\exceptions;
 
 /**
  * @method \sherlock\components\mappings\String String() String()
+ * @method \sherlock\components\mappings\Number Number() Number()
  */
 class MappingPropertyWrapper
 {
