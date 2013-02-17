@@ -147,7 +147,7 @@ class SearchRequest extends Request
 			if ($query instanceof \sherlock\components\QueryInterface)
 				$finalQuery[] = '"query" : '.$query->toJSON();
 			elseif ($query instanceof \sherlock\components\FilterInterface)
-				$finalQuery[] = '"filter" : '.$query;
+				$finalQuery[] = '"filter" : '.$query->toJSON();
 		}
 
 		if (isset($this->params['from']))
