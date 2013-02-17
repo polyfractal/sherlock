@@ -33,24 +33,16 @@ class MappingPropertyWrapper
 	{
 		$class = '\\sherlock\\components\\mappings\\'.$name;
 
+		//Type can be passed in the with constructor, used for multi-mappings on index creation
+		//Argument[0] is an optional hashmap to define properties via an array
 		if (count($arguments) > 0)
-			$this->property =  new $class($arguments[0]);
+			$this->property =  new $class($this->type, $arguments[0]);
 		else
-			$this->property =  new $class();
+			$this->property =  new $class($this->type);
 
 		return $this->property;
 	}
 
-	public function toArray()
-	{
-		$ret = (string)$this->property;
-		if (isset($this->type))
-		{
-			$ret = array($this->type, array("properties",$ret));
-		}
-
-		return $ret;
-	}
 
 
 }

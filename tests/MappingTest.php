@@ -54,7 +54,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
 
 
-	public function testMapping()
+	public function testStringMapping()
 	{
 		$sherlock = $this->object;
 
@@ -67,9 +67,51 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 			$data = $mapping->toJSON();
 		});
 
+		//type, but no field, expect error
+		$mapping = sherlock::mappingProperty('testField')->String();
+		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
+			$data = $mapping->toJSON();
+		});
 
+		//no type, field
+		$mapping = sherlock::mappingProperty()->String()->field('testField');
+		$data = $mapping->toJSON();
+		$expected = '{"testField":{"type":"string"}}';
+		$this->assertEquals($expected, $data);
 
+		//type, field
+		$mapping = sherlock::mappingProperty('testType')->String()->field('testField');
+		$data = $mapping->toJSON();
+		$expected = '{"testType":{"properties":{"testField":{"type":"string"}}}}';
+		$this->assertEquals($expected, $data);
 
+		//no type, hashmap of properties
+		$hash = array("field"=>'testField');
+		$mapping = sherlock::mappingProperty()->String($hash);
+		$data = $mapping->toJSON();
+		$expected = '{"testField":{"type":"string"}}';
+		$this->assertEquals($expected, $data);
+
+		//type, hashmap of properties
+		$hash = array("field"=>'testField');
+		$mapping = sherlock::mappingProperty('testType')->String($hash);
+		$data = $mapping->toJSON();
+		$expected = '{"testType":{"properties":{"testField":{"type":"string"}}}}';
+		$this->assertEquals($expected, $data);
+
+		//type, hashmap of properties, but override the hashmap with a new value
+		$hash = array("field"=>'testField');
+		$mapping = sherlock::mappingProperty('testType')->String($hash)->field("testFieldNew");
+		$data = $mapping->toJSON();
+		$expected = '{"testType":{"properties":{"testFieldNew":{"type":"string"}}}}';
+		$this->assertEquals($expected, $data);
+
+		//type, hashmap of properties, but override the hashmap with a new value, add a boost
+		$hash = array("field"=>'testField');
+		$mapping = sherlock::mappingProperty('testType')->String($hash)->field("testFieldNew")->boost(0.2);
+		$data = $mapping->toJSON();
+		$expected = '{"testType":{"properties":{"testFieldNew":{"type":"string","boost":0.2}}}}';
+		$this->assertEquals($expected, $data);
 
 
 	}

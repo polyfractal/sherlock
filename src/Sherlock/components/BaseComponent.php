@@ -12,6 +12,9 @@ use sherlock\common\exceptions;
 
 abstract class BaseComponent
 {
+	/**
+	 * @var array
+	 */
 	protected $params = array();
 
 	public function __construct($hashMap = null)
