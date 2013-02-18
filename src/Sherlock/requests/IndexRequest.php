@@ -89,6 +89,9 @@ class IndexRequest extends Request
 
 
 	/**
+	 * @todo fix array-only input
+	 * @todo add json input
+	 *
 	 * @param array|\sherlock\components\MappingInterface|bool $mapping,...
 	 * @throws \sherlock\common\exceptions\BadMethodCallException
 	 * @return \sherlock\requests\IndexRequest
@@ -99,7 +102,7 @@ class IndexRequest extends Request
 		$args = func_get_args();
 		foreach ($args as $arg)
 		{
-			//if there is a "false" bool in the arg list, append instead of overwrite
+			//if there is a "true" bool in the arg list, append instead of overwrite
 			//Defaults to overwrite
 			if (is_bool($arg) && $arg == true)
 			{
@@ -112,8 +115,15 @@ class IndexRequest extends Request
 
 		foreach ($args as $arg)
 		{
+
 			if ($arg instanceof \sherlock\components\MappingInterface)
-				$this->params['indexMappings'][] = $arg->toArray();
+			{
+				if (isset($this->params['indexMappings'][$arg->getType()]))
+					$this->params['indexMappings'][$arg->getType()] = array_merge($this->params['indexMappings'][$arg->getType()], $arg->toArray());
+				else
+					$this->params['indexMappings'][$arg->getType()] = $arg->toArray();
+			}
+
 			elseif (is_array($arg))
 				$this->params['indexMappings'][] = $arg;
 			elseif (is_bool($arg))
@@ -122,8 +132,6 @@ class IndexRequest extends Request
 				throw new \sherlock\common\exceptions\BadMethodCallException("Arguments must be an array or a Mapping Property.");
 
 		}
-
-
 
 		return $this;
 	}
@@ -134,7 +142,7 @@ class IndexRequest extends Request
 	 * @throws \sherlock\common\exceptions\BadMethodCallException
 	 * @return IndexRequest
 	 */
-	public function settings($settings, $merge = false)
+	public function settings($settings, $merge = true)
 	{
 		if ($settings instanceof \sherlock\wrappers\IndexSettingsWrapper)
 			$newSettings = $settings->toArray();
@@ -209,7 +217,7 @@ class IndexRequest extends Request
 		$mappings = array();
 		foreach($this->params['indexMappings'] as $mapping)
 		{
-			$mappings = array_merge($mappings, $mapping);
+			$mappings = array_merge($mappings, array("properties" => $mapping));
 		}
 		$body = array("settings" => $this->params['indexSettings'],
 						"mappings" => $mappings);
@@ -291,10 +299,9 @@ class IndexRequest extends Request
 			throw new \sherlock\common\exceptions\RuntimeException("Only one type may be updated at a time.");
 		}
 
-
 		$index = implode(',', $this->params['index']);
 		$uri = 'http://'.$this->node['host'].':'.$this->node['port'].'/'.$index.'/'.$this->params['type'][0].'/_mapping';
-		$body = array($this->params['type'][0] => array("properties" => $this->params['indexMappings'][0]));
+		$body = $this->params['indexMappings'];
 
 
 		$this->_uri = $uri;

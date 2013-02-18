@@ -58,14 +58,17 @@ class Number extends \sherlock\components\BaseComponent implements \sherlock\com
 
 		$ret = array($this->params['field'] => $ret);
 
-		if (isset($this->type))
-			$ret = array($this->type => array("properties" => $ret));
+		//if (isset($this->type))
+		//	$ret = array($this->type => array("properties" => $ret));
 
 
 		return $ret;
 
 	}
-
+	public function getType()
+	{
+		return $this->type;
+	}
 
 }
 

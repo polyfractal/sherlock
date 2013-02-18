@@ -27,12 +27,20 @@ class MappingPropertyWrapper
 	protected $property;
    	protected $type;
 
-	public function __construct($type = null)
+	/**
+	 * @param string $type
+	 * @throws \sherlock\common\exceptions\BadMethodCallException
+	 */
+	public function __construct($type)
 	{
-		if (isset($type))
+		if (!isset($type))
 		{
-			$this->type = $type;
+			\Analog\Analog::log("Type must be set for mapping property.", \Analog\Analog::ERROR);
+			throw new \sherlock\common\exceptions\BadMethodCallException("Type must be set for mapping property");
 		}
+
+		$this->type = $type;
+
 	}
 	public function __call($name, $arguments)
 	{

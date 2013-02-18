@@ -58,10 +58,10 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 		//Set the index
 		$index = $sherlock->index('test123');
 
-		//no field, expect error
-		$mapping = sherlock::mappingProperty()->String();
-		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
-			$data = $mapping->toJSON();
+		//no type, no field, expect error
+
+		$this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () {
+			$mapping = sherlock::mappingProperty()->String();
 		});
 
 		//type, but no field, expect error
@@ -70,44 +70,50 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 			$data = $mapping->toJSON();
 		});
 
-		//no type, field
-		$mapping = sherlock::mappingProperty()->String()->field('testField');
-		$data = $mapping->toJSON();
-		$expected = '{"testField":{"type":"string"}}';
-		$this->assertEquals($expected, $data);
+		//no type, field, expect error
+		$this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () {
+			$mapping = sherlock::mappingProperty()->String()->field('testField');
+		});
 
 		//type, field
 		$mapping = sherlock::mappingProperty('testType')->String()->field('testField');
 		$data = $mapping->toJSON();
-		$expected = '{"testType":{"properties":{"testField":{"type":"string"}}}}';
+		$this->assertEquals("testType", $mapping->getType());
+		$expected = '{"testField":{"type":"string"}}';
 		$this->assertEquals($expected, $data);
+
+		//two fields, single type
+		$mapping = sherlock::mappingProperty('testType')->String()->field('testField');
+		$mapping2 = sherlock::mappingProperty('testType')->String()->field('testField2');
+		$index = $sherlock->index('index')->mappings($mapping, $mapping2);
+
+
 
 		//no type, hashmap of properties
 		$hash = array("field"=>'testField');
-		$mapping = sherlock::mappingProperty()->String($hash);
-		$data = $mapping->toJSON();
-		$expected = '{"testField":{"type":"string"}}';
-		$this->assertEquals($expected, $data);
+		$this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () use ($hash) {
+			$mapping = sherlock::mappingProperty()->String($hash);
+		});
 
 		//type, hashmap of properties
 		$hash = array("field"=>'testField');
 		$mapping = sherlock::mappingProperty('testType')->String($hash);
 		$data = $mapping->toJSON();
-		$expected = '{"testType":{"properties":{"testField":{"type":"string"}}}}';
+		$expected = '{"testField":{"type":"string"}}';
 		$this->assertEquals($expected, $data);
 
 		//type, hashmap of properties, but override the hashmap with a new value
 		$hash = array("field"=>'testField');
 		$mapping = sherlock::mappingProperty('testType')->String($hash)->field("testFieldNew");
 		$data = $mapping->toJSON();
-		$expected = '{"testType":{"properties":{"testFieldNew":{"type":"string"}}}}';
+		$expected = '{"testFieldNew":{"type":"string"}}';
 		$this->assertEquals($expected, $data);
 
 		//type, hashmap of properties, but override the hashmap with a new value, add a boost
 		$hash = array("field"=>'testField');
 		$mapping = sherlock::mappingProperty('testType')->String($hash)->field("testFieldNew")->boost(0.2);
 		$data = $mapping->toJSON();
-		$expected = '{"testType":{"properties":{"testFieldNew":{"type":"string","boost":0.2}}}}';
+		$expected = '{"testFieldNew":{"type":"string","boost":0.2}}';
 		$this->assertEquals($expected, $data);
 
 
@@ -121,9 +127,8 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 		$index = $sherlock->index('test123');
 
 		//no field, expect error
-		$mapping = sherlock::mappingProperty()->Number();
-		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
-			$data = $mapping->toJSON();
+		$this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () {
+			$mapping = sherlock::mappingProperty()->Number();
 		});
 
 		//type, but no field, expect error
@@ -141,7 +146,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 		//type, field, number-type
 		$mapping = sherlock::mappingProperty('testType')->Number()->field('testField')->type("float");
 		$data = $mapping->toJSON();
-		$expected = '{"testType":{"properties":{"testField":{"type":"float"}}}}';
+		$expected = '{"testField":{"type":"float"}}';
 		$this->assertEquals($expected, $data);
 
 	}
@@ -154,9 +159,8 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 		$index = $sherlock->index('test123');
 
 		//no field, expect error
-		$mapping = sherlock::mappingProperty()->Date();
-		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
-			$data = $mapping->toJSON();
+		$this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () {
+			$mapping = sherlock::mappingProperty()->Date();
 		});
 
 		//type, but no field, expect error
@@ -168,14 +172,9 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 		//type, field, format
 		$mapping = sherlock::mappingProperty('testType')->Date()->field('testField')->format("YYYY-MM-dd");
 		$data = $mapping->toJSON();
-		$expected = '{"testType":{"properties":{"testField":{"type":"date","format":"YYYY-MM-dd"}}}}';
-		$this->assertEquals($expected, $data);
-
-		//field, format
-		$mapping = sherlock::mappingProperty()->Date()->field('testField')->format("YYYY-MM-dd");
-		$data = $mapping->toJSON();
 		$expected = '{"testField":{"type":"date","format":"YYYY-MM-dd"}}';
 		$this->assertEquals($expected, $data);
+
 
 	}
 
@@ -194,10 +193,17 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 		$response = $index->create();
 		$this->assertEquals(true, $response->ok);
 
+
 		//try to update the index
-		$index->mappings($mapping1)->type("testType");
+		$index->type("testType")->mappings($mapping1);
 		$response = $index->updateMapping();
 		$this->assertEquals(true, $response->ok);
+
+		//try to update with two mappings, should error
+		$index->type("testType")->mappings($mapping1, $mapping2);
+		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($index) {
+			$response = $index->updateMapping();
+		});
 
 		$response = $index->delete();
 		$this->assertEquals(true, $response->ok);
@@ -215,12 +221,12 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 		$mapping2 = sherlock::mappingProperty('testType2')->Object()->field("testField2")->object(($mapping1));
 
 		$data = $mapping2->toJSON();
-		$expected = '{"testType2":{"properties":{"testField2":{"properties":{"testType":{"properties":{"testField":{"type":"date","format":"YYYY-MM-dd"}}}},"type":"object"}}}}';
+		$expected = '{"testField2":{"properties":{"testField":{"type":"date","format":"YYYY-MM-dd"}},"type":"object"}}';
 		$this->assertEquals($expected, $data);
 
 		$mapping2->dynamic(true);
 		$data = $mapping2->toJSON();
-		$expected = '{"testType2":{"properties":{"testField2":{"properties":{"testType":{"properties":{"testField":{"type":"date","format":"YYYY-MM-dd"}}}},"type":"object","dynamic":true}}}}';
+		$expected = '{"testField2":{"properties":{"testField":{"type":"date","format":"YYYY-MM-dd"}},"type":"object","dynamic":true}}';
 		$this->assertEquals($expected, $data);
 
 
