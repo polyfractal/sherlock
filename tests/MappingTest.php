@@ -36,17 +36,6 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 		}
 	}
 
-
-	/**
-	 * @covers sherlock\Sherlock::addNode
-	 */
-	public function testAddNode()
-	{
-		$ret = $this->object->addNode('loopback.com');
-		$this->assertInstanceOf('\sherlock\sherlock', $ret);
-
-	}
-
 	function assertThrowsException($exception_name, $code) {
 		$e = null;
 		try{
