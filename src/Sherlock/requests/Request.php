@@ -87,6 +87,8 @@ class Request
 			$ret =  new \sherlock\responses\QueryResponse($response);
 		elseif ($class == 'IndexRequest')
 			$ret =  new \sherlock\responses\IndexResponse($response);
+		elseif ($class == 'IndexDocumentRequest')
+			$ret =  new \sherlock\responses\IndexResponse($response);
 
 		return $ret;
 	}

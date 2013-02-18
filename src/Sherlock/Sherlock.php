@@ -91,6 +91,14 @@ class Sherlock
 		return new \sherlock\requests\SearchRequest($randomNode);
 	}
 
+	public function addDocument()
+	{
+		\Analog\Analog::log("Sherlock->indexDocument()", \Analog\Analog::DEBUG);
+		$randInt = rand(0,count($this->settings['nodes'])-1);
+		$randomNode = $this->settings['nodes'][$randInt];
+		return new \sherlock\requests\IndexDocumentRequest($randomNode);
+	}
+
 	/**
 	 * @param string $index Index to operate on
 	 * @param string $index,... Index to operate on
