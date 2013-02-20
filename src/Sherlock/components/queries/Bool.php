@@ -12,9 +12,6 @@ use sherlock\common\exceptions;
 
 
 /**
- * @method \sherlock\components\queries\Bool must() must(array $value) Default: array()
- * @method \sherlock\components\queries\Bool must_not() must_not(array $value) Default: array()
- * @method \sherlock\components\queries\Bool should() should(array $value) Default: array()
  * @method \sherlock\components\queries\Bool minimum_number_should_match() minimum_number_should_match(int $value) Default: 2
  * @method \sherlock\components\queries\Bool boost() boost(float $value) Default: 1.0
  * @method \sherlock\components\queries\Bool disable_coord() disable_coord(int $value) Default: 1
@@ -33,9 +30,48 @@ class Bool extends \sherlock\components\BaseComponent implements \sherlock\compo
 
 		parent::__construct($hashMap);
 	}
-	
+
+	public function must($value)
+	{
+		$args = func_get_args();
+		foreach($args as $arg)
+		{
+			if ($arg instanceof \sherlock\components\QueryInterface)
+				$this->params['must'][] = $arg->toArray();
+		}
+		return $this;
+	}
+
+	public function must_not($value)
+	{
+		$args = func_get_args();
+
+		foreach($args as $arg)
+		{
+			if ($arg instanceof \sherlock\components\QueryInterface)
+				$this->params['must_not'][] = $arg->toArray();
+		}
+		return $this;
+	}
+
+	public function should($value)
+	{
+		$args = func_get_args();
+		foreach($args as $arg)
+		{
+			if ($arg instanceof \sherlock\components\QueryInterface)
+				$this->params['should'][] = $arg->toArray();
+		}
+		return $this;
+	}
+
+
+	/**
+	 * @return array
+	 */
 	public function toArray()
 	{
+	 	print_r($this->params);
 		$ret = array (
   'bool' => 
   array (

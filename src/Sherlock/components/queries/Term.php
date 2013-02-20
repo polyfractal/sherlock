@@ -12,8 +12,8 @@ use sherlock\common\exceptions;
 
 
 /**
- * @method \sherlock\components\queries\Term field() field(string $value)
- * @method \sherlock\components\queries\Term term() term(string $value)
+ * @method \sherlock\components\queries\Term field() field(\string $value)
+ * @method \sherlock\components\queries\Term term() term(\string $value)
 
  */
 class Term extends \sherlock\components\BaseComponent implements \sherlock\components\QueryInterface

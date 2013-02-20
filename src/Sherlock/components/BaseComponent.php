@@ -38,7 +38,7 @@ abstract class BaseComponent
 
 	public function toJSON()
 	{
-		return json_encode($this->toArray(), JSON_FORCE_OBJECT);
+		return json_encode($this->toArray());
 	}
 
 

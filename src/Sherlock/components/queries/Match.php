@@ -10,15 +10,15 @@ namespace sherlock\components\queries;
 use sherlock\components;
 use sherlock\common\exceptions;
 
-
+// method \sherlock\components\queries\Match fuzzy_rewrite() fuzzy_rewrite(\string $value) Default: 'constant_score_default'
 /**
- * @method \sherlock\components\queries\Match field() field(string $value)
- * @method \sherlock\components\queries\Match query() query(string $value)
+ * @method \sherlock\components\queries\Match field() field(\string $value)
+ * @method \sherlock\components\queries\Match query() query(\string $value)
  * @method \sherlock\components\queries\Match boost() boost(float $value) Default: 1.0
- * @method \sherlock\components\queries\Match operator() operator(string $value) Default: 'and'
- * @method \sherlock\components\queries\Match analyzer() analyzer(string $value) Default: 'default'
+ * @method \sherlock\components\queries\Match operator() operator(\string $value) Default: 'and'
+ * @method \sherlock\components\queries\Match analyzer() analyzer(\string $value) Default: 'default'
  * @method \sherlock\components\queries\Match fuzziness() fuzziness(float $value) Default: 0.5
- * @method \sherlock\components\queries\Match fuzzy_rewrite() fuzzy_rewrite(string $value) Default: 'constant_score_default'
+ *
  * @method \sherlock\components\queries\Match lenient() lenient(int $value) Default: 1
  * @method \sherlock\components\queries\Match max_expansions() max_expansions(int $value) Default: 100
  * @method \sherlock\components\queries\Match minimum_should_match() minimum_should_match(int $value) Default: 2
@@ -33,7 +33,7 @@ class Match extends \sherlock\components\BaseComponent implements \sherlock\comp
 		$this->params['operator'] = 'and';
 		$this->params['analyzer'] = 'default';
 		$this->params['fuzziness'] = 0.5;
-		$this->params['fuzzy_rewrite'] = 'constant_score_default';
+		//$this->params['fuzzy_rewrite'] = 'constant_score_default';
 		$this->params['lenient'] = 1;
 		$this->params['max_expansions'] = 100;
 		$this->params['minimum_should_match'] = 2;
@@ -54,7 +54,7 @@ class Match extends \sherlock\components\BaseComponent implements \sherlock\comp
       'operator' => $this->params["operator"],
       'analyzer' => $this->params["analyzer"],
       'fuzziness' => $this->params["fuzziness"],
-      'fuzzy_rewrite' => $this->params["fuzzy_rewrite"],
+     // 'fuzzy_rewrite' => $this->params["fuzzy_rewrite"],
       'lenient' => $this->params["lenient"],
       'max_expansions' => $this->params["max_expansions"],
       'minimum_should_match' => $this->params["minimum_should_match"],
