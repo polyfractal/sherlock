@@ -29,6 +29,8 @@ abstract class BaseComponent
 
 	public function __call($name, $arguments)
 	{
+		\Analog\Analog::log("BaseComponent->".$name."(".$arguments[0].")", \Analog\Analog::DEBUG);
+
 		if ($name == 'toJSON')
 			return $this->toJSON();
 
