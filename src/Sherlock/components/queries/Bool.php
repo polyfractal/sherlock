@@ -34,6 +34,9 @@ class Bool extends \sherlock\components\BaseComponent implements \sherlock\compo
 	public function must($value)
 	{
 		$args = func_get_args();
+		if (count($args) == 1)
+			$args = $args[0];
+
 		foreach($args as $arg)
 		{
 			if ($arg instanceof \sherlock\components\QueryInterface)
@@ -45,6 +48,8 @@ class Bool extends \sherlock\components\BaseComponent implements \sherlock\compo
 	public function must_not($value)
 	{
 		$args = func_get_args();
+		if (count($args) == 1)
+			$args = $args[0];
 
 		foreach($args as $arg)
 		{
@@ -57,6 +62,9 @@ class Bool extends \sherlock\components\BaseComponent implements \sherlock\compo
 	public function should($value)
 	{
 		$args = func_get_args();
+		if (count($args) == 1)
+			$args = $args[0];
+
 		foreach($args as $arg)
 		{
 			if ($arg instanceof \sherlock\components\QueryInterface)
@@ -71,7 +79,6 @@ class Bool extends \sherlock\components\BaseComponent implements \sherlock\compo
 	 */
 	public function toArray()
 	{
-	 	print_r($this->params);
 		$ret = array (
   'bool' => 
   array (
