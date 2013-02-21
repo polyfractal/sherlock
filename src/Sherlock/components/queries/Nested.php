@@ -33,7 +33,7 @@ class Nested extends \sherlock\components\BaseComponent implements \sherlock\com
   array (
     'path' => $this->params["path"],
     'score_mode' => $this->params["score_mode"],
-    'query' => $this->params["query"],
+    'query' => $this->params["query"]->toArray(),
   ),
 );
 		return $ret;

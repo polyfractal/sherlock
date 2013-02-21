@@ -30,7 +30,7 @@ class CustomBoostFactor extends \sherlock\components\BaseComponent implements \s
 		$ret = array (
   'custom_boost_factor' => 
   array (
-    'query' => $this->params["query"],
+    'query' => $this->params["query"]->toArray(),
     'boost_factor' => $this->params["boost_factor"],
   ),
 );

@@ -32,7 +32,7 @@ class CustomScore extends \sherlock\components\BaseComponent implements \sherloc
 		$ret = array (
   'custom_score' => 
   array (
-    'query' => $this->params["query"],
+    'query' => $this->params["query"]->toArray(),
     'params' => $this->params["params"],
     'script' => $this->params["script"],
     'lang' => $this->params["lang"],

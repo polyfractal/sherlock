@@ -31,10 +31,10 @@ class Boosting extends \sherlock\components\BaseComponent implements \sherlock\c
 		$ret = array (
   'boosting' => 
   array (
-    'positive' => $this->params["positive"],
-    'negative' => $this->params["negative"],
-  ),
-  'negative_boost' => $this->params["negative_boost"],
+    'positive' => $this->params["positive"]->toArray(),
+    'negative' => $this->params["negative"]->toArray(),
+	'negative_boost' => $this->params["negative_boost"],
+  )
 );
 		return $ret;
 	}

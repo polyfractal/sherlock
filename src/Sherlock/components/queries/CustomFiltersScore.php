@@ -33,8 +33,8 @@ class CustomFiltersScore extends \sherlock\components\BaseComponent implements \
 		$ret = array (
   'custom_filters_score' => 
   array (
-    'query' => $this->params["query"],
-    'filters' => $this->params["filters"],
+    'query' => $this->params["query"]->toArray(),
+    'filters' => $this->params["filters"]->toArray(),
     'score_mode' => $this->params["score_mode"],
     'max_boost' => $this->params["max_boost"],
   ),

@@ -36,7 +36,7 @@ class TopChildren extends \sherlock\components\BaseComponent implements \sherloc
   'top_children' => 
   array (
     'type' => $this->params["type"],
-    'query' => $this->params["query"],
+    'query' => $this->params["query"]->toArray(),
     'score' => $this->params["score"],
     'factor' => $this->params["factor"],
     'incremental_factor' => $this->params["incremental_factor"],

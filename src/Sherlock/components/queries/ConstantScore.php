@@ -30,7 +30,7 @@ class ConstantScore extends \sherlock\components\BaseComponent implements \sherl
 		$ret = array (
   'constant_score' => 
   array (
-    'filter' => $this->params["filter"],
+    'filter' => $this->params["filter"]->toArray(),
     'boost' => $this->params["boost"],
   ),
 );

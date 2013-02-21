@@ -29,12 +29,17 @@ class DisMax extends \sherlock\components\BaseComponent implements \sherlock\com
 	
 	public function toArray()
 	{
+		$queries = array();
+		array_map(function($value){
+			$queries[] = $value->toArray();
+		},$this->params['queries']);
+
 		$ret = array (
   'dis_max' => 
   array (
     'tie_breaker' => $this->params["tie_breaker"],
     'boost' => $this->params["boost"],
-    'queries' => $this->params["queries"],
+    'queries' => $queries,
   ),
 );
 		return $ret;

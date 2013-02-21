@@ -14,7 +14,7 @@ use sherlock\common\exceptions;
 /**
  * @method \sherlock\components\queries\HasChild type() type(string $value)
  * @method \sherlock\components\queries\HasChild score_type() score_type(string $value) Default: "sum"
- * @method \sherlock\components\queries\HasChild query() query(QueryIntefrace $value)
+ * @method \sherlock\components\queries\HasChild query() query(\sherlock\components\QueryInterface $value)
 
  */
 class HasChild extends \sherlock\components\BaseComponent implements \sherlock\components\QueryInterface
@@ -33,7 +33,7 @@ class HasChild extends \sherlock\components\BaseComponent implements \sherlock\c
   array (
     'type' => $this->params["type"],
     'score_type' => $this->params["score_type"],
-    'query' => $this->params["query"],
+    'query' => $this->params["query"]->toArray(),
   ),
 );
 		return $ret;
