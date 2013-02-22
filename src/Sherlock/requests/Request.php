@@ -59,8 +59,9 @@ class Request
 
 		\Analog\Analog::log("Request->_uri: ".$this->_uri, \Analog\Analog::DEBUG);
 		\Analog\Analog::log("Request->_data: ".$this->_data, \Analog\Analog::DEBUG);
-
+		\Analog\Analog::log("Request->_action: ".$this->_action, \Analog\Analog::DEBUG);
 		$client = new Client();
+
 		$action = $this->_action;
 		try {
 			$response = $client->$action($this->_uri, null, $this->_data)->send();

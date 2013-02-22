@@ -124,11 +124,13 @@ class SearchRequest extends Request
 		//parent and children under Strict
 		$this->_uri = $uri;
 		$this->_data = $finalQuery;
+
+		//Guzzle doesn't allow GET with request body, use post
 		$this->_action = 'post';
 		return parent::execute();
 	}
 
-	public function __toString()
+	public function toJSON()
 	{
 		$finalQuery = $this->composeFinalQuery();
 		return $finalQuery;

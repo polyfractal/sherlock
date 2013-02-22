@@ -13,7 +13,6 @@ use sherlock\common\exceptions;
 
 /**
  * @method \sherlock\components\queries\CustomFiltersScore query() query(\sherlock\components\QueryInterface $value)
- * @method \sherlock\components\queries\CustomFiltersScore filters() filters(\sherlock\components\FilterInterface $value)
  * @method \sherlock\components\queries\CustomFiltersScore score_mode() score_mode(string $value) Default: "first"
  * @method \sherlock\components\queries\CustomFiltersScore max_boost() max_boost(float $value) Default: 10
 
@@ -27,14 +26,44 @@ class CustomFiltersScore extends \sherlock\components\BaseComponent implements \
 
 		parent::__construct($hashMap);
 	}
-	
+
+	/**
+	 * @param \sherlock\components\FilterInterface | array $filter,... - one or more Filters can be specified individually, or an array of filters
+	 * @return CustomFiltersScore
+	 */
+	public function filters($filter)
+	{
+
+		$args = func_get_args();
+		\Analog\Analog::log("CustomFiltersScore->Filters(".print_r($args, true).")", \Analog\Analog::DEBUG);
+
+		//single param, array of filters
+		if (count($args) == 1 && is_array($args[0]))
+			$args = $args[0];
+
+		foreach($args as $arg)
+		{
+			if ($arg instanceof \sherlock\components\FilterInterface)
+				$this->params['filters'][] = $arg->toArray();
+		}
+
+		return $this;
+	}
+
+
 	public function toArray()
 	{
+		$filters = array();
+		foreach ($this->params['filters'] as $filter)
+		{
+			$filters[] = array("filter" => $filter);
+		}
+
 		$ret = array (
   'custom_filters_score' => 
   array (
     'query' => $this->params["query"]->toArray(),
-    'filters' => $this->params["filters"]->toArray(),
+    'filters' => $filters,
     'score_mode' => $this->params["score_mode"],
     'max_boost' => $this->params["max_boost"],
   ),

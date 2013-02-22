@@ -8,5 +8,6 @@ namespace sherlock\components;
 
 interface FilterInterface
 {
-
+	public function toArray();
+	public function toJSON();
 }

@@ -27,7 +27,10 @@ class Response
 			throw new \sherlock\common\exceptions\BadMethodCallException("Response must be set in constructor.");
 		}
 
-		$this->responseData = $response->json();
-		\Analog\Analog::log("Response->__construct() : ".print_r($this->responseData,true),\Analog\Analog::DEBUG);
+
+		//\Analog\Analog::log("Response->__construct() : ".print_r($this->responseData,true),\Analog\Analog::DEBUG);
+		print_r($response->getBody(true));
+
+		//$this->responseData = $response->json();
 	}
 }

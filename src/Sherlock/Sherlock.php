@@ -66,7 +66,7 @@ class Sherlock
 	public static function Filter()
 	{
 		\Analog\Analog::log("Sherlock::filter()", \Analog\Analog::DEBUG);
-		return new \sherlock\wrappers\QueryWrapper();
+		return new \sherlock\wrappers\FilterWrapper();
 	}
 
 	/**
