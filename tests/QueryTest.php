@@ -155,7 +155,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"constant_score":{"filter":{"term":{"auxillary":{"value":"auxillary"}}},"boost":0.5}}}';
+		$expectedData = '{"query" : {"constant_score":{"filter":{"term":{"auxillary":"auxillary","_cache":true}},"boost":0.5}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -238,8 +238,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->index("test123")->type("test");
 		$query = Sherlock::query()->CustomScore()->query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
 				->params(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
-				->script("testString")
-				->lang("testString")
+				->script("_score")
+				->lang("mvel")
 				;
 		
 		\Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
@@ -277,7 +277,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"dis_max":{"tie_breaker":0.5,"boost":0.5,"queries":[]}}}';
+		$expectedData = '{"query" : {"dis_max":{"tie_breaker":0.5,"boost":0.5,"queries":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}]}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();

@@ -14,8 +14,6 @@ use sherlock\common\exceptions;
 /**
  * @method \sherlock\components\queries\DisMax tie_breaker() tie_breaker(float $value) Default: 0.5
  * @method \sherlock\components\queries\DisMax boost() boost(float $value) Default: 2
- * @method \sherlock\components\queries\DisMax queries() queries(array $value)
-
  */
 class DisMax extends \sherlock\components\BaseComponent implements \sherlock\components\QueryInterface
 {
@@ -26,20 +24,38 @@ class DisMax extends \sherlock\components\BaseComponent implements \sherlock\com
 
 		parent::__construct($hashMap);
 	}
-	
+
+	/**
+	 * @param \sherlock\components\QueryInterface | array $queries,... - one or more Queries can be specified individually, or an array of filters
+	 * @return DisMax
+	 */
+	public function queries($queries)
+	{
+
+		$args = func_get_args();
+		\Analog\Analog::log("DisMax->Queries(".print_r($args, true).")", \Analog\Analog::DEBUG);
+
+		//single param, array of filters
+		if (count($args) == 1 && is_array($args[0]))
+			$args = $args[0];
+
+		foreach($args as $arg)
+		{
+			if ($arg instanceof \sherlock\components\QueryInterface)
+				$this->params['queries'][] = $arg->toArray();
+		}
+
+		return $this;
+	}
+
 	public function toArray()
 	{
-		$queries = array();
-		array_map(function($value){
-			$queries[] = $value->toArray();
-		},$this->params['queries']);
-
 		$ret = array (
   'dis_max' => 
   array (
     'tie_breaker' => $this->params["tie_breaker"],
     'boost' => $this->params["boost"],
-    'queries' => $queries,
+    'queries' => $this->params['queries'],
   ),
 );
 		return $ret;
