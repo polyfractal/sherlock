@@ -6,51 +6,40 @@
  */
 
 namespace sherlock\components;
-use sherlock\common\exceptions;
-
-
 
 abstract class BaseComponent
 {
-	/**
-	 * @var array
-	 */
-	protected $params = array();
+    /**
+     * @var array
+     */
+    protected $params = array();
 
-	public function __construct($hashMap = null)
-	{
-		if (is_array(($hashMap)) && count($hashMap) > 0)
-		{
-			//merge the provided values with our param array, overwriting defaults where necessary
-			$this->params = array_merge($this->params, $hashMap);
-		}
+    public function __construct($hashMap = null)
+    {
+        if (is_array(($hashMap)) && count($hashMap) > 0) {
+            //merge the provided values with our param array, overwriting defaults where necessary
+            $this->params = array_merge($this->params, $hashMap);
+        }
 
-	}
+    }
 
-	public function __call($name, $arguments)
-	{
-		\Analog\Analog::log("BaseComponent->".$name."(".print_r($arguments[0], true).")", \Analog\Analog::DEBUG);
+    public function __call($name, $arguments)
+    {
+        \Analog\Analog::log("BaseComponent->".$name."(".print_r($arguments[0], true).")", \Analog\Analog::DEBUG);
 
-		if ($name == 'toJSON')
-			return $this->toJSON();
+        if ($name == 'toJSON')
+            return $this->toJSON();
 
-		$this->params[$name] = $arguments[0];
-		return $this;
-	}
+        $this->params[$name] = $arguments[0];
 
-	public function toJSON()
-	{
-		return json_encode($this->toArray());
-	}
+        return $this;
+    }
 
+    public function toJSON()
+    {
+        return json_encode($this->toArray());
+    }
 
-	abstract function toArray();
-
-
-
+    abstract public function toArray();
 
 }
-
-
-
-

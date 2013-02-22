@@ -5,11 +5,11 @@
  * Time: 8:14 PM
  */
 
-namespace sherlock\components;
+namespace Sherlock\components;
 
 interface MappingInterface
 {
-	public function getType();
-	public function toArray();
-	public function toJSON();
+    public function getType();
+    public function toArray();
+    public function toJSON();
 }

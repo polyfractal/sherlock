@@ -5,6 +5,6 @@
  * Time: 5:32 AM
  */
 
-namespace sherlock\common\exceptions;
+namespace Sherlock\common\exceptions;
 
 interface SherlockException {}

@@ -4,66 +4,64 @@
  * Date: 2/10/13
  * Time: 1:05 PM
  */
-namespace sherlock\wrappers;
+namespace Sherlock\wrappers;
 
-use sherlock\components\queries;
-use sherlock\common\exceptions;
-
+use Sherlock\components\queries;
 
 /**
- * @method \sherlock\components\queries\Bool Bool() Bool()
- * @method \sherlock\components\queries\Boosting Boosting() Boosting()
- * @method \sherlock\components\queries\ConstantScore ConstantScore() ConstantScore()
- * @method \sherlock\components\queries\CustomBoostFactor CustomBoostFactor() CustomBoostFactor()
- * @method \sherlock\components\queries\CustomFiltersScore CustomFiltersScore() CustomFiltersScore()
- * @method \sherlock\components\queries\CustomScore CustomScore() CustomScore()
- * @method \sherlock\components\queries\DisMax DisMax() DisMax()
- * @method \sherlock\components\queries\Field Field() Field()
- * @method \sherlock\components\queries\FilteredQuery FilteredQuery() FilteredQuery()
- * @method \sherlock\components\queries\Fuzzy Fuzzy() Fuzzy()
- * @method \sherlock\components\queries\FuzzyLikeThis FuzzyLikeThis() FuzzyLikeThis()
- * @method \sherlock\components\queries\FuzzyLikeThisField FuzzyLikeThisField() FuzzyLikeThisField()
- * @method \sherlock\components\queries\HasChild HasChild() HasChild()
- * @method \sherlock\components\queries\HasParent HasParent() HasParent()
- * @method \sherlock\components\queries\Ids Ids() Ids()
- * @method \sherlock\components\queries\Indices Indices() Indices()
- * @method \sherlock\components\queries\Match Match() Match()
- * @method \sherlock\components\queries\MatchAll MatchAll() MatchAll()
- * @method \sherlock\components\queries\MoreLikeThis MoreLikeThis() MoreLikeThis()
- * @method \sherlock\components\queries\MoreLikeThisField MoreLikeThisField() MoreLikeThisField()
- * @method \sherlock\components\queries\Nested Nested() Nested()
- * @method \sherlock\components\queries\Prefix Prefix() Prefix()
- * @method \sherlock\components\queries\QueryString QueryString() QueryString()
- * @method \sherlock\components\queries\QueryStringMultiField QueryStringMultiField() QueryStringMultiField()
- * @method \sherlock\components\queries\Range Range() Range()
- * @method \sherlock\components\queries\Term Term() Term()
- * @method \sherlock\components\queries\Terms Terms() Terms()
- * @method \sherlock\components\queries\TopChildren TopChildren() TopChildren()
- * @method \sherlock\components\queries\Wildcard Wildcard() Wildcard()
- * @method \sherlock\components\queries\Raw Raw() Raw()
+ * @method \Sherlock\components\queries\Bool Bool() Bool()
+ * @method \Sherlock\components\queries\Boosting Boosting() Boosting()
+ * @method \Sherlock\components\queries\ConstantScore ConstantScore() ConstantScore()
+ * @method \Sherlock\components\queries\CustomBoostFactor CustomBoostFactor() CustomBoostFactor()
+ * @method \Sherlock\components\queries\CustomFiltersScore CustomFiltersScore() CustomFiltersScore()
+ * @method \Sherlock\components\queries\CustomScore CustomScore() CustomScore()
+ * @method \Sherlock\components\queries\DisMax DisMax() DisMax()
+ * @method \Sherlock\components\queries\Field Field() Field()
+ * @method \Sherlock\components\queries\FilteredQuery FilteredQuery() FilteredQuery()
+ * @method \Sherlock\components\queries\Fuzzy Fuzzy() Fuzzy()
+ * @method \Sherlock\components\queries\FuzzyLikeThis FuzzyLikeThis() FuzzyLikeThis()
+ * @method \Sherlock\components\queries\FuzzyLikeThisField FuzzyLikeThisField() FuzzyLikeThisField()
+ * @method \Sherlock\components\queries\HasChild HasChild() HasChild()
+ * @method \Sherlock\components\queries\HasParent HasParent() HasParent()
+ * @method \Sherlock\components\queries\Ids Ids() Ids()
+ * @method \Sherlock\components\queries\Indices Indices() Indices()
+ * @method \Sherlock\components\queries\Match Match() Match()
+ * @method \Sherlock\components\queries\MatchAll MatchAll() MatchAll()
+ * @method \Sherlock\components\queries\MoreLikeThis MoreLikeThis() MoreLikeThis()
+ * @method \Sherlock\components\queries\MoreLikeThisField MoreLikeThisField() MoreLikeThisField()
+ * @method \Sherlock\components\queries\Nested Nested() Nested()
+ * @method \Sherlock\components\queries\Prefix Prefix() Prefix()
+ * @method \Sherlock\components\queries\QueryString QueryString() QueryString()
+ * @method \Sherlock\components\queries\QueryStringMultiField QueryStringMultiField() QueryStringMultiField()
+ * @method \Sherlock\components\queries\Range Range() Range()
+ * @method \Sherlock\components\queries\Term Term() Term()
+ * @method \Sherlock\components\queries\Terms Terms() Terms()
+ * @method \Sherlock\components\queries\TopChildren TopChildren() TopChildren()
+ * @method \Sherlock\components\queries\Wildcard Wildcard() Wildcard()
+ * @method \Sherlock\components\queries\Raw Raw() Raw()
  */
 class QueryWrapper
 {
-	/**
-	 * @var \sherlock\components\QueryInterface
-	 */
-	protected $query;
+    /**
+     * @var \Sherlock\components\QueryInterface
+     */
+    protected $query;
 
-	public function __call($name, $arguments)
-	{
-		$class = '\\sherlock\\components\\queries\\'.$name;
+    public function __call($name, $arguments)
+    {
+        $class = '\\Sherlock\\components\\queries\\'.$name;
 
-		if (count($arguments) > 0)
-			$this->query =  new $class($arguments[0]);
-		else
-			$this->query =  new $class();
+        if (count($arguments) > 0)
+            $this->query =  new $class($arguments[0]);
+        else
+            $this->query =  new $class();
 
-		return $this->query;
-	}
+        return $this->query;
+    }
 
-	public function __toString()
-	{
-		return (string)$this->query;
-	}
+    public function __toString()
+    {
+        return (string) $this->query;
+    }
 
 }

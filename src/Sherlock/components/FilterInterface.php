@@ -4,10 +4,10 @@
  * Date: 2/6/13
  * Time: 8:45 PM
  */
-namespace sherlock\components;
+namespace Sherlock\components;
 
 interface FilterInterface
 {
-	public function toArray();
-	public function toJSON();
+    public function toArray();
+    public function toJSON();
 }

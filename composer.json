@@ -22,8 +22,8 @@
     },
     "autoload": {
         "psr-0": {
-            "sherlock": "src/",
-            "sherlock/tests" : "tests/"
+            "Sherlock": "src/",
+            "Sherlock/tests" : "tests/"
         }
     }
 }

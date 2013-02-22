@@ -5,8 +5,8 @@
  * Time: 7:34 PM
  */
 
-namespace sherlock\tests;
-use \sherlock\Sherlock;
+namespace Sherlock\tests;
+use Sherlock\Sherlock;
 
 
 /**
@@ -15,7 +15,7 @@ use \sherlock\Sherlock;
 class IndexingTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @var \sherlock\sherlock
+	 * @var \Sherlock\sherlock
 	 */
 	protected $object;
 
@@ -25,8 +25,8 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function setUp()
 	{
-		$this->object = new \sherlock\sherlock;
-		$this->object->addNode('loopback.com', '9200');
+		$this->object = new \Sherlock\sherlock;
+		$this->object->addNode('localhost', '9200');
 	}
 
 	/**
