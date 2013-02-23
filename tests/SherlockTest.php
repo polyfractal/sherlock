@@ -54,25 +54,6 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 
 
 
-
-    /**
-     * @covers sherlock\Sherlock::query
-	 * @todo make this test actually assert things
-     */
-    public function testBuildQuery()
-    {
-		$req = $this->object->search();
-		$req->index("test3")->type("benchmark");
-		$req->query(Sherlock::query()->Term()->field("field1")->term("town"));
-		$resp = $req->execute();
-
-		$data = json_decode((string)$req, true);
-		$expectedData = array("query" => array("term" => array("field1" => array("value" => "town"))));
-		$this->assertEquals($expectedData, $data);
-
-    }
-
-
 	public function testHashBuilding()
 	{
 
@@ -81,14 +62,14 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 		$req->query(Sherlock::query()->Term()->field("field1")->term("town"));
 
 		//First, make sure the ORM query matches what we expect
-		$data = json_decode((string)$req, true);
-		$expectedData = array("query" => array("term" => array("field1" => array("value" => "town"))));
+		$data = $req->toJSON();
+		$expectedData = json_encode(array("query" => array("term" => array("field1" => array("value" => "town")))));
 		$this->assertEquals($expectedData, $data);
 
 		//Now provide an array hashmap instead of using the ORM, to make sure manual creation works
 		$manualData = array("field" => "field1", "term" => "town");
 		$req->query(Sherlock::query()->Term($manualData));
-		$data = json_decode((string)$req, true);
+		$data = $req->toJSON();
 		$this->assertEquals($expectedData, $data);
 
 	}
@@ -106,7 +87,9 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 		//Note that since this is a Raw Query, we don't include the top-level "query" field
 		$json = json_encode($expectedData['query']);
 		$req->query(Sherlock::query()->Raw($json));
-		$data = json_decode((string)$req, true);
+		$data = $req->toJSON();
+
+		$expectedData = json_encode($expectedData);
 		$this->assertEquals($expectedData, $data);
 
 	}
@@ -118,7 +101,7 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('\sherlock\requests\IndexRequest', $req);
 
 		//provide an index
-		$req = $this->object->index('test');
+		$req = $this->object->index('testnewindex');
 		$this->assertInstanceOf('\sherlock\requests\IndexRequest', $req);
 
 		//provide incorrect class, should throw error
@@ -157,7 +140,7 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 		$sherlock = $this->object;
 
 		//Create the index
-		$index = $sherlock->index('test123');
+		$index = $sherlock->index('testnewindex');
 		$this->assertInstanceOf('\sherlock\requests\IndexRequest', $index);
 		$response = $index->create();
 		$this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);
@@ -171,7 +154,7 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $response->ok);
 
 		//Delete the index first
-		$response = $sherlock->index('test123')->delete();
+		$response = $sherlock->index('testnewindex')->delete();
 		$this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);
 		$this->assertEquals(true, $response->ok);
 
