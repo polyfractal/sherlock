@@ -97,7 +97,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"bool":{"must":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}],"must_not":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}],"should":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}],"minimum_number_should_match":3,"boost":0.5,"disable_coord":3}}}';
+		$expectedData = '{"query":{"bool":{"must":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}],"must_not":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}],"should":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}],"minimum_number_should_match":3,"boost":0.5,"disable_coord":3}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -127,7 +127,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"boosting":{"positive":{"term":{"auxillary":{"value":"auxillary"}}},"negative":{"term":{"auxillary":{"value":"auxillary"}}},"negative_boost":0.5}}}';
+		$expectedData = '{"query":{"boosting":{"positive":{"term":{"auxillary":{"value":"auxillary"}}},"negative":{"term":{"auxillary":{"value":"auxillary"}}},"negative_boost":0.5}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -155,7 +155,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"constant_score":{"filter":{"term":{"auxillary":"auxillary","_cache":true}},"boost":0.5}}}';
+		$expectedData = '{"query":{"constant_score":{"filter":{"term":{"auxillary":"auxillary","_cache":true}},"boost":0.5}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -183,7 +183,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"custom_boost_factor":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"boost_factor":0.5}}}';
+		$expectedData = '{"query":{"custom_boost_factor":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"boost_factor":0.5}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -215,7 +215,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"custom_filters_score":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"filters":[{"filter":{"term":{"auxillary":"auxillary","_cache":true}}}],"score_mode":"first","max_boost":0.5}}}';
+		$expectedData = '{"query":{"custom_filters_score":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"filters":[{"filter":{"term":{"auxillary":"auxillary","_cache":true}}}],"score_mode":"first","max_boost":0.5}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -247,7 +247,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"custom_score":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"params":[{},{}],"script":"_score","lang":"mvel"}}}';
+		$expectedData = '{"query":{"custom_score":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"params":[{},{}],"script":"_score","lang":"mvel"}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -277,7 +277,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"dis_max":{"tie_breaker":0.5,"boost":0.5,"queries":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}]}}}';
+		$expectedData = '{"query":{"dis_max":{"tie_breaker":0.5,"boost":0.5,"queries":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}]}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -334,7 +334,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"field":{"testString":{"query":"testString","boost":0.5,"enable_position_increments":3,"default_operator":"AND","analyzer":"default","allow_leading_wildcard":true,"lowercase_expanded_terms":3,"fuzzy_min_sim":0.5,"fuzzy_prefix_length":3,"phrase_slop":3,"analyze_wildcard":true,"auto_generate_phrase_queries":3,"quote_analyzer":"standard","quote_field_suffix":".unstemmed"},"rewrite":"constant_score_default"}}}';
+		$expectedData = '{"query":{"field":{"testString":{"query":"testString","boost":0.5,"enable_position_increments":3,"default_operator":"AND","analyzer":"default","allow_leading_wildcard":true,"lowercase_expanded_terms":3,"fuzzy_min_sim":0.5,"fuzzy_prefix_length":3,"phrase_slop":3,"analyze_wildcard":true,"auto_generate_phrase_queries":3,"quote_analyzer":"standard","quote_field_suffix":".unstemmed"},"rewrite":"constant_score_default"}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -362,7 +362,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"filtered":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"filter":{}}}}';
+		$expectedData = '{"query":{"filtered":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"filter":{}}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -398,7 +398,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"fuzzy":{"testString":{"value":"testString","boost":0.5,"min_similarity":0.5,"prefix_length":3,"max_expansions":3}}}}';
+		$expectedData = '{"query":{"fuzzy":{"testString":{"value":"testString","boost":0.5,"min_similarity":0.5,"prefix_length":3,"max_expansions":3}}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -438,7 +438,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"fuzzy_like_this":{"fields":[{},{}],"like_text":"testString","max_query_terms":3,"min_similarity":0.5,"prefix_length":3,"boost":0.5,"analyzer":"testString","ignore_tf":"testString"}}}';
+		$expectedData = '{"query":{"fuzzy_like_this":{"fields":[{},{}],"like_text":"testString","max_query_terms":3,"min_similarity":0.5,"prefix_length":3,"boost":0.5,"analyzer":"testString","ignore_tf":"testString"}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -478,7 +478,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"fuzzy_like_this_field":{"testString":{"like_text":"testString","max_query_terms":3,"min_similarity":0.5,"prefix_length":3,"boost":0.5,"analyzer":"testString","ignore_tf":"testString"}}}}';
+		$expectedData = '{"query":{"fuzzy_like_this_field":{"testString":{"like_text":"testString","max_query_terms":3,"min_similarity":0.5,"prefix_length":3,"boost":0.5,"analyzer":"testString","ignore_tf":"testString"}}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -509,7 +509,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"has_child":{"type":"testString","score_type":"none","query":{"term":{"auxillary":{"value":"auxillary"}}}}}}';
+		$expectedData = '{"query":{"has_child":{"type":"testString","score_type":"none","query":{"term":{"auxillary":{"value":"auxillary"}}}}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		//$resp = $req->execute();
@@ -540,7 +540,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"has_parent":{"parent_type":"testString","score_type":"none","query":{"term":{"auxillary":{"value":"auxillary"}}}}}}';
+		$expectedData = '{"query":{"has_parent":{"parent_type":"testString","score_type":"none","query":{"term":{"auxillary":{"value":"auxillary"}}}}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		//$resp = $req->execute();
@@ -568,7 +568,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"ids":{"type":"testString","values":[{},{}]}}}';
+		$expectedData = '{"query":{"ids":{"type":"testString","values":[{},{}]}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -598,7 +598,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"indices":{"indices":["test","test123"],"query":{"term":{"auxillary":{"value":"auxillary"}}},"no_match_query":{"term":{"auxillary":{"value":"auxillary"}}}}}}';
+		$expectedData = '{"query":{"indices":{"indices":["test","test123"],"query":{"term":{"auxillary":{"value":"auxillary"}}},"no_match_query":{"term":{"auxillary":{"value":"auxillary"}}}}}}';
 		$this->assertEquals($expectedData, $data);
 
 
@@ -644,7 +644,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"match":{"testString":{"query":"testString","boost":0.5,"operator":"AND","analyzer":"default","fuzziness":0.5,"lenient":true,"max_expansions":3,"minimum_should_match":3,"prefix_length":3}}}}';
+		$expectedData = '{"query":{"match":{"testString":{"query":"testString","boost":0.5,"operator":"AND","analyzer":"default","fuzziness":0.5,"lenient":true,"max_expansions":3,"minimum_should_match":3,"prefix_length":3}}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -670,7 +670,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"match_all":{"boost":0.5}}}';
+		$expectedData = '{"query":{"match_all":{"boost":0.5}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -718,7 +718,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"more_like_this":{"fields":[{},{}],"like_text":"testString","min_term_freq":3,"max_query_terms":3,"percent_terms_to_match":0.5,"stop_words":[{},{}],"min_doc_freq":3,"max_doc_freq":3,"min_word_len":3,"max_word_len":3,"boost_terms":3,"boost":0.5}}}';
+		$expectedData = '{"query":{"more_like_this":{"fields":[{},{}],"like_text":"testString","min_term_freq":3,"max_query_terms":3,"percent_terms_to_match":0.5,"stop_words":[{},{}],"min_doc_freq":3,"max_doc_freq":3,"min_word_len":3,"max_word_len":3,"boost_terms":3,"boost":0.5}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -766,7 +766,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"more_like_this_field":{"testField":{"like_text":"testString","min_term_freq":3,"max_query_terms":3,"percent_terms_to_match":0.5,"stop_words":["test","test2"],"min_doc_freq":3,"max_doc_freq":3,"min_word_len":3,"max_word_len":3,"boost_terms":3,"boost":0.5}}}}';
+		$expectedData = '{"query":{"more_like_this_field":{"testField":{"like_text":"testString","min_term_freq":3,"max_query_terms":3,"percent_terms_to_match":0.5,"stop_words":["test","test2"],"min_doc_freq":3,"max_doc_freq":3,"min_word_len":3,"max_word_len":3,"boost_terms":3,"boost":0.5}}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -797,7 +797,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"nested":{"path":"testString","score_mode":"avg","query":{"term":{"auxillary":{"value":"auxillary"}}}}}}';
+		$expectedData = '{"query":{"nested":{"path":"testString","score_mode":"avg","query":{"term":{"auxillary":{"value":"auxillary"}}}}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		//$resp = $req->execute();
@@ -833,7 +833,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"prefix":{"testString":{"value":"testString","boost":0.5,"analyzer":"testString","slop":3,"max_expansions":3}}}}';
+		$expectedData = '{"query":{"prefix":{"testString":{"value":"testString","boost":0.5,"analyzer":"testString","slop":3,"max_expansions":3}}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -891,7 +891,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"query_string":{"query":"testString","default_field":"_all","boost":0.5,"enable_position_increments":3,"default_operator":"OR","analyzer":"default","allow_leading_wildcard":3,"lowercase_expanded_terms":3,"fuzzy_min_sim":0.5,"fuzzy_prefix_length":3,"lenient":true,"phrase_slop":3,"analyze_wildcard":true,"auto_generate_phrase_queries":3,"quote_analyzer":"standard","quote_field_suffix":".unstemmed"},"rewrite":"constant_score_default"}}';
+		$expectedData = '{"query":{"query_string":{"query":"testString","default_field":"_all","boost":0.5,"enable_position_increments":3,"default_operator":"OR","analyzer":"default","allow_leading_wildcard":3,"lowercase_expanded_terms":3,"fuzzy_min_sim":0.5,"fuzzy_prefix_length":3,"lenient":true,"phrase_slop":3,"analyze_wildcard":true,"auto_generate_phrase_queries":3,"quote_analyzer":"standard","quote_field_suffix":".unstemmed"},"rewrite":"constant_score_default"}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -952,7 +952,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"query_string":{"query":"testString","fields":[{},{}],"boost":0.5,"enable_position_increments":true,"default_operator":"AND","analyzer":"default","allow_leading_wildcard":true,"lowercase_expanded_terms":3,"fuzzy_min_sim":0.5,"fuzzy_prefix_length":3,"lenient":3,"phrase_slop":3,"analyze_wildcard":true,"auto_generate_phrase_queries":true,"quote_analyzer":"standard","quote_field_suffix":".unstemmed","use_dis_max":true,"tie_breaker":3},"rewrite":"constant_score_default"}}';
+		$expectedData = '{"query":{"query_string":{"query":"testString","fields":[{},{}],"boost":0.5,"enable_position_increments":true,"default_operator":"AND","analyzer":"default","allow_leading_wildcard":true,"lowercase_expanded_terms":3,"fuzzy_min_sim":0.5,"fuzzy_prefix_length":3,"lenient":3,"phrase_slop":3,"analyze_wildcard":true,"auto_generate_phrase_queries":true,"quote_analyzer":"standard","quote_field_suffix":".unstemmed","use_dis_max":true,"tie_breaker":3},"rewrite":"constant_score_default"}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -988,7 +988,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"range":{"testString":{"from":"testString","to":"testString","include_lower":true,"include_upper":true,"boost":0.5}}}}';
+		$expectedData = '{"query":{"range":{"testString":{"from":"testString","to":"testString","include_lower":true,"include_upper":true,"boost":0.5}}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -1016,7 +1016,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"term":{"testString":{"value":"testString"}}}}';
+		$expectedData = '{"query":{"term":{"testString":{"value":"testString"}}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -1046,7 +1046,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"terms":{"testString":["term","term2"],"minimum_match":3}}}';
+		$expectedData = '{"query":{"terms":{"testString":["term","term2"],"minimum_match":3}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -1064,7 +1064,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"terms":{"testString":["term","term2"],"minimum_match":3}}}';
+		$expectedData = '{"query":{"terms":{"testString":["term","term2"],"minimum_match":3}}}';
 		$this->assertEquals($expectedData, $data);
 
 		$resp = $req->execute();
@@ -1099,7 +1099,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"top_children":{"type":"testString","query":{"term":{"auxillary":{"value":"auxillary"}}},"score":"max","factor":3,"incremental_factor":3}}}';
+		$expectedData = '{"query":{"top_children":{"type":"testString","query":{"term":{"auxillary":{"value":"auxillary"}}},"score":"max","factor":3,"incremental_factor":3}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		//$resp = $req->execute();
@@ -1129,7 +1129,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"wildcard":{"testString":{"value":"testString","boost":0.5}}}}';
+		$expectedData = '{"query":{"wildcard":{"testString":{"value":"testString","boost":0.5}}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();

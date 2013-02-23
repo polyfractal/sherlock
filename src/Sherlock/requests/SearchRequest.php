@@ -140,19 +140,19 @@ class SearchRequest extends Request
 
         foreach ($this->params['query'] as $query) {
             if ($query instanceof \Sherlock\components\QueryInterface)
-                $finalQuery[] = '"query" : '.$query->toJSON();
+                $finalQuery[] = '"query":'.$query->toJSON();
             elseif ($query instanceof \Sherlock\components\FilterInterface)
-                $finalQuery[] = '"filter" : '.$query->toJSON();
+                $finalQuery[] = '"filter":'.$query->toJSON();
         }
 
         if (isset($this->params['from']))
-            $finalQuery[] = '"from" : "'.$this->params['from'].'"';
+            $finalQuery[] = '"from":"'.$this->params['from'].'"';
 
         if (isset($this->params['to']))
-            $finalQuery[]=  '"to" : "'.$this->params['to'];
+            $finalQuery[]=  '"to":"'.$this->params['to'];
 
         if (isset($this->params['timeout']))
-            $finalQuery[] =  '"timeout" : "'.$this->params['timeout'];
+            $finalQuery[] =  '"timeout":"'.$this->params['timeout'];
 
         $finalQuery = '{'.implode(',', $finalQuery).'}';
 
