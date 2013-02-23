@@ -13,9 +13,9 @@ use Sherlock\components;
  * @method \Sherlock\components\queries\FuzzyLikeThis fields() fields(array $value)
  * @method \Sherlock\components\queries\FuzzyLikeThis like_text() like_text(string $value)
  * @method \Sherlock\components\queries\FuzzyLikeThis max_query_terms() max_query_terms(int $value) Default: 10
- * @method \Sherlock\components\queries\FuzzyLikeThis min_similarity() min_similarity(float $value) Default: 0.5
+ * @method \Sherlock\components\queries\FuzzyLikeThis min_similarity() min_similarity(\float $value) Default: 0.5
  * @method \Sherlock\components\queries\FuzzyLikeThis prefix_length() prefix_length(int $value) Default: 3
- * @method \Sherlock\components\queries\FuzzyLikeThis boost() boost(float $value) Default: 2.0
+ * @method \Sherlock\components\queries\FuzzyLikeThis boost() boost(\float $value) Default: 2.0
  * @method \Sherlock\components\queries\FuzzyLikeThis analyzer() analyzer(string $value) Default: "default"
  * @method \Sherlock\components\queries\FuzzyLikeThis ignore_tf() ignore_tf(bool $value) Default: false
 

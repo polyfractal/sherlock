@@ -12,13 +12,13 @@ use Sherlock\components;
 /**
  * @method \Sherlock\components\queries\QueryString query() query(string $value)
  * @method \Sherlock\components\queries\QueryString default_field() default_field(string $value) Default: "_all"
- * @method \Sherlock\components\queries\QueryString boost() boost(float $value) Default: 2.0
+ * @method \Sherlock\components\queries\QueryString boost() boost(\float $value) Default: 2.0
  * @method \Sherlock\components\queries\QueryString enable_position_increments() enable_position_increments(int $value) Default: 1
  * @method \Sherlock\components\queries\QueryString default_operator() default_operator(string $value) Default: "OR"
  * @method \Sherlock\components\queries\QueryString analyzer() analyzer(string $value) Default: "default"
  * @method \Sherlock\components\queries\QueryString allow_leading_wildcard() allow_leading_wildcard(int $value) Default: 0
  * @method \Sherlock\components\queries\QueryString lowercase_expanded_terms() lowercase_expanded_terms(int $value) Default: 1
- * @method \Sherlock\components\queries\QueryString fuzzy_min_sim() fuzzy_min_sim(float $value) Default: 0.5
+ * @method \Sherlock\components\queries\QueryString fuzzy_min_sim() fuzzy_min_sim(\float $value) Default: 0.5
  * @method \Sherlock\components\queries\QueryString fuzzy_prefix_length() fuzzy_prefix_length(int $value) Default: 2
  * @method \Sherlock\components\queries\QueryString lenient() lenient(int $value) Default: 1
  * @method \Sherlock\components\queries\QueryString phrase_slop() phrase_slop(int $value) Default: 10

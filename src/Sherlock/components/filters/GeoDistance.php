@@ -11,8 +11,8 @@ use Sherlock\components;
 
 /**
  * @method \Sherlock\components\filters\GeoDistance distance() distance(string $value)
- * @method \Sherlock\components\filters\GeoDistance lat() lat(float $value)
- * @method \Sherlock\components\filters\GeoDistance lon() lon(float $value)
+ * @method \Sherlock\components\filters\GeoDistance lat() lat(\float $value)
+ * @method \Sherlock\components\filters\GeoDistance lon() lon(\float $value)
  * @method \Sherlock\components\filters\GeoDistance _cache() _cache(bool $value) Default: false
 
  */

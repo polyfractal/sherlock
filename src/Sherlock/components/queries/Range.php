@@ -15,7 +15,7 @@ use Sherlock\components;
  * @method \Sherlock\components\queries\Range to() to(multi $value)
  * @method \Sherlock\components\queries\Range include_lower() include_lower(bool $value) Default: true
  * @method \Sherlock\components\queries\Range include_upper() include_upper(bool $value) Default: true
- * @method \Sherlock\components\queries\Range boost() boost(float $value) Default: 1.0
+ * @method \Sherlock\components\queries\Range boost() boost(\float $value) Default: 1.0
 
  */
 class Range extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface

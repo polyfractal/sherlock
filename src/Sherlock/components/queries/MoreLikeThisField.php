@@ -10,18 +10,18 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\MoreLikeThisField field() field(array $value)
+ * @method \Sherlock\components\queries\MoreLikeThisField field() field(string $value)
  * @method \Sherlock\components\queries\MoreLikeThisField like_text() like_text(string $value)
  * @method \Sherlock\components\queries\MoreLikeThisField min_term_freq() min_term_freq(int $value) Default: 2
  * @method \Sherlock\components\queries\MoreLikeThisField max_query_terms() max_query_terms(int $value) Default: 25
- * @method \Sherlock\components\queries\MoreLikeThisField percent_terms_to_match() percent_terms_to_match(float $value) Default: 0.3
+ * @method \Sherlock\components\queries\MoreLikeThisField percent_terms_to_match() percent_terms_to_match(\float $value) Default: 0.3
  * @method \Sherlock\components\queries\MoreLikeThisField stop_words() stop_words(array $value) Default: array()
  * @method \Sherlock\components\queries\MoreLikeThisField min_doc_freq() min_doc_freq(int $value) Default: 5
  * @method \Sherlock\components\queries\MoreLikeThisField max_doc_freq() max_doc_freq(int $value) Default: 0
  * @method \Sherlock\components\queries\MoreLikeThisField min_word_len() min_word_len(int $value) Default: 0
  * @method \Sherlock\components\queries\MoreLikeThisField max_word_len() max_word_len(int $value) Default: 0
  * @method \Sherlock\components\queries\MoreLikeThisField boost_terms() boost_terms(int $value) Default: 1
- * @method \Sherlock\components\queries\MoreLikeThisField boost() boost(float $value) Default: 1.0
+ * @method \Sherlock\components\queries\MoreLikeThisField boost() boost(\float $value) Default: 1.0
 
  */
 class MoreLikeThisField extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface

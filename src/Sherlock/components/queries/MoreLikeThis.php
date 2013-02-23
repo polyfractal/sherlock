@@ -14,14 +14,14 @@ use Sherlock\components;
  * @method \Sherlock\components\queries\MoreLikeThis like_text() like_text(string $value)
  * @method \Sherlock\components\queries\MoreLikeThis min_term_freq() min_term_freq(int $value) Default: 2
  * @method \Sherlock\components\queries\MoreLikeThis max_query_terms() max_query_terms(int $value) Default: 25
- * @method \Sherlock\components\queries\MoreLikeThis percent_terms_to_match() percent_terms_to_match(float $value) Default: 0.3
+ * @method \Sherlock\components\queries\MoreLikeThis percent_terms_to_match() percent_terms_to_match(\float $value) Default: 0.3
  * @method \Sherlock\components\queries\MoreLikeThis stop_words() stop_words(array $value) Default: array()
  * @method \Sherlock\components\queries\MoreLikeThis min_doc_freq() min_doc_freq(int $value) Default: 5
  * @method \Sherlock\components\queries\MoreLikeThis max_doc_freq() max_doc_freq(int $value) Default: 0
  * @method \Sherlock\components\queries\MoreLikeThis min_word_len() min_word_len(int $value) Default: 0
  * @method \Sherlock\components\queries\MoreLikeThis max_word_len() max_word_len(int $value) Default: 0
  * @method \Sherlock\components\queries\MoreLikeThis boost_terms() boost_terms(int $value) Default: 1
- * @method \Sherlock\components\queries\MoreLikeThis boost() boost(float $value) Default: 1.0
+ * @method \Sherlock\components\queries\MoreLikeThis boost() boost(\float $value) Default: 1.0
 
  */
 class MoreLikeThis extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface

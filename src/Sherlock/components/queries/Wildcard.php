@@ -12,7 +12,7 @@ use Sherlock\components;
 /**
  * @method \Sherlock\components\queries\Wildcard field() field(string $value)
  * @method \Sherlock\components\queries\Wildcard value() value(string $value)
- * @method \Sherlock\components\queries\Wildcard boost() boost(float $value) Default: 1.0
+ * @method \Sherlock\components\queries\Wildcard boost() boost(\float $value) Default: 1.0
 
  */
 class Wildcard extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface

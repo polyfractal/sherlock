@@ -13,10 +13,10 @@ use Sherlock\components;
 /**
  * @method \Sherlock\components\queries\Match field() field(\string $value)
  * @method \Sherlock\components\queries\Match query() query(\string $value)
- * @method \Sherlock\components\queries\Match boost() boost(float $value) Default: 1.0
+ * @method \Sherlock\components\queries\Match boost() boost(\float $value) Default: 1.0
  * @method \Sherlock\components\queries\Match operator() operator(\string $value) Default: 'and'
  * @method \Sherlock\components\queries\Match analyzer() analyzer(\string $value) Default: 'default'
- * @method \Sherlock\components\queries\Match fuzziness() fuzziness(float $value) Default: 0.5
+ * @method \Sherlock\components\queries\Match fuzziness() fuzziness(\float $value) Default: 0.5
  *
  * @method \Sherlock\components\queries\Match lenient() lenient(int $value) Default: 1
  * @method \Sherlock\components\queries\Match max_expansions() max_expansions(int $value) Default: 100

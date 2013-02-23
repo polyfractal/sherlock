@@ -10,8 +10,8 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\DisMax tie_breaker() tie_breaker(float $value) Default: 0.5
- * @method \Sherlock\components\queries\DisMax boost() boost(float $value) Default: 2
+ * @method \Sherlock\components\queries\DisMax tie_breaker() tie_breaker(\float $value) Default: 0.5
+ * @method \Sherlock\components\queries\DisMax boost() boost(\float $value) Default: 2
  */
 class DisMax extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
 {

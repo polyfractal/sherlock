@@ -11,7 +11,7 @@ use Sherlock\components;
 
 /**
  * @method \Sherlock\components\queries\Bool minimum_number_should_match() minimum_number_should_match(int $value) Default: 2
- * @method \Sherlock\components\queries\Bool boost() boost(float $value) Default: 1.0
+ * @method \Sherlock\components\queries\Bool boost() boost(\float $value) Default: 1.0
  * @method \Sherlock\components\queries\Bool disable_coord() disable_coord(int $value) Default: 1
 
  */

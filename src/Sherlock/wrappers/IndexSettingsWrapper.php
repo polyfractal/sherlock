@@ -41,7 +41,7 @@ namespace Sherlock\wrappers;
  * @method \Sherlock\wrappers\IndexSettingsWrapper merge__policy__max_merge_at_once_explicit() merge__policy__max_merge_at_once_explicit(\int $value)
  * @method \Sherlock\wrappers\IndexSettingsWrapper merge__policy__max_merged_segment() merge__policy__max_merged_segment(\int $value)
  * @method \Sherlock\wrappers\IndexSettingsWrapper merge__policy__segments_per_tier() merge__policy__segments_per_tier(\int $value)
- * @method \Sherlock\wrappers\IndexSettingsWrapper reclaim_deletes_weight() reclaim_deletes_weight(float $value)
+ * @method \Sherlock\wrappers\IndexSettingsWrapper reclaim_deletes_weight() reclaim_deletes_weight(\float $value)
  * @method \Sherlock\wrappers\IndexSettingsWrapper compound_format() compound_format(bool $value)
  * @method \Sherlock\wrappers\IndexSettingsWrapper merge__scheduler__max_thread_count() merge__scheduler__max_thread_count(\int $value)
  * @method \Sherlock\wrappers\IndexSettingsWrapper merge__policy__merge_factor() merge__policy__merge_factor(\int $value)

@@ -12,7 +12,7 @@ use Sherlock\components;
 /**
  * @method \Sherlock\components\queries\CustomFiltersScore query() query(\sherlock\components\QueryInterface $value)
  * @method \Sherlock\components\queries\CustomFiltersScore score_mode() score_mode(string $value) Default: "first"
- * @method \Sherlock\components\queries\CustomFiltersScore max_boost() max_boost(float $value) Default: 10
+ * @method \Sherlock\components\queries\CustomFiltersScore max_boost() max_boost(\float $value) Default: 10
 
  */
 class CustomFiltersScore extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface

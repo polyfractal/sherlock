@@ -12,13 +12,13 @@ use Sherlock\components;
 /**
  * @method \Sherlock\components\queries\Field field() field(string $value)
  * @method \Sherlock\components\queries\Field query() query(string $value)
- * @method \Sherlock\components\queries\Field boost() boost(float $value) Default: 2.0
+ * @method \Sherlock\components\queries\Field boost() boost(\float $value) Default: 2.0
  * @method \Sherlock\components\queries\Field enable_position_increments() enable_position_increments(int $value) Default: 1
  * @method \Sherlock\components\queries\Field default_operator() default_operator(string $value) Default: "AND"
  * @method \Sherlock\components\queries\Field analyzer() analyzer(string $value) Default: "default"
  * @method \Sherlock\components\queries\Field allow_leading_wildcard() allow_leading_wildcard(bool $value) Default: false
  * @method \Sherlock\components\queries\Field lowercase_expanded_terms() lowercase_expanded_terms(int $value) Default: 1
- * @method \Sherlock\components\queries\Field fuzzy_min_sim() fuzzy_min_sim(float $value) Default: 0.5
+ * @method \Sherlock\components\queries\Field fuzzy_min_sim() fuzzy_min_sim(\float $value) Default: 0.5
  * @method \Sherlock\components\queries\Field fuzzy_prefix_length() fuzzy_prefix_length(int $value) Default: 2
  * @method \Sherlock\components\queries\Field phrase_slop() phrase_slop(int $value) Default: 10
  * @method \Sherlock\components\queries\Field analyze_wildcard() analyze_wildcard(bool $value) Default: true

@@ -12,7 +12,7 @@ use Sherlock\components;
 /**
  * @method \Sherlock\components\queries\Boosting positive() positive(\sherlock\components\QueryInterface $value)
  * @method \Sherlock\components\queries\Boosting negative() negative(\sherlock\components\QueryInterface $value)
- * @method \Sherlock\components\queries\Boosting negative_boost() negative_boost(float $value) Default: 0.2
+ * @method \Sherlock\components\queries\Boosting negative_boost() negative_boost(\float $value) Default: 0.2
 
  */
 class Boosting extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface

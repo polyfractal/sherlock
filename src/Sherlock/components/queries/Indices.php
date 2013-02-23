@@ -10,10 +10,8 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\Indices indices() indices(array $value)
- * @method \Sherlock\components\queries\Indices query() query(\sherlock\components\QueryInterface $value)
  * @method \Sherlock\components\queries\Indices no_match_query() no_match_query(\sherlock\components\QueryInterface $value)
-
+ * @method \Sherlock\components\queries\Indices query() query(\sherlock\components\QueryInterface $value)
  */
 class Indices extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
 {

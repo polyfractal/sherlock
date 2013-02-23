@@ -11,7 +11,7 @@ use Sherlock\components;
 
 /**
  * @method \Sherlock\components\queries\CustomBoostFactor query() query(\sherlock\components\QueryInterface $value)
- * @method \Sherlock\components\queries\CustomBoostFactor boost_factor() boost_factor(float $value) Default: 3
+ * @method \Sherlock\components\queries\CustomBoostFactor boost_factor() boost_factor(\float $value) Default: 3
 
  */
 class CustomBoostFactor extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
