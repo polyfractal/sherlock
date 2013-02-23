@@ -36,7 +36,7 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
 	protected function tearDown()
 	{
 		try{
-			$this->object->index('test123')->delete();
+			$this->object->index('testindexing')->delete();
 		}
 		catch(\Exception $e)
 		{
@@ -61,7 +61,7 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
 	{
 	 	$sherlock = $this->object;
 
-		$doc = $sherlock->addDocument()->index('test123')->type('tweet')->document(array("field" => "test"));
+		$doc = $sherlock->addDocument()->index('testindexing')->type('tweet')->document(array("field" => "test"));
 		$response = $doc->execute();
 		$this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);
 		$this->assertEquals(true, $response->ok);

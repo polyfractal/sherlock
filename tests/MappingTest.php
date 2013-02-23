@@ -28,13 +28,15 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function tearDown()
 	{
+		/*
 		try{
-			$this->object->index('test123')->delete();
+			$this->object->index('testmapping')->delete();
 		}
 		catch(\Exception $e)
 		{
 
 		}
+		*/
 	}
 
 	function assertThrowsException($exception_name, $code) {
