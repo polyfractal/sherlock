@@ -644,7 +644,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"match":{"testString":{"query":"testString","boost":0.5,"operator":"AND","analyzer":"default","fuzziness":0.5,"lenient":3,"max_expansions":3,"minimum_should_match":3,"prefix_length":3}}}}';
+		$expectedData = '{"query" : {"match":{"testString":{"query":"testString","boost":0.5,"operator":"AND","analyzer":"default","fuzziness":0.5,"lenient":true,"max_expansions":3,"minimum_should_match":3,"prefix_length":3}}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -868,22 +868,22 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req = $this->object->search();
 		$req->index("test123")->type("test");
 		$query = Sherlock::query()->QueryString()->query("testString")
-				->default_field("testString")
+				->default_field("_all")
 				->boost(0.5)
 				->enable_position_increments(3)
-				->default_operator("testString")
-				->analyzer("testString")
+				->default_operator("OR")
+				->analyzer("default")
 				->allow_leading_wildcard(3)
 				->lowercase_expanded_terms(3)
 				->fuzzy_min_sim(0.5)
 				->fuzzy_prefix_length(3)
-				->lenient(3)
+				->lenient(true)
 				->phrase_slop(3)
-				->analyze_wildcard(3)
+				->analyze_wildcard(true)
 				->auto_generate_phrase_queries(3)
-				->rewrite("testString")
-				->quote_analyzer("testString")
-				->quote_field_suffix("testString")
+				->rewrite("constant_score_default")
+				->quote_analyzer("standard")
+				->quote_field_suffix(".unstemmed")
 				;
 		
 		\Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
@@ -891,7 +891,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"query_string":{"query":"testString","default_field":"testString","boost":0.5,"enable_position_increments":3,"default_operator":"testString","analyzer":"testString","allow_leading_wildcard":3,"lowercase_expanded_terms":3,"fuzzy_min_sim":0.5,"fuzzy_prefix_length":3,"lenient":3,"phrase_slop":3,"analyze_wildcard":3,"auto_generate_phrase_queries":3,"rewrite":"testString","quote_analyzer":"testString","quote_field_suffix":"testString"}}}';
+		$expectedData = '{"query" : {"query_string":{"query":"testString","default_field":"_all","boost":0.5,"enable_position_increments":3,"default_operator":"OR","analyzer":"default","allow_leading_wildcard":3,"lowercase_expanded_terms":3,"fuzzy_min_sim":0.5,"fuzzy_prefix_length":3,"lenient":true,"phrase_slop":3,"analyze_wildcard":true,"auto_generate_phrase_queries":3,"quote_analyzer":"standard","quote_field_suffix":".unstemmed"},"rewrite":"constant_score_default"}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
