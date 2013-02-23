@@ -55,7 +55,7 @@ class FilterWrapper
 
     public function __toString()
     {
-        return (\string) $this->filter;
+        return (string) $this->filter;
     }
 
 }
