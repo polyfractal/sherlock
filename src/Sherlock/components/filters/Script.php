@@ -10,9 +10,9 @@ namespace Sherlock\components\filters;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\filters\Script script() script(string $value)
+ * @method \Sherlock\components\filters\Script script() script(\string $value)
  * @method \Sherlock\components\filters\Script params() params(array $value) Default: array()
- * @method \Sherlock\components\filters\Script _cache() _cache(bool $value) Default: false
+ * @method \Sherlock\components\filters\Script _cache() _cache(\bool $value) Default: false
 
  */
 class Script extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface

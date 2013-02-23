@@ -61,7 +61,7 @@ class QueryWrapper
 
     public function __toString()
     {
-        return (string) $this->query;
+        return (\string) $this->query;
     }
 
 }

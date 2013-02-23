@@ -10,23 +10,23 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\QueryString query() query(string $value)
- * @method \Sherlock\components\queries\QueryString default_field() default_field(string $value) Default: "_all"
+ * @method \Sherlock\components\queries\QueryString query() query(\string $value)
+ * @method \Sherlock\components\queries\QueryString default_field() default_field(\string $value) Default: "_all"
  * @method \Sherlock\components\queries\QueryString boost() boost(\float $value) Default: 2.0
- * @method \Sherlock\components\queries\QueryString enable_position_increments() enable_position_increments(int $value) Default: 1
- * @method \Sherlock\components\queries\QueryString default_operator() default_operator(string $value) Default: "OR"
- * @method \Sherlock\components\queries\QueryString analyzer() analyzer(string $value) Default: "default"
- * @method \Sherlock\components\queries\QueryString allow_leading_wildcard() allow_leading_wildcard(int $value) Default: 0
- * @method \Sherlock\components\queries\QueryString lowercase_expanded_terms() lowercase_expanded_terms(int $value) Default: 1
+ * @method \Sherlock\components\queries\QueryString enable_position_increments() enable_position_increments(\int $value) Default: 1
+ * @method \Sherlock\components\queries\QueryString default_operator() default_operator(\string $value) Default: "OR"
+ * @method \Sherlock\components\queries\QueryString analyzer() analyzer(\string $value) Default: "default"
+ * @method \Sherlock\components\queries\QueryString allow_leading_wildcard() allow_leading_wildcard(\int $value) Default: 0
+ * @method \Sherlock\components\queries\QueryString lowercase_expanded_terms() lowercase_expanded_terms(\int $value) Default: 1
  * @method \Sherlock\components\queries\QueryString fuzzy_min_sim() fuzzy_min_sim(\float $value) Default: 0.5
- * @method \Sherlock\components\queries\QueryString fuzzy_prefix_length() fuzzy_prefix_length(int $value) Default: 2
- * @method \Sherlock\components\queries\QueryString lenient() lenient(int $value) Default: 1
- * @method \Sherlock\components\queries\QueryString phrase_slop() phrase_slop(int $value) Default: 10
- * @method \Sherlock\components\queries\QueryString analyze_wildcard() analyze_wildcard(int $value) Default: 1
- * @method \Sherlock\components\queries\QueryString auto_generate_phrase_queries() auto_generate_phrase_queries(int $value) Default: 0
- * @method \Sherlock\components\queries\QueryString rewrite() rewrite(string $value) Default: "constant_score_default"
- * @method \Sherlock\components\queries\QueryString quote_analyzer() quote_analyzer(string $value) Default: "standard"
- * @method \Sherlock\components\queries\QueryString quote_field_suffix() quote_field_suffix(string $value) Default: ".unstemmed"
+ * @method \Sherlock\components\queries\QueryString fuzzy_prefix_length() fuzzy_prefix_length(\int $value) Default: 2
+ * @method \Sherlock\components\queries\QueryString lenient() lenient(\int $value) Default: 1
+ * @method \Sherlock\components\queries\QueryString phrase_slop() phrase_slop(\int $value) Default: 10
+ * @method \Sherlock\components\queries\QueryString analyze_wildcard() analyze_wildcard(\int $value) Default: 1
+ * @method \Sherlock\components\queries\QueryString auto_generate_phrase_queries() auto_generate_phrase_queries(\int $value) Default: 0
+ * @method \Sherlock\components\queries\QueryString rewrite() rewrite(\string $value) Default: "constant_score_default"
+ * @method \Sherlock\components\queries\QueryString quote_analyzer() quote_analyzer(\string $value) Default: "standard"
+ * @method \Sherlock\components\queries\QueryString quote_field_suffix() quote_field_suffix(\string $value) Default: ".unstemmed"
 
  */
 class QueryString extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface

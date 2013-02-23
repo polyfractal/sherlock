@@ -10,9 +10,9 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\Terms field() field(string $value)
+ * @method \Sherlock\components\queries\Terms field() field(\string $value)
  * @method \Sherlock\components\queries\Terms term() term(array $value)
- * @method \Sherlock\components\queries\Terms minimum_match() minimum_match(int $value) Default: 2
+ * @method \Sherlock\components\queries\Terms minimum_match() minimum_match(\int $value) Default: 2
 
  */
 class Terms extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface

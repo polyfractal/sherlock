@@ -11,7 +11,7 @@ use Sherlock\components;
 
 /**
  * @method \Sherlock\components\filters\AndFilter and() and(array $value)
- * @method \Sherlock\components\filters\AndFilter _cache() _cache(bool $value) Default: false
+ * @method \Sherlock\components\filters\AndFilter _cache() _cache(\bool $value) Default: false
 
  */
 class AndFilter extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface

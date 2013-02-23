@@ -10,9 +10,9 @@ namespace Sherlock\components\filters;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\filters\Prefix field() field(string $value)
- * @method \Sherlock\components\filters\Prefix prefix() prefix(string $value)
- * @method \Sherlock\components\filters\Prefix _cache() _cache(bool $value) Default: true
+ * @method \Sherlock\components\filters\Prefix field() field(\string $value)
+ * @method \Sherlock\components\filters\Prefix prefix() prefix(\string $value)
+ * @method \Sherlock\components\filters\Prefix _cache() _cache(\bool $value) Default: true
 
  */
 class Prefix extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface

@@ -16,10 +16,10 @@ namespace Sherlock\wrappers;
  * @method \Sherlock\wrappers\IndexSettingsWrapper term_index_divisor() term_index_divisor(\int $value)
  * @method \Sherlock\wrappers\IndexSettingsWrapper gc_deletes() gc_deletes()
  *
- * @method \Sherlock\wrappers\IndexSettingsWrapper blocks__read_only() blocks__read_only(bool $value)
- * @method \Sherlock\wrappers\IndexSettingsWrapper blocks__read() blocks__read(bool $value)
- * @method \Sherlock\wrappers\IndexSettingsWrapper blocks__write() blocks__write(bool $value)
- * @method \Sherlock\wrappers\IndexSettingsWrapper blocks__metadata() blocks__metadata(bool $value)
+ * @method \Sherlock\wrappers\IndexSettingsWrapper blocks__read_only() blocks__read_only(\bool $value)
+ * @method \Sherlock\wrappers\IndexSettingsWrapper blocks__read() blocks__read(\bool $value)
+ * @method \Sherlock\wrappers\IndexSettingsWrapper blocks__write() blocks__write(\bool $value)
+ * @method \Sherlock\wrappers\IndexSettingsWrapper blocks__metadata() blocks__metadata(\bool $value)
  *
  * @method \Sherlock\wrappers\IndexSettingsWrapper translog__flush_threshold_ops() translog__flush_threshold_ops(\int $value)
  * @method \Sherlock\wrappers\IndexSettingsWrapper translog__flush_threshold_size() translog__flush_threshold_size(\string $value)
@@ -33,7 +33,7 @@ namespace Sherlock\wrappers;
  *
  * @method \Sherlock\wrappers\IndexSettingsWrapper recovery__initial_shards() recovery__initial_shards(\int $value)
  *
- * @method \Sherlock\wrappers\IndexSettingsWrapper ttl__disable_purge() ttl__disable_purge(bool $value)
+ * @method \Sherlock\wrappers\IndexSettingsWrapper ttl__disable_purge() ttl__disable_purge(\bool $value)
  *
  * @method \Sherlock\wrappers\IndexSettingsWrapper merge__policy__expunge_deletes_allowed() merge__policy__expunge_deletes_allowed(\int $value)
  * @method \Sherlock\wrappers\IndexSettingsWrapper merge__policy__floor_segment() merge__policy__floor_segment(\string $value)
@@ -42,7 +42,7 @@ namespace Sherlock\wrappers;
  * @method \Sherlock\wrappers\IndexSettingsWrapper merge__policy__max_merged_segment() merge__policy__max_merged_segment(\int $value)
  * @method \Sherlock\wrappers\IndexSettingsWrapper merge__policy__segments_per_tier() merge__policy__segments_per_tier(\int $value)
  * @method \Sherlock\wrappers\IndexSettingsWrapper reclaim_deletes_weight() reclaim_deletes_weight(\float $value)
- * @method \Sherlock\wrappers\IndexSettingsWrapper compound_format() compound_format(bool $value)
+ * @method \Sherlock\wrappers\IndexSettingsWrapper compound_format() compound_format(\bool $value)
  * @method \Sherlock\wrappers\IndexSettingsWrapper merge__scheduler__max_thread_count() merge__scheduler__max_thread_count(\int $value)
  * @method \Sherlock\wrappers\IndexSettingsWrapper merge__policy__merge_factor() merge__policy__merge_factor(\int $value)
  * @method \Sherlock\wrappers\IndexSettingsWrapper merge__policy__min_merge_size() merge__policy__min_merge_size(\string $value)

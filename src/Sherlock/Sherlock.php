@@ -39,7 +39,7 @@ class Sherlock
             // Application
             'base' => __DIR__.'/',
             'mode' => 'development',
-            'log.level' => 'debug',
+            'log.level' => 'error',
             'log.file' => '../sherlock.log',
             'autodetect.cluster' => false
             );
@@ -238,8 +238,9 @@ class Sherlock
                 $level = Analog::ALERT;
                 break;
         }
-        Analog::handler(\Analog\Handler\LevelBuffer::init (\Analog\Handler\File::init ($this->settings['base'] . $this->settings['log.file']),$level));
-        Analog::log("--------------------------------------------------------", Analog::ALERT);
+        //Analog::handler(\Analog\Handler\Threshold::init (\Analog\Handler\File::init ($this->settings['base'] . $this->settings['log.file']),$level));
+		Analog::handler(\Analog\Handler\LevelBuffer::init (\Analog\Handler\File::init ($this->settings['base'] . $this->settings['log.file']),$level));
+		Analog::log("--------------------------------------------------------", Analog::ALERT);
         Analog::log("Logging setup at ".date("Y-m-d H:i:s.u"), Analog::INFO);
     }
 

@@ -10,12 +10,12 @@ namespace Sherlock\components\filters;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\filters\NumericRange field() field(string $value)
- * @method \Sherlock\components\filters\NumericRange from() from(int $value)
- * @method \Sherlock\components\filters\NumericRange to() to(int $value)
- * @method \Sherlock\components\filters\NumericRange include_lower() include_lower(bool $value) Default: true
- * @method \Sherlock\components\filters\NumericRange include_upper() include_upper(bool $value) Default: false
- * @method \Sherlock\components\filters\NumericRange _cache() _cache(bool $value) Default: false
+ * @method \Sherlock\components\filters\NumericRange field() field(\string $value)
+ * @method \Sherlock\components\filters\NumericRange from() from(\int $value)
+ * @method \Sherlock\components\filters\NumericRange to() to(\int $value)
+ * @method \Sherlock\components\filters\NumericRange include_lower() include_lower(\bool $value) Default: true
+ * @method \Sherlock\components\filters\NumericRange include_upper() include_upper(\bool $value) Default: false
+ * @method \Sherlock\components\filters\NumericRange _cache() _cache(\bool $value) Default: false
 
  */
 class NumericRange extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface

@@ -10,11 +10,11 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\Range field() field(string $value)
+ * @method \Sherlock\components\queries\Range field() field(\string $value)
  * @method \Sherlock\components\queries\Range from() from(multi $value)
  * @method \Sherlock\components\queries\Range to() to(multi $value)
- * @method \Sherlock\components\queries\Range include_lower() include_lower(bool $value) Default: true
- * @method \Sherlock\components\queries\Range include_upper() include_upper(bool $value) Default: true
+ * @method \Sherlock\components\queries\Range include_lower() include_lower(\bool $value) Default: true
+ * @method \Sherlock\components\queries\Range include_upper() include_upper(\bool $value) Default: true
  * @method \Sherlock\components\queries\Range boost() boost(\float $value) Default: 1.0
 
  */

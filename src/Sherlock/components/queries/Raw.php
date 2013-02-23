@@ -11,7 +11,7 @@ use Sherlock\components;
 use Sherlock\common\exceptions;
 
 /**
- * @method \Sherlock\components\queries\Raw Raw() Raw(string $json)
+ * @method \Sherlock\components\queries\Raw Raw() Raw(\string $json)
 
  */
 class Raw extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface

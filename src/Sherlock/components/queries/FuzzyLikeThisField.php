@@ -10,14 +10,14 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\FuzzyLikeThisField field() field(string $value)
- * @method \Sherlock\components\queries\FuzzyLikeThisField like_text() like_text(string $value)
- * @method \Sherlock\components\queries\FuzzyLikeThisField max_query_terms() max_query_terms(int $value) Default: 10
+ * @method \Sherlock\components\queries\FuzzyLikeThisField field() field(\string $value)
+ * @method \Sherlock\components\queries\FuzzyLikeThisField like_text() like_text(\string $value)
+ * @method \Sherlock\components\queries\FuzzyLikeThisField max_query_terms() max_query_terms(\int $value) Default: 10
  * @method \Sherlock\components\queries\FuzzyLikeThisField min_similarity() min_similarity(\float $value) Default: 0.5
- * @method \Sherlock\components\queries\FuzzyLikeThisField prefix_length() prefix_length(int $value) Default: 3
+ * @method \Sherlock\components\queries\FuzzyLikeThisField prefix_length() prefix_length(\int $value) Default: 3
  * @method \Sherlock\components\queries\FuzzyLikeThisField boost() boost(\float $value) Default: 2.0
- * @method \Sherlock\components\queries\FuzzyLikeThisField analyzer() analyzer(string $value) Default: "default"
- * @method \Sherlock\components\queries\FuzzyLikeThisField ignore_tf() ignore_tf(bool $value) Default: false
+ * @method \Sherlock\components\queries\FuzzyLikeThisField analyzer() analyzer(\string $value) Default: "default"
+ * @method \Sherlock\components\queries\FuzzyLikeThisField ignore_tf() ignore_tf(\bool $value) Default: false
 
  */
 class FuzzyLikeThisField extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface

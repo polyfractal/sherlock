@@ -10,9 +10,9 @@ namespace Sherlock\components\filters;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\filters\Missing field() field(string $value)
- * @method \Sherlock\components\filters\Missing existence() existence(bool $value) Default: true
- * @method \Sherlock\components\filters\Missing null_value() null_value(bool $value) Default: false
+ * @method \Sherlock\components\filters\Missing field() field(\string $value)
+ * @method \Sherlock\components\filters\Missing existence() existence(\bool $value) Default: true
+ * @method \Sherlock\components\filters\Missing null_value() null_value(\bool $value) Default: false
 
  */
 class Missing extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface

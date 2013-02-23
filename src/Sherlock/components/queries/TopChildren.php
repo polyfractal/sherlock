@@ -10,11 +10,11 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\TopChildren type() type(string $value)
+ * @method \Sherlock\components\queries\TopChildren type() type(\string $value)
  * @method \Sherlock\components\queries\TopChildren query() query(\sherlock\components\QueryInterface $value)
- * @method \Sherlock\components\queries\TopChildren score() score(string $value) Default: "max"
- * @method \Sherlock\components\queries\TopChildren factor() factor(int $value) Default: 5
- * @method \Sherlock\components\queries\TopChildren incremental_factor() incremental_factor(int $value) Default: 5
+ * @method \Sherlock\components\queries\TopChildren score() score(\string $value) Default: "max"
+ * @method \Sherlock\components\queries\TopChildren factor() factor(\int $value) Default: 5
+ * @method \Sherlock\components\queries\TopChildren incremental_factor() incremental_factor(\int $value) Default: 5
 
  */
 class TopChildren extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface

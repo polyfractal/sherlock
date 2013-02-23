@@ -10,8 +10,8 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\HasParent parent_type() parent_type(string $value)
- * @method \Sherlock\components\queries\HasParent score_type() score_type(string $value) Default: "score"
+ * @method \Sherlock\components\queries\HasParent parent_type() parent_type(\string $value)
+ * @method \Sherlock\components\queries\HasParent score_type() score_type(\string $value) Default: "score"
  * @method \Sherlock\components\queries\HasParent query() query(\sherlock\components\QueryInterface $value)
 
  */

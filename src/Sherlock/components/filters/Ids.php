@@ -10,7 +10,7 @@ namespace Sherlock\components\filters;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\filters\Ids type() type(string $value)
+ * @method \Sherlock\components\filters\Ids type() type(\string $value)
  * @method \Sherlock\components\filters\Ids values() values(array $value)
 
  */

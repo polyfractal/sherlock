@@ -11,7 +11,7 @@ use Sherlock\components;
 
 /**
  * @method \Sherlock\components\filters\Query query() query(\sherlock\components\QueryInterface $value)
- * @method \Sherlock\components\filters\Query _cache() _cache(bool $value) Default: false
+ * @method \Sherlock\components\filters\Query _cache() _cache(\bool $value) Default: false
 
  */
 class Query extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface

@@ -10,7 +10,7 @@ namespace Sherlock\components\filters;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\filters\HasParent parent_type() parent_type(string $value)
+ * @method \Sherlock\components\filters\HasParent parent_type() parent_type(\string $value)
  * @method \Sherlock\components\filters\HasParent query() query(\sherlock\components\QueryInterface $value)
 
  */

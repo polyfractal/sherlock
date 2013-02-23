@@ -10,10 +10,10 @@ use Sherlock\components\queries;
 use Sherlock\common\exceptions;
 
 /**
- * @method \Sherlock\requests\SearchRequest timeout() timeout(int $value)
- * @method \Sherlock\requests\SearchRequest from() from(int $value)
- * @method \Sherlock\requests\SearchRequest to() to(int $value)
- * @method \Sherlock\requests\SearchRequest search_type() search_type(int $value)
+ * @method \Sherlock\requests\SearchRequest timeout() timeout(\int $value)
+ * @method \Sherlock\requests\SearchRequest from() from(\int $value)
+ * @method \Sherlock\requests\SearchRequest to() to(\int $value)
+ * @method \Sherlock\requests\SearchRequest search_type() search_type(\int $value)
  * @method \Sherlock\requests\SearchRequest routing() routing(mixed $value)
  */
 class SearchRequest extends Request

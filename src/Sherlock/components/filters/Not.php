@@ -11,7 +11,7 @@ use Sherlock\components;
 
 /**
  * @method \Sherlock\components\filters\Not not() not(array $value)
- * @method \Sherlock\components\filters\Not _cache() _cache(bool $value) Default: false
+ * @method \Sherlock\components\filters\Not _cache() _cache(\bool $value) Default: false
 
  */
 class Not extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface

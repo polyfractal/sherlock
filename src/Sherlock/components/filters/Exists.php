@@ -10,7 +10,7 @@ namespace Sherlock\components\filters;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\filters\Exists field() field(string $value)
+ * @method \Sherlock\components\filters\Exists field() field(\string $value)
 
  */
 class Exists extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface

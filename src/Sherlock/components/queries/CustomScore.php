@@ -12,8 +12,8 @@ use Sherlock\components;
 /**
  * @method \Sherlock\components\queries\CustomScore query() query(\sherlock\components\QueryInterface $value)
  * @method \Sherlock\components\queries\CustomScore params() params(array $value)
- * @method \Sherlock\components\queries\CustomScore script() script(string $value)
- * @method \Sherlock\components\queries\CustomScore lang() lang(string $value) Default: "mvel"
+ * @method \Sherlock\components\queries\CustomScore script() script(\string $value)
+ * @method \Sherlock\components\queries\CustomScore lang() lang(\string $value) Default: "mvel"
 
  */
 class CustomScore extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface

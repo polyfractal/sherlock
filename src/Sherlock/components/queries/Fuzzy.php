@@ -10,12 +10,12 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\Fuzzy field() field(string $value)
- * @method \Sherlock\components\queries\Fuzzy value() value(string $value)
+ * @method \Sherlock\components\queries\Fuzzy field() field(\string $value)
+ * @method \Sherlock\components\queries\Fuzzy value() value(\string $value)
  * @method \Sherlock\components\queries\Fuzzy boost() boost(\float $value) Default: 1.0
  * @method \Sherlock\components\queries\Fuzzy min_similarity() min_similarity(\float $value) Default: 0.2
- * @method \Sherlock\components\queries\Fuzzy prefix_length() prefix_length(int $value) Default: 0
- * @method \Sherlock\components\queries\Fuzzy max_expansions() max_expansions(int $value) Default: 10
+ * @method \Sherlock\components\queries\Fuzzy prefix_length() prefix_length(\int $value) Default: 0
+ * @method \Sherlock\components\queries\Fuzzy max_expansions() max_expansions(\int $value) Default: 10
 
  */
 class Fuzzy extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface

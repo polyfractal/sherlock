@@ -18,10 +18,10 @@ use Sherlock\components;
  * @method \Sherlock\components\queries\Match analyzer() analyzer(\string $value) Default: 'default'
  * @method \Sherlock\components\queries\Match fuzziness() fuzziness(\float $value) Default: 0.5
  *
- * @method \Sherlock\components\queries\Match lenient() lenient(int $value) Default: 1
- * @method \Sherlock\components\queries\Match max_expansions() max_expansions(int $value) Default: 100
- * @method \Sherlock\components\queries\Match minimum_should_match() minimum_should_match(int $value) Default: 2
- * @method \Sherlock\components\queries\Match prefix_length() prefix_length(int $value) Default: 2
+ * @method \Sherlock\components\queries\Match lenient() lenient(\int $value) Default: 1
+ * @method \Sherlock\components\queries\Match max_expansions() max_expansions(\int $value) Default: 100
+ * @method \Sherlock\components\queries\Match minimum_should_match() minimum_should_match(\int $value) Default: 2
+ * @method \Sherlock\components\queries\Match prefix_length() prefix_length(\int $value) Default: 2
 
  */
 class Match extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface

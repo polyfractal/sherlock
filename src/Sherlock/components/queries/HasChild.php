@@ -10,8 +10,8 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\HasChild type() type(string $value)
- * @method \Sherlock\components\queries\HasChild score_type() score_type(string $value) Default: "sum"
+ * @method \Sherlock\components\queries\HasChild type() type(\string $value)
+ * @method \Sherlock\components\queries\HasChild score_type() score_type(\string $value) Default: "sum"
  * @method \Sherlock\components\queries\HasChild query() query(\sherlock\components\QueryInterface $value)
 
  */

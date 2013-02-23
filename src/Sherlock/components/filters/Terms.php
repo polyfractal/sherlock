@@ -10,10 +10,10 @@ namespace Sherlock\components\filters;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\filters\Terms field() field(string $value)
+ * @method \Sherlock\components\filters\Terms field() field(\string $value)
  * @method \Sherlock\components\filters\Terms terms() terms(aray $value)
- * @method \Sherlock\components\filters\Terms execution() execution(string $value) Default: "plain"
- * @method \Sherlock\components\filters\Terms _cache() _cache(bool $value) Default: true
+ * @method \Sherlock\components\filters\Terms execution() execution(\string $value) Default: "plain"
+ * @method \Sherlock\components\filters\Terms _cache() _cache(\bool $value) Default: true
 
  */
 class Terms extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface

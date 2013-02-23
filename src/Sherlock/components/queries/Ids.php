@@ -10,7 +10,7 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\Ids type() type(string $value)
+ * @method \Sherlock\components\queries\Ids type() type(\string $value)
  * @method \Sherlock\components\queries\Ids values() values(array $value)
 
  */

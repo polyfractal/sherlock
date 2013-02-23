@@ -10,7 +10,7 @@ namespace Sherlock\components\filters;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\filters\Type value() value(string $value)
+ * @method \Sherlock\components\filters\Type value() value(\string $value)
 
  */
 class Type extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface

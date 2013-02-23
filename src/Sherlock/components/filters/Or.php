@@ -11,7 +11,7 @@ use Sherlock\components;
 
 /**
  * @method \Sherlock\components\filters\Or or() or(array $value)
- * @method \Sherlock\components\filters\Or _cache() _cache(bool $value) Default: false
+ * @method \Sherlock\components\filters\Or _cache() _cache(\bool $value) Default: false
 
  */
 class Or extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface

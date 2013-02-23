@@ -10,25 +10,25 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\QueryStringMultiField query() query(string $value)
+ * @method \Sherlock\components\queries\QueryStringMultiField query() query(\string $value)
  * @method \Sherlock\components\queries\QueryStringMultiField fields() fields(array $value)
  * @method \Sherlock\components\queries\QueryStringMultiField boost() boost(\float $value) Default: 2.0
- * @method \Sherlock\components\queries\QueryStringMultiField enable_position_increments() enable_position_increments(int $value) Default: 1
- * @method \Sherlock\components\queries\QueryStringMultiField default_operator() default_operator(string $value) Default: "OR"
- * @method \Sherlock\components\queries\QueryStringMultiField analyzer() analyzer(string $value) Default: "default"
- * @method \Sherlock\components\queries\QueryStringMultiField allow_leading_wildcard() allow_leading_wildcard(int $value) Default: 0
- * @method \Sherlock\components\queries\QueryStringMultiField lowercase_expanded_terms() lowercase_expanded_terms(int $value) Default: 1
+ * @method \Sherlock\components\queries\QueryStringMultiField enable_position_increments() enable_position_increments(\int $value) Default: 1
+ * @method \Sherlock\components\queries\QueryStringMultiField default_operator() default_operator(\string $value) Default: "OR"
+ * @method \Sherlock\components\queries\QueryStringMultiField analyzer() analyzer(\string $value) Default: "default"
+ * @method \Sherlock\components\queries\QueryStringMultiField allow_leading_wildcard() allow_leading_wildcard(\int $value) Default: 0
+ * @method \Sherlock\components\queries\QueryStringMultiField lowercase_expanded_terms() lowercase_expanded_terms(\int $value) Default: 1
  * @method \Sherlock\components\queries\QueryStringMultiField fuzzy_min_sim() fuzzy_min_sim(\float $value) Default: 0.5
- * @method \Sherlock\components\queries\QueryStringMultiField fuzzy_prefix_length() fuzzy_prefix_length(int $value) Default: 2
- * @method \Sherlock\components\queries\QueryStringMultiField lenient() lenient(int $value) Default: 1
- * @method \Sherlock\components\queries\QueryStringMultiField phrase_slop() phrase_slop(int $value) Default: 10
- * @method \Sherlock\components\queries\QueryStringMultiField analyze_wildcard() analyze_wildcard(int $value) Default: 1
- * @method \Sherlock\components\queries\QueryStringMultiField auto_generate_phrase_queries() auto_generate_phrase_queries(int $value) Default: 0
- * @method \Sherlock\components\queries\QueryStringMultiField rewrite() rewrite(string $value) Default: "constant_score_default"
- * @method \Sherlock\components\queries\QueryStringMultiField quote_analyzer() quote_analyzer(string $value) Default: "standard"
- * @method \Sherlock\components\queries\QueryStringMultiField quote_field_suffix() quote_field_suffix(string $value) Default: ".unstemmed"
- * @method \Sherlock\components\queries\QueryStringMultiField use_dis_max() use_dis_max(string $value) Default: "true"
- * @method \Sherlock\components\queries\QueryStringMultiField tie_breaker() tie_breaker(int $value) Default: 1
+ * @method \Sherlock\components\queries\QueryStringMultiField fuzzy_prefix_length() fuzzy_prefix_length(\int $value) Default: 2
+ * @method \Sherlock\components\queries\QueryStringMultiField lenient() lenient(\int $value) Default: 1
+ * @method \Sherlock\components\queries\QueryStringMultiField phrase_slop() phrase_slop(\int $value) Default: 10
+ * @method \Sherlock\components\queries\QueryStringMultiField analyze_wildcard() analyze_wildcard(\int $value) Default: 1
+ * @method \Sherlock\components\queries\QueryStringMultiField auto_generate_phrase_queries() auto_generate_phrase_queries(\int $value) Default: 0
+ * @method \Sherlock\components\queries\QueryStringMultiField rewrite() rewrite(\string $value) Default: "constant_score_default"
+ * @method \Sherlock\components\queries\QueryStringMultiField quote_analyzer() quote_analyzer(\string $value) Default: "standard"
+ * @method \Sherlock\components\queries\QueryStringMultiField quote_field_suffix() quote_field_suffix(\string $value) Default: ".unstemmed"
+ * @method \Sherlock\components\queries\QueryStringMultiField use_dis_max() use_dis_max(\string $value) Default: "true"
+ * @method \Sherlock\components\queries\QueryStringMultiField tie_breaker() tie_breaker(\int $value) Default: 1
 
  */
 class QueryStringMultiField extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface

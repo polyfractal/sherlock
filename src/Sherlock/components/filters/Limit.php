@@ -10,7 +10,7 @@ namespace Sherlock\components\filters;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\filters\Limit value() value(int $value)
+ * @method \Sherlock\components\filters\Limit value() value(\int $value)
 
  */
 class Limit extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface

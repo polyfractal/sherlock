@@ -10,12 +10,12 @@ namespace Sherlock\components\filters;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\filters\Range field() field(string $value)
+ * @method \Sherlock\components\filters\Range field() field(\string $value)
  * @method \Sherlock\components\filters\Range from() from(mixed $value)
  * @method \Sherlock\components\filters\Range to() to(mixed $value)
- * @method \Sherlock\components\filters\Range include_lower() include_lower(bool $value) Default: true
- * @method \Sherlock\components\filters\Range include_upper() include_upper(bool $value) Default: false
- * @method \Sherlock\components\filters\Range _cache() _cache(bool $value) Default: true
+ * @method \Sherlock\components\filters\Range include_lower() include_lower(\bool $value) Default: true
+ * @method \Sherlock\components\filters\Range include_upper() include_upper(\bool $value) Default: false
+ * @method \Sherlock\components\filters\Range _cache() _cache(\bool $value) Default: true
 
  */
 class Range extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface

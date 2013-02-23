@@ -10,8 +10,8 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\Nested path() path(string $value)
- * @method \Sherlock\components\queries\Nested score_mode() score_mode(string $value) Default: "avg"
+ * @method \Sherlock\components\queries\Nested path() path(\string $value)
+ * @method \Sherlock\components\queries\Nested score_mode() score_mode(\string $value) Default: "avg"
  * @method \Sherlock\components\queries\Nested query() query(\sherlock\components\QueryInterface $value)
 
  */

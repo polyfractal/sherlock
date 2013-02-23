@@ -13,7 +13,7 @@ use Sherlock\components;
  * @method \Sherlock\components\filters\Bool must() must(array $value)
  * @method \Sherlock\components\filters\Bool must_not() must_not(array $value)
  * @method \Sherlock\components\filters\Bool should() should(array $value)
- * @method \Sherlock\components\filters\Bool _cache() _cache(bool $value) Default: false
+ * @method \Sherlock\components\filters\Bool _cache() _cache(\bool $value) Default: false
 
  */
 class Bool extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface

@@ -10,9 +10,9 @@ namespace Sherlock\components\filters;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\filters\Nested path() path(string $value)
+ * @method \Sherlock\components\filters\Nested path() path(\string $value)
  * @method \Sherlock\components\filters\Nested query() query(\sherlock\components\QueryInterface $value)
- * @method \Sherlock\components\filters\Nested _cache() _cache(bool $value) Default: false
+ * @method \Sherlock\components\filters\Nested _cache() _cache(\bool $value) Default: false
 
  */
 class Nested extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface
