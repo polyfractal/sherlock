@@ -1038,7 +1038,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req = $this->object->search();
 		$req->index("test123")->type("test");
 		$query = Sherlock::query()->Terms()->field("testString")
-				->term(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
+				->terms('term', 'term2')
 				->minimum_match(3)
 				;
 		
@@ -1047,9 +1047,27 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"terms":{"testString":{"value":[{},{}],"minimum_match":3}}}}';
+		$expectedData = '{"query" : {"terms":{"testString":["term","term2"],"minimum_match":3}}}';
 		$this->assertEquals($expectedData, $data);
 		
+		$resp = $req->execute();
+
+
+		$req = $this->object->search();
+		$req->index("test123")->type("test");
+		$query = Sherlock::query()->Terms()->field("testString")
+			->terms(array('term', 'term2'))
+			->minimum_match(3)
+		;
+
+		\Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
+
+		$req->query($query);
+
+		$data = $req->toJSON();
+		$expectedData = '{"query" : {"terms":{"testString":["term","term2"],"minimum_match":3}}}';
+		$this->assertEquals($expectedData, $data);
+
 		$resp = $req->execute();
 		
 		
@@ -1057,6 +1075,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @todo construct proper test for TopChildren
 	 * @covers sherlock\Sherlock\components\queries\TopChildren::type
 	 * @covers sherlock\Sherlock\components\queries\TopChildren::query
 	 * @covers sherlock\Sherlock\components\queries\TopChildren::score
