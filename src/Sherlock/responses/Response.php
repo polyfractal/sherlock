@@ -27,8 +27,6 @@ class Response
         }
 
         //\Analog\Analog::log("Response->__construct() : ".print_r($this->responseData,true),\Analog\Analog::DEBUG);
-        print_r($response->getBody(true));
-
-        //$this->responseData = $response->json();
+        $this->responseData = $response->json();
     }
 }
