@@ -930,30 +930,29 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$query = Sherlock::query()->QueryStringMultiField()->query("testString")
 				->fields(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
 				->boost(0.5)
-				->enable_position_increments(3)
-				->default_operator("testString")
-				->analyzer("testString")
-				->allow_leading_wildcard(3)
+				->enable_position_increments(true)
+				->default_operator("AND")
+				->analyzer("default")
+				->allow_leading_wildcard(true)
 				->lowercase_expanded_terms(3)
 				->fuzzy_min_sim(0.5)
 				->fuzzy_prefix_length(3)
 				->lenient(3)
 				->phrase_slop(3)
-				->analyze_wildcard(3)
-				->auto_generate_phrase_queries(3)
-				->rewrite("testString")
-				->quote_analyzer("testString")
-				->quote_field_suffix("testString")
-				->use_dis_max("testString")
-				->tie_breaker(3)
-				;
+				->analyze_wildcard(true)
+				->auto_generate_phrase_queries(true)
+				->rewrite("constant_score_default")
+				->quote_analyzer("standard")
+				->quote_field_suffix(".unstemmed")
+				->use_dis_max(true)
+				->tie_breaker(3);
 		
 		\Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"query_string":{"query":"testString","fields":[{},{}],"boost":0.5,"enable_position_increments":3,"default_operator":"testString","analyzer":"testString","allow_leading_wildcard":3,"lowercase_expanded_terms":3,"fuzzy_min_sim":0.5,"fuzzy_prefix_length":3,"lenient":3,"phrase_slop":3,"analyze_wildcard":3,"auto_generate_phrase_queries":3,"rewrite":"testString","quote_analyzer":"testString","quote_field_suffix":"testString","use_dis_max":"testString","tie_breaker":3}}}';
+		$expectedData = '{"query" : {"query_string":{"query":"testString","fields":[{},{}],"boost":0.5,"enable_position_increments":true,"default_operator":"AND","analyzer":"default","allow_leading_wildcard":true,"lowercase_expanded_terms":3,"fuzzy_min_sim":0.5,"fuzzy_prefix_length":3,"lenient":3,"phrase_slop":3,"analyze_wildcard":true,"auto_generate_phrase_queries":true,"quote_analyzer":"standard","quote_field_suffix":".unstemmed","use_dis_max":true,"tie_breaker":3},"rewrite":"constant_score_default"}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
