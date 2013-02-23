@@ -1089,7 +1089,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->index("test123")->type("test");
 		$query = Sherlock::query()->TopChildren()->type("testString")
 				->query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
-				->score("testString")
+				->score("max")
 				->factor(3)
 				->incremental_factor(3)
 				;
@@ -1099,10 +1099,10 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query" : {"top_children":{"type":"testString","query":{"term":{"auxillary":{"value":"auxillary"}}},"score":"testString","factor":3,"incremental_factor":3}}}';
+		$expectedData = '{"query" : {"top_children":{"type":"testString","query":{"term":{"auxillary":{"value":"auxillary"}}},"score":"max","factor":3,"incremental_factor":3}}}';
 		$this->assertEquals($expectedData, $data);
 		
-		$resp = $req->execute();
+		//$resp = $req->execute();
 		
 		
 		
