@@ -185,7 +185,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 		$sherlock = $this->object;
 
 		//Set the index
-		$index = $sherlock->index('test123');
+		$index = $sherlock->index('testmultimapping');
 
 		$mapping1 = sherlock::mappingProperty('testType')->Date()->field('testField')->format("YYYY-MM-dd");
 		$mapping2 = sherlock::mappingProperty('testType2')->String()->field('testField2');
