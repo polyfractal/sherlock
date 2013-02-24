@@ -194,6 +194,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @todo construct proper test for Geo filters
 	 * @covers sherlock\Sherlock\components\filters\GeoDistance::distance
 	 * @covers sherlock\Sherlock\components\filters\GeoDistance::lat
 	 * @covers sherlock\Sherlock\components\filters\GeoDistance::lon
@@ -205,7 +206,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->GeoDistance()->distance("testString")
+		$filter = Sherlock::filter()->GeoDistance()->distance("1km")
 				->lat(0.5)
 				->lon(0.5)
 				->_cache(true)
@@ -216,16 +217,17 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 		$req->query($filter);
 		
 		$data = $req->toJSON();
-		$expectedData = '';
-		//$this->assertEquals($expectedData, $data);
+		$expectedData = '{"filter":{"geo_distance":{"distance":"1km","pin.location":{"lat":0.5,"lon":0.5},"_cache":true}}}';
+		$this->assertEquals($expectedData, $data);
 		
-		$resp = $req->execute();
+		//$resp = $req->execute();
 		
 		
 		
 	}
 
 	/**
+	 * @todo construct proper test for Geo filters
 	 * @covers sherlock\Sherlock\components\filters\GeoDistanceRange::from
 	 * @covers sherlock\Sherlock\components\filters\GeoDistanceRange::lat
 	 * @covers sherlock\Sherlock\components\filters\GeoDistanceRange::lon
@@ -237,7 +239,8 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->GeoDistanceRange()->from("testString")
+		$filter = Sherlock::filter()->GeoDistanceRange()->from("100km")
+				->to("200km")
 				->lat(0.5)
 				->lon(0.5)
 				->_cache(true)
@@ -248,16 +251,17 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 		$req->query($filter);
 		
 		$data = $req->toJSON();
-		$expectedData = '';
-		//$this->assertEquals($expectedData, $data);
+		$expectedData = '{"filter":{"geo_distance_range":{"from":"100km","to":"200km","pin.location":{"lat":0.5,"lon":0.5},"_cache":true}}}';
+		$this->assertEquals($expectedData, $data);
 		
-		$resp = $req->execute();
+		//$resp = $req->execute();
 		
 		
 		
 	}
 
 	/**
+	 * @todo construct proper test for Geo filters
 	 * @covers sherlock\Sherlock\components\filters\GeoPolygon::points
 	 * @covers sherlock\Sherlock\components\filters\GeoPolygon::_cache
 	 * @covers sherlock\Sherlock\requests\SearchRequest::query
@@ -267,25 +271,25 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->GeoPolygon()->points(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
-				->_cache(true)
-				;
+		$filter = Sherlock::filter()->GeoPolygon()->points(array(array("lat"=>40, "lon"=> -70),array("lat"=>30, "lon"=> -80)))
+				->_cache(true);
 		
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
 		$req->query($filter);
 		
 		$data = $req->toJSON();
-		$expectedData = '';
-		//$this->assertEquals($expectedData, $data);
+		$expectedData = '{"filter":{"geo_polygon":{"person.location":{"points":[{"lat":40,"lon":-70},{"lat":30,"lon":-80}]},"_cache":true}}}';
+		$this->assertEquals($expectedData, $data);
 		
-		$resp = $req->execute();
+		//$resp = $req->execute();
 		
 		
 		
 	}
 
 	/**
+	 * @todo construct proper test for Parent/Child filters
 	 * @covers sherlock\Sherlock\components\filters\HasChild::type
 	 * @covers sherlock\Sherlock\components\filters\HasChild::query
 	 * @covers sherlock\Sherlock\requests\SearchRequest::query
@@ -304,16 +308,17 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 		$req->query($filter);
 		
 		$data = $req->toJSON();
-		$expectedData = '';
-		//$this->assertEquals($expectedData, $data);
+		$expectedData = '{"filter":{"has_child":{"type":"testString","query":{"term":{"auxillary":{"value":"auxillary"}}}}}}';
+		$this->assertEquals($expectedData, $data);
 		
-		$resp = $req->execute();
+		//$resp = $req->execute();
 		
 		
 		
 	}
 
 	/**
+	 * @todo construct proper test for Parent/Child filters
 	 * @covers sherlock\Sherlock\components\filters\HasParent::parent_type
 	 * @covers sherlock\Sherlock\components\filters\HasParent::query
 	 * @covers sherlock\Sherlock\requests\SearchRequest::query
@@ -332,10 +337,10 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 		$req->query($filter);
 		
 		$data = $req->toJSON();
-		$expectedData = '';
-		//$this->assertEquals($expectedData, $data);
+		$expectedData = '{"filter":{"has_parent":{"parent_type":"testString","query":{"term":{"auxillary":{"value":"auxillary"}}}}}}';
+		$this->assertEquals($expectedData, $data);
 		
-		$resp = $req->execute();
+		//$resp = $req->execute();
 		
 		
 		
@@ -352,7 +357,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
 		$filter = Sherlock::filter()->Ids()->type("testString")
-				->values(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
+				->values(array("1","2","3"))
 				;
 		
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
@@ -360,12 +365,27 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 		$req->query($filter);
 		
 		$data = $req->toJSON();
-		$expectedData = '';
-		//$this->assertEquals($expectedData, $data);
+		$expectedData = '{"filter":{"ids":{"type":"testString","values":["1","2","3"]}}}';
+		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
-		
-		
+
+
+		$req = $this->object->search();
+		$req->index("testfilters")->type("test");
+		$filter = Sherlock::filter()->Ids()->type("testString")
+			->values("1","2","3")
+		;
+
+		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
+
+		$req->query($filter);
+
+		$data = $req->toJSON();
+		$expectedData = '{"filter":{"ids":{"type":"testString","values":["1","2","3"]}}}';
+		$this->assertEquals($expectedData, $data);
+
+		$resp = $req->execute();
 		
 	}
 
