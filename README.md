@@ -16,7 +16,7 @@ Features
 Resources
 ---------------
  - Read the [Quickstart Guide](http://sherlockphp.com/quickstart.html)
- - Read the [Full Documentation](http://sherlockphp.com/quickstart.html)
+ - Read the [Full Documentation](http://sherlockphp.com/documentation.html)
 
 Installation via Composer
 -------------------------
