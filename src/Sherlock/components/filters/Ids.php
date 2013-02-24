@@ -20,27 +20,27 @@ class Ids extends \Sherlock\components\BaseComponent implements \Sherlock\compon
         parent::__construct($hashMap);
     }
 
-	/**
-	 * @param  \string | array $values
-	 * @return Ids
-	 */
-	public function values($ids)
-	{
+    /**
+     * @param  \string | array $values
+     * @return Ids
+     */
+    public function values($ids)
+    {
 
-		$args = func_get_args();
-		\Analog\Analog::log("Ids->Values(".print_r($args, true).")", \Analog\Analog::DEBUG);
+        $args = func_get_args();
+        \Analog\Analog::log("Ids->Values(".print_r($args, true).")", \Analog\Analog::DEBUG);
 
-		//single param, array of ids
-		if (count($args) == 1 && is_array($args[0]))
-			$args = $args[0];
+        //single param, array of ids
+        if (count($args) == 1 && is_array($args[0]))
+            $args = $args[0];
 
-		foreach ($args as $arg) {
-			if (is_string($arg))
-				$this->params['values'][] = $arg;
-		}
+        foreach ($args as $arg) {
+            if (is_string($arg))
+                $this->params['values'][] = $arg;
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
     public function toArray()
     {

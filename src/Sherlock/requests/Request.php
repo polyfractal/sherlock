@@ -63,35 +63,30 @@ class Request
         try {
             $response = $client->$action($this->_uri, null, $this->_data)->send();
 
-        }
-        catch (\Guzzle\Http\Exception\ClientErrorResponseException $e){
-			Analog::log("Request->execute() - ClientErrorResponseException - Request failed from ".$class, Analog::ERROR);
-			Analog::log(print_r($e->getMessage(), true), Analog::ERROR);
-			Analog::log(print_r($e->getResponse()->getBody(true), true), Analog::ERROR);
+        } catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
+            Analog::log("Request->execute() - ClientErrorResponseException - Request failed from ".$class, Analog::ERROR);
+            Analog::log(print_r($e->getMessage(), true), Analog::ERROR);
+            Analog::log(print_r($e->getResponse()->getBody(true), true), Analog::ERROR);
 
             throw new \Sherlock\common\exceptions\ClientErrorResponseException($e->getResponse()->getBody(true), $e->getCode(), $e);
+        } catch (\Guzzle\Http\Exception\ServerErrorResponseException $e) {
+            Analog::log("Request->execute() - ServerErrorResponseException - Request failed from ".$class, Analog::ERROR);
+            Analog::log(print_r($e->getMessage(), true), Analog::ERROR);
+            Analog::log(print_r($e->getResponse()->getBody(true), true), Analog::ERROR);
+
+            throw new \Sherlock\common\exceptions\ClientErrorResponseException($e->getResponse()->getBody(true), $e->getCode(), $e);
+        } catch (\Guzzle\Http\Exception\BadResponseException $e) {
+            Analog::log("Request->execute() - BadResponseException - Request failed from ".$class, Analog::ERROR);
+            Analog::log(print_r($e->getMessage(), true), Analog::ERROR);
+            Analog::log(print_r($e->getResponse()->getBody(true), true), Analog::ERROR);
+
+            throw new \Sherlock\common\exceptions\BadResponseException($e->getResponse()->getBody(true), $e->getCode(), $e);
+        } catch (\Exception $e) {
+            Analog::log("Request->execute() - Exception - Request failed from ".$class, Analog::ERROR);
+            Analog::log(print_r($e, true), Analog::ERROR);
+
+            throw new \Sherlock\common\exceptions\RuntimeException($e->getMessage(), $e->getCode(), $e);
         }
-		catch (\Guzzle\Http\Exception\ServerErrorResponseException $e){
-			Analog::log("Request->execute() - ServerErrorResponseException - Request failed from ".$class, Analog::ERROR);
-			Analog::log(print_r($e->getMessage(), true), Analog::ERROR);
-			Analog::log(print_r($e->getResponse()->getBody(true), true), Analog::ERROR);
-
-			throw new \Sherlock\common\exceptions\ClientErrorResponseException($e->getResponse()->getBody(true), $e->getCode(), $e);
-		}
-        catch (\Guzzle\Http\Exception\BadResponseException $e) {
-			Analog::log("Request->execute() - BadResponseException - Request failed from ".$class, Analog::ERROR);
-			Analog::log(print_r($e->getMessage(), true), Analog::ERROR);
-			Analog::log(print_r($e->getResponse()->getBody(true), true), Analog::ERROR);
-
-			throw new \Sherlock\common\exceptions\BadResponseException($e->getResponse()->getBody(true), $e->getCode(), $e);
-        }
-		catch (\Exception $e)
-		{
-			Analog::log("Request->execute() - Exception - Request failed from ".$class, Analog::ERROR);
-			Analog::log(print_r($e, true), Analog::ERROR);
-
-			throw new \Sherlock\common\exceptions\RuntimeException($e->getMessage(), $e->getCode(), $e);
-		}
 
         //This is kinda gross...
         if ($class == 'SearchRequest')

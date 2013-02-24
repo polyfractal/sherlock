@@ -18,12 +18,12 @@ class IndexRequest extends Request
      */
     protected $params;
 
-	/**
-	 * @param $node
-	 * @param $index
-	 * @throws \Sherlock\common\exceptions\BadMethodCallException
-	 */
-	public function __construct($node, $index)
+    /**
+     * @param $node
+     * @param $index
+     * @throws \Sherlock\common\exceptions\BadMethodCallException
+     */
+    public function __construct($node, $index)
     {
         if (!isset($node))
             throw new \Sherlock\common\exceptions\BadMethodCallException("Node argument required for IndexRequest");
@@ -59,8 +59,8 @@ class IndexRequest extends Request
      */
 
     /**
-     * @param  string        $index     indices to operate on
-     * @param  string        $index,... indices to operate on
+     * @param  string       $index     indices to operate on
+     * @param  string       $index,... indices to operate on
      * @return IndexRequest
      */
     public function index($index)
@@ -75,8 +75,8 @@ class IndexRequest extends Request
     }
 
     /**
-     * @param  string        $type     indices to operate on
-     * @param  string        $type,... indices to operate on
+     * @param  string       $type     indices to operate on
+     * @param  string       $type,... indices to operate on
      * @return IndexRequest
      */
     public function type($type)

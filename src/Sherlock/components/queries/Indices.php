@@ -21,28 +21,26 @@ class Indices extends \Sherlock\components\BaseComponent implements \Sherlock\co
         parent::__construct($hashMap);
     }
 
-	/**
-	 * @param  array | string $indices,...
-	 * @return Indices
-	 */
-	public function indices($indices)
-	{
-		$args = func_get_args();
-		\Analog\Analog::log("Indicies->Indices(".print_r($args, true).")", \Analog\Analog::DEBUG);
+    /**
+     * @param  array | string $indices,...
+     * @return Indices
+     */
+    public function indices($indices)
+    {
+        $args = func_get_args();
+        \Analog\Analog::log("Indicies->Indices(".print_r($args, true).")", \Analog\Analog::DEBUG);
 
-		//single param, array of strings
-		if (count($args) == 1 && is_array($args[0]))
-			$args = $args[0];
+        //single param, array of strings
+        if (count($args) == 1 && is_array($args[0]))
+            $args = $args[0];
 
-		foreach ($args as $arg) {
-			if (is_string($arg))
-				$this->params['indices'][] = $arg;
-		}
+        foreach ($args as $arg) {
+            if (is_string($arg))
+                $this->params['indices'][] = $arg;
+        }
 
-		return $this;
-	}
-
-
+        return $this;
+    }
 
     public function toArray()
     {

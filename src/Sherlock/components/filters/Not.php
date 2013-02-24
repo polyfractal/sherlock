@@ -21,21 +21,21 @@ class Not extends \Sherlock\components\BaseComponent implements \Sherlock\compon
         parent::__construct($hashMap);
     }
 
-	/**
-	 * @param  \Sherlock\components\QueryInterface | \Sherlock\components\FilterInterface $value
-	 * @return Not
-	 */
-	public function not($value)
-	{
-		\Analog\Analog::log("Not->not(".print_r($value, true).")", \Analog\Analog::DEBUG);
+    /**
+     * @param  \Sherlock\components\QueryInterface | \Sherlock\components\FilterInterface $value
+     * @return Not
+     */
+    public function not($value)
+    {
+        \Analog\Analog::log("Not->not(".print_r($value, true).")", \Analog\Analog::DEBUG);
 
-		if ($value instanceof \Sherlock\components\QueryInterface)
-			$this->params['not'] = $value->toArray();
-		elseif ($value instanceof \Sherlock\components\FilterInterface)
-			$this->params['not'] = array("filter" => $value->toArray());
+        if ($value instanceof \Sherlock\components\QueryInterface)
+            $this->params['not'] = $value->toArray();
+        elseif ($value instanceof \Sherlock\components\FilterInterface)
+            $this->params['not'] = array("filter" => $value->toArray());
 
-		return $this;
-	}
+        return $this;
+    }
 
     public function toArray()
     {

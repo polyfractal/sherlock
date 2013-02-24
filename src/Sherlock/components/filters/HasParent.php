@@ -24,14 +24,14 @@ class HasParent extends \Sherlock\components\BaseComponent implements \Sherlock\
 
     public function toArray()
     {
-		$ret = array (
-			'has_parent' =>
-			array (
-				'parent_type' => $this->params["parent_type"],
-				'query' => $this->params["query"]->toArray(),
-				//'_cache' => $this->params["_cache"],
-			),
-		);
+        $ret = array (
+            'has_parent' =>
+            array (
+                'parent_type' => $this->params["parent_type"],
+                'query' => $this->params["query"]->toArray(),
+                //'_cache' => $this->params["_cache"],
+            ),
+        );
 
         return $ret;
     }
