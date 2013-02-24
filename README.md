@@ -3,6 +3,20 @@ Sherlock
 
 _Sherlock_ is a PHP (>=5.3.0) client for [ElasticSearch](http://www.elasticsearch.org/).  _Sherlock_ can be used to search and manage ElasticSearch clusters.
 
+Features
+--------
+
+ - One-to-one mapping with ElasticSearch's API and query DSL.
+ - Option to use powerful ORM-like interface, associative arrays or raw JSON
+ - Application-wide connection pooling with HTTP/1.1 persistent connections (using a single [cURL multi-handle in Guzzle](http://guzzlephp.org/tour/http.html#managed-persistent-http-connections))
+ - Autodetection of cluster nodes and subsequent round-robin requests to the entire cluster
+ - Configurable logging capabilities
+
+
+Resources
+---------------
+ - Read the [Quickstart Guide](http://sherlockphp.com/quickstart.html)
+ - Read the [Full Documentation](http://sherlockphp.com/quickstart.html)
 
 Installation via Composer
 -------------------------
@@ -28,6 +42,7 @@ The recommended method to install _Sherlock_ is through [Composer](http://getcom
 
     Composer also prepares an autoload file that's capable of autoloading all of the classes in any of the libraries that it downloads. To use it, just add the following line to your code's bootstrap process:
 
+        <?php
         require 'vendor/autoload.php';
 
 You can find out more on how to install Composer, configure autoloading, and other best-practices for defining dependencies at [getcomposer.org](http://getcomposer.org).
@@ -35,7 +50,13 @@ You can find out more on how to install Composer, configure autoloading, and oth
 
 Manual Installation
 -------------------
-_Sherlock_ can be installed even if you don't use Composer.  This feature is not finished yet, unfortunately.  Please check back soon.
+_Sherlock_ can be installed even if you don't use Composer.  Download Sherlock and include the following in your index.php or equivalent
+
+```php
+        <?php
+        require 'Sherlock/Sherlock.php';
+        \Sherlock\Sherlock::registerAutoloader();
+```
 
 Usage
 -----
@@ -59,7 +80,7 @@ The library interface is still under flux...this section will be updated once _S
             ->type("tweet")
             ->from(0)
             ->to(10);
-            ->query($sherlock->query()->Term()->field("message")
+            ->query(Sherlock::query()->Term()->field("message")
                                               ->term("ElasticSearch"));
 
    //Execute the search and return results
@@ -77,17 +98,17 @@ The library interface is still under flux...this section will be updated once _S
 
    //Let's try a more advanced query now.
    //Each section is it's own variable to help show how everything fits together
-   $must = $sherlock->query()->Term()->field("message")
+   $must = Sherlock::query()->Term()->field("message")
                                      ->term("ElasticSearch");
 
-   $should = $sherlock->query()->Match()->field("author")
+   $should = Sherlock::query()->Match()->field("author")
                                         ->query("Zachary Tong")
                                         ->boost(2.5);
 
-   $must_not = $sherlock->query()->Term()->field("message")
+   $must_not = Sherlock::query()->Term()->field("message")
                                            ->term("Solr");
 
-   $bool = $sherlock->query()->Bool->must($must)
+   $bool = Sherlock::query()->Bool->must($must)
                                    ->should($should)
                                    ->must_not($must_not);
    $request->query($bool);
@@ -104,11 +125,11 @@ Not a fan of ORM style construction?  Don't worry, _Sherlock_ supports "raw" ass
     //We can compose queries using hashmaps instead of the ORM.
     $manualData = array("field" => "field1", "term" => "town");
 
-    $request->query($sherlock->query()->Term($manualData));
+    $request->query(Sherlock::query()->Term($manualData));
 
 ```
 
-Associative arrays too onerous?  Need to consume and use raw JSON?  No problem
+Need to consume and use raw JSON?  No problem
 ```php
     //Build a new search request
     $request = $sherlock->search();
@@ -116,12 +137,13 @@ Associative arrays too onerous?  Need to consume and use raw JSON?  No problem
     //We can compose queries using hashmaps instead of the ORM.
     $json = '{ "term" : { "field1" : "town" } }';
 
-    $request->query($sherlock->query()->Raw($json));
+    $request->query(Sherlock::query()->Raw($json));
 
 ```
 
 (There will be a RawQuery method soon, that lets you construct entirely arbitrary queries with arrays or JSON)
 
+For more examples check out the (Quickstart Guide)[http://sherlockphp.com/quickstart.html]
 
 Philosophy
 ----------
