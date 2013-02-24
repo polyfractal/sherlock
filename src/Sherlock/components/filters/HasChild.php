@@ -24,7 +24,14 @@ class HasChild extends \Sherlock\components\BaseComponent implements \Sherlock\c
 
     public function toArray()
     {
-        $ret = NULL;
+		$ret = array (
+			'has_child' =>
+			array (
+				'type' => $this->params["type"],
+				'query' => $this->params["query"]->toArray(),
+				//'_cache' => $this->params["_cache"],
+			),
+		);
 
         return $ret;
     }
