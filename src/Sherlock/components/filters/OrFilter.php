@@ -10,11 +10,10 @@ namespace Sherlock\components\filters;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\filters\Or or() or(array $value)
- * @method \Sherlock\components\filters\Or _cache() _cache(\bool $value) Default: false
+ * @method \Sherlock\components\filters\OrFilter _cache() _cache(\bool $value) Default: false
 
  */
-class Or extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface
+class OrFilter extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface
 {
     public function __construct($hashMap = null)
     {
@@ -23,10 +22,38 @@ class Or extends \Sherlock\components\BaseComponent implements \Sherlock\compone
         parent::__construct($hashMap);
     }
 
+	/**
+	 * @param  \Sherlock\components\QueryInterface | \Sherlock\components\QueryInterface | array $values,... - one or more Queries can be specified individually, or an array of filters
+	 * @return OrFilter
+	 */
+	public function queries($values)
+	{
+
+		$args = func_get_args();
+		\Analog\Analog::log("OrFilter->Queries(".print_r($args, true).")", \Analog\Analog::DEBUG);
+
+		//single param, array of queries\filters
+		if (count($args) == 1 && is_array($args[0]))
+			$args = $args[0];
+
+		foreach ($args as $arg) {
+			if ($arg instanceof \Sherlock\components\QueryInterface)
+				$this->params['queries'][] = $arg->toArray();
+			elseif ($arg instanceof \Sherlock\components\FilterInterface)
+				$this->params['queries'][] = $arg->toArray();
+		}
+
+		//was this a set of filters?  Assume it was if the first arg is a filter
+		if ($args[0] instanceof \Sherlock\components\FilterInterface)
+			$this->params['queries'] = array("filters" => $this->params['queries']);
+
+		return $this;
+	}
+
     public function toArray()
     {
         $ret = array (
-  'or' => $this->params["or"],
+  'or' => $this->params["queries"],
   '_cache' => $this->params["_cache"],
 );
 
