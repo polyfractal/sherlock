@@ -2,7 +2,7 @@
     "name": "polyfractal/sherlock",
     "description": "PHP Client for Elasticsearch",
     "keywords": ["search","client", "elasticsearch"],
-    "homepage": "https://github.com/polyfractal/sherlock",
+    "homepage": "https://sherlockphp.org",
     "type": "library",
     "license": "MIT",
     "authors": [
