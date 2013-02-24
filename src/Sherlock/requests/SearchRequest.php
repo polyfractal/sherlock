@@ -23,7 +23,7 @@ class SearchRequest extends Request
 
     public function __construct($node)
     {
-
+		$this->params['filter'] = array();
         parent::__construct($node);
     }
     public function __call($name, $args)
