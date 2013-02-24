@@ -66,8 +66,8 @@ class SearchRequest extends Request
     }
 
     /**
-     * @param  \Sherlock\components\BaseComponent $value     Queries, filters, facets, etc to add to the query
-     * @param  \Sherlock\components\BaseComponent $value,... Queries, filters, facets, etc to add to the query
+     * @param  \Sherlock\components\BaseComponent $value
+     * @param  \Sherlock\components\BaseComponent $value,...
      * @return SearchRequest
      */
     public function query($value)
@@ -80,6 +80,22 @@ class SearchRequest extends Request
 
         return $this;
     }
+
+	/**
+	 * @param  \Sherlock\components\BaseComponent $value
+	 * @param  \Sherlock\components\BaseComponent $value,...
+	 * @return SearchRequest
+	 */
+	public function filter($value)
+	{
+		$this->params['filter'] = array();
+		$args = func_get_args();
+		foreach ($args as $arg) {
+			$this->params['filter'][] = $arg;
+		}
+
+		return $this;
+	}
 
     /**
      * @return \Sherlock\responses\QueryResponse
@@ -135,15 +151,18 @@ class SearchRequest extends Request
     {
         $finalQuery = array();
 
-        if (count($this->params['query']) == 0)
+        if (!isset($this->params['query']) || count($this->params['query']) == 0)
             throw new \Sherlock\common\exceptions\RuntimeException("Search query cannot be empty.");
 
         foreach ($this->params['query'] as $query) {
             if ($query instanceof \Sherlock\components\QueryInterface)
                 $finalQuery[] = '"query":'.$query->toJSON();
-            elseif ($query instanceof \Sherlock\components\FilterInterface)
-                $finalQuery[] = '"filter":'.$query->toJSON();
         }
+
+		foreach ($this->params['filter'] as $query) {
+			if ($query instanceof \Sherlock\components\FilterInterface)
+				$finalQuery[] = '"filter":'.$query->toJSON();
+		}
 
         if (isset($this->params['from']))
             $finalQuery[] = '"from":"'.$this->params['from'].'"';
