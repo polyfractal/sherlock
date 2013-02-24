@@ -25,7 +25,7 @@ use Sherlock\components\filters;
  * @method \Sherlock\components\filters\Nested Nested() Nested()
  * @method \Sherlock\components\filters\Not Not() Not()
  * @method \Sherlock\components\filters\NumericRange NumericRange() NumericRange()
- * @method \Sherlock\components\filters\Or Or() Or()
+ * @method \Sherlock\components\filters\OrFilter OrFilter() OrFilter()
  * @method \Sherlock\components\filters\Prefix Prefix() Prefix()
  * @method \Sherlock\components\filters\Query Query() Query()
  * @method \Sherlock\components\filters\Range Range() Range()
