@@ -26,7 +26,7 @@ The recommended method to install _Sherlock_ is through [Composer](http://getcom
 
         {
             "require": {
-                "polyfractal/sherlock": "master"
+                "sherlock/sherlock": "master"
             }
         }
 
