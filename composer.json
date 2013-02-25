@@ -1,5 +1,5 @@
 {
-    "name": "polyfractal/sherlock",
+    "name": "sherlock/sherlock",
     "description": "PHP Client for Elasticsearch",
     "keywords": ["search","client", "elasticsearch"],
     "homepage": "https://sherlockphp.org",
