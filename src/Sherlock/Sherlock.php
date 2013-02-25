@@ -5,7 +5,7 @@
  * Time: 10:28 AM
  * @package Sherlock
  * @author Zachary Tong
- * @version 0.1.1
+ * @version 0.1.2
  */
 
 namespace Sherlock;
