@@ -1,5 +1,5 @@
 {
-    "name": "polyfractal/sherlock",
+    "name": "sherlock/sherlock",
     "description": "PHP Client for Elasticsearch",
     "keywords": ["search","client", "elasticsearch"],
     "homepage": "https://sherlockphp.org",
@@ -14,7 +14,7 @@
     "require": {
         "php": ">=5.3.0",
         "guzzle/guzzle": "~3.1",
-        "analog/analog": "dev-master"
+        "analog/analog": "dev-master@dev"
 
     },
     "require-dev": {
