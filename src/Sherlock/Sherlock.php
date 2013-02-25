@@ -3,6 +3,9 @@
  * User: Zachary Tong
  * Date: 2/4/13
  * Time: 10:28 AM
+ * @package Sherlock
+ * @author Zachary Tong
+ * @version 0.1.1
  */
 
 namespace Sherlock;
@@ -13,13 +16,30 @@ use Sherlock\common\exceptions;
 use Guzzle\Http\Client;
 use Analog\Analog;
 
+/**
+ * Primary object through which the ElasticSearch cluster is accessed.
+ *
+ * <code>
+ * require 'vendor/autoload.php';
+ * $sherlock = new Sherlock();
+ * </code>
+ */
 class Sherlock
 {
+	/**
+	 * @var array Sherlock settings, can be replaced with user-settings through constructor
+	 */
+	protected $settings;
+	/**
+	 * @var array Templates - not used at the moment
+	 */
+	protected $templates = array();
 
-    protected $settings;
-    protected $templates = array();
-
-    public function __construct($userSettings = array())
+	/**
+	 * Sherlock constructor, accepts optional user settings
+	 * @param array $userSettings Optional user settings to over-ride the default
+	 */
+	public function __construct($userSettings = array())
     {
 
         $this->settings = array_merge(static::getDefaultSettings(), $userSettings);
@@ -76,8 +96,10 @@ class Sherlock
 	}
 
 
-
-    public static function getDefaultSettings()
+	/**
+	 * @return array Default settings
+	 */
+	public static function getDefaultSettings()
     {
         return array(
             // Application
@@ -90,6 +112,7 @@ class Sherlock
     }
 
     /**
+	 * Query builder, used to return a QueryWrapper through which a Query component can be selected
      * @return wrappers\QueryWrapper
      */
     public static function query()
@@ -100,6 +123,7 @@ class Sherlock
     }
 
     /**
+	 * Filter builder, used to return a FilterWrapper through which a Filter component can be selected
      * @return wrappers\FilterWrapper
      */
     public static function Filter()
@@ -110,6 +134,7 @@ class Sherlock
     }
 
     /**
+	 * Index builder, used to return a IndexWrapper through which an Index component can be selected
      * @return wrappers\IndexSettingsWrapper
      */
     public static function indexSettings()
@@ -120,6 +145,7 @@ class Sherlock
     }
 
     /**
+	 * Mapping builder, used to return a MappingWrapper through which a Mapping component can be selected
      * @param  null|string                     $type
      * @return wrappers\MappingPropertyWrapper
      */
@@ -131,6 +157,7 @@ class Sherlock
     }
 
     /**
+	 * Used to obtain a SearchRequest object, allows querying the cluster with searches
      * @return requests\SearchRequest
      */
     public function search()
@@ -142,7 +169,11 @@ class Sherlock
         return new \Sherlock\requests\SearchRequest($randomNode);
     }
 
-    public function addDocument()
+	/**
+	 * Used to return an IndexDocumentRequest object, allows adding a doc to the index
+	 * @return requests\IndexDocumentRequest
+	 */
+	public function addDocument()
     {
         \Analog\Analog::log("Sherlock->indexDocument()", \Analog\Analog::DEBUG);
         $randInt = rand(0,count($this->settings['nodes'])-1);
@@ -152,6 +183,7 @@ class Sherlock
     }
 
     /**
+	 * Depreciated...should be removed soon.
      * @param  string                $index     Index to operate on
      * @param  string                $index,... Index to operate on
      * @return requests\IndexRequest
@@ -172,7 +204,7 @@ class Sherlock
     }
 
     /**
-     * @todo refactor cluster autodetection into it's own set of components, etc
+	 * Autodetects various properties of the cluster and indices
      */
     public function autodetect()
     {
@@ -255,7 +287,10 @@ class Sherlock
 
     }
 
-    private function setupLogging()
+	/**
+	 * Setup Analog logger
+	 */
+	private function setupLogging()
     {
         $level = Analog::DEBUG;
 
@@ -282,13 +317,16 @@ class Sherlock
                 $level = Analog::ALERT;
                 break;
         }
-        //Analog::handler(\Analog\Handler\Threshold::init (\Analog\Handler\File::init ($this->settings['base'] . $this->settings['log.file']),$level));
-        Analog::handler(\Analog\Handler\LevelBuffer::init (\Analog\Handler\File::init ($this->settings['base'] . $this->settings['log.file']),$level));
+        Analog::handler(\Analog\Handler\Threshold::init (\Analog\Handler\File::init ($this->settings['base'] . $this->settings['log.file']),$level));
+        //Analog::handler(\Analog\Handler\LevelBuffer::init (\Analog\Handler\File::init ($this->settings['base'] . $this->settings['log.file']),$level));
         Analog::log("--------------------------------------------------------", Analog::ALERT);
         Analog::log("Logging setup at ".date("Y-m-d H:i:s.u"), Analog::INFO);
     }
 
-    private function autodetect_parseNodes()
+	/**
+	 * Autodetect the nodes in this cluster through Cluster State API
+	 */
+	private function autodetect_parseNodes()
     {
         Analog::log("Autodetecting nodes in cluster...", Analog::DEBUG);
         foreach ($this->settings['nodes'] as $node) {
