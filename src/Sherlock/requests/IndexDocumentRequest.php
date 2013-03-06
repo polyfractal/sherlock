@@ -3,6 +3,7 @@
  * User: Zachary Tong
  * Date: 2/17/13
  * Time: 6:39 PM
+ * @package Sherlock\requests
  */
 
 namespace Sherlock\requests;
@@ -10,19 +11,31 @@ namespace Sherlock\requests;
 use Sherlock\common\exceptions;
 
 /**
+ * This class facilitates indexing single documents into an ElasticSearch index
+ *
  * @method \Sherlock\requests\SearchRequest id() id(\mixed $value)
  */
 class IndexDocumentRequest extends Request
 {
+	/**
+	 * @var array
+	 */
+	protected $params;
 
-    protected $params;
-
-    public function __construct($node)
+	/**
+	 * @param $node
+	 */
+	public function __construct($node)
     {
-
         parent::__construct($node);
     }
-    public function __call($name, $args)
+
+	/**
+	 * @param $name
+	 * @param $args
+	 * @return IndexDocumentRequest
+	 */
+	public function __call($name, $args)
     {
         $this->params[$name] = $args[0];
 
@@ -30,6 +43,8 @@ class IndexDocumentRequest extends Request
     }
 
     /**
+	 * Set the index to add documents to
+	 *
      * @param  string               $index     indices to query
      * @param  string               $index,... indices to query
      * @return IndexDocumentRequest
@@ -46,6 +61,8 @@ class IndexDocumentRequest extends Request
     }
 
     /**
+	 * Set the type to add documents to
+	 *
      * @param  string               $type
      * @param  string               $type,...
      * @return IndexDocumentRequest
@@ -62,6 +79,8 @@ class IndexDocumentRequest extends Request
     }
 
     /**
+	 * The document to index
+	 *
      * @param  \string|\array       $value
      * @return IndexDocumentRequest
      */
@@ -76,6 +95,8 @@ class IndexDocumentRequest extends Request
     }
 
     /**
+	 * Perform the indexing operation
+	 *
      * @throws \Sherlock\common\exceptions\RuntimeException
      * @return \Sherlock\responses\IndexResponse
      */
