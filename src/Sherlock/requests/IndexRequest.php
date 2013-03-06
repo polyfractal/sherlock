@@ -3,6 +3,7 @@
  * User: Zachary Tong
  * Date: 2/12/13
  * Time: 7:37 PM
+ * @package Sherlock\requests
  */
 
 namespace Sherlock\requests;
@@ -10,6 +11,15 @@ namespace Sherlock\requests;
 use Sherlock\common\exceptions;
 use Sherlock\wrappers;
 
+/**
+ * IndexRequest manages index-specific operations
+ *
+ * Index operations include actions like getting or updating mappings,
+ * creating new indices, deleting old indices, state, stats, etc
+ *
+ * Note, this is distinct from the IndexDocument class, which is solely responsible
+ * for indexing documents
+ */
 class IndexRequest extends Request
 {
 
@@ -44,7 +54,12 @@ class IndexRequest extends Request
         parent::__construct($node);
     }
 
-    public function __call($name, $args)
+	/**
+	 * @param $name
+	 * @param $args
+	 * @return IndexRequest
+	 */
+	public function __call($name, $args)
     {
         $this->params[$name] = $args[0];
 
@@ -59,6 +74,8 @@ class IndexRequest extends Request
      */
 
     /**
+	 * Set the index to operate on
+	 *
      * @param  string       $index     indices to operate on
      * @param  string       $index,... indices to operate on
      * @return IndexRequest
@@ -75,6 +92,8 @@ class IndexRequest extends Request
     }
 
     /**
+	 * Set the type to operate on
+	 *
      * @param  string       $type     indices to operate on
      * @param  string       $type,... indices to operate on
      * @return IndexRequest
@@ -91,6 +110,8 @@ class IndexRequest extends Request
     }
 
     /**
+	 * Set the mappings that are used for various operations (set mappings, index creation, etc)
+	 *
      * @todo fix array-only input
      * @todo add json input
      *
@@ -133,6 +154,8 @@ class IndexRequest extends Request
     }
 
     /**
+	 * Set the index settings, used predominantly for index creation
+	 *
      * @param  array|\sherlock\wrappers\IndexSettingsWrapper      $settings
      * @param  bool                                               $merge
      * @throws \Sherlock\common\exceptions\BadMethodCallException
@@ -162,6 +185,8 @@ class IndexRequest extends Request
      */
 
     /**
+	 * Delete an index
+	 *
      * @return \Sherlock\responses\IndexResponse
      * @throws \Sherlock\common\exceptions\RuntimeException
      */
@@ -187,6 +212,8 @@ class IndexRequest extends Request
         return $ret;
     }
     /**
+	 * Create an index
+	 *
      * @return \Sherlock\responses\IndexResponse
      * @throws \Sherlock\common\exceptions\RuntimeException
      */
@@ -228,6 +255,8 @@ class IndexRequest extends Request
     }
 
     /**
+	 * Update the settings of an index
+	 *
      * @todo allow updating settings of all indices
      *
      * @return \Sherlock\responses\IndexResponse
@@ -260,6 +289,8 @@ class IndexRequest extends Request
     }
 
     /**
+	 * Update/add the Mapping of an index
+	 *
      * @return \Sherlock\responses\IndexResponse
      * @throws \Sherlock\common\exceptions\RuntimeException
      */

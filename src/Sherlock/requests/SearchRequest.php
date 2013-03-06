@@ -3,12 +3,15 @@
  * User: Zachary Tong
  * Date: 2/10/13
  * Time: 12:10 PM
+ * @package Sherlock\requests
  */
 namespace Sherlock\requests;
 
 use Sherlock\common\exceptions;
 
 /**
+ * SearchRequest facilitates searching an ES index using the ES query DSL
+ *
  * @method \Sherlock\requests\SearchRequest timeout() timeout(\int $value)
  * @method \Sherlock\requests\SearchRequest from() from(\int $value)
  * @method \Sherlock\requests\SearchRequest to() to(\int $value)
@@ -17,15 +20,26 @@ use Sherlock\common\exceptions;
  */
 class SearchRequest extends Request
 {
+	/**
+	 * @var array
+	 */
+	protected $params;
 
-    protected $params;
-
-    public function __construct($node)
+	/**
+	 * @param $node
+	 */
+	public function __construct($node)
     {
         $this->params['filter'] = array();
         parent::__construct($node);
     }
-    public function __call($name, $args)
+
+	/**
+	 * @param $name
+	 * @param $args
+	 * @return SearchRequest
+	 */
+	public function __call($name, $args)
     {
         $this->params[$name] = $args[0];
 
@@ -33,6 +47,8 @@ class SearchRequest extends Request
     }
 
     /**
+	 * Sets the index to operate on
+	 *
      * @param  string        $index     indices to query
      * @param  string        $index,... indices to query
      * @return SearchRequest
@@ -49,6 +65,8 @@ class SearchRequest extends Request
     }
 
     /**
+	 * Sets the type to operate on
+	 *
      * @param  string        $type     types to query
      * @param  string        $type,... types to query
      * @return SearchRequest
@@ -65,6 +83,8 @@ class SearchRequest extends Request
     }
 
     /**
+	 * Sets the query or queries that will be executed
+	 *
      * @param  \Sherlock\components\BaseComponent $value
      * @param  \Sherlock\components\BaseComponent $value,...
      * @return SearchRequest
@@ -81,6 +101,8 @@ class SearchRequest extends Request
     }
 
     /**
+	 * Sets the filter or filters that will be executed
+	 *
      * @param  \Sherlock\components\BaseComponent $value
      * @param  \Sherlock\components\BaseComponent $value,...
      * @return SearchRequest
@@ -97,6 +119,8 @@ class SearchRequest extends Request
     }
 
     /**
+	 * Execute the search request on the ES cluster
+	 *
      * @return \Sherlock\responses\QueryResponse
      */
     public function execute()
@@ -139,14 +163,25 @@ class SearchRequest extends Request
         return parent::execute();
     }
 
-    public function toJSON()
+	/**
+	 * Return a JSON representation of the final search request
+	 *
+	 * @return string
+	 */
+	public function toJSON()
     {
         $finalQuery = $this->composeFinalQuery();
 
         return $finalQuery;
     }
 
-    private function composeFinalQuery()
+	/**
+	 * Composes the final query, aggregating together the queries, filters, facets and associated parameters
+	 *
+	 * @return string
+	 * @throws \Sherlock\common\exceptions\RuntimeException
+	 */
+	private function composeFinalQuery()
     {
         $finalQuery = array();
 
