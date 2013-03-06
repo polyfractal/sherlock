@@ -3,6 +3,7 @@
  * User: Zachary Tong
  * Date: 2/6/13
  * Time: 8:54 AM
+ * @package Sherlock\requests
  */
 
 namespace Sherlock\requests;
@@ -11,17 +12,38 @@ use Sherlock\responses\IndexResponse;
 use Analog\Analog;
 use Guzzle\Http\Client;
 
+/**
+ * Base class for various requests.
+ *
+ * Handles generic functionality such as transport.
+ */
 class Request
 {
     protected $node;
 
     //required since PHP doesn't allow argument differences between
     //parent and children under Strict
+
+	/*
+	 * @var string
+	 */
     protected $_uri;
+
+	/*
+	 * @var string
+	 */
     protected $_data;
+
+	/*
+	 * @var string
+	 */
     protected $_action;
 
-    public function __construct($node)
+	/**
+	 * @param $node
+	 * @throws \Sherlock\common\exceptions\BadMethodCallException
+	 */
+	public function __construct($node)
     {
         if (!isset($node)) {
             \Analog\Analog::log("A list of nodes must be provided for each Request", \Analog\Analog::ERROR);
@@ -37,11 +59,14 @@ class Request
         $this->node = $node;
     }
 
-    /**
-     * @throws \Sherlock\common\exceptions\RuntimeException
-     * @throws \Guzzle\Http\Exception\BadResponseException
-     * @return \Sherlock\responses\Response
-     */
+	/**
+	 * Execute the Request, performs on the actual transport layer
+	 *
+	 * @throws \Sherlock\common\exceptions\RuntimeException
+	 * @throws \Sherlock\common\exceptions\BadResponseException
+	 * @throws \Sherlock\common\exceptions\ClientErrorResponseException
+	 * @return \Sherlock\responses\Response
+	 */
     public function execute()
     {
         $reflector = new \ReflectionClass(get_class($this));
