@@ -3,6 +3,7 @@
  * User: Zachary Tong
  * Date: 2/16/13
  * Time: 10:23 PM
+ * @package Sherlock\components\mappings
  */
 
 namespace Sherlock\components\mappings;
