@@ -14,7 +14,7 @@ use Sherlock\common\exceptions;
  *
  * @method \Sherlock\requests\SearchRequest timeout() timeout(\int $value)
  * @method \Sherlock\requests\SearchRequest from() from(\int $value)
- * @method \Sherlock\requests\SearchRequest to() to(\int $value)
+ * @method \Sherlock\requests\SearchRequest size() size(\int $value)
  * @method \Sherlock\requests\SearchRequest search_type() search_type(\int $value)
  * @method \Sherlock\requests\SearchRequest routing() routing(mixed $value)
  */
@@ -201,8 +201,8 @@ class SearchRequest extends Request
         if (isset($this->params['from']))
             $finalQuery[] = '"from":"'.$this->params['from'].'"';
 
-        if (isset($this->params['to']))
-            $finalQuery[]=  '"to":"'.$this->params['to'];
+        if (isset($this->params['size']))
+            $finalQuery[]=  '"size":"'.$this->params['size'].'"';
 
         if (isset($this->params['timeout']))
             $finalQuery[] =  '"timeout":"'.$this->params['timeout'];
