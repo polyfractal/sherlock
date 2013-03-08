@@ -22,6 +22,7 @@ use Sherlock\components;
  * @method \Sherlock\components\queries\Match max_expansions() max_expansions(\int $value) Default: 100
  * @method \Sherlock\components\queries\Match minimum_should_match() minimum_should_match(\int $value) Default: 2
  * @method \Sherlock\components\queries\Match prefix_length() prefix_length(\int $value) Default: 2
+ * @method \Sherlock\components\queries\Match type() type(\string $value) Default: null
 
  */
 class Match extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
@@ -37,6 +38,7 @@ class Match extends \Sherlock\components\BaseComponent implements \Sherlock\comp
         $this->params['max_expansions'] = 100;
         $this->params['minimum_should_match'] = 2;
         $this->params['prefix_length'] = 2;
+        $this->params['type'] = null;
 
         parent::__construct($hashMap);
     }
@@ -58,6 +60,7 @@ class Match extends \Sherlock\components\BaseComponent implements \Sherlock\comp
       'max_expansions' => $this->params["max_expansions"],
       'minimum_should_match' => $this->params["minimum_should_match"],
       'prefix_length' => $this->params["prefix_length"],
+      'type' => $this->params["type"]
     ),
   ),
 );
