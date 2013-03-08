@@ -101,6 +101,18 @@ class SearchRequest extends Request
     }
 
     /**
+     * Sets the query or queries that will be executed
+     *
+     * @param  \Sherlock\components\SortComponent $value
+     * @return SearchRequest
+     */
+    public function sort($value)
+    {
+        $this->params['sort'] = $value;
+        return $this;
+    }
+
+    /**
 	 * Sets the filter or filters that will be executed
 	 *
      * @param  \Sherlock\components\BaseComponent $value
@@ -206,6 +218,12 @@ class SearchRequest extends Request
 
         if (isset($this->params['timeout']))
             $finalQuery[] =  '"timeout":"'.$this->params['timeout'];
+
+        if (isset($this->params['sort'])) {
+            $sort = $this->params['sort'];
+            if ($sort instanceof \Sherlock\components\SortComponent)
+                $finalQuery[] = '"sort":'.$sort->toJSON();
+        }
 
         $finalQuery = '{'.implode(',', $finalQuery).'}';
 
