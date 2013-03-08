@@ -7,6 +7,7 @@
  */
 
 namespace Sherlock\tests;
+use Analog\Analog;
 use Sherlock\Sherlock;
 
 
@@ -1136,6 +1137,41 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		
 		
 		
+	}
+
+	/**
+	 * @covers sherlock\Sherlock\components\sorts\Field::name
+	 * @covers sherlock\Sherlock\components\queries\Field::sort_order
+	 * @covers sherlock\Sherlock\components\queries\Field::missing
+	 * @covers sherlock\Sherlock\components\queries\Field::ignore_unmapped
+	 * @covers sherlock\Sherlock::sortBuilder
+	 */
+	public function testSort()
+	{
+		$req = $this->object->search();
+		$req->index("testqueries")->type("test");
+		$query = Sherlock::query()->MatchAll()->boost(0.5);
+		$req->query($query);
+
+		$sort = Sherlock::sortBuilder();
+
+		$sortValues[] = $sort->Field()->name("sort1")->sort_order('asc');
+		$sortValues[] = $sort->Field()->name("sort2")->sort_order('desc');
+		$sortValues[] = $sort->Field()->name("_score");
+		$sortValues[] = $sort->Field()->name("sort3")->missing("_last");
+		$sortValues[] = $sort->Field()->name("sort3")->ignore_unmapped(true);
+
+		$req->sort($sortValues);
+
+		Analog::log($req->toJSON(), \Analog\Analog::DEBUG);
+
+
+		$data = $req->toJSON();
+
+		$expectedData = '{"query":{"match_all":{"boost":0.5}},"sort":[{"sort1":{"sort_mode":null,"sort_order":"asc","missing":null,"ignore_unmapped":null}},{"sort2":{"sort_mode":null,"sort_order":"desc","missing":null,"ignore_unmapped":null}},{"_score":{"sort_mode":null,"sort_order":null,"missing":null,"ignore_unmapped":null}},{"sort3":{"sort_mode":null,"sort_order":null,"missing":"_last","ignore_unmapped":null}},{"sort3":{"sort_mode":null,"sort_order":null,"missing":null,"ignore_unmapped":true}}]}';
+		$this->assertEquals($expectedData, $data);
+
+
 	}
 	
 }
