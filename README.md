@@ -22,7 +22,7 @@ Installation via Composer
 -------------------------
 The recommended method to install _Sherlock_ is through [Composer](http://getcomposer.org).
 
-1. Add ``polyfractal/sherlock`` as a dependency in your project's ``composer.json`` file:
+1. Add ``sherlock/sherlock`` as a dependency in your project's ``composer.json`` file:
 
         {
             "require": {
