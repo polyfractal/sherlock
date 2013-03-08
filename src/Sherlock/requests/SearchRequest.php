@@ -7,6 +7,7 @@
  */
 namespace Sherlock\requests;
 
+use Analog\Analog;
 use Sherlock\common\exceptions;
 
 /**
@@ -103,13 +104,24 @@ class SearchRequest extends Request
     /**
      * Sets the query or queries that will be executed
      *
-     * @param  \Sherlock\components\SortComponent $value
+     * @param  \Sherlock\components\SortInterface|array,... $value
      * @return SearchRequest
      */
     public function sort($value)
     {
-        $this->params['sort'] = $value;
-        return $this;
+		$args = func_get_args();
+		Analog::debug("SearchRequest->sort(".print_r($args, true).")");
+
+		//single param, array of sorts
+		if (count($args) == 1 && is_array($args[0]))
+			$args = $args[0];
+
+		foreach ($args as $arg) {
+			if ($arg instanceof \Sherlock\components\SortInterface)
+				$this->params['sort'][] = $arg->toArray();
+		}
+
+		return $this;
     }
 
     /**
@@ -190,6 +202,7 @@ class SearchRequest extends Request
 	/**
 	 * Composes the final query, aggregating together the queries, filters, facets and associated parameters
 	 *
+	 * @todo refactor this function into a big associative array - string manipulation sucks
 	 * @return string
 	 * @throws \Sherlock\common\exceptions\RuntimeException
 	 */
@@ -219,11 +232,9 @@ class SearchRequest extends Request
         if (isset($this->params['timeout']))
             $finalQuery[] =  '"timeout":"'.$this->params['timeout'];
 
-        if (isset($this->params['sort'])) {
-            $sort = $this->params['sort'];
-            if ($sort instanceof \Sherlock\components\SortComponent)
-                $finalQuery[] = '"sort":'.$sort->toJSON();
-        }
+		if (isset($this->params['sort']))
+			$finalQuery[] =  '"sort":'.json_encode($this->params['sort'], true);
+
 
         $finalQuery = '{'.implode(',', $finalQuery).'}';
 
