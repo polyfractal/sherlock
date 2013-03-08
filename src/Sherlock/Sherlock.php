@@ -15,6 +15,8 @@ use Sherlock\components;
 use Sherlock\common\exceptions;
 use Guzzle\Http\Client;
 use Analog\Analog;
+use Sherlock\wrappers\SortWrapper;
+use sherlock\components\SortComponent;
 
 /**
  * Primary object through which the ElasticSearch cluster is accessed.
@@ -155,6 +157,12 @@ class Sherlock
 
         return new \Sherlock\wrappers\MappingPropertyWrapper($type);
     }
+
+	public static function sortBuilder()
+	{
+		\Analog\Analog::log("Sherlock::sortBuilder()", \Analog\Analog::DEBUG);
+		return new SortWrapper();
+	}
 
     /**
 	 * Used to obtain a SearchRequest object, allows querying the cluster with searches
