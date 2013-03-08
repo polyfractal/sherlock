@@ -17,7 +17,7 @@ use Sherlock\components;
  * @method \Sherlock\components\queries\Match boost() boost(\float $value) Default: 1.0
  * @method \Sherlock\components\queries\Match operator() operator(\string $value) Default: 'and'
  * @method \Sherlock\components\queries\Match analyzer() analyzer(\string $value) Default: 'default'
- * @method \Sherlock\components\queries\Match fuzziness() fuzziness(\float $value) Default: 0.5
+ * @method \Sherlock\components\queries\Match fuzziness() fuzziness(\float $value) Default: null
  * @method \Sherlock\components\queries\Match lenient() lenient(\bool $value) Default: true
  * @method \Sherlock\components\queries\Match max_expansions() max_expansions(\int $value) Default: 100
  * @method \Sherlock\components\queries\Match minimum_should_match() minimum_should_match(\int $value) Default: 2
@@ -32,7 +32,7 @@ class Match extends \Sherlock\components\BaseComponent implements \Sherlock\comp
         $this->params['boost'] = 1.0;
         $this->params['operator'] = 'and';
         $this->params['analyzer'] = 'default';
-        $this->params['fuzziness'] = 0.5;
+        $this->params['fuzziness'] = null;
         //$this->params['fuzzy_rewrite'] = 'constant_score_default';
         $this->params['lenient'] = true;
         $this->params['max_expansions'] = 100;
