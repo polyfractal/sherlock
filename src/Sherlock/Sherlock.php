@@ -101,13 +101,15 @@ class Sherlock
 	/**
 	 * @return array Default settings
 	 */
-	public static function getDefaultSettings()
+	private static function getDefaultSettings()
     {
         return array(
             // Application
             'base' => __DIR__.'/',
             'mode' => 'development',
+			'log.enabled' => false,
             'log.level' => 'error',
+			'log.handler' => null,
             'log.file' => '../sherlock.log',
             'autodetect.cluster' => false
             );
@@ -249,8 +251,13 @@ class Sherlock
         return $this;
     }
 
-
-
+	/**
+	 * @return array
+	 */
+	public function getSherlockSettings()
+	{
+		return $this->settings;
+	}
 
 
 
@@ -325,8 +332,19 @@ class Sherlock
                 $level = Analog::ALERT;
                 break;
         }
-        Analog::handler(\Analog\Handler\Threshold::init (\Analog\Handler\File::init ($this->settings['base'] . $this->settings['log.file']),$level));
-        //Analog::handler(\Analog\Handler\LevelBuffer::init (\Analog\Handler\File::init ($this->settings['base'] . $this->settings['log.file']),$level));
+
+		//if logging is disabled, use the null Analog logger
+		if ($this->settings['log.enabled'] == false)
+			$this->settings['log.handler'] = \Analog\Handler\Null::init();
+		else
+		{
+			//if logging is enabled but no handler was specified by the user
+			//use the default file logger
+			if ($this->settings['log.handler'] === null)
+				$this->settings['log.handler'] = \Analog\Handler\Threshold::init (\Analog\Handler\File::init ($this->settings['base'] . $this->settings['log.file']),$level);
+		}
+        Analog::handler($this->settings['log.handler']);
+
         Analog::log("--------------------------------------------------------", Analog::ALERT);
         Analog::log("Logging setup at ".date("Y-m-d H:i:s.u"), Analog::INFO);
     }
