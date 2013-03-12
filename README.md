@@ -30,6 +30,8 @@ The recommended method to install _Sherlock_ is through [Composer](http://getcom
             }
         }
 
+   *Note*: If you would like to use the latest stable development version, specify ``dev-master`` in your composer file instead of ``0.1.*``.  Master is kept at the most recent, stable development version but may not be tagged and pushed to Packagist yet.  Unstable dev versions are kept secluded in the ``develop`` branch.
+
 2. Download and install Composer:
 
         curl -s http://getcomposer.org/installer | php

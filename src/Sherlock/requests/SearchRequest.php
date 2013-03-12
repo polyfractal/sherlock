@@ -9,6 +9,7 @@ namespace Sherlock\requests;
 
 use Analog\Analog;
 use Sherlock\common\exceptions;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * SearchRequest facilitates searching an ES index using the ES query DSL
@@ -27,12 +28,25 @@ class SearchRequest extends Request
 	protected $params;
 
 	/**
-	 * @param $node
+	 * @var \Symfony\Component\EventDispatcher\EventDispatcher
 	 */
-	public function __construct($node)
+	protected $dispatcher;
+
+
+
+	/**
+	 * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+	 * @throws \Sherlock\common\exceptions\BadMethodCallException
+	 */
+	public function __construct($dispatcher)
     {
+		if (!isset($dispatcher))
+			throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
+
         $this->params['filter'] = array();
-        parent::__construct($node);
+		$this->dispatcher = $dispatcher;
+
+        parent::__construct($dispatcher);
     }
 
 	/**
@@ -142,11 +156,12 @@ class SearchRequest extends Request
         return $this;
     }
 
-    /**
+	/**
 	 * Execute the search request on the ES cluster
 	 *
-     * @return \Sherlock\responses\QueryResponse
-     */
+	 * @throws \Sherlock\common\exceptions\RuntimeException
+	 * @return \Sherlock\responses\QueryResponse
+	 */
     public function execute()
     {
         \Analog\Analog::log("SearchRequest->execute() - ".print_r($this->params, true), \Analog\Analog::DEBUG);
@@ -174,7 +189,8 @@ class SearchRequest extends Request
         } else
             $queryParams = '';
 
-        $uri = 'http://'.$this->node['host'].':'.$this->node['port'].'/'.$index.'/'.$type.'/_search'.$queryParams;
+
+        $uri = '/'.$index.'/'.$type.'/_search'.$queryParams;
 
         //required since PHP doesn't allow argument differences between
         //parent and children under Strict

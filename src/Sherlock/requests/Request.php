@@ -7,6 +7,8 @@
  */
 
 namespace Sherlock\requests;
+use Sherlock\common\events\Events;
+use Sherlock\common\events\RequestEvent;
 use Sherlock\common\exceptions;
 use Sherlock\responses\IndexResponse;
 use Analog\Analog;
@@ -19,7 +21,9 @@ use Guzzle\Http\Client;
  */
 class Request
 {
-    protected $node;
+    protected $dispatcher;
+
+	public $node;
 
     //required since PHP doesn't allow argument differences between
     //parent and children under Strict
@@ -40,23 +44,18 @@ class Request
     protected $_action;
 
 	/**
-	 * @param $node
+	 * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
 	 * @throws \Sherlock\common\exceptions\BadMethodCallException
 	 */
-	public function __construct($node)
+	public function __construct($dispatcher)
     {
-        if (!isset($node)) {
-            \Analog\Analog::log("A list of nodes must be provided for each Request", \Analog\Analog::ERROR);
-            throw new exceptions\BadMethodCallException("A list of nodes must be provided for each Request");
+        if (!isset($dispatcher)) {
+            \Analog\Analog::log("An Event Dispatcher must be injected into all Request objects", \Analog\Analog::ERROR);
+            throw new exceptions\BadMethodCallException("An Event Dispatcher must be injected into all Request objects");
         }
 
 
-        if (!is_array($node)) {
-            \Analog\Analog::log("Argument nodes must be an array.", \Analog\Analog::ERROR);
-            throw new exceptions\BadMethodCallException("Argument nodes must be an array.");
-        }
-
-        $this->node = $node;
+        $this->dispatcher = $dispatcher;
     }
 
 	/**
@@ -79,6 +78,33 @@ class Request
             throw new \Sherlock\common\exceptions\RuntimeException("Request URI must be set.");
         }
 
+		//construct a requestEvent and dispatch it with the "request.preexecute" event
+		//This will, among potentially other things, populate the $node variable with
+		//values from Cluster
+		$event = new RequestEvent($this);
+		$this->dispatcher->dispatch(Events::REQUEST_PREEXECUTE, $event);
+
+		//Make sure the node variable is set correctly after the event
+		if (!isset($this->node))
+		{
+			Analog::error("Request requires a valid, non-empty node");
+			throw new exceptions\RuntimeException("Request requires a valid, non-empty node");
+		}
+
+		if (!isset($this->node['host']))
+		{
+			Analog::error("Request requires a host to connect to");
+			throw new exceptions\RuntimeException("Request requires a host to connect to");
+		}
+
+		if (!isset($this->node['port']))
+		{
+			Analog::error("Request requires a port to connect to");
+			throw new exceptions\RuntimeException("Request requires a port to connect to");
+		}
+
+		$path = 'http://'.$this->node['host'].':'.$this->node['port'].$this->_uri;
+
         \Analog\Analog::log("Request->_uri: ".$this->_uri, \Analog\Analog::DEBUG);
         \Analog\Analog::log("Request->_data: ".$this->_data, \Analog\Analog::DEBUG);
         \Analog\Analog::log("Request->_action: ".$this->_action, \Analog\Analog::DEBUG);
@@ -86,7 +112,7 @@ class Request
 
         $action = $this->_action;
         try {
-            $response = $client->$action($this->_uri, null, $this->_data)->send();
+            $response = $client->$action($path, null, $this->_data)->send();
 
         } catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
             Analog::log("Request->execute() - ClientErrorResponseException - Request failed from ".$class, Analog::ERROR);

@@ -23,25 +23,27 @@ use Sherlock\wrappers;
 class IndexRequest extends Request
 {
 
+	protected $dispatcher;
+
     /**
      * @var array
      */
     protected $params;
 
-    /**
-     * @param $node
-     * @param $index
-     * @throws \Sherlock\common\exceptions\BadMethodCallException
-     */
-    public function __construct($node, $index)
+	/**
+	 * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+	 * @param $index
+	 * @throws \Sherlock\common\exceptions\BadMethodCallException
+	 * @internal param $node
+	 */
+    public function __construct($dispatcher, $index)
     {
-        if (!isset($node))
-            throw new \Sherlock\common\exceptions\BadMethodCallException("Node argument required for IndexRequest");
+        if (!isset($dispatcher))
+            throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
         if (!isset($index))
             throw new \Sherlock\common\exceptions\BadMethodCallException("Index argument required for IndexRequest");
 
-        if (!is_array($node))
-            throw new \Sherlock\common\exceptions\BadMethodCallException("First parameter must be an node array");
+		$this->dispatcher = $dispatcher;
 
         if(!is_array($index))
             $this->params['index'][] = $index;
@@ -51,7 +53,7 @@ class IndexRequest extends Request
         $this->params['indexSettings'] = array();
         $this->params['indexMappings'] = array();
 
-        parent::__construct($node);
+        parent::__construct($dispatcher);
     }
 
 	/**
@@ -199,7 +201,7 @@ class IndexRequest extends Request
 
         $index = implode(',', $this->params['index']);
 
-        $uri = 'http://'.$this->node['host'].':'.$this->node['port'].'/'.$index;
+        $uri = '/'.$index;
 
         //required since PHP doesn't allow argument differences between
         //parent and children under Strict
@@ -226,7 +228,7 @@ class IndexRequest extends Request
 
         $index = implode(',', $this->params['index']);
 
-        $uri = 'http://'.$this->node['host'].':'.$this->node['port'].'/'.$index;
+        $uri = '/'.$index;
 
 
 
@@ -274,7 +276,7 @@ class IndexRequest extends Request
 
         $index = implode(',', $this->params['index']);
 
-        $uri = 'http://'.$this->node['host'].':'.$this->node['port'].'/'.$index.'/_settings';
+        $uri = '/'.$index.'/_settings';
         $body = array("index" => $this->params['indexSettings']);
 
 
@@ -319,7 +321,7 @@ class IndexRequest extends Request
         }
 
         $index = implode(',', $this->params['index']);
-        $uri = 'http://'.$this->node['host'].':'.$this->node['port'].'/'.$index.'/'.$this->params['type'][0].'/_mapping';
+        $uri = '/'.$index.'/'.$this->params['type'][0].'/_mapping';
         $body = $this->params['indexMappings'];
 
 

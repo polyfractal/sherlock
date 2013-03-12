@@ -10,12 +10,15 @@
 
 namespace Sherlock;
 
+use Sherlock\common\Cluster;
+use Sherlock\common\events\Events;
 use Sherlock\requests;
 use Sherlock\components;
 use Sherlock\common\exceptions;
 use Guzzle\Http\Client;
 use Analog\Analog;
 use Sherlock\wrappers\SortWrapper;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use sherlock\components\SortComponent;
 
 /**
@@ -46,7 +49,11 @@ class Sherlock
 
         $this->settings = array_merge(static::getDefaultSettings(), $userSettings);
 
-        //$this->loadTemplates();
+		//Build a cluster and inject our dispatcher
+		$this->settings['cluster'] = new Cluster($this->settings['event.dispatcher']);
+
+		//Connect Cluster's listener to the dispatcher
+		$this->settings['event.dispatcher']->addListener(Events::REQUEST_PREEXECUTE, array($this->settings['cluster'], 'onRequestExecute'));
 
         //setup logging
         $this->setupLogging();
@@ -111,7 +118,9 @@ class Sherlock
             'log.level' => 'error',
 			'log.handler' => null,
             'log.file' => '../sherlock.log',
-            'autodetect.cluster' => false
+			'event.dispatcher' => new EventDispatcher(),
+			'cluster' => null,
+			'cluster.autodetect' => false,
             );
     }
 
@@ -173,10 +182,8 @@ class Sherlock
     public function search()
     {
         \Analog\Analog::log("Sherlock->search()", \Analog\Analog::DEBUG);
-        $randInt = rand(0,count($this->settings['nodes'])-1);
-        $randomNode = $this->settings['nodes'][$randInt];
 
-        return new \Sherlock\requests\SearchRequest($randomNode);
+        return new \Sherlock\requests\SearchRequest($this->settings['event.dispatcher']);
     }
 
 	/**
@@ -186,10 +193,8 @@ class Sherlock
 	public function addDocument()
     {
         \Analog\Analog::log("Sherlock->indexDocument()", \Analog\Analog::DEBUG);
-        $randInt = rand(0,count($this->settings['nodes'])-1);
-        $randomNode = $this->settings['nodes'][$randInt];
 
-        return new \Sherlock\requests\IndexDocumentRequest($randomNode);
+        return new \Sherlock\requests\IndexDocumentRequest($this->settings['event.dispatcher']);
     }
 
     /**
@@ -207,10 +212,9 @@ class Sherlock
         }
 
         \Analog\Analog::log("Sherlock->index()", \Analog\Analog::DEBUG);
-        $randInt = rand(0,count($this->settings['nodes'])-1);
-        $randomNode = $this->settings['nodes'][$randInt];
 
-        return new \Sherlock\requests\IndexRequest($randomNode, $index);
+
+        return new \Sherlock\requests\IndexRequest($this->settings['event.dispatcher'], $index);
     }
 
     /**
@@ -221,8 +225,8 @@ class Sherlock
         Analog::log("Start autodetect.", Analog::DEBUG);
 
         //If we have nodes and are supposed to detect cluster settings/configuration
-        if (isset($this->settings['nodes']) && $this->settings['autodetect.cluster'] == true) {
-            $this->autodetect_parseNodes();
+        if ($this->settings['cluster.autodetect'] == true) {
+            $this->settings['cluster']->autodetect();
         }
     }
 
@@ -239,15 +243,7 @@ class Sherlock
     {
         Analog::log("Sherlock->addNode(): ".print_r(func_get_args(), true), Analog::DEBUG);
 
-        if (!isset($host))
-            throw new exceptions\BadMethodCallException("A server address must be provided when adding a node.");
-
-        if(!is_numeric($port))
-            throw new exceptions\InvalidArgumentException("Port argument must be a number");
-
-        $this->settings['nodes'][] = array('host' => $host, 'port' => $port);
-        $this->autodetect();
-
+      	$this->settings['cluster']->addNode($host, $port, $this->settings['cluster.autodetect']);
         return $this;
     }
 
@@ -349,40 +345,6 @@ class Sherlock
         Analog::log("Logging setup at ".date("Y-m-d H:i:s.u"), Analog::INFO);
     }
 
-	/**
-	 * Autodetect the nodes in this cluster through Cluster State API
-	 */
-	private function autodetect_parseNodes()
-    {
-        Analog::log("Autodetecting nodes in cluster...", Analog::DEBUG);
-        foreach ($this->settings['nodes'] as $node) {
-            Analog::log("Contacting node: ".print_r($node, true), Analog::DEBUG);
-            try {
-                $client = new Client('http://'.$node['host'].':'.$node['port']);
-                $request = $client->get('/_nodes/http');
-                $response = $request->send()->json();
 
-                $this->settings['nodes'] = array();
-                foreach ($response['nodes'] as $newNode) {
-                    if (!isset($newNode['http_address']))
-                        continue;
-
-                    preg_match('/inet\[\/([0-9\.]+):([0-9]+)\]/i', $newNode['http_address'], $match);
-
-                    $tNode = array('host' => $match[1], 'port' => $match[2]);
-                    $this->settings['nodes'][] = $tNode;
-                    Analog::log("Autodetected node: ".print_r($tNode, true), Analog::INFO);
-                }
-
-                //we have the complete node list, no need to keep hitting nodes
-                break;
-
-            } catch (\Guzzle\Http\Exception\BadResponseException $e) {
-                //error with this node, continue onto the next one
-                Analog::log("Node inaccessible, trying next node in list.", Analog::DEBUG);
-            }
-
-        }
-    }
 
 }
