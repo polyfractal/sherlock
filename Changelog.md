@@ -3,6 +3,9 @@ Changelog
 
 Master
 ------
+
+0.1.5
+-----
  - Fix: Change default logging state to disabled [474fa95](https://github.com/polyfractal/sherlock/commit/474fa957c61b550fa043315757a4e279179dc0d8)
  - Fix: Integrate Symfony EventDispatcher to decouple nodes from Requests. [Fixes #10](https://github.com/polyfractal/sherlock/issues/10)
  - Feature: Enable custom logging handlers [Usage](https://github.com/polyfractal/sherlock/issues/12#issuecomment-14682664) [474fa95](https://github.com/polyfractal/sherlock/commit/474fa957c61b550fa043315757a4e279179dc0d8)
