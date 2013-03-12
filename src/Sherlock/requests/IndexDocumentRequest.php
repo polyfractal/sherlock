@@ -17,17 +17,26 @@ use Sherlock\common\exceptions;
  */
 class IndexDocumentRequest extends Request
 {
+	protected $dispatcher;
+
 	/**
 	 * @var array
 	 */
 	protected $params;
 
 	/**
-	 * @param $node
+	 * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+	 * @throws \Sherlock\common\exceptions\BadMethodCallException
+	 * @internal param $node
 	 */
-	public function __construct($node)
+	public function __construct($dispatcher)
     {
-        parent::__construct($node);
+		if (!isset($dispatcher))
+			throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
+
+		$this->dispatcher = $dispatcher;
+
+        parent::__construct($dispatcher);
     }
 
 	/**
@@ -127,7 +136,7 @@ class IndexDocumentRequest extends Request
             $this->_action = 'post';
         }
 
-        $uri = 'http://'.$this->node['host'].':'.$this->node['port'].'/'.$this->params['index'][0].'/'.$this->params['type'][0].'/'.$id;
+        $uri = '/'.$this->params['index'][0].'/'.$this->params['type'][0].'/'.$id;
 
         //required since PHP doesn't allow argument differences between
         //parent and children under Strict
