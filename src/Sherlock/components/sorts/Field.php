@@ -12,7 +12,7 @@ use Sherlock\components;
 
 /**
  * @method \Sherlock\components\sorts\Field name() name(\string $value)
- * @method \Sherlock\components\sorts\Field sort_order() sort_order(\string $value) Default: null
+ * @method \Sherlock\components\sorts\Field order() order(\string $value) Default: null
  * @method \Sherlock\components\sorts\Field missing() missing(\string $value) Default: null
  * @method \Sherlock\components\sorts\Field ignore_unmapped() ignore_unmapped(\bool $value) Default: null
  */
@@ -22,7 +22,7 @@ class Field extends components\BaseComponent implements components\SortInterface
 	{
 		$this->params['order'] = null;
 		$this->params['sort_mode'] = null;
-		$this->params['sort_order'] = null;
+		$this->params['order'] = null;
 		$this->params['missing'] = null;
 		$this->params['ignore_unmapped'] = null;
 
@@ -36,7 +36,7 @@ class Field extends components\BaseComponent implements components\SortInterface
 			$this->params['name'] =>
 			array (
 				'sort_mode' => $this->params["sort_mode"],
-				'sort_order' => $this->params["sort_order"],
+				'order' => $this->params["order"],
 				'missing' => $this->params["missing"],
 				'ignore_unmapped' => $this->params["ignore_unmapped"],
 			),
