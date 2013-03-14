@@ -146,6 +146,17 @@ class Sherlock
         return new \Sherlock\wrappers\FilterWrapper();
     }
 
+	/**
+	 * Facet builder, used to return a FilterWrapper through which a Filter component can be selected
+	 * @return wrappers\FacetWrapper
+	 */
+	public static function facetBuilder()
+	{
+		\Analog\Analog::log("Sherlock::facetBuilder()", \Analog\Analog::DEBUG);
+
+		return new \Sherlock\wrappers\FacetWrapper();
+	}
+
     /**
 	 * Index builder, used to return a IndexWrapper through which an Index component can be selected
      * @return wrappers\IndexSettingsWrapper

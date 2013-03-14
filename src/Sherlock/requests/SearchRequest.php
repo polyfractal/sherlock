@@ -243,8 +243,20 @@ class SearchRequest extends Request
 		if (isset($this->params['filter']) && $this->params['filter'] instanceof \Sherlock\components\FilterInterface)
 			$finalQuery['filter'] = $this->params['filter']->toArray();
 
-		if (isset($this->params['facets']) && $this->params['facets'] instanceof \Sherlock\components\FacetInterface)
-			$finalQuery['facets'] = $this->params['facets'];
+		if (isset($this->params['facets']))
+		{
+			$tFacets = array();
+			foreach($this->params['facets'] as $facet)
+			{
+				//@todo Investigate a better way of doing this
+				//array_merge is supposedly slow when merging arrays of arrays
+				if ($facet instanceof \Sherlock\components\FacetInterface)
+					$tFacets = array_merge($tFacets, $facet->toArray());
+			}
+			$finalQuery['facets'] = $tFacets;
+			unset($tFacets);
+		}
+
 
         if (isset($this->params['from']))
             $finalQuery['from'] = $this->params['from'];

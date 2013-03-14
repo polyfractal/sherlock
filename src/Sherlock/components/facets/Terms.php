@@ -9,6 +9,7 @@
 namespace Sherlock\components\facets;
 
 use Analog\Analog;
+use Sherlock\common\exceptions\RuntimeException;
 use Sherlock\components;
 
 
@@ -16,18 +17,17 @@ use Sherlock\components;
  * Class TermsFacet
  * @package Sherlock\components\facets
  *
- * @method \Sherlock\components\facets\TermsFacet fields() fields(mixed $value)
- * @method \Sherlock\components\facets\TermsFacet facetname() facetname(string $value)
- * @method \Sherlock\components\facets\TermsFacet size() size(int $value)
- * @method \Sherlock\components\facets\TermsFacet order() order(string $value) Default: count
- * @method \Sherlock\components\facets\TermsFacet all_terms() all_terms(bool $value) Default: false
- * @method \Sherlock\components\facets\TermsFacet exclude() exclude(array $value)
- * @method \Sherlock\components\facets\TermsFacet regex() regex(string $value)
- * @method \Sherlock\components\facets\TermsFacet regex_flags() regex_flags(int $value)
- * @method \Sherlock\components\facets\TermsFacet script() script(string $value)
- * @method \Sherlock\components\facets\TermsFacet script_field() script_field(string $value)
+ * @method \Sherlock\components\facets\Terms facetname() facetname(\string $value)
+ * @method \Sherlock\components\facets\Terms size() size(\int $value)
+ * @method \Sherlock\components\facets\Terms order() order(\string $value) Default: count
+ * @method \Sherlock\components\facets\Terms all_terms() all_terms(\bool $value) Default: false
+ * @method \Sherlock\components\facets\Terms exclude() exclude(array $value)
+ * @method \Sherlock\components\facets\Terms regex() regex(\string $value)
+ * @method \Sherlock\components\facets\Terms regex_flags() regex_flags(\int $value)
+ * @method \Sherlock\components\facets\Terms script() script(\string $value)
+ * @method \Sherlock\components\facets\Terms script_field() script_field(\string $value)
  */
-class TermsFacet extends components\BaseComponent implements components\FacetInterface
+class Terms extends components\BaseComponent implements components\FacetInterface
 {
 	/**
 	 * @param null $hashMap
@@ -37,6 +37,7 @@ class TermsFacet extends components\BaseComponent implements components\FacetInt
 		$this->params['order'] = 'count';
 		$this->params['all_terms'] = false;
 
+		$this->params['facetname'] = null;
 		$this->params['size'] = null;
 		$this->params['exclude'] = null;
 		$this->params['regex'] = null;
@@ -72,10 +73,22 @@ class TermsFacet extends components\BaseComponent implements components\FacetInt
 
 
 	/**
+	 * @throws \Sherlock\common\exceptions\RuntimeException
 	 * @return array
 	 */
 	public function toArray()
 	{
+		if(!isset($this->params['fields'])){
+			Analog::error("Fields parameter is required for a Facet");
+			throw new RuntimeException("Fields parameter is required for a Facet");
+		}
+
+		if($this->params['fields'] === null){
+			Analog::error("Fields parameter may not be null");
+			throw new RuntimeException("Fields parameter may not be null");
+		}
+
+
 		//if the user didn't provide a facetname, use the (first) field as a default name
 		if ($this->params['facetname'] === null)
 			$this->params['facetname'] = $this->params['fields'][0];
