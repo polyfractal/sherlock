@@ -59,7 +59,7 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 
 		$req = $this->object->search();
 		$req->index("test3")->type("benchmark");
-		$req->query(Sherlock::query()->Term()->field("field1")->term("town"));
+		$req->query(Sherlock::queryBuilder()->Term()->field("field1")->term("town"));
 
 		//First, make sure the ORM query matches what we expect
 		$data = $req->toJSON();
@@ -68,7 +68,7 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 
 		//Now provide an array hashmap instead of using the ORM, to make sure manual creation works
 		$manualData = array("field" => "field1", "term" => "town");
-		$req->query(Sherlock::query()->Term($manualData));
+		$req->query(Sherlock::queryBuilder()->Term($manualData));
 		$data = $req->toJSON();
 		$this->assertEquals($expectedData, $data);
 
@@ -86,7 +86,7 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 		//Now provide a raw JSON string
 		//Note that since this is a Raw Query, we don't include the top-level "query" field
 		$json = json_encode($expectedData['query']);
-		$req->query(Sherlock::query()->Raw($json));
+		$req->query(Sherlock::queryBuilder()->Raw($json));
 		$data = $req->toJSON();
 
 		$expectedData = json_encode($expectedData);
@@ -106,14 +106,14 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 
 		//provide incorrect class, should throw error
 		$this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () use ($req) {
-			$req->settings(sherlock::query());
+			$req->settings(Sherlock::queryBuilder());
 		});
 		//provide incorrect class with merge, should throw error
 		$this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () use ($req) {
-			$req->settings(sherlock::query(), true);
+			$req->settings(Sherlock::queryBuilder(), true);
 		});
 
-		$settings = sherlock::indexSettings()->refresh_interval("1s");
+		$settings = sherlock::indexSettingsBuilder()->refresh_interval("1s");
 		$req = $req->settings($settings);
 		$this->assertInstanceOf('\sherlock\requests\IndexRequest', $req);
 
@@ -147,7 +147,7 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $response->ok);
 
 		//set a setting
-		$index->settings(sherlock::indexSettings()->refresh_interval("1s"));
+		$index->settings(Sherlock::indexSettingsBuilder()->refresh_interval("1s"));
 		$this->assertInstanceOf('\sherlock\requests\IndexRequest', $index);
 		$response = $index->updateSettings();
 		$this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);

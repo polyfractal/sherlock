@@ -3,6 +3,7 @@ Changelog
 
 Master
 ------
+ - Breaking Change: Sherlock static builder functions refactored with consistent naming scheme [Fixes #5](https://github.com/polyfractal/sherlock/issues/5)
  - Internal: Refactor composeFinalQuery to use assoc arrays instead of strings [Fixes #13](https://github.com/polyfractal/sherlock/issues/13)
 
 0.1.6
