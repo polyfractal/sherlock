@@ -97,20 +97,15 @@ class SearchRequest extends Request
         return $this;
     }
 
-    /**
-	 * Sets the query or queries that will be executed
+	/**
+	 * Sets the query that will be executed
 	 *
-     * @param  \Sherlock\components\BaseComponent $value
-     * @param  \Sherlock\components\BaseComponent $value,...
-     * @return SearchRequest
-     */
-    public function query($value)
+	 * @param $query
+	 * @return SearchRequest
+	 */
+    public function query($query)
     {
-        $this->params['query'] = array();
-        $args = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['query'][] = $arg;
-        }
+        $this->params['query'] = $query;
 
         return $this;
     }
@@ -138,20 +133,15 @@ class SearchRequest extends Request
 		return $this;
     }
 
-    /**
-	 * Sets the filter or filters that will be executed
+	/**
+	 * Sets the filter that will be executed
 	 *
-     * @param  \Sherlock\components\BaseComponent $value
-     * @param  \Sherlock\components\BaseComponent $value,...
-     * @return SearchRequest
-     */
-    public function filter($value)
+	 * @param $filter
+	 * @return SearchRequest
+	 */
+    public function filter($filter)
     {
-        $this->params['filter'] = array();
-        $args = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['filter'][] = $arg;
-        }
+        $this->params['filter'] = $filter;
 
         return $this;
     }
@@ -218,7 +208,6 @@ class SearchRequest extends Request
 	/**
 	 * Composes the final query, aggregating together the queries, filters, facets and associated parameters
 	 *
-	 * @todo refactor this function into a big associative array - string manipulation sucks
 	 * @return string
 	 * @throws \Sherlock\common\exceptions\RuntimeException
 	 */
@@ -226,33 +215,28 @@ class SearchRequest extends Request
     {
         $finalQuery = array();
 
-        if (!isset($this->params['query']) || count($this->params['query']) == 0)
-            throw new \Sherlock\common\exceptions\RuntimeException("Search query cannot be empty.");
 
-        foreach ($this->params['query'] as $query) {
-            if ($query instanceof \Sherlock\components\QueryInterface)
-                $finalQuery[] = '"query":'.$query->toJSON();
-        }
+        if (isset($this->params['query']) && $this->params['query'] instanceof \Sherlock\components\QueryInterface)
+        	$finalQuery['query'] = $this->params['query']->toArray();
 
-        foreach ($this->params['filter'] as $query) {
-            if ($query instanceof \Sherlock\components\FilterInterface)
-                $finalQuery[] = '"filter":'.$query->toJSON();
-        }
+		if (isset($this->params['filter']) && $this->params['filter'] instanceof \Sherlock\components\FilterInterface)
+			$finalQuery['filter'] = $this->params['filter']->toArray();
 
         if (isset($this->params['from']))
-            $finalQuery[] = '"from":"'.$this->params['from'].'"';
+            $finalQuery['from'] = $this->params['from'];
 
         if (isset($this->params['size']))
-            $finalQuery[]=  '"size":"'.$this->params['size'].'"';
+            $finalQuery['size']=  $this->params['size'];
 
         if (isset($this->params['timeout']))
-            $finalQuery[] =  '"timeout":"'.$this->params['timeout'];
+            $finalQuery['timeout'] =  $this->params['timeout'];
 
 		if (isset($this->params['sort']))
-			$finalQuery[] =  '"sort":'.json_encode($this->params['sort'], true);
+			$finalQuery['sort'] =  $this->params['sort'];
 
 
-        $finalQuery = '{'.implode(',', $finalQuery).'}';
+
+        $finalQuery = json_encode($finalQuery, true);
 
         return $finalQuery;
     }

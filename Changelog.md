@@ -3,8 +3,9 @@ Changelog
 
 Master
 ------
+ - Internal: Refactor composeFinalQuery to use assoc arrays instead of strings [Fixes #13](https://github.com/polyfractal/sherlock/issues/13)
 
-0.1.5
+0.1.6
 -----
  - Fix: Sort ordering fixed, uses "order" instead of "sort_order" [Fixes #14](https://github.com/polyfractal/sherlock/pull/14)
  
