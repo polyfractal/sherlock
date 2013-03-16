@@ -18,12 +18,12 @@ use Sherlock\components;
  * Class Range
  * @package Sherlock\components\facets
  *
- * @method \Sherlock\components\facets\Terms facetname() facetname(\string $value)
- * @method \Sherlock\components\facets\Terms ranges() ranges(array $value)
- * @method \Sherlock\components\facets\Terms key_field() key_field(\string $value)
- * @method \Sherlock\components\facets\Terms value_field() value_field(\string $value)
- * @method \Sherlock\components\facets\Terms key_script() key_script(\string $value)
- * @method \Sherlock\components\facets\Terms value_script() value_script(string $value)
+ * @method \Sherlock\components\facets\Range facetname() facetname(\string $value)
+ * @method \Sherlock\components\facets\Range ranges() ranges(array $value)
+ * @method \Sherlock\components\facets\Range key_field() key_field(\string $value)
+ * @method \Sherlock\components\facets\Range value_field() value_field(\string $value)
+ * @method \Sherlock\components\facets\Range key_script() key_script(\string $value)
+ * @method \Sherlock\components\facets\Range value_script() value_script(string $value)
  */
 class Range extends components\BaseComponent implements components\FacetInterface
 {
@@ -50,9 +50,7 @@ class Range extends components\BaseComponent implements components\FacetInterfac
 	 */
 	public function field($fieldName)
 	{
-
-		$args = func_get_args();
-		Analog::debug("Range->field(".print_r($args, true).")");
+		Analog::debug("Range->field(".print_r($fieldName, true).")");
 
 		if (is_string($fieldName)){
 			$this->params['field'][] = $fieldName;
@@ -83,9 +81,9 @@ class Range extends components\BaseComponent implements components\FacetInterfac
 			throw new RuntimeException("Field parameter may not be null");
 		}
 
-		//if the user didn't provide a facetname, use the (first) field as a default name
+		//if the user didn't provide a facetname, use the field as a default name
 		if ($this->params['facetname'] === null)
-			$this->params['facetname'] = $this->params['fields'][0];
+			$this->params['facetname'] = $this->params['fields'];
 
 
 		$ret = array (
