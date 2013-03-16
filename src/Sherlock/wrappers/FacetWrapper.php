@@ -17,6 +17,7 @@ namespace Sherlock\wrappers;
  * @method \Sherlock\components\facets\Histogram Histogram() Histogram()
  * @method \Sherlock\components\facets\DateHistogram DateHistogram() DateHistogram()
  * @method \Sherlock\components\facets\Filter Filter() Filter()
+ * @method \Sherlock\components\facets\Query Query() Query()
  */
 class FacetWrapper
 {
