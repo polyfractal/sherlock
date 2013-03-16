@@ -20,6 +20,7 @@ namespace Sherlock\wrappers;
  * @method \Sherlock\components\facets\Query Query() Query()
  * @method \Sherlock\components\facets\Statistical Statistical() Statistical()
  * @method \Sherlock\components\facets\TermsStats TermsStats() TermsStats()
+ * @method \Sherlock\components\facets\GeoDistance GeoDistance() GeoDistance()
  */
 class FacetWrapper
 {
