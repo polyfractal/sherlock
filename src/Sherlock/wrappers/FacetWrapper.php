@@ -13,7 +13,7 @@ namespace Sherlock\wrappers;
  *
  *
  * @method \Sherlock\components\facets\Terms Terms() Terms()
-
+ * @method \Sherlock\components\facets\Range Range() Range()
  */
 class FacetWrapper
 {
