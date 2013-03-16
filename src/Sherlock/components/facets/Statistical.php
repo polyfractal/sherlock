@@ -18,7 +18,8 @@ use Sherlock\components;
  *
  * @method \Sherlock\components\facets\Statistical facetname() facetname(\string $value)
  * @method \Sherlock\components\facets\Statistical script() script(\string $value)
- * @method \Sherlock\components\facets\Statistical params() script_field(array $value)
+ * @method \Sherlock\components\facets\Statistical params() params(array $value)
+ * @method \Sherlock\components\facets\Statistical lang() lang(\string $value)
  */
 class Statistical extends components\BaseComponent implements components\FacetInterface
 {
@@ -30,7 +31,7 @@ class Statistical extends components\BaseComponent implements components\FacetIn
 		$this->params['facetname'] = null;
 		$this->params['script'] = null;
 		$this->params['params'] = null;
-
+		$this->params['lang'] = null;
 
 		parent::__construct($hashMap);
 	}
@@ -86,6 +87,7 @@ class Statistical extends components\BaseComponent implements components\FacetIn
 					"fields" => $this->params['fields'],
 					"script" => $this->params['script'],
 					"params" => $this->params['params'],
+					"lang" => $this->params['lang']
 				)
 			)
 		);

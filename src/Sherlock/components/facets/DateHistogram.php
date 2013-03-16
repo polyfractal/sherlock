@@ -25,6 +25,7 @@ use Sherlock\components;
  * @method \Sherlock\components\facets\DateHistogram key_script() key_script(\string $value)
  * @method \Sherlock\components\facets\DateHistogram value_script() value_script(\string $value)
  * @method \Sherlock\components\facets\DateHistogram params() params(array $value)
+ * @method \Sherlock\components\facets\DateHistogram lang() lang(\string $value)
  */
 class Histogram extends components\BaseComponent implements components\FacetInterface
 {
@@ -41,6 +42,7 @@ class Histogram extends components\BaseComponent implements components\FacetInte
 		$this->params['value_field'] = null;
 		$this->params['key_script'] = null;
 		$this->params['value_script'] = null;
+		$this->params['lang'] = null;
 
 		parent::__construct($hashMap);
 	}
@@ -98,7 +100,8 @@ class Histogram extends components\BaseComponent implements components\FacetInte
 					"value_field" => $this->params['value_field'],
 					"key_script" => $this->params['key_script'],
 					"value_script" => $this->params['value_script'],
-					"params" => $this->params['params']
+					"params" => $this->params['params'],
+					"lang" => $this->params['lang']
 				)
 			)
 		);

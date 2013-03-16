@@ -26,6 +26,8 @@ use Sherlock\components;
  * @method \Sherlock\components\facets\Terms regex_flags() regex_flags(\int $value)
  * @method \Sherlock\components\facets\Terms script() script(\string $value)
  * @method \Sherlock\components\facets\Terms script_field() script_field(\string $value)
+ * @method \Sherlock\components\facets\Terms params() params(array $value)
+ * @method \Sherlock\components\facets\Terms lang() lang(\string $value)
  */
 class Terms extends components\BaseComponent implements components\FacetInterface
 {
@@ -44,7 +46,8 @@ class Terms extends components\BaseComponent implements components\FacetInterfac
 		$this->params['regex_flags'] = null;
 		$this->params['script'] = null;
 		$this->params['script_field'] = null;
-
+		$this->params['params'] = null;
+		$this->params['lang'] = null;
 
 		parent::__construct($hashMap);
 	}
@@ -106,6 +109,8 @@ class Terms extends components\BaseComponent implements components\FacetInterfac
 					"regex_flags" => $this->params['regex_flags'],
 					"script" => $this->params['script'],
 					"script_field" => $this->params['script_field'],
+					"params" => $this->params['params'],
+					"lang" => $this->params['lang']
 				)
 			)
 		);

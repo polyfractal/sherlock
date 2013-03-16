@@ -24,6 +24,8 @@ use Sherlock\components;
  * @method \Sherlock\components\facets\Range value_field() value_field(\string $value)
  * @method \Sherlock\components\facets\Range key_script() key_script(\string $value)
  * @method \Sherlock\components\facets\Range value_script() value_script(string $value)
+ * @method \Sherlock\components\facets\Range params() params(array $value)
+ * @method \Sherlock\components\facets\Range lang() lang(\string $value)
  */
 class Range extends components\BaseComponent implements components\FacetInterface
 {
@@ -39,6 +41,8 @@ class Range extends components\BaseComponent implements components\FacetInterfac
 		$this->params['value_field'] = null;
 		$this->params['key_script'] = null;
 		$this->params['value_script'] = null;
+		$this->params['params'] = null;
+		$this->params['lang'] = null;
 
 		parent::__construct($hashMap);
 	}
@@ -94,7 +98,9 @@ class Range extends components\BaseComponent implements components\FacetInterfac
 					"key_field" => $this->params['key_field'],
 					"value_field" => $this->params['value_field'],
 					"key_script" => $this->params['key_script'],
-					"value_script" => $this->params['value_script']
+					"value_script" => $this->params['value_script'],
+					"params" => $this->params['params'],
+					"lang" => $this->params['lang']
 				)
 			)
 		);
