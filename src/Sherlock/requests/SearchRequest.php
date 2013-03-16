@@ -10,6 +10,7 @@ namespace Sherlock\requests;
 use Analog\Analog;
 use Sherlock\common\exceptions;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use sherlock\components\FacetInterface;
 
 /**
  * SearchRequest facilitates searching an ES index using the ES query DSL
@@ -146,6 +147,26 @@ class SearchRequest extends Request
         return $this;
     }
 
+
+	/**
+	 * Sets the facets to operate on
+	 *
+	 * @param  \Sherlock\components\FacetInterface        $facets     types to query
+	 * @param  \Sherlock\components\FacetInterface        $facets,... types to query
+	 * @return SearchRequest
+	 */
+	public function facets($facets)
+	{
+		$this->params['facets'] = array();
+		$args = func_get_args();
+		foreach ($args as $arg) {
+			if ($arg instanceof FacetInterface)
+				$this->params['facets'][] = $arg;
+		}
+
+		return $this;
+	}
+
 	/**
 	 * Execute the search request on the ES cluster
 	 *
@@ -221,6 +242,21 @@ class SearchRequest extends Request
 
 		if (isset($this->params['filter']) && $this->params['filter'] instanceof \Sherlock\components\FilterInterface)
 			$finalQuery['filter'] = $this->params['filter']->toArray();
+
+		if (isset($this->params['facets']))
+		{
+			$tFacets = array();
+			foreach($this->params['facets'] as $facet)
+			{
+				//@todo Investigate a better way of doing this
+				//array_merge is supposedly slow when merging arrays of arrays
+				if ($facet instanceof \Sherlock\components\FacetInterface)
+					$tFacets = array_merge($tFacets, $facet->toArray());
+			}
+			$finalQuery['facets'] = $tFacets;
+			unset($tFacets);
+		}
+
 
         if (isset($this->params['from']))
             $finalQuery['from'] = $this->params['from'];
