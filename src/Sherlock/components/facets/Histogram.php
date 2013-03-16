@@ -93,7 +93,7 @@ class Histogram extends components\BaseComponent implements components\FacetInte
 
 		$ret = array (
 			$this->params['facetname'] => array(
-				"range" => array(
+				"histogram" => array(
 					"field" => $this->params['field'],
 					"interval" => $this->params['interval'],
 					"time_interval" => $this->params['time_interval'],
