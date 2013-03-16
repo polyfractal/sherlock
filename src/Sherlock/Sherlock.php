@@ -16,7 +16,7 @@ use Sherlock\requests;
 use Sherlock\components;
 use Sherlock\common\exceptions;
 use Analog\Analog;
-use Sherlock\wrappers\SortWrapper;
+use Sherlock\wrappers;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -51,7 +51,8 @@ class Sherlock
         $this->settings['cluster'] = new Cluster($this->settings['event.dispatcher']);
 
         //Connect Cluster's listener to the dispatcher
-        $this->settings['event.dispatcher']->addListener(Events::REQUEST_PREEXECUTE, array($this->settings['cluster'], 'onRequestExecute'));
+        $eventCallback = array($this->settings['cluster'], 'onRequestExecute');
+        $this->settings['event.dispatcher']->addListener(Events::REQUEST_PREEXECUTE, $eventCallback);
 
         //setup logging
         $this->setupLogging();
@@ -81,7 +82,6 @@ class Sherlock
 
         $className = ltrim($className, '\\');
         $fileName  = $baseDir;
-        $namespace = '';
         if ($lastNsPos = strripos($className, '\\')) {
             $namespace = substr($className, 0, $lastNsPos);
             $className = substr($className, $lastNsPos + 1);
@@ -127,7 +127,7 @@ class Sherlock
      */
     public static function queryBuilder()
     {
-        \Analog\Analog::log("Sherlock::query()", \Analog\Analog::DEBUG);
+        Analog::log("Sherlock::query()", Analog::DEBUG);
 
         return new \Sherlock\wrappers\QueryWrapper();
     }
@@ -138,9 +138,9 @@ class Sherlock
      */
     public static function filterBuilder()
     {
-        \Analog\Analog::log("Sherlock::filter()", \Analog\Analog::DEBUG);
+        Analog::log("Sherlock::filter()", Analog::DEBUG);
 
-        return new \Sherlock\wrappers\FilterWrapper();
+        return new wrappers\FilterWrapper();
     }
 
     /**
@@ -149,9 +149,9 @@ class Sherlock
      */
     public static function facetBuilder()
     {
-        \Analog\Analog::log("Sherlock::facetBuilder()", \Analog\Analog::DEBUG);
+        Analog::log("Sherlock::facetBuilder()", Analog::DEBUG);
 
-        return new \Sherlock\wrappers\FacetWrapper();
+        return new wrappers\FacetWrapper();
     }
 
     /**
@@ -160,9 +160,9 @@ class Sherlock
      */
     public static function indexSettingsBuilder()
     {
-        \Analog\Analog::log("Sherlock::indexSettings()", \Analog\Analog::DEBUG);
+        Analog::log("Sherlock::indexSettings()", Analog::DEBUG);
 
-        return new \Sherlock\wrappers\IndexSettingsWrapper();
+        return new wrappers\IndexSettingsWrapper();
     }
 
     /**
@@ -172,16 +172,16 @@ class Sherlock
      */
     public static function mappingBuilder($type = null)
     {
-        \Analog\Analog::log("Sherlock::mappingProperty()", \Analog\Analog::DEBUG);
+        Analog::log("Sherlock::mappingProperty()", Analog::DEBUG);
 
-        return new \Sherlock\wrappers\MappingPropertyWrapper($type);
+        return new wrappers\MappingPropertyWrapper($type);
     }
 
     public static function sortBuilder()
     {
-        \Analog\Analog::log("Sherlock::sortBuilder()", \Analog\Analog::DEBUG);
+        Analog::log("Sherlock::sortBuilder()", Analog::DEBUG);
 
-        return new SortWrapper();
+        return new wrappers\SortWrapper();
     }
 
     /**
@@ -190,9 +190,9 @@ class Sherlock
      */
     public function search()
     {
-        \Analog\Analog::log("Sherlock->search()", \Analog\Analog::DEBUG);
+        Analog::log("Sherlock->search()", Analog::DEBUG);
 
-        return new \Sherlock\requests\SearchRequest($this->settings['event.dispatcher']);
+        return new requests\SearchRequest($this->settings['event.dispatcher']);
     }
 
     /**
@@ -201,9 +201,9 @@ class Sherlock
      */
     public function document()
     {
-        \Analog\Analog::log("Sherlock->indexDocument()", \Analog\Analog::DEBUG);
+        Analog::log("Sherlock->indexDocument()", Analog::DEBUG);
 
-        return new \Sherlock\requests\IndexDocumentRequest($this->settings['event.dispatcher']);
+        return new requests\IndexDocumentRequest($this->settings['event.dispatcher']);
     }
 
     /**
@@ -219,9 +219,9 @@ class Sherlock
             $index[] = $arg;
         }
 
-        \Analog\Analog::log("Sherlock->index()", \Analog\Analog::DEBUG);
+        Analog::log("Sherlock->index()", Analog::DEBUG);
 
-        return new \Sherlock\requests\IndexRequest($this->settings['event.dispatcher'], $index);
+        return new requests\IndexRequest($this->settings['event.dispatcher'], $index);
     }
 
     /**
@@ -269,6 +269,7 @@ class Sherlock
      * @throws common\exceptions\BadMethodCallException
      * @return array
      */
+    /*
     private function directoryScan($dir)
     {
         if (!isset($dir))
@@ -299,6 +300,7 @@ class Sherlock
         return $files;
 
     }
+    */
 
     /**
      * Setup Analog logger
