@@ -38,7 +38,7 @@ class Histogram extends components\BaseComponent implements components\FacetInte
 		$this->params['facetname'] = null;
 		$this->params['interval'] = null;
 		$this->params['time_interval'] = null;
-		$this->params['params'] = array();
+		$this->params['params'] = null;
 		$this->params['key_field'] = null;
 		$this->params['value_field'] = null;
 		$this->params['key_script'] = null;
