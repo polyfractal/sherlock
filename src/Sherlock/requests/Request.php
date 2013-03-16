@@ -23,31 +23,31 @@ class Request
 {
     protected $dispatcher;
 
-	public $node;
+    public $node;
 
     //required since PHP doesn't allow argument differences between
     //parent and children under Strict
 
-	/*
-	 * @var string
-	 */
+    /*
+     * @var string
+     */
     protected $_uri;
 
-	/*
-	 * @var string
-	 */
+    /*
+     * @var string
+     */
     protected $_data;
 
-	/*
-	 * @var string
-	 */
+    /*
+     * @var string
+     */
     protected $_action;
 
-	/**
-	 * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
-	 * @throws \Sherlock\common\exceptions\BadMethodCallException
-	 */
-	public function __construct($dispatcher)
+    /**
+     * @param  \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @throws \Sherlock\common\exceptions\BadMethodCallException
+     */
+    public function __construct($dispatcher)
     {
         if (!isset($dispatcher)) {
             \Analog\Analog::log("An Event Dispatcher must be injected into all Request objects", \Analog\Analog::ERROR);
@@ -58,14 +58,14 @@ class Request
         $this->dispatcher = $dispatcher;
     }
 
-	/**
-	 * Execute the Request, performs on the actual transport layer
-	 *
-	 * @throws \Sherlock\common\exceptions\RuntimeException
-	 * @throws \Sherlock\common\exceptions\BadResponseException
-	 * @throws \Sherlock\common\exceptions\ClientErrorResponseException
-	 * @return \Sherlock\responses\Response
-	 */
+    /**
+     * Execute the Request, performs on the actual transport layer
+     *
+     * @throws \Sherlock\common\exceptions\RuntimeException
+     * @throws \Sherlock\common\exceptions\BadResponseException
+     * @throws \Sherlock\common\exceptions\ClientErrorResponseException
+     * @return \Sherlock\responses\Response
+     */
     public function execute()
     {
         $reflector = new \ReflectionClass(get_class($this));
@@ -78,32 +78,29 @@ class Request
             throw new \Sherlock\common\exceptions\RuntimeException("Request URI must be set.");
         }
 
-		//construct a requestEvent and dispatch it with the "request.preexecute" event
-		//This will, among potentially other things, populate the $node variable with
-		//values from Cluster
-		$event = new RequestEvent($this);
-		$this->dispatcher->dispatch(Events::REQUEST_PREEXECUTE, $event);
+        //construct a requestEvent and dispatch it with the "request.preexecute" event
+        //This will, among potentially other things, populate the $node variable with
+        //values from Cluster
+        $event = new RequestEvent($this);
+        $this->dispatcher->dispatch(Events::REQUEST_PREEXECUTE, $event);
 
-		//Make sure the node variable is set correctly after the event
-		if (!isset($this->node))
-		{
-			Analog::error("Request requires a valid, non-empty node");
-			throw new exceptions\RuntimeException("Request requires a valid, non-empty node");
-		}
+        //Make sure the node variable is set correctly after the event
+        if (!isset($this->node)) {
+            Analog::error("Request requires a valid, non-empty node");
+            throw new exceptions\RuntimeException("Request requires a valid, non-empty node");
+        }
 
-		if (!isset($this->node['host']))
-		{
-			Analog::error("Request requires a host to connect to");
-			throw new exceptions\RuntimeException("Request requires a host to connect to");
-		}
+        if (!isset($this->node['host'])) {
+            Analog::error("Request requires a host to connect to");
+            throw new exceptions\RuntimeException("Request requires a host to connect to");
+        }
 
-		if (!isset($this->node['port']))
-		{
-			Analog::error("Request requires a port to connect to");
-			throw new exceptions\RuntimeException("Request requires a port to connect to");
-		}
+        if (!isset($this->node['port'])) {
+            Analog::error("Request requires a port to connect to");
+            throw new exceptions\RuntimeException("Request requires a port to connect to");
+        }
 
-		$path = 'http://'.$this->node['host'].':'.$this->node['port'].$this->_uri;
+        $path = 'http://'.$this->node['host'].':'.$this->node['port'].$this->_uri;
 
         \Analog\Analog::log("Request->_uri: ".$this->_uri, \Analog\Analog::DEBUG);
         \Analog\Analog::log("Request->_data: ".$this->_data, \Analog\Analog::DEBUG);

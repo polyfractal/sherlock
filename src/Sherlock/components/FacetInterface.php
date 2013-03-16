@@ -5,11 +5,11 @@
  * Time: 6:16 AM
  */
 
-namespace sherlock\components;
+namespace Sherlock\components;
 
 /**
  * Interface for facet components, always used in conjunction with the BaseComponent class
  */
-interface FacetInterface {
-
+interface FacetInterface
+{
 }

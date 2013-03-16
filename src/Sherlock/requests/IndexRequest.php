@@ -23,19 +23,19 @@ use Sherlock\wrappers;
 class IndexRequest extends Request
 {
 
-	protected $dispatcher;
+    protected $dispatcher;
 
     /**
      * @var array
      */
     protected $params;
 
-	/**
-	 * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
-	 * @param $index
-	 * @throws \Sherlock\common\exceptions\BadMethodCallException
-	 * @internal param $node
-	 */
+    /**
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @param $index
+     * @throws \Sherlock\common\exceptions\BadMethodCallException
+     * @internal param $node
+     */
     public function __construct($dispatcher, $index)
     {
         if (!isset($dispatcher))
@@ -43,7 +43,7 @@ class IndexRequest extends Request
         if (!isset($index))
             throw new \Sherlock\common\exceptions\BadMethodCallException("Index argument required for IndexRequest");
 
-		$this->dispatcher = $dispatcher;
+        $this->dispatcher = $dispatcher;
 
         if(!is_array($index))
             $this->params['index'][] = $index;
@@ -56,12 +56,12 @@ class IndexRequest extends Request
         parent::__construct($dispatcher);
     }
 
-	/**
-	 * @param $name
-	 * @param $args
-	 * @return IndexRequest
-	 */
-	public function __call($name, $args)
+    /**
+     * @param $name
+     * @param $args
+     * @return IndexRequest
+     */
+    public function __call($name, $args)
     {
         $this->params[$name] = $args[0];
 
@@ -76,8 +76,8 @@ class IndexRequest extends Request
      */
 
     /**
-	 * Set the index to operate on
-	 *
+     * Set the index to operate on
+     *
      * @param  string       $index     indices to operate on
      * @param  string       $index,... indices to operate on
      * @return IndexRequest
@@ -94,8 +94,8 @@ class IndexRequest extends Request
     }
 
     /**
-	 * Set the type to operate on
-	 *
+     * Set the type to operate on
+     *
      * @param  string       $type     indices to operate on
      * @param  string       $type,... indices to operate on
      * @return IndexRequest
@@ -112,8 +112,8 @@ class IndexRequest extends Request
     }
 
     /**
-	 * Set the mappings that are used for various operations (set mappings, index creation, etc)
-	 *
+     * Set the mappings that are used for various operations (set mappings, index creation, etc)
+     *
      * @todo fix array-only input
      * @todo add json input
      *
@@ -156,8 +156,8 @@ class IndexRequest extends Request
     }
 
     /**
-	 * Set the index settings, used predominantly for index creation
-	 *
+     * Set the index settings, used predominantly for index creation
+     *
      * @param  array|\sherlock\wrappers\IndexSettingsWrapper      $settings
      * @param  bool                                               $merge
      * @throws \Sherlock\common\exceptions\BadMethodCallException
@@ -187,8 +187,8 @@ class IndexRequest extends Request
      */
 
     /**
-	 * Delete an index
-	 *
+     * Delete an index
+     *
      * @return \Sherlock\responses\IndexResponse
      * @throws \Sherlock\common\exceptions\RuntimeException
      */
@@ -214,8 +214,8 @@ class IndexRequest extends Request
         return $ret;
     }
     /**
-	 * Create an index
-	 *
+     * Create an index
+     *
      * @return \Sherlock\responses\IndexResponse
      * @throws \Sherlock\common\exceptions\RuntimeException
      */
@@ -257,8 +257,8 @@ class IndexRequest extends Request
     }
 
     /**
-	 * Update the settings of an index
-	 *
+     * Update the settings of an index
+     *
      * @todo allow updating settings of all indices
      *
      * @return \Sherlock\responses\IndexResponse
@@ -291,8 +291,8 @@ class IndexRequest extends Request
     }
 
     /**
-	 * Update/add the Mapping of an index
-	 *
+     * Update/add the Mapping of an index
+     *
      * @return \Sherlock\responses\IndexResponse
      * @throws \Sherlock\common\exceptions\RuntimeException
      */

@@ -7,21 +7,20 @@
 
 namespace Sherlock\common\events;
 
-
 use Sherlock\requests\Request;
 use Symfony\Component\EventDispatcher\Event;
 
 class RequestEvent extends Event
 {
-	protected $request;
+    protected $request;
 
-	public function __construct(Request $request)
-	{
-		$this->request = $request;
-	}
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
 
-	public function getRequest()
-	{
-		return $this->request;
-	}
+    public function getRequest()
+    {
+        return $this->request;
+    }
 }

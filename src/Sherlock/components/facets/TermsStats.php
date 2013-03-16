@@ -5,14 +5,11 @@
  * Time: 11:19 AM
  */
 
-
-
 namespace Sherlock\components\facets;
 
 use Analog\Analog;
 use Sherlock\common\exceptions\RuntimeException;
 use Sherlock\components;
-
 
 /**
  * Class TermsStats
@@ -34,95 +31,93 @@ use Sherlock\components;
  */
 class TermsStats extends components\BaseComponent implements components\FacetInterface
 {
-	/**
-	 * @param null $hashMap
-	 */
-	public function __construct($hashMap = null)
-	{
-		$this->params['order'] = 'count';
-		$this->params['all_terms'] = false;
+    /**
+     * @param null $hashMap
+     */
+    public function __construct($hashMap = null)
+    {
+        $this->params['order'] = 'count';
+        $this->params['all_terms'] = false;
 
-		$this->params['facetname'] = null;
-		$this->params['size'] = null;
-		$this->params['exclude'] = null;
-		$this->params['regex'] = null;
-		$this->params['regex_flags'] = null;
-		$this->params['key_field'] = null;
-		$this->params['value_field'] = null;
-		$this->params['key_script'] = null;
-		$this->params['value_script'] = null;
-		$this->params['params'] = null;
-		$this->params['lang'] = null;
+        $this->params['facetname'] = null;
+        $this->params['size'] = null;
+        $this->params['exclude'] = null;
+        $this->params['regex'] = null;
+        $this->params['regex_flags'] = null;
+        $this->params['key_field'] = null;
+        $this->params['value_field'] = null;
+        $this->params['key_script'] = null;
+        $this->params['value_script'] = null;
+        $this->params['params'] = null;
+        $this->params['lang'] = null;
 
-		parent::__construct($hashMap);
-	}
+        parent::__construct($hashMap);
+    }
 
-	/**
-	 * @param $queries
-	 * @return $this
-	 */
-	public function fields($queries)
-	{
+    /**
+     * @param $queries
+     * @return $this
+     */
+    public function fields($queries)
+    {
 
-		$args = func_get_args();
-		Analog::debug("TermsStats->fields(".print_r($args, true).")");
+        $args = func_get_args();
+        Analog::debug("TermsStats->fields(".print_r($args, true).")");
 
-		//single param, array of fields
-		if (count($args) == 1 && is_array($args[0]))
-			$args = $args[0];
+        //single param, array of fields
+        if (count($args) == 1 && is_array($args[0]))
+            $args = $args[0];
 
-		foreach ($args as $arg) {
-			if (is_string($arg))
-				$this->params['fields'][] = $arg;
-		}
+        foreach ($args as $arg) {
+            if (is_string($arg))
+                $this->params['fields'][] = $arg;
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
+    /**
+     * @throws \Sherlock\common\exceptions\RuntimeException
+     * @return array
+     */
+    public function toArray()
+    {
+        if (!isset($this->params['fields'])) {
+            Analog::error("Fields parameter is required for a TermsStats Facet");
+            throw new RuntimeException("Fields parameter is required for a TermsStats Facet");
+        }
 
-	/**
-	 * @throws \Sherlock\common\exceptions\RuntimeException
-	 * @return array
-	 */
-	public function toArray()
-	{
-		if(!isset($this->params['fields'])){
-			Analog::error("Fields parameter is required for a TermsStats Facet");
-			throw new RuntimeException("Fields parameter is required for a TermsStats Facet");
-		}
+        if ($this->params['fields'] === null) {
+            Analog::error("Fields parameter may not be null");
+            throw new RuntimeException("Fields parameter may not be null");
+        }
 
-		if($this->params['fields'] === null){
-			Analog::error("Fields parameter may not be null");
-			throw new RuntimeException("Fields parameter may not be null");
-		}
-
-
-		//if the user didn't provide a facetname, use the (first) field as a default name
-		if ($this->params['facetname'] === null)
-			$this->params['facetname'] = $this->params['fields'][0];
+        //if the user didn't provide a facetname, use the (first) field as a default name
+        if ($this->params['facetname'] === null)
+            $this->params['facetname'] = $this->params['fields'][0];
 
 
-		$ret = array (
-			$this->params['facetname'] => array(
-				"terms_stats" => array(
-					"fields" => $this->params['fields'],
-					"order" => $this->params['order'],
-					"all_TermsStats" => $this->params['all_TermsStats'],
-					"size" => $this->params['size'],
-					"exclude" => $this->params['exclude'],
-					"regex" => $this->params['regex'],
-					"regex_flags" => $this->params['regex_flags'],
-					"key_field" => $this->params['key_field'],
-					"value_field" => $this->params['value_field'],
-					"key_script" => $this->params['key_script'],
-					"value_script" => $this->params['value_script'],
-					"params" => $this->params['params'],
-					"lang" => $this->params['lang']
-				)
-			)
-		);
+        $ret = array (
+            $this->params['facetname'] => array(
+                "terms_stats" => array(
+                    "fields" => $this->params['fields'],
+                    "order" => $this->params['order'],
+                    "all_TermsStats" => $this->params['all_TermsStats'],
+                    "size" => $this->params['size'],
+                    "exclude" => $this->params['exclude'],
+                    "regex" => $this->params['regex'],
+                    "regex_flags" => $this->params['regex_flags'],
+                    "key_field" => $this->params['key_field'],
+                    "value_field" => $this->params['value_field'],
+                    "key_script" => $this->params['key_script'],
+                    "value_script" => $this->params['value_script'],
+                    "params" => $this->params['params'],
+                    "lang" => $this->params['lang']
+                )
+            )
+        );
 
-		return $ret;
-	}
+        return $ret;
+    }
 
 }

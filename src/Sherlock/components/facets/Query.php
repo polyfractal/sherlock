@@ -5,14 +5,12 @@
  * Time: 11:10 AM
  */
 
-
 namespace Sherlock\components\facets;
 
 use Analog\Analog;
 use Sherlock\common\exceptions\BadMethodCallException;
 use Sherlock\common\exceptions\RuntimeException;
 use Sherlock\components;
-
 
 /**]
  * Class Query
@@ -23,78 +21,75 @@ use Sherlock\components;
  */
 class Query extends components\BaseComponent implements components\FacetInterface
 {
-	/**
-	 * @param null $hashMap
-	 */
-	public function __construct($hashMap = null)
-	{
+    /**
+     * @param null $hashMap
+     */
+    public function __construct($hashMap = null)
+    {
 
-		$this->params['facetname'] = null;
+        $this->params['facetname'] = null;
 
-		parent::__construct($hashMap);
-	}
+        parent::__construct($hashMap);
+    }
 
-	/**
-	 * @param $fieldName
-	 * @throws \Sherlock\common\exceptions\BadMethodCallException
-	 * @return $this
-	 */
-	public function field($fieldName)
-	{
+    /**
+     * @param $fieldName
+     * @throws \Sherlock\common\exceptions\BadMethodCallException
+     * @return $this
+     */
+    public function field($fieldName)
+    {
 
-		Analog::debug("Query->field(".print_r($fieldName, true).")");
+        Analog::debug("Query->field(".print_r($fieldName, true).")");
 
-		if (is_string($fieldName)){
-			$this->params['field'] = $fieldName;
-		}
-		else {
-			Analog::error("Field must be a string");
-			throw new BadMethodCallException("Field must be a string");
-		}
+        if (is_string($fieldName)) {
+            $this->params['field'] = $fieldName;
+        } else {
+            Analog::error("Field must be a string");
+            throw new BadMethodCallException("Field must be a string");
+        }
 
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * @throws \Sherlock\common\exceptions\RuntimeException
+     * @return array
+     */
+    public function toArray()
+    {
+        if (!isset($this->params['field'])) {
+            Analog::error("Field parameter is required for a Query Facet");
+            throw new RuntimeException("Field parameter is required for a Query Facet");
+        }
 
+        if ($this->params['field'] === null) {
+            Analog::error("Field parameter may not be null");
+            throw new RuntimeException("Field parameter may not be null");
+        }
 
-	/**
-	 * @throws \Sherlock\common\exceptions\RuntimeException
-	 * @return array
-	 */
-	public function toArray()
-	{
-		if(!isset($this->params['field'])){
-			Analog::error("Field parameter is required for a Query Facet");
-			throw new RuntimeException("Field parameter is required for a Query Facet");
-		}
+        if (!isset($this->params['query'])) {
+            Analog::error("Query parameter is required for a Query Facet");
+            throw new RuntimeException("Filter parameter is required for a Query Facet");
+        }
 
-		if($this->params['field'] === null){
-			Analog::error("Field parameter may not be null");
-			throw new RuntimeException("Field parameter may not be null");
-		}
+        if (!$this->params['query'] instanceof components\QueryInterface) {
+            Analog::error("Query parameter must be a Query component");
+            throw new RuntimeException("Query parameter must be a Query component");
+        }
 
-		if(!isset($this->params['query'])){
-			Analog::error("Query parameter is required for a Query Facet");
-			throw new RuntimeException("Filter parameter is required for a Query Facet");
-		}
-
-		if(!$this->params['query'] instanceof components\QueryInterface){
-			Analog::error("Query parameter must be a Query component");
-			throw new RuntimeException("Query parameter must be a Query component");
-		}
-
-		//if the user didn't provide a facetname, use the field as a default name
-		if ($this->params['facetname'] === null)
-			$this->params['facetname'] = $this->params['field'];
+        //if the user didn't provide a facetname, use the field as a default name
+        if ($this->params['facetname'] === null)
+            $this->params['facetname'] = $this->params['field'];
 
 
-		$ret = array (
-			$this->params['facetname'] => array(
-				"query" => $this->params['Query']->toArray()
-			)
-		);
+        $ret = array (
+            $this->params['facetname'] => array(
+                "query" => $this->params['Query']->toArray()
+            )
+        );
 
-		return $ret;
-	}
+        return $ret;
+    }
 
 }
