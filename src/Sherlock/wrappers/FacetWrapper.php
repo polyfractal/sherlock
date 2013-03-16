@@ -19,6 +19,7 @@ namespace Sherlock\wrappers;
  * @method \Sherlock\components\facets\Filter Filter() Filter()
  * @method \Sherlock\components\facets\Query Query() Query()
  * @method \Sherlock\components\facets\Statistical Statistical() Statistical()
+ * @method \Sherlock\components\facets\TermsStats TermsStats() TermsStats()
  */
 class FacetWrapper
 {
