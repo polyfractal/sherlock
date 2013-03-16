@@ -14,6 +14,7 @@ namespace Sherlock\wrappers;
  *
  * @method \Sherlock\components\facets\Terms Terms() Terms()
  * @method \Sherlock\components\facets\Range Range() Range()
+ * @method \Sherlock\components\facets\Histogram Histogram() Histogram()
  */
 class FacetWrapper
 {
