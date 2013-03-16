@@ -38,10 +38,12 @@ class FacetWrapper
     {
         $class = '\\Sherlock\\components\\facets\\'.$name;
 
-        if (count($arguments) > 0)
+        if (count($arguments) > 0) {
             $this->facet =  new $class($arguments[0]);
-        else
+        } else {
             $this->facet =  new $class();
+        }
+
 
         return $this->facet;
     }
