@@ -78,7 +78,7 @@ class Histogram extends components\BaseComponent implements components\FacetInte
 	{
 		if(!isset($this->params['field'])){
 			Analog::error("Field parameter is required for a Histogram Facet");
-			throw new RuntimeException("Field parameter is required for a Range Facet");
+			throw new RuntimeException("Field parameter is required for a Histogram Facet");
 		}
 
 		if($this->params['field'] === null){
