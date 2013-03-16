@@ -56,10 +56,17 @@ class FacetTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
- 	 * @covers sherlock\Sherlock\components\facets\TermsFacet::must
+ 	 * @covers sherlock\Sherlock\components\facets\TermsFacet::fields
+	 * @covers sherlock\Sherlock\components\facets\TermsFacet::facetname
+	 * @covers sherlock\Sherlock\components\facets\TermsFacet::exclude
+	 * @covers sherlock\Sherlock\components\facets\TermsFacet::order
+	 * @covers sherlock\Sherlock\components\facets\TermsFacet::regex
+	 * @covers sherlock\Sherlock\components\facets\TermsFacet::regex_flags
+	 * @covers sherlock\Sherlock\components\facets\TermsFacet::script
+	 * @covers sherlock\Sherlock\components\facets\TermsFacet::script_field
 	 * @covers sherlock\Sherlock\requests\SearchRequest::facet
  	 */
-	public function testBool()
+	public function testTermsFacet()
 	{
 		$req = $this->object->search();
 		$req->index("testfacets")->type("test");
@@ -78,7 +85,7 @@ class FacetTest extends \PHPUnit_Framework_TestCase
 		$req->facets($facet);
 
 		$data = $req->toJSON();
-		$expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield":{"terms":{"fields":["testfield"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null}}}}';
+		$expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield":{"terms":{"fields":["testfield"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null,"params":null,"lang":null}}}}';
 		$this->assertEquals($expectedData, $data);
 
 		$resp = $req->execute();
@@ -89,7 +96,7 @@ class FacetTest extends \PHPUnit_Framework_TestCase
 		$req->facets($facet);
 
 		$data = $req->toJSON();
-		$expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield1":{"terms":{"fields":["testfield"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null}}}}';
+		$expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield1":{"terms":{"fields":["testfield"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null,"params":null,"lang":null}}}}';
 		$this->assertEquals($expectedData, $data);
 
 		$resp = $req->execute();
@@ -100,7 +107,7 @@ class FacetTest extends \PHPUnit_Framework_TestCase
 		$req->facets($facet);
 
 		$data = $req->toJSON();
-		$expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield":{"terms":{"fields":["testfield","testfield1","testfield2"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null}}}}';
+		$expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield":{"terms":{"fields":["testfield","testfield1","testfield2"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null,"params":null,"lang":null}}}}';
 		$this->assertEquals($expectedData, $data);
 
 		$resp = $req->execute();
@@ -111,7 +118,7 @@ class FacetTest extends \PHPUnit_Framework_TestCase
 		$req->facets($facet);
 
 		$data = $req->toJSON();
-		$expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield":{"terms":{"fields":["testfield","testfield1","testfield2"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null}}}}';
+		$expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield":{"terms":{"fields":["testfield","testfield1","testfield2"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null,"params":null,"lang":null}}}}';
 		$this->assertEquals($expectedData, $data);
 
 		$resp = $req->execute();
@@ -129,7 +136,7 @@ class FacetTest extends \PHPUnit_Framework_TestCase
 												$req->facets($facet);
 
 		$data = $req->toJSON();
-		$expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield1":{"terms":{"fields":["testfield"],"order":"count","all_terms":true,"size":null,"exclude":["term1","term2"],"regex":"\/.\/","regex_flags":"DOTALL","script":"_score","script_field":"_source.testfield"}}}}';
+		$expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield1":{"terms":{"fields":["testfield"],"order":"count","all_terms":true,"size":null,"exclude":["term1","term2"],"regex":"\/.\/","regex_flags":"DOTALL","script":"_score","script_field":"_source.testfield","params":null,"lang":null}}}}';
 		$this->assertEquals($expectedData, $data);
 
 		$resp = $req->execute();
