@@ -14,7 +14,7 @@ use Sherlock\components;
 
 
 /**]
- * Class TermsFacet
+ * Class Terms
  * @package Sherlock\components\facets
  *
  * @method \Sherlock\components\facets\Terms facetname() facetname(\string $value)
