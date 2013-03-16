@@ -17,10 +17,10 @@ use Sherlock\components;
  * Class Filter
  * @package Sherlock\components\facets
  *
- * @method \Sherlock\components\facets\Histogram facetname() facetname(\string $value)
- * @method \Sherlock\components\facets\Histogram filter() filter(\Sherlock\components\FilterInterface $value)
+ * @method \Sherlock\components\facets\Filter facetname() facetname(\string $value)
+ * @method \Sherlock\components\facets\Filter filter() filter(\Sherlock\components\FilterInterface $value)
  */
-class Histogram extends components\BaseComponent implements components\FacetInterface
+class Filter extends components\BaseComponent implements components\FacetInterface
 {
 	/**
 	 * @param null $hashMap
@@ -63,8 +63,8 @@ class Histogram extends components\BaseComponent implements components\FacetInte
 	public function toArray()
 	{
 		if(!isset($this->params['field'])){
-			Analog::error("Field parameter is required for a Histogram Facet");
-			throw new RuntimeException("Field parameter is required for a Histogram Facet");
+			Analog::error("Field parameter is required for a Filter Facet");
+			throw new RuntimeException("Field parameter is required for a Filter Facet");
 		}
 
 		if($this->params['field'] === null){
@@ -89,9 +89,7 @@ class Histogram extends components\BaseComponent implements components\FacetInte
 
 		$ret = array (
 			$this->params['facetname'] => array(
-				"filter" => array(
-					"filter" => $this->params['filter']->toArray()
-				)
+				"filter" => $this->params['filter']->toArray()
 			)
 		);
 
