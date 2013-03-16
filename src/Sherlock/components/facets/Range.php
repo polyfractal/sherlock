@@ -5,14 +5,12 @@
  * Time: 10:34 AM
  */
 
-
 namespace Sherlock\components\facets;
 
 use Analog\Analog;
 use Sherlock\common\exceptions\BadMethodCallException;
 use Sherlock\common\exceptions\RuntimeException;
 use Sherlock\components;
-
 
 /**]
  * Class Range
@@ -29,83 +27,80 @@ use Sherlock\components;
  */
 class Range extends components\BaseComponent implements components\FacetInterface
 {
-	/**
-	 * @param null $hashMap
-	 */
-	public function __construct($hashMap = null)
-	{
+    /**
+     * @param null $hashMap
+     */
+    public function __construct($hashMap = null)
+    {
 
-		$this->params['facetname'] = null;
-		$this->params['ranges'] = null;
-		$this->params['key_field'] = null;
-		$this->params['value_field'] = null;
-		$this->params['key_script'] = null;
-		$this->params['value_script'] = null;
-		$this->params['params'] = null;
-		$this->params['lang'] = null;
+        $this->params['facetname'] = null;
+        $this->params['ranges'] = null;
+        $this->params['key_field'] = null;
+        $this->params['value_field'] = null;
+        $this->params['key_script'] = null;
+        $this->params['value_script'] = null;
+        $this->params['params'] = null;
+        $this->params['lang'] = null;
 
-		parent::__construct($hashMap);
-	}
+        parent::__construct($hashMap);
+    }
 
-	/**
-	 * @param $fieldName
-	 * @throws \Sherlock\common\exceptions\BadMethodCallException
-	 * @return $this
-	 */
-	public function field($fieldName)
-	{
-		Analog::debug("Range->field(".print_r($fieldName, true).")");
+    /**
+     * @param $fieldName
+     * @throws \Sherlock\common\exceptions\BadMethodCallException
+     * @return $this
+     */
+    public function field($fieldName)
+    {
+        Analog::debug("Range->field(".print_r($fieldName, true).")");
 
-		if (is_string($fieldName)){
-			$this->params['field'][] = $fieldName;
-		}
-		else {
-			Analog::error("Field must be a string");
-			throw new BadMethodCallException("Field must be a string");
-		}
+        if (is_string($fieldName)) {
+            $this->params['field'][] = $fieldName;
+        } else {
+            Analog::error("Field must be a string");
+            throw new BadMethodCallException("Field must be a string");
+        }
 
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * @throws \Sherlock\common\exceptions\RuntimeException
+     * @return array
+     */
+    public function toArray()
+    {
+        if (!isset($this->params['field'])) {
+            Analog::error("Field parameter is required for a Range Facet");
+            throw new RuntimeException("Field parameter is required for a Range Facet");
+        }
 
+        if ($this->params['field'] === null) {
+            Analog::error("Field parameter may not be null");
+            throw new RuntimeException("Field parameter may not be null");
+        }
 
-	/**
-	 * @throws \Sherlock\common\exceptions\RuntimeException
-	 * @return array
-	 */
-	public function toArray()
-	{
-		if(!isset($this->params['field'])){
-			Analog::error("Field parameter is required for a Range Facet");
-			throw new RuntimeException("Field parameter is required for a Range Facet");
-		}
-
-		if($this->params['field'] === null){
-			Analog::error("Field parameter may not be null");
-			throw new RuntimeException("Field parameter may not be null");
-		}
-
-		//if the user didn't provide a facetname, use the field as a default name
-		if ($this->params['facetname'] === null)
-			$this->params['facetname'] = $this->params['fields'];
+        //if the user didn't provide a facetname, use the field as a default name
+        if ($this->params['facetname'] === null)
+            $this->params['facetname'] = $this->params['fields'];
 
 
-		$ret = array (
-			$this->params['facetname'] => array(
-				"range" => array(
-					"field" => $this->params['field'],
-					"ranges" => $this->params['ranges'],
-					"key_field" => $this->params['key_field'],
-					"value_field" => $this->params['value_field'],
-					"key_script" => $this->params['key_script'],
-					"value_script" => $this->params['value_script'],
-					"params" => $this->params['params'],
-					"lang" => $this->params['lang']
-				)
-			)
-		);
+        $ret = array (
+            $this->params['facetname'] => array(
+                "range" => array(
+                    "field" => $this->params['field'],
+                    "ranges" => $this->params['ranges'],
+                    "key_field" => $this->params['key_field'],
+                    "value_field" => $this->params['value_field'],
+                    "key_script" => $this->params['key_script'],
+                    "value_script" => $this->params['value_script'],
+                    "params" => $this->params['params'],
+                    "lang" => $this->params['lang']
+                )
+            )
+        );
 
-		return $ret;
-	}
+        return $ret;
+    }
 
 }

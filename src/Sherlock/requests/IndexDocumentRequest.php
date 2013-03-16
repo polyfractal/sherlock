@@ -17,34 +17,34 @@ use Sherlock\common\exceptions;
  */
 class IndexDocumentRequest extends Request
 {
-	protected $dispatcher;
+    protected $dispatcher;
 
-	/**
-	 * @var array
-	 */
-	protected $params;
+    /**
+     * @var array
+     */
+    protected $params;
 
-	/**
-	 * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
-	 * @throws \Sherlock\common\exceptions\BadMethodCallException
-	 * @internal param $node
-	 */
-	public function __construct($dispatcher)
+    /**
+     * @param  \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @throws \Sherlock\common\exceptions\BadMethodCallException
+     * @internal param $node
+     */
+    public function __construct($dispatcher)
     {
-		if (!isset($dispatcher))
-			throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
+        if (!isset($dispatcher))
+            throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
 
-		$this->dispatcher = $dispatcher;
+        $this->dispatcher = $dispatcher;
 
         parent::__construct($dispatcher);
     }
 
-	/**
-	 * @param $name
-	 * @param $args
-	 * @return IndexDocumentRequest
-	 */
-	public function __call($name, $args)
+    /**
+     * @param $name
+     * @param $args
+     * @return IndexDocumentRequest
+     */
+    public function __call($name, $args)
     {
         $this->params[$name] = $args[0];
 
@@ -52,8 +52,8 @@ class IndexDocumentRequest extends Request
     }
 
     /**
-	 * Set the index to add documents to
-	 *
+     * Set the index to add documents to
+     *
      * @param  string               $index     indices to query
      * @param  string               $index,... indices to query
      * @return IndexDocumentRequest
@@ -70,8 +70,8 @@ class IndexDocumentRequest extends Request
     }
 
     /**
-	 * Set the type to add documents to
-	 *
+     * Set the type to add documents to
+     *
      * @param  string               $type
      * @param  string               $type,...
      * @return IndexDocumentRequest
@@ -88,8 +88,8 @@ class IndexDocumentRequest extends Request
     }
 
     /**
-	 * The document to index
-	 *
+     * The document to index
+     *
      * @param  \string|\array       $value
      * @return IndexDocumentRequest
      */
@@ -104,8 +104,8 @@ class IndexDocumentRequest extends Request
     }
 
     /**
-	 * Perform the indexing operation
-	 *
+     * Perform the indexing operation
+     *
      * @throws \Sherlock\common\exceptions\RuntimeException
      * @return \Sherlock\responses\IndexResponse
      */

@@ -7,40 +7,38 @@
 
 namespace Sherlock\wrappers;
 
-use Analog\Analog;
 use Sherlock\components\sorts;
-
 
 /**
  * @method \Sherlock\components\sorts\Field Field() Field()
  */
 class SortWrapper
 {
-	/**
-	 * @var \Sherlock\components\SortInterface
-	 */
-	protected $query;
+    /**
+     * @var \Sherlock\components\SortInterface
+     */
+    protected $query;
 
-	/**
-	 * @param $name
-	 * @param $arguments
-	 * @return \Sherlock\components\SortInterface
-	 */
-	public function __call($name, $arguments)
-	{
-		$class = '\\Sherlock\\components\\sorts\\'.$name;
+    /**
+     * @param $name
+     * @param $arguments
+     * @return \Sherlock\components\SortInterface
+     */
+    public function __call($name, $arguments)
+    {
+        $class = '\\Sherlock\\components\\sorts\\'.$name;
 
-		if (count($arguments) > 0)
-			$this->query =  new $class($arguments[0]);
-		else
-			$this->query =  new $class();
+        if (count($arguments) > 0)
+            $this->query =  new $class($arguments[0]);
+        else
+            $this->query =  new $class();
 
-		return $this->query;
-	}
+        return $this->query;
+    }
 
-	public function __toString()
-	{
-		return (string) $this->query;
-	}
+    public function __toString()
+    {
+        return (string) $this->query;
+    }
 
 }

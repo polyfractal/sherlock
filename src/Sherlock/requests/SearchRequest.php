@@ -23,39 +23,37 @@ use sherlock\components\FacetInterface;
  */
 class SearchRequest extends Request
 {
-	/**
-	 * @var array
-	 */
-	protected $params;
+    /**
+     * @var array
+     */
+    protected $params;
 
-	/**
-	 * @var \Symfony\Component\EventDispatcher\EventDispatcher
-	 */
-	protected $dispatcher;
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     */
+    protected $dispatcher;
 
-
-
-	/**
-	 * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
-	 * @throws \Sherlock\common\exceptions\BadMethodCallException
-	 */
-	public function __construct($dispatcher)
+    /**
+     * @param  \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @throws \Sherlock\common\exceptions\BadMethodCallException
+     */
+    public function __construct($dispatcher)
     {
-		if (!isset($dispatcher))
-			throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
+        if (!isset($dispatcher))
+            throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
 
         $this->params['filter'] = array();
-		$this->dispatcher = $dispatcher;
+        $this->dispatcher = $dispatcher;
 
         parent::__construct($dispatcher);
     }
 
-	/**
-	 * @param $name
-	 * @param $args
-	 * @return SearchRequest
-	 */
-	public function __call($name, $args)
+    /**
+     * @param $name
+     * @param $args
+     * @return SearchRequest
+     */
+    public function __call($name, $args)
     {
         $this->params[$name] = $args[0];
 
@@ -63,8 +61,8 @@ class SearchRequest extends Request
     }
 
     /**
-	 * Sets the index to operate on
-	 *
+     * Sets the index to operate on
+     *
      * @param  string        $index     indices to query
      * @param  string        $index,... indices to query
      * @return SearchRequest
@@ -81,8 +79,8 @@ class SearchRequest extends Request
     }
 
     /**
-	 * Sets the type to operate on
-	 *
+     * Sets the type to operate on
+     *
      * @param  string        $type     types to query
      * @param  string        $type,... types to query
      * @return SearchRequest
@@ -98,12 +96,12 @@ class SearchRequest extends Request
         return $this;
     }
 
-	/**
-	 * Sets the query that will be executed
-	 *
-	 * @param $query
-	 * @return SearchRequest
-	 */
+    /**
+     * Sets the query that will be executed
+     *
+     * @param $query
+     * @return SearchRequest
+     */
     public function query($query)
     {
         $this->params['query'] = $query;
@@ -119,27 +117,27 @@ class SearchRequest extends Request
      */
     public function sort($value)
     {
-		$args = func_get_args();
-		Analog::debug("SearchRequest->sort(".print_r($args, true).")");
+        $args = func_get_args();
+        Analog::debug("SearchRequest->sort(".print_r($args, true).")");
 
-		//single param, array of sorts
-		if (count($args) == 1 && is_array($args[0]))
-			$args = $args[0];
+        //single param, array of sorts
+        if (count($args) == 1 && is_array($args[0]))
+            $args = $args[0];
 
-		foreach ($args as $arg) {
-			if ($arg instanceof \Sherlock\components\SortInterface)
-				$this->params['sort'][] = $arg->toArray();
-		}
+        foreach ($args as $arg) {
+            if ($arg instanceof \Sherlock\components\SortInterface)
+                $this->params['sort'][] = $arg->toArray();
+        }
 
-		return $this;
+        return $this;
     }
 
-	/**
-	 * Sets the filter that will be executed
-	 *
-	 * @param $filter
-	 * @return SearchRequest
-	 */
+    /**
+     * Sets the filter that will be executed
+     *
+     * @param $filter
+     * @return SearchRequest
+     */
     public function filter($filter)
     {
         $this->params['filter'] = $filter;
@@ -147,32 +145,31 @@ class SearchRequest extends Request
         return $this;
     }
 
+    /**
+     * Sets the facets to operate on
+     *
+     * @param  \Sherlock\components\FacetInterface $facets     types to query
+     * @param  \Sherlock\components\FacetInterface $facets,... types to query
+     * @return SearchRequest
+     */
+    public function facets($facets)
+    {
+        $this->params['facets'] = array();
+        $args = func_get_args();
+        foreach ($args as $arg) {
+            if ($arg instanceof FacetInterface)
+                $this->params['facets'][] = $arg;
+        }
 
-	/**
-	 * Sets the facets to operate on
-	 *
-	 * @param  \Sherlock\components\FacetInterface        $facets     types to query
-	 * @param  \Sherlock\components\FacetInterface        $facets,... types to query
-	 * @return SearchRequest
-	 */
-	public function facets($facets)
-	{
-		$this->params['facets'] = array();
-		$args = func_get_args();
-		foreach ($args as $arg) {
-			if ($arg instanceof FacetInterface)
-				$this->params['facets'][] = $arg;
-		}
+        return $this;
+    }
 
-		return $this;
-	}
-
-	/**
-	 * Execute the search request on the ES cluster
-	 *
-	 * @throws \Sherlock\common\exceptions\RuntimeException
-	 * @return \Sherlock\responses\QueryResponse
-	 */
+    /**
+     * Execute the search request on the ES cluster
+     *
+     * @throws \Sherlock\common\exceptions\RuntimeException
+     * @return \Sherlock\responses\QueryResponse
+     */
     public function execute()
     {
         \Analog\Analog::log("SearchRequest->execute() - ".print_r($this->params, true), \Analog\Analog::DEBUG);
@@ -200,7 +197,6 @@ class SearchRequest extends Request
         } else
             $queryParams = '';
 
-
         $uri = '/'.$index.'/'.$type.'/_search'.$queryParams;
 
         //required since PHP doesn't allow argument differences between
@@ -214,25 +210,25 @@ class SearchRequest extends Request
         return parent::execute();
     }
 
-	/**
-	 * Return a JSON representation of the final search request
-	 *
-	 * @return string
-	 */
-	public function toJSON()
+    /**
+     * Return a JSON representation of the final search request
+     *
+     * @return string
+     */
+    public function toJSON()
     {
         $finalQuery = $this->composeFinalQuery();
 
         return $finalQuery;
     }
 
-	/**
-	 * Composes the final query, aggregating together the queries, filters, facets and associated parameters
-	 *
-	 * @return string
-	 * @throws \Sherlock\common\exceptions\RuntimeException
-	 */
-	private function composeFinalQuery()
+    /**
+     * Composes the final query, aggregating together the queries, filters, facets and associated parameters
+     *
+     * @return string
+     * @throws \Sherlock\common\exceptions\RuntimeException
+     */
+    private function composeFinalQuery()
     {
         $finalQuery = array();
 
@@ -241,25 +237,22 @@ class SearchRequest extends Request
 			return $this->params['query']->toJSON();
 
         if (isset($this->params['query']) && $this->params['query'] instanceof \Sherlock\components\QueryInterface)
-        	$finalQuery['query'] = $this->params['query']->toArray();
+            $finalQuery['query'] = $this->params['query']->toArray();
 
-		if (isset($this->params['filter']) && $this->params['filter'] instanceof \Sherlock\components\FilterInterface)
-			$finalQuery['filter'] = $this->params['filter']->toArray();
+        if (isset($this->params['filter']) && $this->params['filter'] instanceof \Sherlock\components\FilterInterface)
+            $finalQuery['filter'] = $this->params['filter']->toArray();
 
-		if (isset($this->params['facets']))
-		{
-			$tFacets = array();
-			foreach($this->params['facets'] as $facet)
-			{
-				//@todo Investigate a better way of doing this
-				//array_merge is supposedly slow when merging arrays of arrays
-				if ($facet instanceof \Sherlock\components\FacetInterface)
-					$tFacets = array_merge($tFacets, $facet->toArray());
-			}
-			$finalQuery['facets'] = $tFacets;
-			unset($tFacets);
-		}
-
+        if (isset($this->params['facets'])) {
+            $tFacets = array();
+            foreach ($this->params['facets'] as $facet) {
+                //@todo Investigate a better way of doing this
+                //array_merge is supposedly slow when merging arrays of arrays
+                if ($facet instanceof \Sherlock\components\FacetInterface)
+                    $tFacets = array_merge($tFacets, $facet->toArray());
+            }
+            $finalQuery['facets'] = $tFacets;
+            unset($tFacets);
+        }
 
         if (isset($this->params['from']))
             $finalQuery['from'] = $this->params['from'];
@@ -270,10 +263,8 @@ class SearchRequest extends Request
         if (isset($this->params['timeout']))
             $finalQuery['timeout'] =  $this->params['timeout'];
 
-		if (isset($this->params['sort']))
-			$finalQuery['sort'] =  $this->params['sort'];
-
-
+        if (isset($this->params['sort']))
+            $finalQuery['sort'] =  $this->params['sort'];
 
         $finalQuery = json_encode($finalQuery, true);
 
