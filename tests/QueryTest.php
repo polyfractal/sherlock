@@ -85,9 +85,9 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->Bool()->must(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
-				->must_not(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
-				->should(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
+		$query = Sherlock::queryBuilder()->Bool()->must(array(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"), Sherlock::queryBuilder()->Term()->field("auxillary2")->term("auxillary2")))
+				->must_not(array(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"), Sherlock::queryBuilder()->Term()->field("auxillary2")->term("auxillary2")))
+				->should(array(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"), Sherlock::queryBuilder()->Term()->field("auxillary2")->term("auxillary2")))
 				->minimum_number_should_match(3)
 				->boost(0.5)
 				->disable_coord(3)
@@ -118,8 +118,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->Boosting()->positive(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
-				->negative(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
+		$query = Sherlock::queryBuilder()->Boosting()->positive(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
+				->negative(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
 				->negative_boost(0.5)
 				;
 		
@@ -147,7 +147,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->ConstantScore()->filter(Sherlock::filter()->Term()->field("auxillary")->term("auxillary"))
+		$query = Sherlock::queryBuilder()->ConstantScore()->filter(Sherlock::filterBuilder()->Term()->field("auxillary")->term("auxillary"))
 				->boost(0.5)
 				;
 		
@@ -175,7 +175,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->CustomBoostFactor()->query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
+		$query = Sherlock::queryBuilder()->CustomBoostFactor()->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
 				->boost_factor(0.5)
 				;
 		
@@ -205,8 +205,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->CustomFiltersScore()->query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
-				->filters(Sherlock::filter()->Term()->field("auxillary")->term("auxillary"))
+		$query = Sherlock::queryBuilder()->CustomFiltersScore()->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
+				->filters(Sherlock::filterBuilder()->Term()->field("auxillary")->term("auxillary"))
 				->score_mode("first")
 				->max_boost(0.5)
 				;
@@ -237,8 +237,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->CustomScore()->query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
-				->params(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
+		$query = Sherlock::queryBuilder()->CustomScore()->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
+				->params(array(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"), Sherlock::queryBuilder()->Term()->field("auxillary2")->term("auxillary2")))
 				->script("_score")
 				->lang("mvel")
 				;
@@ -268,9 +268,9 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->DisMax()->tie_breaker(0.5)
+		$query = Sherlock::queryBuilder()->DisMax()->tie_breaker(0.5)
 				->boost(0.5)
-				->queries(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
+				->queries(array(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"), Sherlock::queryBuilder()->Term()->field("auxillary2")->term("auxillary2")))
 				;
 		
 		\Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
@@ -312,7 +312,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->Field()->field("testString")
+		$query = Sherlock::queryBuilder()->Field()->field("testString")
 				->query("testString")
 				->boost(0.5)
 				->enable_position_increments(3)
@@ -354,8 +354,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->FilteredQuery()->query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
-				->filter(Sherlock::filter()->Term()->field("auxillary")->term("auxillary"))
+		$query = Sherlock::queryBuilder()->FilteredQuery()->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
+				->filter(Sherlock::filterBuilder()->Term()->field("auxillary")->term("auxillary"))
 				;
 		
 		\Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
@@ -386,7 +386,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->Fuzzy()->field("testString")
+		$query = Sherlock::queryBuilder()->Fuzzy()->field("testString")
 				->value("testString")
 				->boost(0.5)
 				->min_similarity(0.5)
@@ -424,7 +424,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->FuzzyLikeThis()->fields(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
+		$query = Sherlock::queryBuilder()->FuzzyLikeThis()->fields(array(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"), Sherlock::queryBuilder()->Term()->field("auxillary2")->term("auxillary2")))
 				->like_text("testString")
 				->max_query_terms(3)
 				->min_similarity(0.5)
@@ -464,7 +464,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->FuzzyLikeThisField()->field("testString")
+		$query = Sherlock::queryBuilder()->FuzzyLikeThisField()->field("testString")
 				->like_text("testString")
 				->max_query_terms(3)
 				->min_similarity(0.5)
@@ -500,9 +500,9 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->HasChild()->type("testString")
+		$query = Sherlock::queryBuilder()->HasChild()->type("testString")
 				->score_type("none")
-				->query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
+				->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
 				;
 		
 		\Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
@@ -531,9 +531,9 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->HasParent()->parent_type("testString")
+		$query = Sherlock::queryBuilder()->HasParent()->parent_type("testString")
 				->score_type("none")
-				->query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
+				->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
 				;
 		
 		\Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
@@ -560,8 +560,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->Ids()->type("testString")
-				->values(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
+		$query = Sherlock::queryBuilder()->Ids()->type("testString")
+				->values(array(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"), Sherlock::queryBuilder()->Term()->field("auxillary2")->term("auxillary2")))
 				;
 		
 		\Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
@@ -589,9 +589,9 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->Indices()->indices('test','testqueries')
-				->query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
-				->no_match_query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
+		$query = Sherlock::queryBuilder()->Indices()->indices('test','testqueries')
+				->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
+				->no_match_query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
 				;
 		
 		\Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
@@ -628,7 +628,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->Match()->field("testString")
+		$query = Sherlock::queryBuilder()->Match()->field("testString")
 				->query("testString")
 				->boost(0.5)
 				->operator("AND")
@@ -645,7 +645,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$req->query($query);
 		
 		$data = $req->toJSON();
-		$expectedData = '{"query":{"match":{"testString":{"query":"testString","boost":0.5,"operator":"AND","analyzer":"default","fuzziness":0.5,"lenient":true,"max_expansions":3,"minimum_should_match":3,"prefix_length":3}}}}';
+		$expectedData = '{"query":{"match":{"testString":{"query":"testString","boost":0.5,"operator":"AND","analyzer":"default","fuzziness":0.5,"lenient":true,"max_expansions":3,"minimum_should_match":3,"prefix_length":3,"type":null}}}}';
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
@@ -663,7 +663,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->MatchAll()->boost(0.5)
+		$query = Sherlock::queryBuilder()->MatchAll()->boost(0.5)
 				;
 		
 		\Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
@@ -700,12 +700,12 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->MoreLikeThis()->fields(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
+		$query = Sherlock::queryBuilder()->MoreLikeThis()->fields(array(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"), Sherlock::queryBuilder()->Term()->field("auxillary2")->term("auxillary2")))
 				->like_text("testString")
 				->min_term_freq(3)
 				->max_query_terms(3)
 				->percent_terms_to_match(0.5)
-				->stop_words(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
+				->stop_words(array(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"), Sherlock::queryBuilder()->Term()->field("auxillary2")->term("auxillary2")))
 				->min_doc_freq(3)
 				->max_doc_freq(3)
 				->min_word_len(3)
@@ -748,7 +748,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->MoreLikeThisField()->field("testField")
+		$query = Sherlock::queryBuilder()->MoreLikeThisField()->field("testField")
 				->like_text("testString")
 				->min_term_freq(3)
 				->max_query_terms(3)
@@ -788,9 +788,9 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->Nested()->path("testString")
+		$query = Sherlock::queryBuilder()->Nested()->path("testString")
 				->score_mode("avg")
-				->query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
+				->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
 				;
 		
 		\Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
@@ -821,7 +821,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->Prefix()->field("testString")
+		$query = Sherlock::queryBuilder()->Prefix()->field("testString")
 				->value("testString")
 				->boost(0.5)
 				->analyzer("testString")
@@ -868,7 +868,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->QueryString()->query("testString")
+		$query = Sherlock::queryBuilder()->QueryString()->query("testString")
 				->default_field("_all")
 				->boost(0.5)
 				->enable_position_increments(3)
@@ -928,8 +928,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->QueryStringMultiField()->query("testString")
-				->fields(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
+		$query = Sherlock::queryBuilder()->QueryStringMultiField()->query("testString")
+				->fields(array(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"), Sherlock::queryBuilder()->Term()->field("auxillary2")->term("auxillary2")))
 				->boost(0.5)
 				->enable_position_increments(true)
 				->default_operator("AND")
@@ -976,7 +976,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->Range()->field("testString")
+		$query = Sherlock::queryBuilder()->Range()->field("testString")
 				->from("testString")
 				->to("testString")
 				->include_lower(true)
@@ -1008,7 +1008,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->Term()->field("testString")
+		$query = Sherlock::queryBuilder()->Term()->field("testString")
 				->term("testString")
 				;
 		
@@ -1037,7 +1037,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->Terms()->field("testString")
+		$query = Sherlock::queryBuilder()->Terms()->field("testString")
 				->terms('term', 'term2')
 				->minimum_match(3)
 				;
@@ -1055,7 +1055,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->Terms()->field("testString")
+		$query = Sherlock::queryBuilder()->Terms()->field("testString")
 			->terms(array('term', 'term2'))
 			->minimum_match(3)
 		;
@@ -1088,8 +1088,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->TopChildren()->type("testString")
-				->query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
+		$query = Sherlock::queryBuilder()->TopChildren()->type("testString")
+				->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
 				->score("max")
 				->factor(3)
 				->incremental_factor(3)
@@ -1120,7 +1120,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->Wildcard()->field("testString")
+		$query = Sherlock::queryBuilder()->Wildcard()->field("testString")
 				->value("testString")
 				->boost(0.5)
 				;
@@ -1150,13 +1150,13 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testqueries")->type("test");
-		$query = Sherlock::query()->MatchAll()->boost(0.5);
+		$query = Sherlock::queryBuilder()->MatchAll()->boost(0.5);
 		$req->query($query);
 
 		$sort = Sherlock::sortBuilder();
 
-		$sortValues[] = $sort->Field()->name("sort1")->sort_order('asc');
-		$sortValues[] = $sort->Field()->name("sort2")->sort_order('desc');
+		$sortValues[] = $sort->Field()->name("sort1")->order('asc');
+		$sortValues[] = $sort->Field()->name("sort2")->order('desc');
 		$sortValues[] = $sort->Field()->name("_score");
 		$sortValues[] = $sort->Field()->name("sort3")->missing("_last");
 		$sortValues[] = $sort->Field()->name("sort3")->ignore_unmapped(true);
@@ -1168,7 +1168,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
 		$data = $req->toJSON();
 
-		$expectedData = '{"query":{"match_all":{"boost":0.5}},"sort":[{"sort1":{"sort_mode":null,"sort_order":"asc","missing":null,"ignore_unmapped":null}},{"sort2":{"sort_mode":null,"sort_order":"desc","missing":null,"ignore_unmapped":null}},{"_score":{"sort_mode":null,"sort_order":null,"missing":null,"ignore_unmapped":null}},{"sort3":{"sort_mode":null,"sort_order":null,"missing":"_last","ignore_unmapped":null}},{"sort3":{"sort_mode":null,"sort_order":null,"missing":null,"ignore_unmapped":true}}]}';
+		$expectedData = '{"query":{"match_all":{"boost":0.5}},"sort":[{"sort1":{"sort_mode":null,"order":"asc","missing":null,"ignore_unmapped":null}},{"sort2":{"sort_mode":null,"order":"desc","missing":null,"ignore_unmapped":null}},{"_score":{"sort_mode":null,"order":null,"missing":null,"ignore_unmapped":null}},{"sort3":{"sort_mode":null,"order":null,"missing":"_last","ignore_unmapped":null}},{"sort3":{"sort_mode":null,"order":null,"missing":null,"ignore_unmapped":true}}]}';
 		$this->assertEquals($expectedData, $data);
 
 

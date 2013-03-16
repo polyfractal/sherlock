@@ -80,11 +80,11 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->AndFilter()->and(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
+		$filter = Sherlock::filterBuilder()->AndFilter()->and(array(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"), Sherlock::queryBuilder()->Term()->field("auxillary2")->term("auxillary2")))
 				->_cache(true)
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -113,13 +113,13 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Bool()->must(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
-				->must_not(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
-				->should(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"), Sherlock::query()->Term()->field("auxillary2")->term("auxillary2")))
+		$filter = Sherlock::filterBuilder()->Bool()->must(array(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"), Sherlock::queryBuilder()->Term()->field("auxillary2")->term("auxillary2")))
+				->must_not(array(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"), Sherlock::queryBuilder()->Term()->field("auxillary2")->term("auxillary2")))
+				->should(array(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"), Sherlock::queryBuilder()->Term()->field("auxillary2")->term("auxillary2")))
 				->_cache(true)
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -145,10 +145,10 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Exists()->field("testString")
+		$filter = Sherlock::filterBuilder()->Exists()->field("testString")
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -180,7 +180,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->GeoBoundingBox()->top_left_lat(0.5)
+		$filter = Sherlock::filterBuilder()->GeoBoundingBox()->top_left_lat(0.5)
 				->top_left_lon(0.5)
 				->bottom_right_lat(0.5)
 				->bottom_right_lon(0.5)
@@ -188,7 +188,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 				->_cache(true)
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -218,13 +218,13 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->GeoDistance()->distance("1km")
+		$filter = Sherlock::filterBuilder()->GeoDistance()->distance("1km")
 				->lat(0.5)
 				->lon(0.5)
 				->_cache(true)
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -254,14 +254,14 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->GeoDistanceRange()->from("100km")
+		$filter = Sherlock::filterBuilder()->GeoDistanceRange()->from("100km")
 				->to("200km")
 				->lat(0.5)
 				->lon(0.5)
 				->_cache(true)
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -289,10 +289,10 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->GeoPolygon()->points(array(array("lat"=>40, "lon"=> -70),array("lat"=>30, "lon"=> -80)))
+		$filter = Sherlock::filterBuilder()->GeoPolygon()->points(array(array("lat"=>40, "lon"=> -70),array("lat"=>30, "lon"=> -80)))
 				->_cache(true);
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -320,11 +320,11 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->HasChild()->type("testString")
-				->query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
+		$filter = Sherlock::filterBuilder()->HasChild()->type("testString")
+				->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -352,11 +352,11 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->HasParent()->parent_type("testString")
-				->query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
+		$filter = Sherlock::filterBuilder()->HasParent()->parent_type("testString")
+				->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -383,11 +383,11 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Ids()->type("testString")
+		$filter = Sherlock::filterBuilder()->Ids()->type("testString")
 				->values(array("1","2","3"))
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -403,11 +403,11 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Ids()->type("testString")
+		$filter = Sherlock::filterBuilder()->Ids()->type("testString")
 			->values("1","2","3")
 		;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -431,10 +431,10 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Limit()->value(3)
+		$filter = Sherlock::filterBuilder()->Limit()->value(3)
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -460,9 +460,9 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->MatchAll();
+		$filter = Sherlock::filterBuilder()->MatchAll();
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -490,12 +490,12 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Missing()->field("testString")
+		$filter = Sherlock::filterBuilder()->Missing()->field("testString")
 				->existence(true)
 				->null_value(true)
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -524,12 +524,12 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Nested()->path("testString")
-				->query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
+		$filter = Sherlock::filterBuilder()->Nested()->path("testString")
+				->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
 				->_cache(true)
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -556,11 +556,11 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Not()->not(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
+		$filter = Sherlock::filterBuilder()->Not()->not(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
 				->_cache(true)
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -577,11 +577,11 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Not()->not(Sherlock::filter()->Term()->field("auxillary")->term("auxillary"))
+		$filter = Sherlock::filterBuilder()->Not()->not(Sherlock::filterBuilder()->Term()->field("auxillary")->term("auxillary"))
 			->_cache(true)
 		;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -613,7 +613,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->NumericRange()->field("testString")
+		$filter = Sherlock::filterBuilder()->NumericRange()->field("testString")
 				->from(3)
 				->to(3)
 				->include_lower(true)
@@ -621,7 +621,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 				->_cache(true)
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -650,11 +650,11 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->OrFilter()->queries(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
+		$filter = Sherlock::filterBuilder()->OrFilter()->queries(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
 			->_cache(true)
 		;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -671,11 +671,11 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 		//queries, parameter declaration
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->OrFilter()->queries(Sherlock::query()->Term()->field("auxillary")->term("auxillary"),Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
+		$filter = Sherlock::filterBuilder()->OrFilter()->queries(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"),Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
 			->_cache(true)
 		;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -692,11 +692,11 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 		//queries, array declaration
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->OrFilter()->queries(array(Sherlock::query()->Term()->field("auxillary")->term("auxillary"),Sherlock::query()->Term()->field("auxillary")->term("auxillary")))
+		$filter = Sherlock::filterBuilder()->OrFilter()->queries(array(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"),Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary")))
 			->_cache(true)
 		;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -717,11 +717,11 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->OrFilter()->queries(Sherlock::filter()->Term()->field("auxillary")->term("auxillary"))
+		$filter = Sherlock::filterBuilder()->OrFilter()->queries(Sherlock::filterBuilder()->Term()->field("auxillary")->term("auxillary"))
 			->_cache(true)
 		;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -737,11 +737,11 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 		//filters, parameter declaration
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->OrFilter()->queries(Sherlock::filter()->Term()->field("auxillary")->term("auxillary"),Sherlock::filter()->Term()->field("auxillary")->term("auxillary"))
+		$filter = Sherlock::filterBuilder()->OrFilter()->queries(Sherlock::filterBuilder()->Term()->field("auxillary")->term("auxillary"),Sherlock::filterBuilder()->Term()->field("auxillary")->term("auxillary"))
 			->_cache(true)
 		;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -758,11 +758,11 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 		//filters, array declaration
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->OrFilter()->queries(array(Sherlock::filter()->Term()->field("auxillary")->term("auxillary"),Sherlock::filter()->Term()->field("auxillary")->term("auxillary")))
+		$filter = Sherlock::filterBuilder()->OrFilter()->queries(array(Sherlock::filterBuilder()->Term()->field("auxillary")->term("auxillary"),Sherlock::filterBuilder()->Term()->field("auxillary")->term("auxillary")))
 			->_cache(true)
 		;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -789,12 +789,12 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Prefix()->field("testString")
+		$filter = Sherlock::filterBuilder()->Prefix()->field("testString")
 				->prefix("testString")
 				->_cache(true)
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -821,10 +821,10 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Query()->query(Sherlock::query()->Term()->field("auxillary")->term("auxillary"))
+		$filter = Sherlock::filterBuilder()->Query()->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
 				->_cache(true)
 				;
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -855,7 +855,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Range()->field("testString")
+		$filter = Sherlock::filterBuilder()->Range()->field("testString")
 				->from("testString")
 				->to("testString")
 				->include_lower(true)
@@ -863,7 +863,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 				->_cache(true)
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -891,12 +891,12 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Script()->script("_score")
+		$filter = Sherlock::filterBuilder()->Script()->script("_score")
 				->params(array("id"=>1))
 				->_cache(true)
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -924,12 +924,12 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Term()->field("testString")
+		$filter = Sherlock::filterBuilder()->Term()->field("testString")
 				->term("testString")
 				->_cache(true)
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -958,13 +958,13 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Terms()->field("testString")
+		$filter = Sherlock::filterBuilder()->Terms()->field("testString")
 				->terms('term1', 'term2')
 				->execution("plain")
 				->_cache(true)
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -982,13 +982,13 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Terms()->field("testString")
+		$filter = Sherlock::filterBuilder()->Terms()->field("testString")
 			->terms(array('term1', 'term2'))
 			->execution("plain")
 			->_cache(true)
 		;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 
@@ -1014,10 +1014,10 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 	{
 		$req = $this->object->search();
 		$req->index("testfilters")->type("test");
-		$filter = Sherlock::filter()->Type()->value("testString")
+		$filter = Sherlock::filterBuilder()->Type()->value("testString")
 				;
 
-		$query = Sherlock::query()->MatchAll();
+		$query = Sherlock::queryBuilder()->MatchAll();
 
 		\Analog\Analog::log($filter->toJSON(), \Analog\Analog::DEBUG);
 

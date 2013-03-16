@@ -128,7 +128,7 @@ class Sherlock
 	 * Query builder, used to return a QueryWrapper through which a Query component can be selected
      * @return wrappers\QueryWrapper
      */
-    public static function query()
+    public static function queryBuilder()
     {
         \Analog\Analog::log("Sherlock::query()", \Analog\Analog::DEBUG);
 
@@ -139,18 +139,29 @@ class Sherlock
 	 * Filter builder, used to return a FilterWrapper through which a Filter component can be selected
      * @return wrappers\FilterWrapper
      */
-    public static function Filter()
+    public static function filterBuilder()
     {
         \Analog\Analog::log("Sherlock::filter()", \Analog\Analog::DEBUG);
 
         return new \Sherlock\wrappers\FilterWrapper();
     }
 
+	/**
+	 * Facet builder, used to return a FilterWrapper through which a Filter component can be selected
+	 * @return wrappers\FacetWrapper
+	 */
+	public static function facetBuilder()
+	{
+		\Analog\Analog::log("Sherlock::facetBuilder()", \Analog\Analog::DEBUG);
+
+		return new \Sherlock\wrappers\FacetWrapper();
+	}
+
     /**
 	 * Index builder, used to return a IndexWrapper through which an Index component can be selected
      * @return wrappers\IndexSettingsWrapper
      */
-    public static function indexSettings()
+    public static function indexSettingsBuilder()
     {
         \Analog\Analog::log("Sherlock::indexSettings()", \Analog\Analog::DEBUG);
 
@@ -162,7 +173,7 @@ class Sherlock
      * @param  null|string                     $type
      * @return wrappers\MappingPropertyWrapper
      */
-    public static function mappingProperty($type = null)
+    public static function mappingBuilder($type = null)
     {
         \Analog\Analog::log("Sherlock::mappingProperty()", \Analog\Analog::DEBUG);
 
@@ -190,7 +201,7 @@ class Sherlock
 	 * Used to return an IndexDocumentRequest object, allows adding a doc to the index
 	 * @return requests\IndexDocumentRequest
 	 */
-	public function addDocument()
+	public function document()
     {
         \Analog\Analog::log("Sherlock->indexDocument()", \Analog\Analog::DEBUG);
 
@@ -198,7 +209,6 @@ class Sherlock
     }
 
     /**
-	 * Depreciated...should be removed soon.
      * @param  string                $index     Index to operate on
      * @param  string                $index,... Index to operate on
      * @return requests\IndexRequest

@@ -3,7 +3,12 @@ Changelog
 
 Master
 ------
+
+0.1.7
+-----
+ - Breaking Change: Sherlock static builder functions refactored with consistent naming scheme [Fixes #5](https://github.com/polyfractal/sherlock/issues/5)
  - Internal: Refactor composeFinalQuery to use assoc arrays instead of strings [Fixes #13](https://github.com/polyfractal/sherlock/issues/13)
+ - Feature: Add support for all facets (Terms, Range, Histogram, DateHistogram, Filter, Query, Statistical, TermsStats, Geodistance) [Closes #16](https://github.com/polyfractal/sherlock/issues/16)
 
 0.1.6
 -----
