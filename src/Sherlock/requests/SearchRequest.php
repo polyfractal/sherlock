@@ -269,22 +269,11 @@ class SearchRequest extends Request
             unset($tFacets);
         }
 
-        if (isset($this->params['from'])) {
-            $finalQuery['from'] = $this->params['from'];
+        foreach (array('from', 'size', 'timeout', 'sort') as $key) {
+            if (!isset($this->params[$key])) {
+                $finalQuery[$key] = $this->params[$key];
+            }
         }
-
-        if (isset($this->params['size'])) {
-            $finalQuery['size']=  $this->params['size'];
-        }
-
-        if (isset($this->params['timeout'])) {
-            $finalQuery['timeout'] =  $this->params['timeout'];
-        }
-
-        if (isset($this->params['sort'])) {
-            $finalQuery['sort'] =  $this->params['sort'];
-        }
-
 
         $finalQuery = json_encode($finalQuery, true);
 
