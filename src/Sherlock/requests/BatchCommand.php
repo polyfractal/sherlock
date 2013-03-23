@@ -19,8 +19,9 @@ class BatchCommand implements BatchCommandInterface
      */
     protected $commands = array();
 
+
     /**
-     * @param $commands
+     * @param null $commands
      */
     public function __construct($commands = null)
     {
@@ -32,49 +33,64 @@ class BatchCommand implements BatchCommandInterface
 
     /**
      * @param \Sherlock\requests\Command $command
+     * @return $this
      */
     public function addCommand($command)
     {
         $this->commands[] = $command;
+
+        return $this;
     }
 
     /**
-     *
+     * @return $this
      */
     public function clearCommands()
     {
         $this->commands = array();
+
+        return $this;
     }
 
     /**
      * Fill all commands that don't have an index set
      *
      * @param $index
+     * @return $this
      */
     public function fillIndex($index)
     {
         /** @param Command $value */
         $map = function ($value) use ($index) {
-            $value->index = $index;
+            if ($value->getIndex() === null) {
+                $value->index($index);
+            }
         };
 
         array_map($map, $this->commands);
+
+        return $this;
     }
 
     /**
      * Fill all commands that don't have a type set
      *
      * @param $type
+     * @return $this
      */
     public function fillType($type)
     {
 
         /** @param Command $value */
         $map = function ($value) use ($type) {
-            $value->type = $type;
+            if ($value->getType() === null) {
+                $value->type($type);
+            }
         };
 
         array_map($map, $this->commands);
+
+        return $this;
     }
 
 

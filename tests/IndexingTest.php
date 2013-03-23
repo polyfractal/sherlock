@@ -84,6 +84,118 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
         $this->assertEquals(true, $response[0]->ok);
 
+
+        $batch = array();
+        for ($i = 0; $i < 2000; $i++) {
+            $tDoc = new Sherlock\requests\Command();
+            $tDoc->action('post')
+                 ->index('testindexing')
+                 ->type('tweet')
+                 ->data('{"field":"test"}');
+
+            $batch[] = $tDoc;
+        }
+
+        for ($i = 0; $i < 2000; $i++) {
+            $tDoc = new Sherlock\requests\Command();
+            $tDoc->action('put')
+                ->index('testindexing')
+                ->type('tweet')
+                ->data('{"field":"test"}')
+                ->id($i);
+
+            $batch[] = $tDoc;
+        }
+
+        $batchDocs = $sherlock->document()->documents($batch);
+        $response = $batchDocs->execute();
+
+        $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
+        $this->assertEquals(true, $response[0]->ok);
+
     }
 
+    public function testAddBatchIterator()
+    {
+        $sherlock = $this->object;
+
+        $batch = new CustomBatch();
+        $batchDocs = $sherlock->document();
+
+        $response = $batchDocs->documents($batch)->execute();
+
+        $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
+        $this->assertEquals(true, $response[0]->ok);
+    }
+
+
+}
+
+/**
+ * Class CustomBatch
+ * @package Sherlock\tests
+ */
+class CustomBatch implements Sherlock\requests\BatchCommandInterface
+{
+    private $commands = array();
+
+    public function __construct()
+    {
+
+        for ($i = 0; $i < 2000; $i++) {
+            $tDoc = new Sherlock\requests\Command();
+            $tDoc->action('post')
+                ->index('testindexing')
+                ->type('tweet')
+                ->data('{"field":"test"}');
+
+            $this->commands[] = $tDoc;
+        }
+    }
+
+
+    public function clearCommands()
+    {
+        $this->commands = array();
+    }
+
+    /**
+     *
+     */
+    public function rewind()
+    {
+        reset($this->commands);
+    }
+
+    /**
+     * @return Command
+     */
+    public function current()
+    {
+        return current($this->commands);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function key()
+    {
+        return key($this->commands);
+    }
+
+    /**
+     * @return Command|void
+     */
+    public function next()
+    {
+        return next($this->commands);
+    }
+
+    /**
+     * @return bool
+     */
+    public function valid()
+    {
+        return false !== current($this->commands);
+    }
 }

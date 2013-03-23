@@ -90,8 +90,7 @@ class Request
 
         $path = 'http://'.$this->node['host'].':'.$this->node['port'];
 
-        Analog::debug("Request->commands: ".print_r($this->batch,true));
-
+        Analog::debug("Request->commands: ".print_r($this->batch, true));
 
         $rolling = new RollingCurl\RollingCurl();
 
@@ -155,6 +154,7 @@ class Request
         $rolling->execute();
         $ret = $rolling->getCompletedRequests();
 
+        $this->batch->clearCommands();
 
         //This is kinda gross...
         $returnResponse = 'Response';

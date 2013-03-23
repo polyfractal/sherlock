@@ -12,38 +12,62 @@ namespace Sherlock\requests;
 /**
  * Class Command
  * @package Sherlock\requests
+ * 
+ * @method \Sherlock\requests\Command action() action(\string $value)
+ * @method \Sherlock\requests\Command data() data(\string $value)
+ * @method \Sherlock\requests\Command id() id(\string $value)
+ * @method \Sherlock\requests\Command index() index(\string $value)
+ * @method \Sherlock\requests\Command type() type(\string $value)
  */
 class Command implements CommandInterface
 {
 
-    /** @var string */
-    public $action;
+    private $params;
 
-    /** @var string */
-    public $data;
+    /**
+     * @param array $hashMap Optional hashmap parameter, accepts an associative array to set parameters manually
+     */
+    public function __construct($hashMap = null)
+    {
+        if (is_array(($hashMap)) && count($hashMap) > 0) {
+            //merge the provided values with our param array, overwriting defaults where necessary
+            $this->params = array_merge($this->params, $hashMap);
+        }
 
-    /** @var string */
-    public $id;
+        $this->params['index'] = null;
+        $this->params['action'] = null;
+        $this->params['id'] = null;
+        $this->params['type'] = null;
+        $this->params['data'] = null;
 
-    /** @var string */
-    public $index;
+    }
+    
+    /**
+     * @param $name
+     * @param $args
+     * @return IndexDocumentRequest
+     */
+    public function __call($name, $args)
+    {
+        $this->params[$name] = $args[0];
 
-    /** @var string */
-    public $type;
-
+        return $this;
+    }
+    
+    
     /**
      * @return string
      */
     public function getURI()
     {
-        $uri = '/'.$this->index;
+        $uri = '/'.$this->params['index'];
 
-        if (isset($this->type) && $this->type !== null) {
-            $uri .= '/' .$this->type;
+        if (isset($this->params['type']) && $this->params['type'] !== null) {
+            $uri .= '/' .$this->params['type'];
         }
 
-        if (isset($this->id) && $this->id !== null) {
-            $uri .= '/' .$this->id;
+        if (isset($this->params['id']) && $this->params['id'] !== null) {
+            $uri .= '/' .$this->params['id'];
         }
 
         return $uri;
@@ -54,7 +78,7 @@ class Command implements CommandInterface
      */
     public function getAction()
     {
-        return $this->action;
+        return $this->params['action'];
     }
 
     /**
@@ -62,7 +86,23 @@ class Command implements CommandInterface
      */
     public function getData()
     {
-        return $this->data;
+        return $this->params['data'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getIndex()
+    {
+        return $this->params['index'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->params['type'];
     }
 
 }

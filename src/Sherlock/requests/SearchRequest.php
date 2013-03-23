@@ -206,11 +206,11 @@ class SearchRequest extends Request
 
 
         $command = new Command();
-        $command->index = $index;
-        $command->type = $type;
-        $command->id = '_search'.$queryParams;
-        $command->action = 'post';
-        $command->data = json_encode($body);
+        $command->index($index)
+                ->type($type)
+                ->id('_search'.$queryParams)
+                ->action('post')
+                ->data(json_encode($body));
 
         $this->batch->clearCommands();
         $this->batch->addCommand($command);

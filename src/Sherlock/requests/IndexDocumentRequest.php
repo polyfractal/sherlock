@@ -105,17 +105,17 @@ class IndexDocumentRequest extends Request
 
         $command = new Command();
         if (is_array($value)) {
-            $command->data = json_encode($value, true);
+            $command->data(json_encode($value, true));
 
         } elseif (is_string($value)) {
-            $command->data = $value;
+            $command->data($value);
         }
 
         if ($id !== null) {
-            $command->id = $id;
-            $command->action = 'put';
+            $command->id($id)
+                    ->action('put');
         } else {
-            $command->action = 'post';
+            $command->action('post');
         }
 
         //Only doing this because typehinting is wonky without it...
@@ -128,7 +128,7 @@ class IndexDocumentRequest extends Request
 
     /**
      * Accepts an array of Commands or a BatchCommand
-     * @param array|BatchCommand $values
+     * @param array|BatchCommandInterface $values
      * @return $this
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      */
@@ -180,6 +180,7 @@ class IndexDocumentRequest extends Request
     {
         Analog::debug("IndexDocumentRequest->execute() - ".print_r($this->params, true));
 
+        /*
         foreach (array('index', 'type') as $key) {
             if (!isset($this->params[$key])) {
                 Analog::error($key." cannot be empty.");
@@ -194,10 +195,12 @@ class IndexDocumentRequest extends Request
             }
         }
 
+        */
+
         //if this is an internal Sherlock BatchCommand, make sure index/types/action are filled
         if ($this->batch instanceof BatchCommand) {
-            $this->batch->fillIndex($this->params['index'][0]);
-            $this->batch->fillType($this->params['type'][0]);
+            $this->batch->fillIndex($this->params['index'][0])
+                 ->fillType($this->params['type'][0]);
         }
 
         return parent::execute();

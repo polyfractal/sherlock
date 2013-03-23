@@ -204,8 +204,8 @@ class IndexRequest extends Request
 
 
         $command = new Command();
-        $command->index = $index;
-        $command->action = 'delete';
+        $command->index($index)
+                ->action('delete');
 
         $this->batch->clearCommands();
         $this->batch->addCommand($command);
@@ -241,9 +241,9 @@ class IndexRequest extends Request
 
 
         $command = new Command();
-        $command->index = $index;
-        $command->action = 'put';
-        $command->data = json_encode($body, JSON_FORCE_OBJECT);
+        $command->index($index)
+                ->action('put')
+                ->data(json_encode($body, JSON_FORCE_OBJECT));
 
         $this->batch->clearCommands();
         $this->batch->addCommand($command);
@@ -280,10 +280,10 @@ class IndexRequest extends Request
 
 
         $command = new Command();
-        $command->index = $index;
-        $command->id = '_settings';
-        $command->action = 'put';
-        $command->data = json_encode($body, JSON_FORCE_OBJECT);
+        $command->index($index)
+                ->id('_settings')
+                ->action('put')
+                ->data(json_encode($body, JSON_FORCE_OBJECT));
 
         $this->batch->clearCommands();
         $this->batch->addCommand($command);
@@ -329,11 +329,11 @@ class IndexRequest extends Request
         $body = $this->params['indexMappings'];
 
         $command = new Command();
-        $command->index = $index;
-        $command->type = $this->params['type'][0];
-        $command->id = '_mapping';
-        $command->action = 'put';
-        $command->data = json_encode($body, JSON_FORCE_OBJECT);
+        $command->index($index)
+                ->type($this->params['type'][0])
+                ->id('_mapping')
+                ->action('put')
+                ->data(json_encode($body, JSON_FORCE_OBJECT));
 
         $this->batch->clearCommands();
         $this->batch->addCommand($command);
