@@ -6,7 +6,7 @@
  */
 
 namespace Sherlock\tests;
-use Sherlock\Sherlock;
+use Sherlock;
 
 
 /**
@@ -25,7 +25,7 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function setUp()
 	{
-		$this->object = new \Sherlock\sherlock;
+		$this->object = new Sherlock\Sherlock();
 		$this->object->addNode('localhost', '9200');
 	}
 
@@ -63,8 +63,27 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
 
 		$doc = $sherlock->document()->index('testindexing')->type('tweet')->document(array("field" => "test"));
 		$response = $doc->execute();
-		$this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);
-		$this->assertEquals(true, $response->ok);
+
+		$this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
+		$this->assertEquals(true, $response[0]->ok);
+
 	}
+
+    public function testAddBatchDoc()
+    {
+        $sherlock = $this->object;
+
+        $doc = $sherlock->document()->index('testindexing')->type('tweet');
+
+        for ($i = 0; $i < 2000; $i++) {
+            $doc->document('{"field":"test"}');
+        }
+
+        $response = $doc->execute();
+
+        $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
+        $this->assertEquals(true, $response[0]->ok);
+
+    }
 
 }

@@ -6,8 +6,15 @@
  */
 
 namespace Sherlock\responses;
-use Guzzle\Http\Message;
 
+use Analog\Analog;
+use Guzzle\Http\Message;
+use Sherlock\common\exceptions\BadMethodCallException;
+
+/**
+ * Class Response
+ * @package Sherlock\responses
+ */
 class Response
 {
     /**
@@ -16,17 +23,18 @@ class Response
     public $responseData;
 
     /**
-     * @param  \Guzzle\Http\Message\Response                      $response
-     * @throws \Sherlock\common\exceptions\BadMethodCallException
+     * @param  \Sherlock\common\tmp\RollingCurl\Request                      $response
+     * @throws BadMethodCallException
      */
     public function __construct($response)
     {
         if (!isset($response)) {
-            \Analog\Analog::log("Response must be set in constructor.",\Analog\Analog::ERROR);
-            throw new \Sherlock\common\exceptions\BadMethodCallException("Response must be set in constructor.");
+            Analog::error("Response must be set in constructor.");
+            throw new BadMethodCallException("Response must be set in constructor.");
         }
 
-        //\Analog\Analog::log("Response->__construct() : ".print_r($this->responseData,true),\Analog\Analog::DEBUG);
-        $this->responseData = $response->json();
+        $this->responseData = json_decode($response->getResponseText(), true);
+
+        Analog::debug("Response:".print_r($response, true));
     }
 }

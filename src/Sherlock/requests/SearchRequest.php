@@ -172,42 +172,51 @@ class SearchRequest extends Request
      */
     public function execute()
     {
-        \Analog\Analog::log("SearchRequest->execute() - ".print_r($this->params, true), \Analog\Analog::DEBUG);
+        Analog::debug("SearchRequest->execute() - ".print_r($this->params, true));
 
         $finalQuery = $this->composeFinalQuery();
 
-        if (isset($this->params['index']))
+        if (isset($this->params['index'])) {
             $index = implode(',', $this->params['index']);
-        else
+        } else {
             $index = '';
+        }
 
-        if (isset($this->params['type']))
+        if (isset($this->params['type'])) {
             $type = implode(',', $this->params['type']);
-        else
+        } else {
             $type = '';
+        }
 
-        if (isset($this->params['search_type']))
+        if (isset($this->params['search_type'])) {
             $queryParams[] = $this->params['search_type'];
+        }
 
-        if (isset($this->params['routing']))
+        if (isset($this->params['routing'])) {
             $queryParams[] = $this->params['routing'];
+        }
 
         if (isset($queryParams)) {
             $queryParams = '?' . implode("&", $queryParams);
-        } else
+        } else {
             $queryParams = '';
+        }
 
-        $uri = '/'.$index.'/'.$type.'/_search'.$queryParams;
+        $body = array($finalQuery);
 
-        //required since PHP doesn't allow argument differences between
-        //parent and children under Strict
-        $this->_uri = $uri;
-        $this->_data = $finalQuery;
 
-        //Guzzle doesn't allow GET with request body, use post
-        $this->_action = 'post';
+        $command = new Command();
+        $command->index = $index;
+        $command->type = $type;
+        $command->id = '_search'.$queryParams;
+        $command->action = 'post';
+        $command->data = json_encode($body);
 
-        return parent::execute();
+        $this->batch->clearCommands();
+        $this->batch->addCommand($command);
+
+        $ret =  parent::execute();
+        return $ret[0];
     }
 
     /**

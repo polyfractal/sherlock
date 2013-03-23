@@ -38,7 +38,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function setUp()
 	{
-		$this->object = new \Sherlock\sherlock;
+		$this->object = new Sherlock();
 		$this->object->addNode('localhost', '9200');
 	}
 
@@ -102,9 +102,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($expectedData, $data);
 		
 		$resp = $req->execute();
-		
-		
-		
+
+
 	}
 
 	/**

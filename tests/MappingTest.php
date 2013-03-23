@@ -18,7 +18,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function setUp()
 	{
-		$this->object = new \Sherlock\sherlock;
+		$this->object = new Sherlock();
 		$this->object->addNode('localhost', '9200');
 	}
 
