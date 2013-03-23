@@ -13,7 +13,6 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "guzzle/guzzle": "~3.1",
         "analog/analog": "1.0.2-stable",
         "symfony/event-dispatcher": "v2.2.0"
     },
