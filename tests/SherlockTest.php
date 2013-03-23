@@ -84,8 +84,7 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 		$expectedData = array("query" => array("term" => array("field1" => array("value" => "town"))));
 
 		//Now provide a raw JSON string
-		//Note that since this is a Raw Query, we don't include the top-level "query" field
-		$json = json_encode($expectedData['query']);
+		$json = json_encode($expectedData);
 		$req->query(Sherlock::queryBuilder()->Raw($json));
 		$data = $req->toJSON();
 
