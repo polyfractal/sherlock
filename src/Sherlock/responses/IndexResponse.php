@@ -7,6 +7,10 @@
 
 namespace Sherlock\responses;
 
+/**
+ * Class IndexResponse
+ * @package Sherlock\responses
+ */
 class IndexResponse extends Response
 {
     /**
@@ -19,6 +23,9 @@ class IndexResponse extends Response
      */
     public $acknowledged;
 
+    /**
+     * @param \Sherlock\common\tmp\RollingCurl\Request $response
+     */
     public function __construct($response)
     {
         parent::__construct($response);

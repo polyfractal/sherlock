@@ -10,9 +10,11 @@ namespace Sherlock\requests;
 use Sherlock\common\events\Events;
 use Sherlock\common\events\RequestEvent;
 use Sherlock\common\exceptions;
+use Sherlock\common\tmp\RollingCurl;
 use Sherlock\responses\IndexResponse;
 use Analog\Analog;
 use Guzzle\Http\Client;
+use Sherlock\responses\Response;
 
 /**
  * Base class for various requests.
@@ -28,20 +30,11 @@ class Request
     //required since PHP doesn't allow argument differences between
     //parent and children under Strict
 
-    /*
-     * @var string
+    /**
+     * @var BatchCommandInterface
      */
-    protected $_uri;
+    protected $batch;
 
-    /*
-     * @var string
-     */
-    protected $_data;
-
-    /*
-     * @var string
-     */
-    protected $_action;
 
     /**
      * @param  \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
@@ -50,18 +43,18 @@ class Request
     public function __construct($dispatcher)
     {
         if (!isset($dispatcher)) {
-            \Analog\Analog::log("An Event Dispatcher must be injected into all Request objects", \Analog\Analog::ERROR);
+            Analog::log("An Event Dispatcher must be injected into all Request objects", Analog::ERROR);
             throw new exceptions\BadMethodCallException("An Event Dispatcher must be injected into all Request objects");
         }
 
-
         $this->dispatcher = $dispatcher;
+        $this->batch = new BatchCommand();
     }
 
     /**
      * Execute the Request, performs on the actual transport layer
      *
-     * @throws \Sherlock\common\exceptions\RuntimeException
+     * @throws exceptions\RuntimeException
      * @throws \Sherlock\common\exceptions\BadResponseException
      * @throws \Sherlock\common\exceptions\ClientErrorResponseException
      * @return \Sherlock\responses\Response
@@ -71,12 +64,7 @@ class Request
         $reflector = new \ReflectionClass(get_class($this));
         $class = $reflector->getShortName();
 
-        \Analog\Analog::log("Request->execute()", \Analog\Analog::DEBUG);
-
-        if (!isset($this->_uri)) {
-            \Analog\Analog::log("Request URI must be set.", \Analog\Analog::ERROR);
-            throw new \Sherlock\common\exceptions\RuntimeException("Request URI must be set.");
-        }
+        Analog::debug("Request->execute()");
 
         //construct a requestEvent and dispatch it with the "request.preexecute" event
         //This will, among potentially other things, populate the $node variable with
@@ -100,50 +88,89 @@ class Request
             throw new exceptions\RuntimeException("Request requires a port to connect to");
         }
 
-        $path = 'http://'.$this->node['host'].':'.$this->node['port'].$this->_uri;
+        $path = 'http://'.$this->node['host'].':'.$this->node['port'];
 
-        \Analog\Analog::log("Request->_uri: ".$this->_uri, \Analog\Analog::DEBUG);
-        \Analog\Analog::log("Request->_data: ".$this->_data, \Analog\Analog::DEBUG);
-        \Analog\Analog::log("Request->_action: ".$this->_action, \Analog\Analog::DEBUG);
-        $client = new Client();
+        Analog::debug("Request->commands: ".print_r($this->batch,true));
 
-        $action = $this->_action;
-        try {
-            $response = $client->$action($path, null, $this->_data)->send();
 
-        } catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
-            Analog::log("Request->execute() - ClientErrorResponseException - Request failed from ".$class, Analog::ERROR);
-            Analog::log(print_r($e->getMessage(), true), Analog::ERROR);
-            Analog::log(print_r($e->getResponse()->getBody(true), true), Analog::ERROR);
+        $rolling = new RollingCurl\RollingCurl();
 
-            throw new \Sherlock\common\exceptions\ClientErrorResponseException($e->getResponse()->getBody(true), $e->getCode(), $e);
-        } catch (\Guzzle\Http\Exception\ServerErrorResponseException $e) {
-            Analog::log("Request->execute() - ServerErrorResponseException - Request failed from ".$class, Analog::ERROR);
-            Analog::log(print_r($e->getMessage(), true), Analog::ERROR);
-            Analog::log(print_r($e->getResponse()->getBody(true), true), Analog::ERROR);
+        $window = 10;
+        $counter = 0;
 
-            throw new \Sherlock\common\exceptions\ClientErrorResponseException($e->getResponse()->getBody(true), $e->getCode(), $e);
-        } catch (\Guzzle\Http\Exception\BadResponseException $e) {
-            Analog::log("Request->execute() - BadResponseException - Request failed from ".$class, Analog::ERROR);
-            Analog::log(print_r($e->getMessage(), true), Analog::ERROR);
-            Analog::log(print_r($e->getResponse()->getBody(true), true), Analog::ERROR);
+        /** @var BatchCommandInterface $batch  */
+        $batch = $this->batch;
 
-            throw new \Sherlock\common\exceptions\BadResponseException($e->getResponse()->getBody(true), $e->getCode(), $e);
-        } catch (\Exception $e) {
-            Analog::log("Request->execute() - Exception - Request failed from ".$class, Analog::ERROR);
-            Analog::log(print_r($e, true), Analog::ERROR);
+        //prefill our buffer with a full window
+        //the rest will be streamed by our callback closure
+        foreach ($batch as $request) {
 
-            throw new \Sherlock\common\exceptions\RuntimeException($e->getMessage(), $e->getCode(), $e);
+            /** @var CommandInterface $req  */
+            $req = $request;
+            $action = $req->getAction();
+
+            if ($action == 'put' || $action == 'post') {
+                $rolling->$action($path.$req->getURI(), $req->getData());
+            } else {
+                $rolling->$action($path.$req->getURI());
+            }
+
+            if ($counter > $window) {
+                break;
+            }
         }
 
-        //This is kinda gross...
-        if ($class == 'SearchRequest')
-            $ret =  new \Sherlock\responses\QueryResponse($response);
-        elseif ($class == 'IndexRequest')
-            $ret =  new \Sherlock\responses\IndexResponse($response);
-        elseif ($class == 'IndexDocumentRequest')
-            $ret =  new \Sherlock\responses\IndexResponse($response);
+        /**
+         * @param RollingCurl\Request $request
+         * @param RollingCurl\RollingCurl $rolling
+         */
+        $callback = function (RollingCurl\Request $request, RollingCurl\RollingCurl $rolling) use ($batch, $path) {
 
-        return $ret;
+            //a curl handle just finished, advance the iterator one and add to the queue
+            //First check to see if there are any left to process (aka valid)
+            if ($batch->valid()) {
+
+                //advance
+                $batch->next();
+
+                //make sure we haven't hit the end
+                if ($batch->valid()) {
+
+                    $data = $batch->current();
+
+                    $action = $data->getAction();
+
+                    if ($action == 'put' || $action == 'post') {
+                        $rolling->$action($path.$data->getURI(), $data->getData());
+                    } else {
+                        $rolling->$action($path.$data->getURI());
+                    }
+                }
+            }
+        };
+
+        $rolling->setSimultaneousLimit($window);
+        $rolling->setCallback($callback);
+
+        $rolling->execute();
+        $ret = $rolling->getCompletedRequests();
+
+
+        //This is kinda gross...
+        $returnResponse = 'Response';
+        if ($class == 'SearchRequest') {
+            $returnResponse =  '\Sherlock\responses\QueryResponse';
+        } elseif ($class == 'IndexRequest') {
+            $returnResponse =  '\Sherlock\responses\IndexResponse';
+        } elseif ($class == 'IndexDocumentRequest') {
+            $returnResponse = '\Sherlock\responses\IndexResponse';
+        }
+
+        $finalResponse = array();
+        foreach ($ret as $response) {
+            $finalResponse[] = new $returnResponse($response);
+        }
+
+        return $finalResponse;
     }
 }

@@ -8,6 +8,7 @@
 
 namespace Sherlock\requests;
 
+use Analog\Analog;
 use Sherlock\common\exceptions;
 use Sherlock\wrappers;
 
@@ -190,47 +191,43 @@ class IndexRequest extends Request
      * Delete an index
      *
      * @return \Sherlock\responses\IndexResponse
-     * @throws \Sherlock\common\exceptions\RuntimeException
+     * @throws exceptions\RuntimeException
      */
     public function delete()
     {
-        \Analog\Analog::log("IndexRequest->execute() - ".print_r($this->params, true), \Analog\Analog::DEBUG);
+        Analog::debug("IndexRequest->execute() - ".print_r($this->params, true));
 
         if (!isset($this->params['index']))
-            throw new \Sherlock\common\exceptions\RuntimeException("Index cannot be empty.");
+            throw new exceptions\RuntimeException("Index cannot be empty.");
 
         $index = implode(',', $this->params['index']);
 
-        $uri = '/'.$index;
 
-        //required since PHP doesn't allow argument differences between
-        //parent and children under Strict
-        $this->_uri = $uri;
-        $this->_data = null;
-        $this->_action = 'delete';
+        $command = new Command();
+        $command->index = $index;
+        $command->action = 'delete';
+
+        $this->batch->clearCommands();
+        $this->batch->addCommand($command);
 
         $ret =  parent::execute();
 
-        return $ret;
+        return $ret[0];
     }
     /**
      * Create an index
      *
      * @return \Sherlock\responses\IndexResponse
-     * @throws \Sherlock\common\exceptions\RuntimeException
+     * @throws exceptions\RuntimeException
      */
     public function create()
     {
-        \Analog\Analog::log("IndexRequest->create() - ".print_r($this->params, true), \Analog\Analog::DEBUG);
+        Analog::log("IndexRequest->create() - ".print_r($this->params, true), Analog::DEBUG);
 
         if (!isset($this->params['index']))
-            throw new \Sherlock\common\exceptions\RuntimeException("Index cannot be empty.");
+            throw new exceptions\RuntimeException("Index cannot be empty.");
 
         $index = implode(',', $this->params['index']);
-
-        $uri = '/'.$index;
-
-
 
 
         //Final JSON should be object properties, not an array.  So we need to iterate
@@ -243,17 +240,20 @@ class IndexRequest extends Request
                         "mappings" => $mappings);
 
 
-        //force JSON object when encoding because we may have empty parameters
-        $this->_data = json_encode($body, JSON_FORCE_OBJECT);
-        $this->_action = 'put';
-        $this->_uri = $uri;
+        $command = new Command();
+        $command->index = $index;
+        $command->action = 'put';
+        $command->data = json_encode($body, JSON_FORCE_OBJECT);
+
+        $this->batch->clearCommands();
+        $this->batch->addCommand($command);
 
         /**
          * @var \Sherlock\responses\IndexResponse
          */
         $ret =  parent::execute();
 
-        return $ret;
+        return $ret[0];
     }
 
     /**
@@ -262,31 +262,36 @@ class IndexRequest extends Request
      * @todo allow updating settings of all indices
      *
      * @return \Sherlock\responses\IndexResponse
-     * @throws \Sherlock\common\exceptions\RuntimeException
+     * @throws exceptions\RuntimeException
      */
     public function updateSettings()
     {
-        \Analog\Analog::log("IndexRequest->updateSettings() - ".print_r($this->params, true), \Analog\Analog::DEBUG);
+        Analog::log("IndexRequest->updateSettings() - ".print_r($this->params, true), Analog::DEBUG);
 
         if (!isset($this->params['index'])) {
-            \Analog\Analog::log("Index cannot be empty.", \Analog\Analog::ERROR);
-            throw new \Sherlock\common\exceptions\RuntimeException("Index cannot be empty.");
+            Analog::log("Index cannot be empty.", Analog::ERROR);
+            throw new exceptions\RuntimeException("Index cannot be empty.");
         }
 
 
         $index = implode(',', $this->params['index']);
 
-        $uri = '/'.$index.'/_settings';
         $body = array("index" => $this->params['indexSettings']);
 
 
-        $this->_uri = $uri;
-        $this->_data = json_encode($body);
-        $this->_action = 'put';
+        $command = new Command();
+        $command->index = $index;
+        $command->id = '_settings';
+        $command->action = 'put';
+        $command->data = json_encode($body, JSON_FORCE_OBJECT);
+
+        $this->batch->clearCommands();
+        $this->batch->addCommand($command);
+
 
         $ret =  parent::execute();
 
-        return $ret;
+        return $ret[0];
 
     }
 
@@ -294,43 +299,47 @@ class IndexRequest extends Request
      * Update/add the Mapping of an index
      *
      * @return \Sherlock\responses\IndexResponse
-     * @throws \Sherlock\common\exceptions\RuntimeException
+     * @throws exceptions\RuntimeException
      */
     public function updateMapping()
     {
-        \Analog\Analog::log("IndexRequest->updateMapping() - ".print_r($this->params, true), \Analog\Analog::DEBUG);
+        Analog::log("IndexRequest->updateMapping() - ".print_r($this->params, true), Analog::DEBUG);
 
         if (!isset($this->params['index'])) {
-            \Analog\Analog::log("Index cannot be empty.", \Analog\Analog::ERROR);
-            throw new \Sherlock\common\exceptions\RuntimeException("Index cannot be empty.");
+            Analog::log("Index cannot be empty.", Analog::ERROR);
+            throw new exceptions\RuntimeException("Index cannot be empty.");
         }
 
         if (count($this->params['indexMappings']) > 1) {
-            \Analog\Analog::log("May only update one mapping at a time.", \Analog\Analog::ERROR);
-            throw new \Sherlock\common\exceptions\RuntimeException("May only update one mapping at a time.");
+            Analog::log("May only update one mapping at a time.", Analog::ERROR);
+            throw new exceptions\RuntimeException("May only update one mapping at a time.");
         }
 
         if (!isset($this->params['type'])) {
-            \Analog\Analog::log("Type must be specified.", \Analog\Analog::ERROR);
-            throw new \Sherlock\common\exceptions\RuntimeException("Type must be specified.");
+            Analog::log("Type must be specified.", Analog::ERROR);
+            throw new exceptions\RuntimeException("Type must be specified.");
         }
 
         if (count($this->params['type']) > 1) {
-            \Analog\Analog::log("Only one type may be updated at a time.", \Analog\Analog::ERROR);
-            throw new \Sherlock\common\exceptions\RuntimeException("Only one type may be updated at a time.");
+            Analog::log("Only one type may be updated at a time.", Analog::ERROR);
+            throw new exceptions\RuntimeException("Only one type may be updated at a time.");
         }
 
         $index = implode(',', $this->params['index']);
-        $uri = '/'.$index.'/'.$this->params['type'][0].'/_mapping';
         $body = $this->params['indexMappings'];
 
+        $command = new Command();
+        $command->index = $index;
+        $command->type = $this->params['type'][0];
+        $command->id = '_mapping';
+        $command->action = 'put';
+        $command->data = json_encode($body, JSON_FORCE_OBJECT);
 
-        $this->_uri = $uri;
-        $this->_data = json_encode($body, JSON_FORCE_OBJECT);
-        $this->_action = 'put';
+        $this->batch->clearCommands();
+        $this->batch->addCommand($command);
 
         $ret =  parent::execute();
 
-        return $ret;
+        return $ret[0];
     }
 }
