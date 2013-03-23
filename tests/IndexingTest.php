@@ -107,8 +107,8 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
             $batch[] = $tDoc;
         }
 
-        $batchDocs = $sherlock->document()->documents($batch);
-        $response = $batchDocs->execute();
+        $batchDocs = $sherlock->document();
+        $response = $batchDocs->documents($batch)->execute();
 
         $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
         $this->assertEquals(true, $response[0]->ok);
@@ -139,6 +139,10 @@ class CustomBatch implements Sherlock\requests\BatchCommandInterface
 {
     private $commands = array();
 
+    /**
+     * Pregenerate 2000 docs to insert, just as a demonstration
+     * This could easily be opening a filestream, etc
+     */
     public function __construct()
     {
 
@@ -151,12 +155,6 @@ class CustomBatch implements Sherlock\requests\BatchCommandInterface
 
             $this->commands[] = $tDoc;
         }
-    }
-
-
-    public function clearCommands()
-    {
-        $this->commands = array();
     }
 
     /**

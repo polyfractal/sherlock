@@ -154,7 +154,7 @@ class Request
         $rolling->execute();
         $ret = $rolling->getCompletedRequests();
 
-        $this->batch->clearCommands();
+        $this->batch = new BatchCommand();
 
         //This is kinda gross...
         $returnResponse = 'Response';
