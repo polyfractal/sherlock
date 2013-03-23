@@ -270,7 +270,7 @@ class SearchRequest extends Request
         }
 
         foreach (array('from', 'size', 'timeout', 'sort') as $key) {
-            if (!isset($this->params[$key])) {
+            if (isset($this->params[$key])) {
                 $finalQuery[$key] = $this->params[$key];
             }
         }
