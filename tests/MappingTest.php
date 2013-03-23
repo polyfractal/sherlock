@@ -7,231 +7,221 @@ use Sherlock\Sherlock;
  */
 class MappingTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * @var Sherlock
-	 */
-	protected $object;
+    /**
+     * @var Sherlock
+     */
+    protected $object;
 
-	/**
-	 * Sets up the fixture, for example, opens a network connection.
-	 * This method is called before a test is executed.
-	 */
-	protected function setUp()
-	{
-		$this->object = new Sherlock();
-		$this->object->addNode('localhost', '9200');
-	}
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp()
+    {
+        $this->object = new Sherlock();
+        $this->object->addNode('localhost', '9200');
+    }
 
-	/**
-	 * Tears down the fixture, for example, closes a network connection.
-	 * This method is called after a test is executed.
-	 */
-	protected function tearDown()
-	{
-		/*
-		try{
-			$this->object->index('testmapping')->delete();
-		}
-		catch(\Exception $e)
-		{
+    /**
+     * Tears down the fixture, for example, closes a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown()
+    {
+        /*
+        try {
+            $this->object->index('testmapping')->delete();
+        } catch (\Exception $e) {
 
-		}
-		*/
-	}
+        }
+        */
+    }
 
-	function assertThrowsException($exception_name, $code) {
-		$e = null;
-		try{
-			$code();
-		}catch (\Exception $e) {
-			// No more code, we only want to catch the exception in $e
-		}
+    public function assertThrowsException($exception_name, $code)
+    {
+        $e = null;
+        try {
+            $code();
+        } catch (\Exception $e) {
+            // No more code, we only want to catch the exception in $e
+        }
 
-		$this->assertInstanceOf($exception_name, $e);
-	}
+        $this->assertInstanceOf($exception_name, $e);
+    }
 
+    public function testStringMapping()
+    {
+        $sherlock = $this->object;
 
+        //Set the index
+        $index = $sherlock->index('test123');
 
+        //no type, no field, expect error
 
-	public function testStringMapping()
-	{
-		$sherlock = $this->object;
+        $this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () {
+            $mapping = Sherlock::mappingBuilder()->String();
+        });
 
-		//Set the index
-		$index = $sherlock->index('test123');
+        //type, but no field, expect error
+        $mapping = Sherlock::mappingBuilder('testField')->String();
+        $this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
+            $data = $mapping->toJSON();
+        });
 
-		//no type, no field, expect error
+        //no type, field, expect error
+        $this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () {
+            $mapping = Sherlock::mappingBuilder()->String()->field('testField');
+        });
 
-		$this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () {
-			$mapping = Sherlock::mappingBuilder()->String();
-		});
+        //type, field
+        $mapping = Sherlock::mappingBuilder('testType')->String()->field('testField');
+        $data = $mapping->toJSON();
+        $this->assertEquals("testType", $mapping->getType());
+        $expected = '{"testField":{"type":"string"}}';
+        $this->assertEquals($expected, $data);
 
-		//type, but no field, expect error
-		$mapping = Sherlock::mappingBuilder('testField')->String();
-		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
-			$data = $mapping->toJSON();
-		});
+        //two fields, single type
+        $mapping = Sherlock::mappingBuilder('testType')->String()->field('testField');
+        $mapping2 = Sherlock::mappingBuilder('testType')->String()->field('testField2');
+        $index = $sherlock->index('index')->mappings($mapping, $mapping2);
 
-		//no type, field, expect error
-		$this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () {
-			$mapping = Sherlock::mappingBuilder()->String()->field('testField');
-		});
+        //no type, hashmap of properties
+        $hash = array("field"=>'testField');
+        $this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () use ($hash) {
+            $mapping = Sherlock::mappingBuilder()->String($hash);
+        });
 
-		//type, field
-		$mapping = Sherlock::mappingBuilder('testType')->String()->field('testField');
-		$data = $mapping->toJSON();
-		$this->assertEquals("testType", $mapping->getType());
-		$expected = '{"testField":{"type":"string"}}';
-		$this->assertEquals($expected, $data);
+        //type, hashmap of properties
+        $hash = array("field"=>'testField');
+        $mapping = Sherlock::mappingBuilder('testType')->String($hash);
+        $data = $mapping->toJSON();
+        $expected = '{"testField":{"type":"string"}}';
+        $this->assertEquals($expected, $data);
 
-		//two fields, single type
-		$mapping = Sherlock::mappingBuilder('testType')->String()->field('testField');
-		$mapping2 = Sherlock::mappingBuilder('testType')->String()->field('testField2');
-		$index = $sherlock->index('index')->mappings($mapping, $mapping2);
+        //type, hashmap of properties, but override the hashmap with a new value
+        $hash = array("field"=>'testField');
+        $mapping = Sherlock::mappingBuilder('testType')->String($hash)->field("testFieldNew");
+        $data = $mapping->toJSON();
+        $expected = '{"testFieldNew":{"type":"string"}}';
+        $this->assertEquals($expected, $data);
 
+        //type, hashmap of properties, but override the hashmap with a new value, add a boost
+        $hash = array("field"=>'testField');
+        $mapping = Sherlock::mappingBuilder('testType')->String($hash)->field("testFieldNew")->boost(0.2);
+        $data = $mapping->toJSON();
+        $expected = '{"testFieldNew":{"type":"string","boost":0.2}}';
+        $this->assertEquals($expected, $data);
 
+    }
 
-		//no type, hashmap of properties
-		$hash = array("field"=>'testField');
-		$this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () use ($hash) {
-			$mapping = Sherlock::mappingBuilder()->String($hash);
-		});
+    public function testNumberMapping()
+    {
+        $sherlock = $this->object;
 
-		//type, hashmap of properties
-		$hash = array("field"=>'testField');
-		$mapping = Sherlock::mappingBuilder('testType')->String($hash);
-		$data = $mapping->toJSON();
-		$expected = '{"testField":{"type":"string"}}';
-		$this->assertEquals($expected, $data);
+        //Set the index
+        $index = $sherlock->index('test123');
 
-		//type, hashmap of properties, but override the hashmap with a new value
-		$hash = array("field"=>'testField');
-		$mapping = Sherlock::mappingBuilder('testType')->String($hash)->field("testFieldNew");
-		$data = $mapping->toJSON();
-		$expected = '{"testFieldNew":{"type":"string"}}';
-		$this->assertEquals($expected, $data);
+        //no field, expect error
+        $this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () {
+            $mapping = Sherlock::mappingBuilder()->Number();
+        });
 
-		//type, hashmap of properties, but override the hashmap with a new value, add a boost
-		$hash = array("field"=>'testField');
-		$mapping = Sherlock::mappingBuilder('testType')->String($hash)->field("testFieldNew")->boost(0.2);
-		$data = $mapping->toJSON();
-		$expected = '{"testFieldNew":{"type":"string","boost":0.2}}';
-		$this->assertEquals($expected, $data);
+        //type, but no field, expect error
+        $mapping = Sherlock::mappingBuilder('testType')->Number();
+        $this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
+            $data = $mapping->toJSON();
+        });
 
+        //type, field, but no number-type, expect error
+        $mapping = Sherlock::mappingBuilder('testType')->Number()->field("testField");
+        $this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
+            $data = $mapping->toJSON();
+        });
 
-	}
+        //type, field, number-type
+        $mapping = Sherlock::mappingBuilder('testType')->Number()->field('testField')->type("float");
+        $data = $mapping->toJSON();
+        $expected = '{"testField":{"type":"float"}}';
+        $this->assertEquals($expected, $data);
 
-	public function testNumberMapping()
-	{
-		$sherlock = $this->object;
+    }
 
-		//Set the index
-		$index = $sherlock->index('test123');
+    public function testDateMapping()
+    {
+        $sherlock = $this->object;
 
-		//no field, expect error
-		$this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () {
-			$mapping = Sherlock::mappingBuilder()->Number();
-		});
+        //Set the index
+        $index = $sherlock->index('test123');
 
-		//type, but no field, expect error
-		$mapping = Sherlock::mappingBuilder('testType')->Number();
-		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
-			$data = $mapping->toJSON();
-		});
+        //no field, expect error
+        $this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () {
+            $mapping = Sherlock::mappingBuilder()->Date();
+        });
 
-		//type, field, but no number-type, expect error
-		$mapping = Sherlock::mappingBuilder('testType')->Number()->field("testField");
-		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
-			$data = $mapping->toJSON();
-		});
+        //type, but no field, expect error
+        $mapping = Sherlock::mappingBuilder('testType')->Date();
+        $this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
+            $data = $mapping->toJSON();
+        });
 
-		//type, field, number-type
-		$mapping = Sherlock::mappingBuilder('testType')->Number()->field('testField')->type("float");
-		$data = $mapping->toJSON();
-		$expected = '{"testField":{"type":"float"}}';
-		$this->assertEquals($expected, $data);
+        //type, field, format
+        $mapping = Sherlock::mappingBuilder('testType')->Date()->field('testField')->format("YYYY-MM-dd");
+        $data = $mapping->toJSON();
+        $expected = '{"testField":{"type":"date","format":"YYYY-MM-dd"}}';
+        $this->assertEquals($expected, $data);
 
-	}
+    }
 
-	public function testDateMapping()
-	{
-		$sherlock = $this->object;
+    public function testMultiMapping()
+    {
+        $sherlock = $this->object;
 
-		//Set the index
-		$index = $sherlock->index('test123');
+        //Set the index
+        $index = $sherlock->index('testmultimapping');
 
-		//no field, expect error
-		$this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () {
-			$mapping = Sherlock::mappingBuilder()->Date();
-		});
+        $mapping1 = Sherlock::mappingBuilder('testType')->Date()->field('testField')->format("YYYY-MM-dd");
+        $mapping2 = Sherlock::mappingBuilder('testType2')->String()->field('testField2');
 
-		//type, but no field, expect error
-		$mapping = Sherlock::mappingBuilder('testType')->Date();
-		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($mapping) {
-			$data = $mapping->toJSON();
-		});
+        //add both mappings and create the index
+        $index->mappings($mapping1, $mapping2);
+        $response = $index->create();
+        $this->assertEquals(true, $response->ok);
 
-		//type, field, format
-		$mapping = Sherlock::mappingBuilder('testType')->Date()->field('testField')->format("YYYY-MM-dd");
-		$data = $mapping->toJSON();
-		$expected = '{"testField":{"type":"date","format":"YYYY-MM-dd"}}';
-		$this->assertEquals($expected, $data);
+        //try to update the index
+        $index->type("testType")->mappings($mapping1);
+        $response = $index->updateMapping();
+        $this->assertEquals(true, $response->ok);
 
+        //try to update with two mappings, should error
+        $index->type("testType")->mappings($mapping1, $mapping2);
+        $this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($index) {
+            $response = $index->updateMapping();
+        });
 
-	}
+        $response = $index->delete();
+        $this->assertEquals(true, $response->ok);
 
-	public function testMultiMapping()
-	{
-		$sherlock = $this->object;
+    }
 
-		//Set the index
-		$index = $sherlock->index('testmultimapping');
+    public function testObjectMapping()
+    {
+        $sherlock = $this->object;
 
-		$mapping1 = Sherlock::mappingBuilder('testType')->Date()->field('testField')->format("YYYY-MM-dd");
-		$mapping2 = Sherlock::mappingBuilder('testType2')->String()->field('testField2');
+        //Set the index
+        $index = $sherlock->index('test123');
 
-		//add both mappings and create the index
-		$index->mappings($mapping1, $mapping2);
-		$response = $index->create();
-		$this->assertEquals(true, $response->ok);
+        $mapping1 = Sherlock::mappingBuilder('testType')->Date()->field('testField')->format("YYYY-MM-dd");
+        $mapping2 = Sherlock::mappingBuilder('testType2')->Object()->field("testField2")->object(($mapping1));
 
+        $data = $mapping2->toJSON();
+        $expected = '{"testField2":{"properties":{"testField":{"type":"date","format":"YYYY-MM-dd"}},"type":"object"}}';
+        $this->assertEquals($expected, $data);
 
-		//try to update the index
-		$index->type("testType")->mappings($mapping1);
-		$response = $index->updateMapping();
-		$this->assertEquals(true, $response->ok);
+        $mapping2->dynamic(true);
+        $data = $mapping2->toJSON();
+        $expected = '{"testField2":{"properties":{"testField":{"type":"date","format":"YYYY-MM-dd"}},"type":"object","dynamic":true}}';
+        $this->assertEquals($expected, $data);
 
-		//try to update with two mappings, should error
-		$index->type("testType")->mappings($mapping1, $mapping2);
-		$this->assertThrowsException('\sherlock\common\exceptions\RuntimeException', function () use ($index) {
-			$response = $index->updateMapping();
-		});
-
-		$response = $index->delete();
-		$this->assertEquals(true, $response->ok);
-
-	}
-
-	public function testObjectMapping()
-	{
-		$sherlock = $this->object;
-
-		//Set the index
-		$index = $sherlock->index('test123');
-
-		$mapping1 = Sherlock::mappingBuilder('testType')->Date()->field('testField')->format("YYYY-MM-dd");
-		$mapping2 = Sherlock::mappingBuilder('testType2')->Object()->field("testField2")->object(($mapping1));
-
-		$data = $mapping2->toJSON();
-		$expected = '{"testField2":{"properties":{"testField":{"type":"date","format":"YYYY-MM-dd"}},"type":"object"}}';
-		$this->assertEquals($expected, $data);
-
-		$mapping2->dynamic(true);
-		$data = $mapping2->toJSON();
-		$expected = '{"testField2":{"properties":{"testField":{"type":"date","format":"YYYY-MM-dd"}},"type":"object","dynamic":true}}';
-		$this->assertEquals($expected, $data);
-
-
-	}
+    }
 
 }
