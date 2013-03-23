@@ -24,7 +24,6 @@ class IndexDocumentRequest extends Request
      */
     protected $params;
 
-
     /**
      * @param  \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
      * @throws \Sherlock\common\exceptions\BadMethodCallException
@@ -91,8 +90,8 @@ class IndexDocumentRequest extends Request
     /**
      * The document to index
      *
-     * @param  \string|\array $value
-     * @param null $id
+     * @param  \string|\array                               $value
+     * @param  null                                         $id
      * @throws \Sherlock\common\exceptions\RuntimeException
      * @return IndexDocumentRequest
      */

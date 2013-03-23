@@ -62,11 +62,11 @@ class Request
     private $responseErrno;
 
     /**
-     * @param string $url
-     * @param string $method
+     * @param  string               $url
+     * @param  string               $method
      * @return \RollingCurl\Request
      */
-    function __construct($url, $method="GET")
+    public function __construct($url, $method="GET")
     {
         $this->setUrl($url);
         $this->setMethod($method);
@@ -75,12 +75,13 @@ class Request
     /**
      * You may wish to store some "extra" info with this request, you can put any of that here.
      *
-     * @param mixed $extraInfo
+     * @param  mixed                $extraInfo
      * @return \RollingCurl\Request
      */
     public function setExtraInfo($extraInfo)
     {
         $this->extraInfo = $extraInfo;
+
         return $this;
     }
 
@@ -93,12 +94,13 @@ class Request
     }
 
     /**
-     * @param array $headers
+     * @param  array                $headers
      * @return \RollingCurl\Request
      */
     public function setHeaders($headers)
     {
         $this->headers = $headers;
+
         return $this;
     }
 
@@ -111,12 +113,13 @@ class Request
     }
 
     /**
-     * @param string $method
+     * @param  string               $method
      * @return \RollingCurl\Request
      */
     public function setMethod($method)
     {
         $this->method = $method;
+
         return $this;
     }
 
@@ -129,7 +132,7 @@ class Request
     }
 
     /**
-     * @param array $options
+     * @param  array                     $options
      * @throws \InvalidArgumentException
      * @return \RollingCurl\Request
      */
@@ -139,11 +142,12 @@ class Request
             throw new \InvalidArgumentException("options must be an array");
         }
         $this->options = $options;
+
         return $this;
     }
 
     /**
-     * @param array $options
+     * @param  array                     $options
      * @throws \InvalidArgumentException
      * @return \RollingCurl\Request
      */
@@ -153,6 +157,7 @@ class Request
             throw new \InvalidArgumentException("options must be an array");
         }
         $this->options = $options + $this->options;
+
         return $this;
     }
 
@@ -165,12 +170,13 @@ class Request
     }
 
     /**
-     * @param string $postData
+     * @param  string               $postData
      * @return \RollingCurl\Request
      */
     public function setPostData($postData)
     {
         $this->postData = $postData;
+
         return $this;
     }
 
@@ -183,12 +189,13 @@ class Request
     }
 
     /**
-     * @param int $responseErrno
+     * @param  int                  $responseErrno
      * @return \RollingCurl\Request
      */
     public function setResponseErrno($responseErrno)
     {
         $this->responseErrno = $responseErrno;
+
         return $this;
     }
 
@@ -201,12 +208,13 @@ class Request
     }
 
     /**
-     * @param string $responseError
+     * @param  string               $responseError
      * @return \RollingCurl\Request
      */
     public function setResponseError($responseError)
     {
         $this->responseError = $responseError;
+
         return $this;
     }
 
@@ -219,12 +227,13 @@ class Request
     }
 
     /**
-     * @param array $responseInfo
+     * @param  array                $responseInfo
      * @return \RollingCurl\Request
      */
     public function setResponseInfo($responseInfo)
     {
         $this->responseInfo = $responseInfo;
+
         return $this;
     }
 
@@ -237,12 +246,13 @@ class Request
     }
 
     /**
-     * @param string $responseText
+     * @param  string               $responseText
      * @return \RollingCurl\Request
      */
     public function setResponseText($responseText)
     {
         $this->responseText = $responseText;
+
         return $this;
     }
 
@@ -255,12 +265,13 @@ class Request
     }
 
     /**
-     * @param string $url
+     * @param  string               $url
      * @return \RollingCurl\Request
      */
     public function setUrl($url)
     {
         $this->url = $url;
+
         return $this;
     }
 
@@ -271,7 +282,5 @@ class Request
     {
         return $this->url;
     }
-
-
 
 }

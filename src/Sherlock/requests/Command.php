@@ -12,7 +12,7 @@ namespace Sherlock\requests;
 /**
  * Class Command
  * @package Sherlock\requests
- * 
+ *
  * @method \Sherlock\requests\Command action() action(\string $value)
  * @method \Sherlock\requests\Command data() data(\string $value)
  * @method \Sherlock\requests\Command id() id(\string $value)
@@ -41,7 +41,7 @@ class Command implements CommandInterface
         $this->params['data'] = null;
 
     }
-    
+
     /**
      * @param $name
      * @param $args
@@ -53,8 +53,7 @@ class Command implements CommandInterface
 
         return $this;
     }
-    
-    
+
     /**
      * @return string
      */

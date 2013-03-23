@@ -9,6 +9,8 @@ namespace Sherlock\requests;
 
 use Analog\Analog;
 use Sherlock\common\exceptions;
+use Sherlock\components;
+use Sherlock\components\queries;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use sherlock\components\FacetInterface;
 
@@ -148,8 +150,8 @@ class SearchRequest extends Request
     /**
      * Sets the facets to operate on
      *
-     * @param  \Sherlock\components\FacetInterface $facets     types to query
-     * @param  \Sherlock\components\FacetInterface $facets,... types to query
+     * @param  FacetInterface $facets     types to query
+     * @param  FacetInterface $facets,... types to query
      * @return SearchRequest
      */
     public function facets($facets)
@@ -204,7 +206,6 @@ class SearchRequest extends Request
 
         $body = array($finalQuery);
 
-
         $command = new Command();
         $command->index($index)
                 ->type($type)
@@ -216,6 +217,7 @@ class SearchRequest extends Request
         $this->batch->addCommand($command);
 
         $ret =  parent::execute();
+
         return $ret[0];
     }
 
@@ -241,39 +243,48 @@ class SearchRequest extends Request
     {
         $finalQuery = array();
 
-		// If the query is a raw one, use query as-is
-		if($this->params['query'] instanceof \Sherlock\components\queries\Raw)
-			return $this->params['query']->toJSON();
+        // If the query is a raw one, use query as-is
+        if ($this->params['query'] instanceof queries\Raw) {
+            return $this->params['query']->toJSON();
+        }
 
-        if (isset($this->params['query']) && $this->params['query'] instanceof \Sherlock\components\QueryInterface)
+        if (isset($this->params['query']) && $this->params['query'] instanceof components\QueryInterface) {
             $finalQuery['query'] = $this->params['query']->toArray();
+        }
 
-        if (isset($this->params['filter']) && $this->params['filter'] instanceof \Sherlock\components\FilterInterface)
+        if (isset($this->params['filter']) && $this->params['filter'] instanceof components\FilterInterface) {
             $finalQuery['filter'] = $this->params['filter']->toArray();
+        }
 
         if (isset($this->params['facets'])) {
             $tFacets = array();
             foreach ($this->params['facets'] as $facet) {
                 //@todo Investigate a better way of doing this
                 //array_merge is supposedly slow when merging arrays of arrays
-                if ($facet instanceof \Sherlock\components\FacetInterface)
+                if ($facet instanceof FacetInterface) {
                     $tFacets = array_merge($tFacets, $facet->toArray());
+                }
             }
             $finalQuery['facets'] = $tFacets;
             unset($tFacets);
         }
 
-        if (isset($this->params['from']))
+        if (isset($this->params['from'])) {
             $finalQuery['from'] = $this->params['from'];
+        }
 
-        if (isset($this->params['size']))
+        if (isset($this->params['size'])) {
             $finalQuery['size']=  $this->params['size'];
+        }
 
-        if (isset($this->params['timeout']))
+        if (isset($this->params['timeout'])) {
             $finalQuery['timeout'] =  $this->params['timeout'];
+        }
 
-        if (isset($this->params['sort']))
+        if (isset($this->params['sort'])) {
             $finalQuery['sort'] =  $this->params['sort'];
+        }
+
 
         $finalQuery = json_encode($finalQuery, true);
 

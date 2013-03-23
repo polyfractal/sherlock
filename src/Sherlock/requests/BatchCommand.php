@@ -19,7 +19,6 @@ class BatchCommand implements BatchCommandInterface
      */
     protected $commands = array();
 
-
     /**
      * @param null $commands
      */
@@ -93,7 +92,6 @@ class BatchCommand implements BatchCommandInterface
         return $this;
     }
 
-
     /**
      *
      */
@@ -133,6 +131,5 @@ class BatchCommand implements BatchCommandInterface
     {
         return false !== current($this->commands);
     }
-
 
 }

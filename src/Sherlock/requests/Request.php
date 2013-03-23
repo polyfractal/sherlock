@@ -13,7 +13,6 @@ use Sherlock\common\exceptions;
 use Sherlock\common\tmp\RollingCurl;
 use Sherlock\responses\IndexResponse;
 use Analog\Analog;
-use Guzzle\Http\Client;
 use Sherlock\responses\Response;
 
 /**

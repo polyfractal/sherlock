@@ -202,7 +202,6 @@ class IndexRequest extends Request
 
         $index = implode(',', $this->params['index']);
 
-
         $command = new Command();
         $command->index($index)
                 ->action('delete');
@@ -229,7 +228,6 @@ class IndexRequest extends Request
 
         $index = implode(',', $this->params['index']);
 
-
         //Final JSON should be object properties, not an array.  So we need to iterate
         //through the array members and merge into an associative array.
         $mappings = array();
@@ -238,7 +236,6 @@ class IndexRequest extends Request
         }
         $body = array("settings" => $this->params['indexSettings'],
                         "mappings" => $mappings);
-
 
         $command = new Command();
         $command->index($index)
@@ -273,11 +270,9 @@ class IndexRequest extends Request
             throw new exceptions\RuntimeException("Index cannot be empty.");
         }
 
-
         $index = implode(',', $this->params['index']);
 
         $body = array("index" => $this->params['indexSettings']);
-
 
         $command = new Command();
         $command->index($index)
@@ -287,7 +282,6 @@ class IndexRequest extends Request
 
         $this->batch->clearCommands();
         $this->batch->addCommand($command);
-
 
         $ret =  parent::execute();
 

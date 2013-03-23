@@ -44,7 +44,6 @@ class FacetWrapper
             $this->facet =  new $class();
         }
 
-
         return $this->facet;
     }
 

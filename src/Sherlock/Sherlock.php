@@ -13,7 +13,6 @@ namespace Sherlock;
 use Sherlock\common\Cluster;
 use Sherlock\common\events\Events;
 use Sherlock\requests;
-use Sherlock\components;
 use Sherlock\common\exceptions;
 use Analog\Analog;
 use Sherlock\wrappers;
@@ -177,6 +176,9 @@ class Sherlock
         return new wrappers\MappingPropertyWrapper($type);
     }
 
+    /**
+     * @return wrappers\SortWrapper
+     */
     public static function sortBuilder()
     {
         Analog::log("Sherlock::sortBuilder()", Analog::DEBUG);

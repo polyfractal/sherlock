@@ -8,7 +8,6 @@
 namespace Sherlock\responses;
 
 use Analog\Analog;
-use Guzzle\Http\Message;
 use Sherlock\common\exceptions\BadMethodCallException;
 
 /**
@@ -23,7 +22,7 @@ class Response
     public $responseData;
 
     /**
-     * @param  \Sherlock\common\tmp\RollingCurl\Request                      $response
+     * @param  \Sherlock\common\tmp\RollingCurl\Request $response
      * @throws BadMethodCallException
      */
     public function __construct($response)
