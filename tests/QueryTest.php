@@ -66,7 +66,9 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf($exception_name, $e);
 
-    }	/**
+    }
+
+    /**
      * @covers sherlock\Sherlock\components\queries\Bool::must
      * @covers sherlock\Sherlock\components\queries\Bool::must_not
      * @covers sherlock\Sherlock\components\queries\Bool::should
@@ -76,7 +78,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
      * @covers sherlock\Sherlock\requests\SearchRequest::query
      * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
      */
-        public function testBool()
+    public function testBool()
     {
         $req = $this->object->search();
         $req->index("testqueries")->type("test");

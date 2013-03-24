@@ -10,4 +10,4 @@ namespace Sherlock\common\exceptions;
 /**
  * ClientErrorResponseException - 4xx category of HTTP errors
  */
-class ClientErrorResponseException implements SherlockException {}
+class ClientErrorResponseException extends \Exception implements SherlockException {}
