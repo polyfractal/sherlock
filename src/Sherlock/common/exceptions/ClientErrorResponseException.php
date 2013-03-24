@@ -8,6 +8,6 @@
 namespace Sherlock\common\exceptions;
 
 /**
- * ClientErrorResponseException - Guzzle error, 4xx category of HTTP errors
+ * ClientErrorResponseException - 4xx category of HTTP errors
  */
-class ClientErrorResponseException extends \Guzzle\Http\Exception\ClientErrorResponseException implements SherlockException {}
+class ClientErrorResponseException extends \Exception implements SherlockException {}

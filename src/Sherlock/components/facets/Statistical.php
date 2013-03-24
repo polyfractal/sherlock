@@ -11,7 +11,6 @@ use Analog\Analog;
 use Sherlock\common\exceptions\RuntimeException;
 use Sherlock\components;
 
-
 /**]
  * Class Statistical
  * @package Sherlock\components\facets
@@ -23,76 +22,74 @@ use Sherlock\components;
  */
 class Statistical extends components\BaseComponent implements components\FacetInterface
 {
-	/**
-	 * @param null $hashMap
-	 */
-	public function __construct($hashMap = null)
-	{
-		$this->params['facetname'] = null;
-		$this->params['script'] = null;
-		$this->params['params'] = null;
-		$this->params['lang'] = null;
+    /**
+     * @param null $hashMap
+     */
+    public function __construct($hashMap = null)
+    {
+        $this->params['facetname'] = null;
+        $this->params['script'] = null;
+        $this->params['params'] = null;
+        $this->params['lang'] = null;
 
-		parent::__construct($hashMap);
-	}
+        parent::__construct($hashMap);
+    }
 
-	/**
-	 * @param $queries
-	 * @return $this
-	 */
-	public function fields($queries)
-	{
+    /**
+     * @param $queries
+     * @return $this
+     */
+    public function fields($queries)
+    {
 
-		$args = func_get_args();
-		Analog::debug("Statistical->fields(".print_r($args, true).")");
+        $args = func_get_args();
+        Analog::debug("Statistical->fields(".print_r($args, true).")");
 
-		//single param, array of fields
-		if (count($args) == 1 && is_array($args[0]))
-			$args = $args[0];
+        //single param, array of fields
+        if (count($args) == 1 && is_array($args[0]))
+            $args = $args[0];
 
-		foreach ($args as $arg) {
-			if (is_string($arg))
-				$this->params['fields'][] = $arg;
-		}
+        foreach ($args as $arg) {
+            if (is_string($arg))
+                $this->params['fields'][] = $arg;
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
+    /**
+     * @throws \Sherlock\common\exceptions\RuntimeException
+     * @return array
+     */
+    public function toArray()
+    {
+        if (!isset($this->params['fields'])) {
+            Analog::error("Fields parameter is required for a Statistical Facet");
+            throw new RuntimeException("Fields parameter is required for a Statistical Facet");
+        }
 
-	/**
-	 * @throws \Sherlock\common\exceptions\RuntimeException
-	 * @return array
-	 */
-	public function toArray()
-	{
-		if(!isset($this->params['fields'])){
-			Analog::error("Fields parameter is required for a Statistical Facet");
-			throw new RuntimeException("Fields parameter is required for a Statistical Facet");
-		}
+        if ($this->params['fields'] === null) {
+            Analog::error("Fields parameter may not be null");
+            throw new RuntimeException("Fields parameter may not be null");
+        }
 
-		if($this->params['fields'] === null){
-			Analog::error("Fields parameter may not be null");
-			throw new RuntimeException("Fields parameter may not be null");
-		}
-
-
-		//if the user didn't provide a facetname, use the (first) field as a default name
-		if ($this->params['facetname'] === null)
-			$this->params['facetname'] = $this->params['fields'][0];
+        //if the user didn't provide a facetname, use the (first) field as a default name
+        if ($this->params['facetname'] === null)
+            $this->params['facetname'] = $this->params['fields'][0];
 
 
-		$ret = array (
-			$this->params['facetname'] => array(
-				"statistical" => array(
-					"fields" => $this->params['fields'],
-					"script" => $this->params['script'],
-					"params" => $this->params['params'],
-					"lang" => $this->params['lang']
-				)
-			)
-		);
+        $ret = array (
+            $this->params['facetname'] => array(
+                "statistical" => array(
+                    "fields" => $this->params['fields'],
+                    "script" => $this->params['script'],
+                    "params" => $this->params['params'],
+                    "lang" => $this->params['lang']
+                )
+            )
+        );
 
-		return $ret;
-	}
+        return $ret;
+    }
 
 }

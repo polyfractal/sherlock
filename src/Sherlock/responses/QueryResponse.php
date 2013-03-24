@@ -6,7 +6,6 @@
  */
 
 namespace Sherlock\responses;
-use Guzzle\Http\Message;
 
 class QueryResponse extends Response implements \IteratorAggregate, \Countable
 {
@@ -36,7 +35,7 @@ class QueryResponse extends Response implements \IteratorAggregate, \Countable
     public $hits;
 
     /**
-     * @param  \Guzzle\Http\Message\Response                      $response
+     * @param  \Sherlock\common\tmp\RollingCurl\Request           $response
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      */
     public function __construct($response)
