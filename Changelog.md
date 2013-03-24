@@ -5,6 +5,7 @@ Master
 ------
 
 0.1.8
+-----
  - Internal: Replace Guzzle with RollingCurl (also [Fixes #20](https://github.com/polyfractal/sherlock/issues/20))
  - Feature: Batch document indexing. [Closes #24](https://github.com/polyfractal/sherlock/issues/24)
  - Feature: Some of the more commone ES errors are now returned as Exceptions. [Closes #21](https://github.com/polyfractal/sherlock/issues/21)
