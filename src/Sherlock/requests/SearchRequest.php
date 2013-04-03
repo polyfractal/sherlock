@@ -204,14 +204,13 @@ class SearchRequest extends Request
             $queryParams = '';
         }
 
-        $body = array($finalQuery);
 
         $command = new Command();
         $command->index($index)
                 ->type($type)
                 ->id('_search'.$queryParams)
                 ->action('post')
-                ->data(json_encode($body));
+                ->data($finalQuery);
 
         $this->batch->clearCommands();
         $this->batch->addCommand($command);

@@ -92,6 +92,7 @@ class Request
         Analog::debug("Request->commands: ".print_r($this->batch, true));
 
         $rolling = new RollingCurl\RollingCurl();
+        $rolling->setHeaders(array('Content-Type: application/json'));
 
         $window = 10;
         $counter = 0;
@@ -108,7 +109,7 @@ class Request
             $action = $req->getAction();
 
             if ($action == 'put' || $action == 'post') {
-                $rolling->$action($path.$req->getURI(), $req->getData());
+                $rolling->$action($path.$req->getURI(), $req->getData(), array('Content-Type: application/json'));
             } else {
                 $rolling->$action($path.$req->getURI());
             }
