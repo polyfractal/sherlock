@@ -4,6 +4,10 @@ Changelog
 Master
 ------
 
+0.1.9
+-----
+ - Fix: Relax the version requirement for Event-Dispatcher to ~2.1
+
 0.1.8
 -----
  - Internal: Replace Guzzle with RollingCurl (also [Fixes #20](https://github.com/polyfractal/sherlock/issues/20))
