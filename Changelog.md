@@ -4,6 +4,11 @@ Changelog
 Master
 ------
 
+0.1.10
+------
+ - Fix: Search requests were using malformed JSON
+ - Fix: All requests lacked appropriate Content-Type headers, leading to HTTP requests with url-encoding specified
+
 0.1.9
 -----
  - Fix: Relax the version requirement for Event-Dispatcher to ~2.1
