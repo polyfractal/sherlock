@@ -32,7 +32,7 @@ class Bool extends \Sherlock\components\BaseComponent implements \Sherlock\compo
 
     public function must($value)
     {
-        $args = func_get_args();
+        $args = func_get_args($value);
         if (count($args) == 1)
             $args = $args[0];
 
@@ -46,7 +46,7 @@ class Bool extends \Sherlock\components\BaseComponent implements \Sherlock\compo
 
     public function must_not($value)
     {
-        $args = func_get_args();
+        $args = func_get_args($value);
         if (count($args) == 1)
             $args = $args[0];
 
@@ -60,7 +60,7 @@ class Bool extends \Sherlock\components\BaseComponent implements \Sherlock\compo
 
     public function should($value)
     {
-        $args = func_get_args();
+        $args = func_get_args($value);
         if (count($args) == 1)
             $args = $args[0];
 
