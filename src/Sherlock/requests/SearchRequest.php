@@ -167,7 +167,7 @@ class SearchRequest extends Request
     }
 
     /**
-     * @param array $highlight  Array structure containing Highlighting, see : http://www.elasticsearch.org/guide/reference/api/search/highlighting/
+     * @param HighlightInterface $highlight
      *
      * @return SearchRequest
      */
@@ -280,8 +280,8 @@ class SearchRequest extends Request
             unset($tFacets);
         }
 
-        if (isset($this->params['highlight'])) {
-            $finalQuery['highlight'] = $this->params['highlight'];
+        if (isset($this->params['highlight']) && $this->params['highlight'] instanceof components\HighlightInterface) {
+            $finalQuery['highlight'] = $this->params['highlight']->toArray();
         }
 
         foreach (array('from', 'size', 'timeout', 'sort') as $key) {
