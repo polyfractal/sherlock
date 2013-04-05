@@ -231,8 +231,8 @@ class IndexRequest extends Request
         //Final JSON should be object properties, not an array.  So we need to iterate
         //through the array members and merge into an associative array.
         $mappings = array();
-        foreach ($this->params['indexMappings'] as $mapping) {
-            $mappings = array_merge($mappings, array("properties" => $mapping));
+        foreach ($this->params['indexMappings'] as $type => $mapping) {
+            $mappings = array_merge($mappings, array($type => array("properties" => $mapping)));
         }
         $body = array("settings" => $this->params['indexSettings'],
                         "mappings" => $mappings);

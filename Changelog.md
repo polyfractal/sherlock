@@ -4,6 +4,10 @@ Changelog
 Master
 ------
 
+0.1.11
+------
+ - Fix: Mappings on index creation were not working properly
+
 0.1.10
 ------
  - Fix: Search requests were using malformed JSON
