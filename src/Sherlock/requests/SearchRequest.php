@@ -167,6 +167,18 @@ class SearchRequest extends Request
     }
 
     /**
+     * @param HighlightInterface $highlight
+     *
+     * @return SearchRequest
+     */
+    public function highlight($highlight)
+    {
+        $this->params['highlight'] = $highlight;
+
+        return $this;
+    }
+
+    /**
      * Execute the search request on the ES cluster
      *
      * @throws \Sherlock\common\exceptions\RuntimeException
@@ -266,6 +278,10 @@ class SearchRequest extends Request
             }
             $finalQuery['facets'] = $tFacets;
             unset($tFacets);
+        }
+
+        if (isset($this->params['highlight']) && $this->params['highlight'] instanceof components\HighlightInterface) {
+            $finalQuery['highlight'] = $this->params['highlight']->toArray();
         }
 
         foreach (array('from', 'size', 'timeout', 'sort') as $key) {

@@ -154,6 +154,17 @@ class Sherlock
     }
 
     /**
+     * Highlight builder, used to return a HighlightWrapper through which a Highlight component can be selected
+     * @return wrappers\HighlightWrapper
+     */
+    public static function highlightBuilder()
+    {
+        Analog::log("Sherlock::highlightBuilder()", Analog::DEBUG);
+
+        return new wrappers\HighlightWrapper();
+    }
+
+    /**
      * Index builder, used to return a IndexWrapper through which an Index component can be selected
      * @return wrappers\IndexSettingsWrapper
      */
