@@ -167,6 +167,18 @@ class SearchRequest extends Request
     }
 
     /**
+     * @param array $highlight  Array structure containing Highlighting, see : http://www.elasticsearch.org/guide/reference/api/search/highlighting/
+     *
+     * @return SearchRequest
+     */
+    public function highlight($highlight)
+    {
+        $this->params['highlight'] = $highlight;
+
+        return $this;
+    }
+
+    /**
      * Execute the search request on the ES cluster
      *
      * @throws \Sherlock\common\exceptions\RuntimeException
@@ -266,6 +278,10 @@ class SearchRequest extends Request
             }
             $finalQuery['facets'] = $tFacets;
             unset($tFacets);
+        }
+
+        if (isset($this->params['highlight'])) {
+            $finalQuery['highlight'] = $this->params['highlight'];
         }
 
         foreach (array('from', 'size', 'timeout', 'sort') as $key) {
