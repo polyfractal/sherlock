@@ -3,6 +3,7 @@ Changelog
 
 Master
 ------
+ - Feature: Performance enhancements to RollingCurl when the pending request buffer is large
 
 0.1.11
 ------
