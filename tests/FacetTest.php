@@ -81,7 +81,7 @@ class FacetTest extends \PHPUnit_Framework_TestCase
         $req->facets($facet);
 
         $data = $req->toJSON();
-        $expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield":{"terms":{"fields":["testfield"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null,"params":null,"lang":null}}}}';
+        $expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield":{"terms":{"fields":["testfield"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null,"params":null,"lang":null},"facet_filter":null}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -91,7 +91,7 @@ class FacetTest extends \PHPUnit_Framework_TestCase
         $req->facets($facet);
 
         $data = $req->toJSON();
-        $expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield1":{"terms":{"fields":["testfield"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null,"params":null,"lang":null}}}}';
+        $expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield1":{"terms":{"fields":["testfield"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null,"params":null,"lang":null},"facet_filter":null}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -101,7 +101,7 @@ class FacetTest extends \PHPUnit_Framework_TestCase
         $req->facets($facet);
 
         $data = $req->toJSON();
-        $expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield":{"terms":{"fields":["testfield","testfield1","testfield2"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null,"params":null,"lang":null}}}}';
+        $expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield":{"terms":{"fields":["testfield","testfield1","testfield2"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null,"params":null,"lang":null},"facet_filter":null}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -111,7 +111,7 @@ class FacetTest extends \PHPUnit_Framework_TestCase
         $req->facets($facet);
 
         $data = $req->toJSON();
-        $expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield":{"terms":{"fields":["testfield","testfield1","testfield2"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null,"params":null,"lang":null}}}}';
+        $expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield":{"terms":{"fields":["testfield","testfield1","testfield2"],"order":"count","all_terms":false,"size":null,"exclude":null,"regex":null,"regex_flags":null,"script":null,"script_field":null,"params":null,"lang":null},"facet_filter":null}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -128,7 +128,7 @@ class FacetTest extends \PHPUnit_Framework_TestCase
                                                 $req->facets($facet);
 
         $data = $req->toJSON();
-        $expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield1":{"terms":{"fields":["testfield"],"order":"count","all_terms":true,"size":null,"exclude":["term1","term2"],"regex":"\/.\/","regex_flags":"DOTALL","script":"_score","script_field":"_source.testfield","params":null,"lang":null}}}}';
+        $expectedData = '{"query":{"match_all":{"boost":1}},"facets":{"testfield1":{"terms":{"fields":["testfield"],"order":"count","all_terms":true,"size":null,"exclude":["term1","term2"],"regex":"\/.\/","regex_flags":"DOTALL","script":"_score","script_field":"_source.testfield","params":null,"lang":null},"facet_filter":null}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();

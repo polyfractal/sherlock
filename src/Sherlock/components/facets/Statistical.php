@@ -19,6 +19,7 @@ use Sherlock\components;
  * @method \Sherlock\components\facets\Statistical script() script(\string $value)
  * @method \Sherlock\components\facets\Statistical params() params(array $value)
  * @method \Sherlock\components\facets\Statistical lang() lang(\string $value)
+ * @method \Sherlock\components\facets\DateHistogram facet_filter() facet_filter(\Sherlock\components\FilterInterface $value)
  */
 class Statistical extends components\BaseComponent implements components\FacetInterface
 {
@@ -31,6 +32,7 @@ class Statistical extends components\BaseComponent implements components\FacetIn
         $this->params['script'] = null;
         $this->params['params'] = null;
         $this->params['lang'] = null;
+        $this->params['facet_filter'] = null;
 
         parent::__construct($hashMap);
     }
@@ -73,9 +75,14 @@ class Statistical extends components\BaseComponent implements components\FacetIn
             throw new RuntimeException("Fields parameter may not be null");
         }
 
-        //if the user didn't provide a facetname, use the (first) field as a default name
-        if ($this->params['facetname'] === null)
-            $this->params['facetname'] = $this->params['fields'][0];
+        //if the user didn't provide a facetname, use the field as a default name
+        if ($this->params['facetname'] === null) {
+            $this->params['facetname'] = $this->params['field'][0];
+        }
+
+        if ($this->params['facet_filter'] !== null) {
+            $this->params['facet_filter'] = $this->params['facet_filter']->toArray();
+        }
 
 
         $ret = array (
@@ -85,7 +92,8 @@ class Statistical extends components\BaseComponent implements components\FacetIn
                     "script" => $this->params['script'],
                     "params" => $this->params['params'],
                     "lang" => $this->params['lang']
-                )
+                ),
+                "facet_filter" => $this->params['facet_filter']
             )
         );
 

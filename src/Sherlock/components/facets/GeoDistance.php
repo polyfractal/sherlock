@@ -24,6 +24,7 @@ use Sherlock\components;
  * @method \Sherlock\components\facets\GeoDistance value_script() value_script(string $value)
  * @method \Sherlock\components\facets\GeoDistance params() params(array $value)
  * @method \Sherlock\components\facets\GeoDistance lang() lang(\string $value)
+ * @method \Sherlock\components\facets\DateHistogram facet_filter() facet_filter(\Sherlock\components\FilterInterface $value)
  */
 class GeoDistance extends components\BaseComponent implements components\FacetInterface
 {
@@ -41,6 +42,7 @@ class GeoDistance extends components\BaseComponent implements components\FacetIn
         $this->params['value_script'] = null;
         $this->params['params'] = null;
         $this->params['lang'] = null;
+        $this->params['facet_filter'] = null;
 
         parent::__construct($hashMap);
     }
@@ -81,8 +83,13 @@ class GeoDistance extends components\BaseComponent implements components\FacetIn
         }
 
         //if the user didn't provide a facetname, use the field as a default name
-        if ($this->params['facetname'] === null)
-            $this->params['facetname'] = $this->params['fields'];
+        if ($this->params['facetname'] === null) {
+            $this->params['facetname'] = $this->params['field'][0];
+        }
+
+        if ($this->params['facet_filter'] !== null) {
+            $this->params['facet_filter'] = $this->params['facet_filter']->toArray();
+        }
 
 
         $ret = array (
@@ -98,7 +105,8 @@ class GeoDistance extends components\BaseComponent implements components\FacetIn
                         "unit" => $this->params['unit'],
                         "distance_type" => $this->params['distance_type']
                     )
-                )
+                ),
+                "facet_filter" => $this->params['facet_filter']
             )
         );
 

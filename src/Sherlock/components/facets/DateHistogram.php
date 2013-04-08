@@ -24,6 +24,7 @@ use Sherlock\components;
  * @method \Sherlock\components\facets\DateHistogram value_script() value_script(\string $value)
  * @method \Sherlock\components\facets\DateHistogram params() params(array $value)
  * @method \Sherlock\components\facets\DateHistogram lang() lang(\string $value)
+ * @method \Sherlock\components\facets\DateHistogram facet_filter() facet_filter(\Sherlock\components\FilterInterface $value)
  */
 class DateHistogram extends components\BaseComponent implements components\FacetInterface
 {
@@ -32,7 +33,7 @@ class DateHistogram extends components\BaseComponent implements components\Facet
      */
     public function __construct($hashMap = null)
     {
-
+        $this->params['field'] = null;
         $this->params['facetname'] = null;
         $this->params['interval'] = null;
         $this->params['params'] = null;
@@ -41,6 +42,7 @@ class DateHistogram extends components\BaseComponent implements components\Facet
         $this->params['key_script'] = null;
         $this->params['value_script'] = null;
         $this->params['lang'] = null;
+        $this->params['facet_filter'] = null;
 
         parent::__construct($hashMap);
     }
@@ -71,19 +73,15 @@ class DateHistogram extends components\BaseComponent implements components\Facet
      */
     public function toArray()
     {
-        if (!isset($this->params['field'])) {
-            Analog::error("Field parameter is required for a DateHistogram Facet");
-            throw new RuntimeException("Field parameter is required for a DateHistogram Facet");
-        }
-
-        if ($this->params['field'] === null) {
-            Analog::error("Field parameter may not be null");
-            throw new RuntimeException("Field parameter may not be null");
-        }
 
         //if the user didn't provide a facetname, use the field as a default name
-        if ($this->params['facetname'] === null)
+        if ($this->params['facetname'] === null) {
             $this->params['facetname'] = $this->params['field'];
+        }
+
+        if ($this->params['facet_filter'] !== null) {
+            $this->params['facet_filter'] = $this->params['facet_filter']->toArray();
+        }
 
 
         $ret = array (
@@ -97,7 +95,8 @@ class DateHistogram extends components\BaseComponent implements components\Facet
                     "value_script" => $this->params['value_script'],
                     "params" => $this->params['params'],
                     "lang" => $this->params['lang']
-                )
+                ),
+                "facet_filter" => $this->params['facet_filter']
             )
         );
 

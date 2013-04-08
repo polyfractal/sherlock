@@ -25,6 +25,7 @@ use Sherlock\components;
  * @method \Sherlock\components\facets\Histogram value_script() value_script(\string $value)
  * @method \Sherlock\components\facets\Histogram params() params(array $value)
  * @method \Sherlock\components\facets\TermsStats lang() lang(\string $value)
+ * @method \Sherlock\components\facets\DateHistogram facet_filter() facet_filter(\Sherlock\components\FilterInterface $value)
  */
 class Histogram extends components\BaseComponent implements components\FacetInterface
 {
@@ -43,6 +44,7 @@ class Histogram extends components\BaseComponent implements components\FacetInte
         $this->params['key_script'] = null;
         $this->params['value_script'] = null;
         $this->params['lang'] = null;
+        $this->params['facet_filter'] = null;
 
         parent::__construct($hashMap);
     }
@@ -73,19 +75,16 @@ class Histogram extends components\BaseComponent implements components\FacetInte
      */
     public function toArray()
     {
-        if (!isset($this->params['field'])) {
-            Analog::error("Field parameter is required for a Histogram Facet");
-            throw new RuntimeException("Field parameter is required for a Histogram Facet");
-        }
 
-        if ($this->params['field'] === null) {
-            Analog::error("Field parameter may not be null");
-            throw new RuntimeException("Field parameter may not be null");
-        }
 
         //if the user didn't provide a facetname, use the field as a default name
-        if ($this->params['facetname'] === null)
+        if ($this->params['facetname'] === null) {
             $this->params['facetname'] = $this->params['field'];
+        }
+
+        if ($this->params['facet_filter'] !== null) {
+            $this->params['facet_filter'] = $this->params['facet_filter']->toArray();
+        }
 
 
         $ret = array (
@@ -101,7 +100,8 @@ class Histogram extends components\BaseComponent implements components\FacetInte
                     "params" => $this->params['params'],
                     "lang" => $this->params['lang']
                 )
-            )
+            ),
+            "facet_filter" => $this->params['facet_filter']
         );
 
         return $ret;

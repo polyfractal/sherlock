@@ -26,6 +26,7 @@ use Sherlock\components;
  * @method \Sherlock\components\facets\Terms script_field() script_field(\string $value)
  * @method \Sherlock\components\facets\Terms params() params(array $value)
  * @method \Sherlock\components\facets\Terms lang() lang(\string $value)
+ * @method \Sherlock\components\facets\DateHistogram facet_filter() facet_filter(\Sherlock\components\FilterInterface $value)
  */
 class Terms extends components\BaseComponent implements components\FacetInterface
 {
@@ -46,6 +47,7 @@ class Terms extends components\BaseComponent implements components\FacetInterfac
         $this->params['script_field'] = null;
         $this->params['params'] = null;
         $this->params['lang'] = null;
+        $this->params['facet_filter'] = null;
 
         parent::__construct($hashMap);
     }
@@ -89,9 +91,13 @@ class Terms extends components\BaseComponent implements components\FacetInterfac
         }
 
         //if the user didn't provide a facetname, use the (first) field as a default name
-        if ($this->params['facetname'] === null)
+        if ($this->params['facetname'] === null) {
             $this->params['facetname'] = $this->params['fields'][0];
+        }
 
+        if ($this->params['facet_filter'] !== null) {
+            $this->params['facet_filter'] = $this->params['facet_filter']->toArray();
+        }
 
         $ret = array (
             $this->params['facetname'] => array(
@@ -107,7 +113,8 @@ class Terms extends components\BaseComponent implements components\FacetInterfac
                     "script_field" => $this->params['script_field'],
                     "params" => $this->params['params'],
                     "lang" => $this->params['lang']
-                )
+                ),
+                "facet_filter" => $this->params['facet_filter']
             )
         );
 

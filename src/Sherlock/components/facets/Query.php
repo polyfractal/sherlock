@@ -18,6 +18,7 @@ use Sherlock\components;
  *
  * @method \Sherlock\components\facets\Query facetname() facetname(\string $value)
  * @method \Sherlock\components\facets\Query query() query(\Sherlock\components\QueryInterface $value)
+ * @method \Sherlock\components\facets\DateHistogram facet_filter() facet_filter(\Sherlock\components\FilterInterface $value)
  */
 class Query extends components\BaseComponent implements components\FacetInterface
 {
@@ -28,6 +29,7 @@ class Query extends components\BaseComponent implements components\FacetInterfac
     {
 
         $this->params['facetname'] = null;
+        $this->params['facet_filter'] = null;
 
         parent::__construct($hashMap);
     }
@@ -79,13 +81,19 @@ class Query extends components\BaseComponent implements components\FacetInterfac
         }
 
         //if the user didn't provide a facetname, use the field as a default name
-        if ($this->params['facetname'] === null)
+        if ($this->params['facetname'] === null) {
             $this->params['facetname'] = $this->params['field'];
+        }
+
+        if ($this->params['facet_filter'] !== null) {
+            $this->params['facet_filter'] = $this->params['facet_filter']->toArray();
+        }
 
 
         $ret = array (
             $this->params['facetname'] => array(
-                "query" => $this->params['Query']->toArray()
+                "query" => $this->params['Query']->toArray(),
+                "facet_filter" => $this->params['facet_filter']
             )
         );
 

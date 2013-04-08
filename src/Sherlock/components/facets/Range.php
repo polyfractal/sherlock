@@ -24,6 +24,7 @@ use Sherlock\components;
  * @method \Sherlock\components\facets\Range value_script() value_script(string $value)
  * @method \Sherlock\components\facets\Range params() params(array $value)
  * @method \Sherlock\components\facets\Range lang() lang(\string $value)
+ * @method \Sherlock\components\facets\DateHistogram facet_filter() facet_filter(\Sherlock\components\FilterInterface $value)
  */
 class Range extends components\BaseComponent implements components\FacetInterface
 {
@@ -41,6 +42,7 @@ class Range extends components\BaseComponent implements components\FacetInterfac
         $this->params['value_script'] = null;
         $this->params['params'] = null;
         $this->params['lang'] = null;
+        $this->params['facet_filter'] = null;
 
         parent::__construct($hashMap);
     }
@@ -70,19 +72,16 @@ class Range extends components\BaseComponent implements components\FacetInterfac
      */
     public function toArray()
     {
-        if (!isset($this->params['field'])) {
-            Analog::error("Field parameter is required for a Range Facet");
-            throw new RuntimeException("Field parameter is required for a Range Facet");
-        }
 
-        if ($this->params['field'] === null) {
-            Analog::error("Field parameter may not be null");
-            throw new RuntimeException("Field parameter may not be null");
-        }
 
         //if the user didn't provide a facetname, use the field as a default name
-        if ($this->params['facetname'] === null)
-            $this->params['facetname'] = $this->params['fields'];
+        if ($this->params['facetname'] === null) {
+            $this->params['facetname'] = $this->params['field'][0];
+        }
+
+        if ($this->params['facet_filter'] !== null) {
+            $this->params['facet_filter'] = $this->params['facet_filter']->toArray();
+        }
 
 
         $ret = array (
@@ -96,7 +95,8 @@ class Range extends components\BaseComponent implements components\FacetInterfac
                     "value_script" => $this->params['value_script'],
                     "params" => $this->params['params'],
                     "lang" => $this->params['lang']
-                )
+                ),
+                "facet_filter" => $this->params['facet_filter']
             )
         );
 

@@ -28,6 +28,7 @@ use Sherlock\components;
  * @method \Sherlock\components\facets\TermsStats value_script() value_script(\string $value)
  * @method \Sherlock\components\facets\TermsStats params() params(\string $value)
  * @method \Sherlock\components\facets\TermsStats lang() lang(\string $value)
+ * @method \Sherlock\components\facets\DateHistogram facet_filter() facet_filter(\Sherlock\components\FilterInterface $value)
  */
 class TermsStats extends components\BaseComponent implements components\FacetInterface
 {
@@ -50,6 +51,7 @@ class TermsStats extends components\BaseComponent implements components\FacetInt
         $this->params['value_script'] = null;
         $this->params['params'] = null;
         $this->params['lang'] = null;
+        $this->params['facet_filter'] = null;
 
         parent::__construct($hashMap);
     }
@@ -82,19 +84,14 @@ class TermsStats extends components\BaseComponent implements components\FacetInt
      */
     public function toArray()
     {
-        if (!isset($this->params['fields'])) {
-            Analog::error("Fields parameter is required for a TermsStats Facet");
-            throw new RuntimeException("Fields parameter is required for a TermsStats Facet");
+        //if the user didn't provide a facetname, use the field as a default name
+        if ($this->params['facetname'] === null) {
+            $this->params['facetname'] = $this->params['field'][0];
         }
 
-        if ($this->params['fields'] === null) {
-            Analog::error("Fields parameter may not be null");
-            throw new RuntimeException("Fields parameter may not be null");
+        if ($this->params['facet_filter'] !== null) {
+            $this->params['facet_filter'] = $this->params['facet_filter']->toArray();
         }
-
-        //if the user didn't provide a facetname, use the (first) field as a default name
-        if ($this->params['facetname'] === null)
-            $this->params['facetname'] = $this->params['fields'][0];
 
 
         $ret = array (
@@ -113,7 +110,8 @@ class TermsStats extends components\BaseComponent implements components\FacetInt
                     "value_script" => $this->params['value_script'],
                     "params" => $this->params['params'],
                     "lang" => $this->params['lang']
-                )
+                ),
+                "facet_filter" => $this->params['facet_filter']
             )
         );
 
