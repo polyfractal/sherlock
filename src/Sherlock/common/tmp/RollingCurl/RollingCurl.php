@@ -69,6 +69,10 @@ class RollingCurl
      */
     private $pendingRequests = array();
 
+    private $pendingRequestsPosition = 0;
+
+    private $pendingRequestsCount = 0;
+
     /**
      * @var Request[]
      *
@@ -92,6 +96,7 @@ class RollingCurl
     public function add(Request $request)
     {
         $this->pendingRequests[] = $request;
+        $this->pendingRequestsCount += 1;
 
         return $this;
     }
@@ -456,7 +461,34 @@ class RollingCurl
      */
     public function getNextPendingRequests($limit = 1)
     {
-        return array_splice($this->pendingRequests, 0, $limit);
+        //Old method did a lot of array shuffling
+        //New method simply maintains a pointer to the current position in the pending queue
+        //and walks over the array
+        //
+        //Much faster, at the expense of not cleaning up memory.  Acceptable, if memory is a problem
+        //a streaming interface should be used.
+
+        //pendingRequestCount is incremented when docs are added, since that will happen less frequently than
+        //being called here, saves on the slow-ish count()
+        $count = $this->pendingRequestsCount;
+        $limit = $this->pendingRequestsPosition + $limit;
+
+        if ($limit > $count) {
+            $limit = $count;
+        }
+
+        $ret = array();
+
+        //for() is faster than foreach, while/each
+        //$ret[] is faster than array_push()
+        for ($i = $this->pendingRequestsPosition; $i < $limit; ++$i) {
+            $ret[] = $this->pendingRequests[$i];
+        }
+
+        $this->pendingRequestsPosition = $limit;
+        return $ret;
+
+        //return array_splice($this->pendingRequests, 0, $limit);
     }
 
     /**
@@ -479,6 +511,26 @@ class RollingCurl
      */
     public function getCompletedRequests()
     {
+
+        /*
+         * Do some minimal memory management.  If the user is requesting all the completed
+         * requests, it's probably a good time to clear out the requests in the "pending" buffer, which
+         * have already been requested.
+         *
+         * Grab anything that hasn't been requested and put at the front of the array,
+         * reset pointers
+         */
+
+        $tmp = array();
+
+        for ($i = $this->pendingRequestsPosition; $i < $this->pendingRequestsCount; ++$i) {
+            $tmp[] = $this->pendingRequests[$i];
+        }
+
+        $this->pendingRequests = $tmp;
+        $this->pendingRequestsCount = count($this->pendingRequests);
+        $this->pendingRequestsPosition = 0;
+
         return $this->completedRequests;
     }
 
