@@ -109,7 +109,7 @@ class Request
             $action = $req->getAction();
 
             if ($action == 'put' || $action == 'post') {
-                $rolling->$action($path.$req->getURI(), $req->getData(), array('Content-Type: application/json'));
+                $rolling->$action($path.$req->getURI(), json_encode($req->getData()), array('Content-Type: application/json'));
             } else {
                 $rolling->$action($path.$req->getURI());
             }
@@ -140,7 +140,7 @@ class Request
                     $action = $data->getAction();
 
                     if ($action == 'put' || $action == 'post') {
-                        $rolling->$action($path.$data->getURI(), $data->getData());
+                        $rolling->$action($path.$data->getURI(), json_encode($data->getData()));
                     } else {
                         $rolling->$action($path.$data->getURI());
                     }

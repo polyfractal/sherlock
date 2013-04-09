@@ -65,6 +65,87 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testUpdateDoc()
+    {
+        $sherlock = $this->object;
+
+        //First insert a doc with a PUT
+        $doc = $sherlock->document()->index('testindexing')->type('tweet')->document(array("field" => "test"), 123);
+        $response = $doc->execute();
+
+        $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
+        $this->assertEquals(true, $response[0]->ok);
+
+        $version = $response[0]->responseData['_version'];
+
+        //Then insert it again.
+        $doc = $sherlock->document()->index('testindexing')->type('tweet')->document(array("field" => "test"), 123);
+        $response = $doc->execute();
+
+        $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
+        $this->assertEquals(true, $response[0]->ok);
+
+        $version2 = $response[0]->responseData['_version'];
+
+        //make sure the new version is exactly one higher.
+        $this->assertEquals($version + 1, $version2);
+
+    }
+
+    public function testUpdateDocPartial()
+    {
+        $sherlock = $this->object;
+
+        //First insert a doc with a PUT
+        $doc = $sherlock->document()->index('testindexing')->type('tweet')->document(array("field" => "test"), 456);
+        $response = $doc->execute();
+
+        $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
+        $this->assertEquals(true, $response[0]->ok);
+
+        $version = $response[0]->responseData['_version'];
+
+        //Then update with a partial
+        $doc = $sherlock->document()->index('testindexing')->type('tweet')->document(array("field2" => "test2"), 456, true);
+        $response = $doc->execute();
+
+
+        $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
+        $this->assertEquals(true, $response[0]->ok);
+
+        $version2 = $response[0]->responseData['_version'];
+
+        //make sure the new version is exactly one higher.
+        $this->assertEquals($version + 1, $version2);
+    }
+
+    public function testUpdateDocScript()
+    {
+        $sherlock = $this->object;
+
+        //First insert a doc with a PUT
+        $doc = $sherlock->document()->index('testindexing')->type('tweet')->document(array("field" => "test"), 789);
+        $response = $doc->execute();
+
+        $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
+        $this->assertEquals(true, $response[0]->ok);
+
+        $version = $response[0]->responseData['_version'];
+
+        //Then update with a script
+        $doc = $sherlock->document()->index('testindexing')->type('tweet')->document(null,789,true)->updateScript('ctx._source.field += tag')->updateParams(array("tag" => 'blue'));
+        $response = $doc->execute();
+
+        $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
+        $this->assertEquals(true, $response[0]->ok);
+
+        $version2 = $response[0]->responseData['_version'];
+
+        //make sure the new version is exactly one higher.
+        $this->assertEquals($version + 1, $version2);
+    }
+
+
     public function testAddBatchDoc()
     {
         $sherlock = $this->object;
@@ -80,13 +161,21 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
         $this->assertEquals(true, $response[0]->ok);
 
+
+    }
+
+    public function testAddBatchCommand()
+    {
+
+        $sherlock = $this->object;
+
         $batch = array();
         for ($i = 0; $i < 2000; $i++) {
             $tDoc = new Sherlock\requests\Command();
             $tDoc->action('post')
-                 ->index('testindexing')
-                 ->type('tweet')
-                 ->data('{"field":"test"}');
+                ->index('testindexing')
+                ->type('tweet')
+                ->data('{"field":"test"}');
 
             $batch[] = $tDoc;
         }
@@ -107,7 +196,6 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
         $this->assertEquals(true, $response[0]->ok);
-
     }
 
     public function testAddBatchIterator()

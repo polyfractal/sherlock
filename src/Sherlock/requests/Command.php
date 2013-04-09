@@ -14,10 +14,10 @@ namespace Sherlock\requests;
  * @package Sherlock\requests
  *
  * @method \Sherlock\requests\Command action() action(\string $value)
- * @method \Sherlock\requests\Command data() data(\string $value)
  * @method \Sherlock\requests\Command id() id(\string $value)
  * @method \Sherlock\requests\Command index() index(\string $value)
  * @method \Sherlock\requests\Command type() type(\string $value)
+ * @method \Sherlock\requests\Command suffix() suffix(\string $value)
  */
 class Command implements CommandInterface
 {
@@ -39,17 +39,32 @@ class Command implements CommandInterface
         $this->params['id'] = null;
         $this->params['type'] = null;
         $this->params['data'] = null;
+        $this->params['suffix'] = null;
 
     }
 
     /**
      * @param $name
      * @param $args
-     * @return IndexDocumentRequest
+     * @return \Sherlock\requests\Command
      */
     public function __call($name, $args)
     {
         $this->params[$name] = $args[0];
+
+        return $this;
+    }
+
+    /**
+     * @param \string|\array $data
+     */
+    public function data($data)
+    {
+        if (is_string($data)) {
+            $this->params['data'] = json_decode($data);
+        } elseif (is_array($data)) {
+            $this->params['data'] = $data;
+        }
 
         return $this;
     }
@@ -61,12 +76,10 @@ class Command implements CommandInterface
     {
         $uri = '/'.$this->params['index'];
 
-        if (isset($this->params['type']) && $this->params['type'] !== null) {
-            $uri .= '/' .$this->params['type'];
-        }
-
-        if (isset($this->params['id']) && $this->params['id'] !== null) {
-            $uri .= '/' .$this->params['id'];
+        foreach (array('type', 'id', 'suffix') as $item) {
+            if (isset($this->params[$item]) && $this->params[$item] !== null) {
+                $uri .= '/' .$this->params[$item];
+            }
         }
 
         return $uri;
