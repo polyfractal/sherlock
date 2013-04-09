@@ -5,6 +5,7 @@ Master
 ------
  - Feature: Performance enhancements to RollingCurl when the pending request buffer is large
  - Feature: Add filter_facets to facets
+ - Feature: Add Update capability to indexing operations
 
 0.1.11
 ------
