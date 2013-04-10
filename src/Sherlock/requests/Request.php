@@ -164,6 +164,8 @@ class Request
             $returnResponse =  '\Sherlock\responses\IndexResponse';
         } elseif ($class == 'IndexDocumentRequest') {
             $returnResponse = '\Sherlock\responses\IndexResponse';
+        } elseif ($class == 'DeleteDocumentRequest') {
+            $returnResponse = '\Sherlock\responses\DeleteResponse';
         }
 
         $finalResponse = array();
