@@ -1,10 +1,4 @@
 <?php
-/**
- * User: Zachary Tong
- * Date: 2/17/13
- * Time: 6:39 PM
- * @package Sherlock\requests
- */
 
 namespace Sherlock\requests;
 
