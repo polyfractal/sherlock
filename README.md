@@ -8,7 +8,7 @@ Features
 
  - One-to-one mapping with ElasticSearch's API and query DSL.
  - Option to use powerful ORM-like interface, associative arrays or raw JSON
- - Application-wide connection pooling with HTTP/1.1 persistent connections (using a single [cURL multi-handle in Guzzle](http://guzzlephp.org/tour/http.html#managed-persistent-http-connections))
+ - Concurrent request streaming with RollingCurl and cURL multi-handle
  - Autodetection of cluster nodes and subsequent round-robin requests to the entire cluster
  - Configurable logging capabilities
 
@@ -26,7 +26,7 @@ The recommended method to install _Sherlock_ is through [Composer](http://getcom
 
         {
             "require": {
-                "sherlock/sherlock": "0.1.*"
+                "sherlock/sherlock": "~0.1"
             }
         }
 
