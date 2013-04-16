@@ -140,16 +140,25 @@ class IndexRequest extends Request
         foreach ($args as $arg) {
 
             if ($arg instanceof \Sherlock\components\MappingInterface) {
-                if (isset($this->params['indexMappings'][$arg->getType()]))
+                if (isset($this->params['indexMappings'][$arg->getType()])) {
                     $this->params['indexMappings'][$arg->getType()] = array_merge($this->params['indexMappings'][$arg->getType()], $arg->toArray());
-                else
+                } else {
                     $this->params['indexMappings'][$arg->getType()] = $arg->toArray();
-            } elseif (is_array($arg))
-                $this->params['indexMappings'][] = $arg;
-            elseif (is_bool($arg))
+                }
+            } elseif (is_array($arg)) {
+                foreach($arg as $argMapping) {
+                    if (isset($this->params['indexMappings'][$argMapping->getType()])) {
+                        $this->params['indexMappings'][$argMapping->getType()] = array_merge($this->params['indexMappings'][$argMapping->getType()], $argMapping->toArray());
+                    } else {
+                        $this->params['indexMappings'][$argMapping->getType()] = $argMapping->toArray();
+                    }
+                }
+            } elseif (is_bool($arg)) {
                 continue;
-            else
+            } else {
                 throw new \Sherlock\common\exceptions\BadMethodCallException("Arguments must be an array or a Mapping Property.");
+            }
+
 
         }
 
