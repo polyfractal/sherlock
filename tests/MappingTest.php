@@ -229,7 +229,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $sherlock = $this->object;
 
         //Set the index
-        $index = $sherlock->index('test123');
+        $index = $sherlock->index('testanalyzermapping');
 
         //no path, expect error
         $this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () {
@@ -243,6 +243,21 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $data = $mapping->toJSON();
         $expected = '{"_analyzer":{"path":"testField"}}';
         $this->assertEquals($expected, $data);
+
+
+
+        $type = 'data';
+
+        $index->mappings(
+            Sherlock::mappingBuilder($type)->String()->field('parents')->analyzer('keyword'),
+            Sherlock::mappingBuilder($type)->String()->field('ancestors')->analyzer('keyword'),
+            Sherlock::mappingBuilder($type)->String()->field('tags')->analyzer('keyword'),
+            Sherlock::mappingBuilder($type)->String()->field('type')->analyzer('keyword'),
+            Sherlock::mappingBuilder($type)->String()->field('slug')->analyzer('keyword'),
+            Sherlock::mappingBuilder($type)->Analyzer()->path("contentanalyzer")
+        );
+
+        $index->create();
 
     }
 

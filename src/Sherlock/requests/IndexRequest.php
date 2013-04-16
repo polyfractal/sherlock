@@ -124,37 +124,41 @@ class IndexRequest extends Request
      */
     public function mappings($mapping)
     {
-        $append = false;
         $args = func_get_args();
-        foreach ($args as $arg) {
-            //if there is a "true" bool in the arg list, append instead of overwrite
-            //Defaults to overwrite
-            if (is_bool($arg) && $arg == true) {
-                $append = true;
-                break;
-            }
-        }
-        if ($append == false)
-            $this->params['indexMappings'] = array();
 
         foreach ($args as $arg) {
 
             if ($arg instanceof \Sherlock\components\MappingInterface) {
-                if (isset($this->params['indexMappings'][$arg->getType()])) {
-                    $this->params['indexMappings'][$arg->getType()] = array_merge($this->params['indexMappings'][$arg->getType()], $arg->toArray());
+
+                //is this a core type?  Wrap in 'properties'
+                if (!($arg instanceof \Sherlock\components\mappings\Analyzer)) {
+                    $mappingValue = array("properties" => $arg->toArray());
                 } else {
-                    $this->params['indexMappings'][$arg->getType()] = $arg->toArray();
+                    $mappingValue = $arg->toArray();
+                }
+
+
+                if (isset($this->params['indexMappings'][$arg->getType()])) {
+                    $this->params['indexMappings'][$arg->getType()] = array_merge($this->params['indexMappings'][$arg->getType()], $mappingValue);
+                } else {
+                    $this->params['indexMappings'][$arg->getType()] = $mappingValue;
                 }
             } elseif (is_array($arg)) {
                 foreach($arg as $argMapping) {
-                    if (isset($this->params['indexMappings'][$argMapping->getType()])) {
-                        $this->params['indexMappings'][$argMapping->getType()] = array_merge($this->params['indexMappings'][$argMapping->getType()], $argMapping->toArray());
+
+                    //is this a core type?  Wrap in 'properties'
+                    if (!($arg instanceof \Sherlock\components\mappings\Analyzer)) {
+                        $mappingValue = array("properties" => $argMapping->toArray());
                     } else {
-                        $this->params['indexMappings'][$argMapping->getType()] = $argMapping->toArray();
+                        $mappingValue = $argMapping->toArray();
+                    }
+
+                    if (isset($this->params['indexMappings'][$argMapping->getType()])) {
+                        $this->params['indexMappings'][$argMapping->getType()] = array_merge($this->params['indexMappings'][$argMapping->getType()], $mappingValue);
+                    } else {
+                        $this->params['indexMappings'][$argMapping->getType()] = $mappingValue;
                     }
                 }
-            } elseif (is_bool($arg)) {
-                continue;
             } else {
                 throw new \Sherlock\common\exceptions\BadMethodCallException("Arguments must be an array or a Mapping Property.");
             }
@@ -241,7 +245,7 @@ class IndexRequest extends Request
         //through the array members and merge into an associative array.
         $mappings = array();
         foreach ($this->params['indexMappings'] as $type => $mapping) {
-            $mappings = array_merge($mappings, array($type => array("properties" => $mapping)));
+            $mappings = array_merge($mappings, array($type => $mapping));
         }
         $body = array("settings" => $this->params['indexSettings'],
                         "mappings" => $mappings);
@@ -258,6 +262,9 @@ class IndexRequest extends Request
          * @var \Sherlock\responses\IndexResponse
          */
         $ret =  parent::execute();
+
+        //clear out mappings, settings
+        $this->resetIndex();
 
         return $ret[0];
     }
@@ -293,6 +300,9 @@ class IndexRequest extends Request
         $this->batch->addCommand($command);
 
         $ret =  parent::execute();
+
+        //clear out mappings, settings
+        //$this->resetIndex();
 
         return $ret[0];
 
@@ -343,6 +353,19 @@ class IndexRequest extends Request
 
         $ret =  parent::execute();
 
+        //clear out mappings, settings
+        //$this->resetIndex();
+
         return $ret[0];
+    }
+
+
+    /**
+     *
+     */
+    private function resetIndex()
+    {
+        $this->params['indexMappings'] = array();
+        $this->params['indexSettings'] = array();
     }
 }
