@@ -220,6 +220,17 @@ class Sherlock
     }
 
     /**
+     * Used to return a DeleteDocumentRequest object, allows deleting a doc from the index
+     * @return requests\DeleteDocumentRequest
+     */
+    public function deleteDocument()
+    {
+        Analog::log("Sherlock->deleteDocument()", Analog::DEBUG);
+
+        return new requests\DeleteDocumentRequest($this->settings['event.dispatcher']);
+    }
+
+    /**
      * @param  string                $index     Index to operate on
      * @param  string                $index,... Index to operate on
      * @return requests\IndexRequest
