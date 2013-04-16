@@ -126,6 +126,9 @@ class IndexRequest extends Request
     {
         $args = func_get_args();
 
+
+        //@todo this is all horrible, burn it and rewrite
+
         foreach ($args as $arg) {
 
             if ($arg instanceof \Sherlock\components\MappingInterface) {
@@ -137,9 +140,8 @@ class IndexRequest extends Request
                     $mappingValue = $arg->toArray();
                 }
 
-
                 if (isset($this->params['indexMappings'][$arg->getType()])) {
-                    $this->params['indexMappings'][$arg->getType()] = array_merge($this->params['indexMappings'][$arg->getType()], $mappingValue);
+                    $this->params['indexMappings'][$arg->getType()] = array_merge_recursive($this->params['indexMappings'][$arg->getType()], $mappingValue);
                 } else {
                     $this->params['indexMappings'][$arg->getType()] = $mappingValue;
                 }
@@ -154,7 +156,7 @@ class IndexRequest extends Request
                     }
 
                     if (isset($this->params['indexMappings'][$argMapping->getType()])) {
-                        $this->params['indexMappings'][$argMapping->getType()] = array_merge($this->params['indexMappings'][$argMapping->getType()], $mappingValue);
+                        $this->params['indexMappings'][$argMapping->getType()] = array_merge_recursive($this->params['indexMappings'][$argMapping->getType()], $mappingValue);
                     } else {
                         $this->params['indexMappings'][$argMapping->getType()] = $mappingValue;
                     }
