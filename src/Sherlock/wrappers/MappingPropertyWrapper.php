@@ -16,6 +16,7 @@ use Sherlock\common\exceptions;
  * @method \Sherlock\components\mappings\Boolean Boolean() Boolean()
  * @method \Sherlock\components\mappings\Binary Binary() Binary()
  * @method \Sherlock\components\mappings\Object Object() Object()
+ * @method \Sherlock\components\mappings\Analyzer Analyzer() Analyzer()
  */
 class MappingPropertyWrapper
 {

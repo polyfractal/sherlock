@@ -224,4 +224,26 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testAnalyzerMapping()
+    {
+        $sherlock = $this->object;
+
+        //Set the index
+        $index = $sherlock->index('test123');
+
+        //no path, expect error
+        $this->assertThrowsException('\sherlock\common\exceptions\BadMethodCallException', function () {
+            $mapping = Sherlock::mappingBuilder()->Analyzer();
+        });
+
+
+
+        //type, field, format
+        $mapping = Sherlock::mappingBuilder('testType')->Analyzer()->path('testField');
+        $data = $mapping->toJSON();
+        $expected = '{"_analyzer":{"path":"testField"}}';
+        $this->assertEquals($expected, $data);
+
+    }
+
 }
