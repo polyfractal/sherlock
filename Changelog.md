@@ -3,7 +3,8 @@ Changelog
 
 Master
 ------
-
+ - Fix: Fix _Analyzer mapping
+ 
 0.1.12
 ------
  - Feature: Performance enhancements to RollingCurl when the pending request buffer is large
