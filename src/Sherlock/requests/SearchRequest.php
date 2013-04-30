@@ -254,11 +254,6 @@ class SearchRequest extends Request
     {
         $finalQuery = array();
 
-        // If the query is a raw one, use query as-is
-        if ($this->params['query'] instanceof queries\Raw) {
-            return $this->params['query']->toJSON();
-        }
-
         if (isset($this->params['query']) && $this->params['query'] instanceof components\QueryInterface) {
             $finalQuery['query'] = $this->params['query']->toArray();
         }
