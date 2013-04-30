@@ -640,6 +640,69 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testFromField()
+    {
+        $req = $this->object->search();
+        $req->index("testqueries")->type("test")->from(5);
+        $query = Sherlock::queryBuilder()->MatchAll();
+
+        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
+
+        $req->query($query);
+
+        $data = $req->toJSON();
+        $expectedData = '{"query":{"match_all":{"boost":1}},"from":5}';
+        $this->assertEquals($expectedData, $data);
+
+        $resp = $req->execute();
+
+    }
+
+    public function testSizeField()
+    {
+        $req = $this->object->search();
+        $req->index("testqueries")->type("test")->size(5);
+        $query = Sherlock::queryBuilder()->MatchAll();
+
+        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
+
+        $req->query($query);
+
+        $data = $req->toJSON();
+        $expectedData = '{"query":{"match_all":{"boost":1}},"size":5}';
+        $this->assertEquals($expectedData, $data);
+
+        $resp = $req->execute();
+
+    }
+
+    public function testSizeFromField()
+    {
+
+        $indexName = 'testqueries';
+        $indexType = 'test';
+        $from = 2;
+        $size = 2;
+
+        $request = $this->object->search();
+
+        $query = Sherlock::queryBuilder()->MatchAll();
+        $request->index($indexName)->type($indexType)->query($query);
+
+        if($from){
+            $request->index($indexName)->type($indexType)->from($from);
+        }
+
+        if($size){
+            $request->index($indexName)->type($indexType)->size($size);
+        }
+
+        $data = $request->toJSON();
+        $expectedData = '{"query":{"match_all":{"boost":1}},"size":5}';
+        $this->assertEquals($expectedData, $data);
+
+    }
+
     /**
      * @covers sherlock\Sherlock\components\queries\MoreLikeThis::fields
      * @covers sherlock\Sherlock\components\queries\MoreLikeThis::like_text
