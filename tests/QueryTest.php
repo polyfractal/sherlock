@@ -1172,4 +1172,39 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testRawRequest()
+    {
+        $req = $this->object->raw();
+        $req->uri("testindex/_search")->method("post")->body('{"query":{"match_all":{"boost":0.5}}}');
+
+        $data = $req->toJSON();
+        $expectedData = '{"query":{"match_all":{"boost":0.5}}}';
+        $this->assertEquals($expectedData, $data);
+
+        $resp = $req->execute();
+
+        print_r($resp);
+
+    }
+
+    public function testRawQueryBuilding()
+    {
+
+        $req = $this->object->search();
+        $req->index("test3")->type("benchmark");
+
+        $expectedData = array("query" => array("term" => array("field1" => array("value" => "town"))));
+
+        $req->query(Sherlock::queryBuilder()->Raw($expectedData['query']));
+        $data = $req->toJSON();
+
+        $expectedData = json_encode($expectedData);
+        $this->assertEquals($expectedData, $data);
+
+    }
+
+
+
+
+
 }

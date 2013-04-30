@@ -71,23 +71,7 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function testRawQueryBuilding()
-    {
 
-        $req = $this->object->search();
-        $req->index("test3")->type("benchmark");
-
-        $expectedData = array("query" => array("term" => array("field1" => array("value" => "town"))));
-
-        //Now provide a raw JSON string
-        $json = json_encode($expectedData);
-        $req->query(Sherlock::queryBuilder()->Raw($json));
-        $data = $req->toJSON();
-
-        $expectedData = json_encode($expectedData);
-        $this->assertEquals($expectedData, $data);
-
-    }
 
     public function testIndexSettings()
     {

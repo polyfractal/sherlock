@@ -209,6 +209,19 @@ class Sherlock
     }
 
     /**
+     * RawRequests allow the user to issue arbitrary commands to the ES cluster
+     * Effectively one step above a raw CURL command
+     *
+     * @return requests\RawRequest
+     */
+    public function raw()
+    {
+        Analog::log("Sherlock->raw()", Analog::DEBUG);
+
+        return new requests\RawRequest($this->settings['event.dispatcher']);
+    }
+
+    /**
      * Used to return an IndexDocumentRequest object, allows adding a doc to the index
      * @return requests\IndexDocumentRequest
      */

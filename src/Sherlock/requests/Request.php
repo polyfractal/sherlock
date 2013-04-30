@@ -157,7 +157,7 @@ class Request
         $this->batch = new BatchCommand();
 
         //This is kinda gross...
-        $returnResponse = 'Response';
+        $returnResponse = '\Sherlock\responses\Response';
         if ($class == 'SearchRequest') {
             $returnResponse =  '\Sherlock\responses\QueryResponse';
         } elseif ($class == 'IndexRequest') {
