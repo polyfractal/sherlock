@@ -3,6 +3,7 @@ Changelog
 
 Master
 ------
+ - Change: RawRequest added, RawQuery "downgraded" to affecting only "query: {}" portion of query, RawFilter + RawFacet added
 
 0.1.12
 ------
