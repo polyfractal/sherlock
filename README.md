@@ -81,7 +81,7 @@ The library interface is still under flux...this section will be updated once _S
    $request->index("test")
             ->type("tweet")
             ->from(0)
-            ->to(10);
+            ->to(10)
             ->query(Sherlock::query()->Term()->field("message")
                                               ->term("ElasticSearch"));
 
