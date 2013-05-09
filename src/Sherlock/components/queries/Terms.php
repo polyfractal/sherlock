@@ -19,6 +19,8 @@ class Terms extends \Sherlock\components\BaseComponent implements \Sherlock\comp
 {
     public function __construct($hashMap = null)
     {
+        $this->params['field'] = null;
+        $this->params['terms'] = null;
         $this->params['minimum_match'] = 2;
 
         parent::__construct($hashMap);
@@ -49,13 +51,12 @@ class Terms extends \Sherlock\components\BaseComponent implements \Sherlock\comp
     public function toArray()
     {
         $ret = array (
-  'terms' =>
-  array (
-      $this->params["field"] => $this->params["terms"],
-      'minimum_match' => $this->params["minimum_match"],
-
-  ),
-);
+			'terms' =>
+				array (
+					$this->params["field"] => $this->params["terms"],
+					'minimum_match' => $this->params["minimum_match"],
+				),
+			);
 
         return $ret;
     }

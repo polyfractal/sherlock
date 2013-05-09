@@ -17,8 +17,10 @@ use Sherlock\components;
  */
 class FilteredQuery extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
 {
-    public function __construct($hashMap = null)
+	public function __construct($hashMap = null)
     {
+		$this->params['query'] = null;
+		$this->params['filter'] = null;
 
         parent::__construct($hashMap);
     }
@@ -26,12 +28,12 @@ class FilteredQuery extends \Sherlock\components\BaseComponent implements \Sherl
     public function toArray()
     {
         $ret = array (
-  'filtered' =>
-  array (
-    'query' => $this->params["query"]->toArray(),
-    'filter' => $this->params["filter"],
-  ),
-);
+  			'filtered' =>
+				array (
+				    'query' => $this->params["query"]->toArray(),
+				    'filter' => $this->params["filter"],
+				),
+		);
 
         return $ret;
     }

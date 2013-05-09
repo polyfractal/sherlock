@@ -18,6 +18,7 @@ class DisMax extends \Sherlock\components\BaseComponent implements \Sherlock\com
 {
     public function __construct($hashMap = null)
     {
+        $this->params['queries'] = null;
         $this->params['tie_breaker'] = 0.5;
         $this->params['boost'] = 2;
 
@@ -49,13 +50,13 @@ class DisMax extends \Sherlock\components\BaseComponent implements \Sherlock\com
     public function toArray()
     {
         $ret = array (
-  'dis_max' =>
-  array (
-    'tie_breaker' => $this->params["tie_breaker"],
-    'boost' => $this->params["boost"],
-    'queries' => $this->params['queries'],
-  ),
-);
+  			'dis_max' =>
+				array (
+					'tie_breaker' => $this->params["tie_breaker"],
+					'boost' => $this->params["boost"],
+					'queries' => $this->params['queries'],
+  				),
+		);
 
         return $ret;
     }

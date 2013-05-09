@@ -19,21 +19,28 @@ class Term extends \Sherlock\components\BaseComponent implements \Sherlock\compo
 {
     public function __construct($hashMap = null)
     {
-
+		$this->params['value'] = null;
+		$this->params['term'] = null;
+		$this->params['field'] = null;
+		$this->params['boost'] = 1.0;
         parent::__construct($hashMap);
     }
 
+	/**
+	 * The term query accepts both "value" and "term" keywords for the query term
+	 */
     public function toArray()
     {
         $ret = array (
-  'term' =>
-  array (
-    $this->params["field"] =>
-    array (
-      'value' => $this->params["term"],
-    ),
-  ),
-);
+				  'term' =>
+				  		array (
+							$this->params["field"] =>
+								array (
+								  'value' => !empty( $this->params['term'] ) ? $this->params['term'] : $this->params['value'],
+								  'boost' => $this->params['boost']
+								),
+						  ),
+				);
 
         return $ret;
     }

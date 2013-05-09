@@ -33,6 +33,8 @@ class Field extends \Sherlock\components\BaseComponent implements \Sherlock\comp
 {
     public function __construct($hashMap = null)
     {
+        $this->params['field'] = null;
+        $this->params['query'] = null;
         $this->params['boost'] = 2.0;
         $this->params['enable_position_increments'] = 1;
         $this->params['default_operator'] = "AND";

@@ -20,6 +20,8 @@ class Wildcard extends \Sherlock\components\BaseComponent implements \Sherlock\c
 {
     public function __construct($hashMap = null)
     {
+        $this->params['value'] = null;
+        $this->params['field'] = null;
         $this->params['boost'] = 1.0;
 
         parent::__construct($hashMap);
@@ -28,15 +30,15 @@ class Wildcard extends \Sherlock\components\BaseComponent implements \Sherlock\c
     public function toArray()
     {
         $ret = array (
-  'wildcard' =>
-  array (
-    $this->params["field"] =>
-    array (
-      'value' => $this->params["value"],
-      'boost' => $this->params["boost"],
-    ),
-  ),
-);
+				  'wildcard' =>
+				  array (
+					$this->params["field"] =>
+					array (
+					  'value' => $this->params["value"],
+					  'boost' => $this->params["boost"],
+					),
+				  ),
+				);
 
         return $ret;
     }

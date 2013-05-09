@@ -22,6 +22,8 @@ class TopChildren extends \Sherlock\components\BaseComponent implements \Sherloc
 {
     public function __construct($hashMap = null)
     {
+        $this->params['type'] = null;
+        $this->params['query'] = null;
         $this->params['score'] = "max";
         $this->params['factor'] = 5;
         $this->params['incremental_factor'] = 5;
@@ -32,15 +34,15 @@ class TopChildren extends \Sherlock\components\BaseComponent implements \Sherloc
     public function toArray()
     {
         $ret = array (
-  'top_children' =>
-  array (
-    'type' => $this->params["type"],
-    'query' => $this->params["query"]->toArray(),
-    'score' => $this->params["score"],
-    'factor' => $this->params["factor"],
-    'incremental_factor' => $this->params["incremental_factor"],
-  ),
-);
+				  'top_children' =>
+				  array (
+					'type' => $this->params["type"],
+					'query' => $this->params["query"]->toArray(),
+					'score' => $this->params["score"],
+					'factor' => $this->params["factor"],
+					'incremental_factor' => $this->params["incremental_factor"],
+				  ),
+				);
 
         return $ret;
     }

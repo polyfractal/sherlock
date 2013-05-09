@@ -34,6 +34,7 @@ class QueryString extends \Sherlock\components\BaseComponent implements \Sherloc
 {
     public function __construct($hashMap = null)
     {
+        $this->params['query'] = null;
         $this->params['default_field'] = "_all";
         $this->params['boost'] = 2.0;
         $this->params['enable_position_increments'] = 1;

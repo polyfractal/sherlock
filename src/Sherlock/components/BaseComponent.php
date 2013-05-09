@@ -54,7 +54,16 @@ abstract class BaseComponent
         if ($name == 'toJSON')
             return $this->toJSON();
 
-        $this->params[$name] = $arguments[0];
+		if ( $this instanceof \Sherlock\components\QueryInterface ) {
+			if( $this->argumentExists( $name ) ) {
+				$this->params[$name] = $arguments[0];
+			} else {
+				throw new \Exception( sprintf( 'You called "%s()" on %s, but that object doesn\'t accept that call.', $name, get_class( $this ) ), 500 );
+			}
+		} else {
+			$this->params[$name] = $arguments[0];
+		}
+
 
         return $this;
     }
@@ -68,6 +77,17 @@ abstract class BaseComponent
     {
         return json_encode($this->toArray());
     }
+
+    /**
+     * Return true or false, depending if this query interface accepts the call or not.
+     * We determine what calls are accepted by looking at the parameter keys defined in
+     * respective component.
+     * @param $call the name of the method called
+     * @return bool
+     */
+    public function argumentExists( $call ) {
+	    return array_key_exists( $call, $this->params );
+   	}
 
     /**
      * Return an associative array representation of this component

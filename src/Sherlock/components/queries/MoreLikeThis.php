@@ -29,6 +29,8 @@ class MoreLikeThis extends \Sherlock\components\BaseComponent implements \Sherlo
 {
     public function __construct($hashMap = null)
     {
+        $this->params['fields'] = null;
+        $this->params['like_text'] = null;
         $this->params['min_term_freq'] = 2;
         $this->params['max_query_terms'] = 25;
         $this->params['percent_terms_to_match'] = 0.3;
@@ -46,22 +48,22 @@ class MoreLikeThis extends \Sherlock\components\BaseComponent implements \Sherlo
     public function toArray()
     {
         $ret = array (
-  'more_like_this' =>
-  array (
-    'fields' => $this->params["fields"],
-    'like_text' => $this->params["like_text"],
-    'min_term_freq' => $this->params["min_term_freq"],
-    'max_query_terms' => $this->params["max_query_terms"],
-    'percent_terms_to_match' => $this->params["percent_terms_to_match"],
-    'stop_words' => $this->params["stop_words"],
-    'min_doc_freq' => $this->params["min_doc_freq"],
-    'max_doc_freq' => $this->params["max_doc_freq"],
-    'min_word_len' => $this->params["min_word_len"],
-    'max_word_len' => $this->params["max_word_len"],
-    'boost_terms' => $this->params["boost_terms"],
-    'boost' => $this->params["boost"],
-  ),
-);
+				  'more_like_this' =>
+				  array (
+					'fields' => $this->params["fields"],
+					'like_text' => $this->params["like_text"],
+					'min_term_freq' => $this->params["min_term_freq"],
+					'max_query_terms' => $this->params["max_query_terms"],
+					'percent_terms_to_match' => $this->params["percent_terms_to_match"],
+					'stop_words' => $this->params["stop_words"],
+					'min_doc_freq' => $this->params["min_doc_freq"],
+					'max_doc_freq' => $this->params["max_doc_freq"],
+					'min_word_len' => $this->params["min_word_len"],
+					'max_word_len' => $this->params["max_word_len"],
+					'boost_terms' => $this->params["boost_terms"],
+					'boost' => $this->params["boost"],
+				  ),
+				);
 
         return $ret;
     }

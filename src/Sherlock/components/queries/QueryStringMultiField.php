@@ -36,6 +36,8 @@ class QueryStringMultiField extends \Sherlock\components\BaseComponent implement
 {
     public function __construct($hashMap = null)
     {
+        $this->params['query'] = null;
+        $this->params['fields'] = null;
         $this->params['boost'] = 2.0;
         $this->params['enable_position_increments'] = true;
         $this->params['default_operator'] = "OR";
@@ -76,7 +78,6 @@ class QueryStringMultiField extends \Sherlock\components\BaseComponent implement
                         'phrase_slop' => $this->params["phrase_slop"],
                         'analyze_wildcard' => $this->params["analyze_wildcard"],
                         'auto_generate_phrase_queries' => $this->params["auto_generate_phrase_queries"],
-
                         'quote_analyzer' => $this->params["quote_analyzer"],
                         'quote_field_suffix' => $this->params["quote_field_suffix"],
                         'use_dis_max' => $this->params["use_dis_max"],

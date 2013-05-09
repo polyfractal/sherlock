@@ -23,6 +23,9 @@ class Range extends \Sherlock\components\BaseComponent implements \Sherlock\comp
 {
     public function __construct($hashMap = null)
     {
+        $this->params['field'] = null;
+        $this->params['from'] = 0;
+        $this->params['to'] = 10;
         $this->params['include_lower'] = true;
         $this->params['include_upper'] = true;
         $this->params['boost'] = 1.0;

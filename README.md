@@ -66,6 +66,7 @@ The library interface is still under flux...this section will be updated once _S
 
 ```php
    require 'vendor/autoload.php';
+	use Sherlock\Sherlock;
 
    //The Sherlock object manages cluster state, builds queries, etc
    $sherlock = new Sherlock();
@@ -82,7 +83,7 @@ The library interface is still under flux...this section will be updated once _S
             ->type("tweet")
             ->from(0)
             ->to(10);
-            ->query(Sherlock::query()->Term()->field("message")
+            ->query(Sherlock::queryBuilder()->Term()->field("message")
                                               ->term("ElasticSearch"));
 
    //Execute the search and return results
@@ -100,17 +101,17 @@ The library interface is still under flux...this section will be updated once _S
 
    //Let's try a more advanced query now.
    //Each section is it's own variable to help show how everything fits together
-   $must = Sherlock::query()->Term()->field("message")
+   $must = Sherlock::queryBuilder()->Term()->field("message")
                                      ->term("ElasticSearch");
 
-   $should = Sherlock::query()->Match()->field("author")
+   $should = Sherlock::queryBuilder()->Match()->field("author")
                                         ->query("Zachary Tong")
                                         ->boost(2.5);
 
-   $must_not = Sherlock::query()->Term()->field("message")
+   $must_not = Sherlock::queryBuilder()->Term()->field("message")
                                            ->term("Solr");
 
-   $bool = Sherlock::query()->Bool->must($must)
+   $bool = Sherlock::queryBuilder()->Bool->must($must)
                                    ->should($should)
                                    ->must_not($must_not);
    $request->query($bool);
@@ -127,7 +128,7 @@ Not a fan of ORM style construction?  Don't worry, _Sherlock_ supports "raw" ass
     //We can compose queries using hashmaps instead of the ORM.
     $manualData = array("field" => "field1", "term" => "town");
 
-    $request->query(Sherlock::query()->Term($manualData));
+    $request->query(Sherlock::queryBuilder()->Term($manualData));
 
 ```
 
@@ -139,7 +140,7 @@ Need to consume and use raw JSON?  No problem
     //We can compose queries using hashmaps instead of the ORM.
     $json = '{ "term" : { "field1" : "town" } }';
 
-    $request->query(Sherlock::query()->Raw($json));
+    $request->query(Sherlock::queryBuilder()->Raw($json));
 
 ```
 
