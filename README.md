@@ -82,7 +82,7 @@ The library interface is still under flux...this section will be updated once _S
             ->type("tweet")
             ->from(0)
             ->to(10)
-            ->query(Sherlock::query()->Term()->field("message")
+            ->query(\Sherlock\Sherlock::query()->Term()->field("message")
                                               ->term("ElasticSearch"));
 
    //Execute the search and return results
