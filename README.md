@@ -66,6 +66,7 @@ The library interface is still under flux...this section will be updated once _S
 
 ```php
    require 'vendor/autoload.php';
+   use \Sherlock\Sherlock;
 
    //The Sherlock object manages cluster state, builds queries, etc
    $sherlock = new Sherlock();
