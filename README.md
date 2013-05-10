@@ -117,6 +117,26 @@ The library interface is still under flux...this section will be updated once _S
    $request->query($bool);
    $request->execute();
 
+```
+
+You can use sherlock with every type of query listed in the elasticsearch docs.
+E.g. if you'd like to use a _fuzzy like this (flt)_ query, you can build your query like this:
+	php
+	$sherlock = new Sherlock();
+    $sherlock->addNode('localhost', 9200);
+    $request = $sherlock->search();
+
+	$request->index('jdbc')
+			->type('jdbc')
+			->query(Sherlock::queryBuilder()
+				->FuzzyLikeThis()
+				->fields( array('description', 'tags', 'name') )
+				->like_text( $query )
+				->min_similarity( 0.6 )
+			);
+
+	$response = $request->execute();
+
 
 ```
 
