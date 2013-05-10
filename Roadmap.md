@@ -17,3 +17,6 @@ This is a rough roadmap that Sherlock will follow.  No deadlines, but a general 
     - Sherlock needs a dedicated test server to run CI, code analysis and performance benchmarks/regression testing.  I have most of this infrastructure set up already, it just needs to be tweaked and put into usage.
  - Consistent Code Style
     - Sherlock needs some love in the code-style department.  Nothing serious, just a tightening of conventions and formatting style across the whole project.
+ - Retire magic methods
+    - The heavy reliance on magic methods was a boon at the start of Sherlock, since it allowed me to add the majority of the Elasticsearch query DSL quickly and easily.  However, in some internal performance profiling, it is clear that magic methods are upsettingly slow compared to native properties. I want to refactor the majority of Sherlock off magic methods.
+    - Luckily, this will not affect the external, developer-facing API.  This refactoring can be performed in the background without breaking the API or requiring development to halt in other locations.
