@@ -17,6 +17,7 @@ Resources
 ---------------
  - Read the [Quickstart Guide](http://sherlockphp.com/quickstart/)
  - Read the [Full Documentation](http://sherlockphp.com/documentation/)
+ - [Roadmap for Sherlock](Roadmap.md)
 
 Installation via Composer
 -------------------------
