@@ -125,7 +125,7 @@ Other types of queries
 You can use sherlock with every type of query listed in the elasticsearch docs.
 E.g. if you'd like to use a _fuzzy like this (flt)_ query, you can build your query like this:
 
-	php
+```php
 	$sherlock = new Sherlock();
     $sherlock->addNode('localhost', 9200);
     $request = $sherlock->search();
@@ -140,11 +140,15 @@ E.g. if you'd like to use a _fuzzy like this (flt)_ query, you can build your qu
 			);
 
 	$response = $request->execute();
-
-
 ```
 
+
+Non-ORM style
+-------------
+
+
 Not a fan of ORM style construction?  Don't worry, _Sherlock_ supports "raw" associative arrays
+
 ```php
     //Build a new search request
     $request = $sherlock->search();
