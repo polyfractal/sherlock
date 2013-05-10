@@ -1193,9 +1193,18 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req = $this->object->search();
         $req->index("test3")->type("benchmark");
 
+        $querystring = '{"term":{"field1":{"value":"town"}}}';
+
+
+$query = Sherlock::queryBuilder()->Raw($querystring);
+$filter = Sherlock::filterBuilder()->MatchAll();
+$req->index('test')->type('test')->query($query)->filter($filter);
+        print_r($req->toJSON());
+
         $expectedData = array("query" => array("term" => array("field1" => array("value" => "town"))));
 
-        $req->query(Sherlock::queryBuilder()->Raw($expectedData['query']));
+        $data = json_encode($expectedData['query']);
+        $req->query(Sherlock::queryBuilder()->Raw($data));
         $data = $req->toJSON();
 
         $expectedData = json_encode($expectedData);
