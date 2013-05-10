@@ -121,8 +121,7 @@ The library interface is still under flux...this section will be updated once _S
 
 Other types of queries
 ----------------------
-
-You can use sherlock with every type of query listed in the elasticsearch docs.
+You can use _Sherlock_ with every type of query listed in the elasticsearch docs.
 E.g. if you'd like to use a _fuzzy like this (flt)_ query, you can build your query like this:
 
 ```php
@@ -145,8 +144,6 @@ E.g. if you'd like to use a _fuzzy like this (flt)_ query, you can build your qu
 
 Non-ORM style
 -------------
-
-
 Not a fan of ORM style construction?  Don't worry, _Sherlock_ supports "raw" associative arrays
 
 ```php
@@ -174,7 +171,8 @@ Need to consume and use raw JSON?  No problem
 
 (There will be a RawQuery method soon, that lets you construct entirely arbitrary queries with arrays or JSON)
 
-For more examples check out the (Quickstart Guide)[http://sherlockphp.com/quickstart.html]
+For more examples check out the [Quickstart Guide](http://sherlockphp.com/quickstart.html)
+
 
 Philosophy
 ----------
