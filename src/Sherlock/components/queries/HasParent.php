@@ -20,6 +20,8 @@ class HasParent extends \Sherlock\components\BaseComponent implements \Sherlock\
 {
     public function __construct($hashMap = null)
     {
+        $this->params['parent_type'] = null;
+        $this->params['query'] = null;
         $this->params['score_type'] = "score";
 
         parent::__construct($hashMap);
@@ -28,13 +30,13 @@ class HasParent extends \Sherlock\components\BaseComponent implements \Sherlock\
     public function toArray()
     {
         $ret = array (
-  'has_parent' =>
-  array (
-    'parent_type' => $this->params["parent_type"],
-    'score_type' => $this->params["score_type"],
-    'query' => $this->params["query"]->toArray(),
-  ),
-);
+				  'has_parent' =>
+				  array (
+					'parent_type' => $this->params["parent_type"],
+					'score_type' => $this->params["score_type"],
+					'query' => $this->params["query"]->toArray(),
+				  ),
+				);
 
         return $ret;
     }

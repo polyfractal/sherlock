@@ -18,7 +18,10 @@ class Indices extends \Sherlock\components\BaseComponent implements \Sherlock\co
 {
     public function __construct($hashMap = null)
     {
-
+		$this->params['query'] = null;
+		$this->params['no_match_query'] = null;
+		$this->params['indices'] = array();
+		
         parent::__construct($hashMap);
     }
 
@@ -46,13 +49,13 @@ class Indices extends \Sherlock\components\BaseComponent implements \Sherlock\co
     public function toArray()
     {
         $ret = array (
-  'indices' =>
-  array (
-    'indices' => $this->params["indices"],
-    'query' => $this->params["query"]->toArray(),
-    'no_match_query' => $this->params["no_match_query"]->toArray(),
-  ),
-);
+				  'indices' =>
+				  array (
+					'indices' => $this->params["indices"],
+					'query' => $this->params["query"]->toArray(),
+					'no_match_query' => $this->params["no_match_query"]->toArray(),
+				  ),
+				);
 
         return $ret;
     }

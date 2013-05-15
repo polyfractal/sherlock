@@ -26,9 +26,9 @@ class AndFilter extends \Sherlock\components\BaseComponent implements \Sherlock\
     public function toArray()
     {
         $ret = array (
-  'and' => $this->params["and"],
-  '_cache' => $this->params["_cache"],
-);
+			'and' => $this->params["and"],
+			'_cache' => $this->params["_cache"],
+		);
 
         return $ret;
     }

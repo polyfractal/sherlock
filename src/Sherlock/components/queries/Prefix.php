@@ -23,6 +23,8 @@ class Prefix extends \Sherlock\components\BaseComponent implements \Sherlock\com
 {
     public function __construct($hashMap = null)
     {
+        $this->params['field'] = null;
+        $this->params['value'] = null;
         $this->params['boost'] = 2.0;
         $this->params['analyzer'] = "default";
         $this->params['slop'] = 3;

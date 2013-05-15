@@ -19,6 +19,7 @@ class CustomBoostFactor extends \Sherlock\components\BaseComponent implements \S
 {
     public function __construct($hashMap = null)
     {
+        $this->params['query'] = null;
         $this->params['boost_factor'] = 3;
 
         parent::__construct($hashMap);
@@ -27,12 +28,12 @@ class CustomBoostFactor extends \Sherlock\components\BaseComponent implements \S
     public function toArray()
     {
         $ret = array (
-  'custom_boost_factor' =>
-  array (
-    'query' => $this->params["query"]->toArray(),
-    'boost_factor' => $this->params["boost_factor"],
-  ),
-);
+  		'custom_boost_factor' =>
+			 array (
+			    'query' => $this->params["query"]->toArray(),
+			    'boost_factor' => $this->params["boost_factor"],
+			  ),
+		);
 
         return $ret;
     }

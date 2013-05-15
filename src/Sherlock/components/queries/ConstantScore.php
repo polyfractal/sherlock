@@ -19,6 +19,7 @@ class ConstantScore extends \Sherlock\components\BaseComponent implements \Sherl
 {
     public function __construct($hashMap = null)
     {
+        $this->params['filter'] = null;
         $this->params['boost'] = 1.2;
 
         parent::__construct($hashMap);
@@ -27,12 +28,12 @@ class ConstantScore extends \Sherlock\components\BaseComponent implements \Sherl
     public function toArray()
     {
         $ret = array (
-  'constant_score' =>
-  array (
-    'filter' => $this->params["filter"]->toArray(),
-    'boost' => $this->params["boost"],
-  ),
-);
+				  'constant_score' =>
+				  array (
+					'filter' => $this->params["filter"]->toArray(),
+					'boost' => $this->params["boost"],
+				  ),
+				);
 
         return $ret;
     }

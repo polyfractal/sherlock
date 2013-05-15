@@ -26,11 +26,11 @@ class MatchAll extends \Sherlock\components\BaseComponent implements \Sherlock\c
     public function toArray()
     {
         $ret = array (
-  'match_all' =>
-  array (
-    'boost' => $this->params["boost"],
-  ),
-);
+				  'match_all' =>
+				  array (
+					'boost' => $this->params["boost"],
+				  ),
+				);
 
         return $ret;
     }

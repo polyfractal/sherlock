@@ -25,6 +25,8 @@ class FuzzyLikeThis extends \Sherlock\components\BaseComponent implements \Sherl
 {
     public function __construct($hashMap = null)
     {
+        $this->params['fields'] = null;
+        $this->params['like_text'] = null;
         $this->params['max_query_terms'] = 10;
         $this->params['min_similarity'] = 0.5;
         $this->params['prefix_length'] = 3;
@@ -38,18 +40,18 @@ class FuzzyLikeThis extends \Sherlock\components\BaseComponent implements \Sherl
     public function toArray()
     {
         $ret = array (
-  'fuzzy_like_this' =>
-  array (
-    'fields' => $this->params["fields"],
-    'like_text' => $this->params["like_text"],
-    'max_query_terms' => $this->params["max_query_terms"],
-    'min_similarity' => $this->params["min_similarity"],
-    'prefix_length' => $this->params["prefix_length"],
-    'boost' => $this->params["boost"],
-    'analyzer' => $this->params["analyzer"],
-    'ignore_tf' => $this->params["ignore_tf"],
-  ),
-);
+			'fuzzy_like_this' =>
+				  array (
+					'fields' => $this->params["fields"],
+					'like_text' => $this->params["like_text"],
+					'max_query_terms' => $this->params["max_query_terms"],
+					'min_similarity' => $this->params["min_similarity"],
+					'prefix_length' => $this->params["prefix_length"],
+					'boost' => $this->params["boost"],
+					'analyzer' => $this->params["analyzer"],
+					'ignore_tf' => $this->params["ignore_tf"],
+				  ),
+		);
 
         return $ret;
     }

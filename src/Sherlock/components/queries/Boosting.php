@@ -20,6 +20,8 @@ class Boosting extends \Sherlock\components\BaseComponent implements \Sherlock\c
 {
     public function __construct($hashMap = null)
     {
+        $this->params['negative'] = null;
+        $this->params['positive'] = null;
         $this->params['negative_boost'] = 0.2;
 
         parent::__construct($hashMap);

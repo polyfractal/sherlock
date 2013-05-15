@@ -126,7 +126,7 @@ class Sherlock
      */
     public static function queryBuilder()
     {
-        Analog::log("Sherlock::query()", Analog::DEBUG);
+        Analog::log(__METHOD__, Analog::DEBUG);
 
         return new \Sherlock\wrappers\QueryWrapper();
     }
@@ -137,7 +137,7 @@ class Sherlock
      */
     public static function filterBuilder()
     {
-        Analog::log("Sherlock::filter()", Analog::DEBUG);
+        Analog::log(__METHOD__, Analog::DEBUG);
 
         return new wrappers\FilterWrapper();
     }

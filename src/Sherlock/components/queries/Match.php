@@ -29,6 +29,8 @@ class Match extends \Sherlock\components\BaseComponent implements \Sherlock\comp
 {
     public function __construct($hashMap = null)
     {
+        $this->params['field'] = array();
+        $this->params['query'] = null;
         $this->params['boost'] = 1.0;
         $this->params['operator'] = 'and';
         $this->params['analyzer'] = 'default';

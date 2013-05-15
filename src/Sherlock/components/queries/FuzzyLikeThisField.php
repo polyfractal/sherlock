@@ -25,6 +25,8 @@ class FuzzyLikeThisField extends \Sherlock\components\BaseComponent implements \
 {
     public function __construct($hashMap = null)
     {
+        $this->params['field'] = null;
+        $this->params['like_text'] = null;
         $this->params['max_query_terms'] = 10;
         $this->params['min_similarity'] = 0.5;
         $this->params['prefix_length'] = 3;

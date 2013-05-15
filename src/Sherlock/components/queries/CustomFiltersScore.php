@@ -20,6 +20,8 @@ class CustomFiltersScore extends \Sherlock\components\BaseComponent implements \
 {
     public function __construct($hashMap = null)
     {
+        $this->params['query'] = null;
+        $this->params['filters'] = array();
         $this->params['score_mode'] = "first";
         $this->params['max_boost'] = 10;
 
@@ -56,14 +58,14 @@ class CustomFiltersScore extends \Sherlock\components\BaseComponent implements \
         }
 
         $ret = array (
-  'custom_filters_score' =>
-  array (
-    'query' => $this->params["query"]->toArray(),
-    'filters' => $filters,
-    'score_mode' => $this->params["score_mode"],
-    'max_boost' => $this->params["max_boost"],
-  ),
-);
+			'custom_filters_score' =>
+			array (
+			    'query' => $this->params["query"]->toArray(),
+			    'filters' => $filters,
+			    'score_mode' => $this->params["score_mode"],
+			    'max_boost' => $this->params["max_boost"],
+			),
+		);
 
         return $ret;
     }

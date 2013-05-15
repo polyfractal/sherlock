@@ -21,6 +21,9 @@ class CustomScore extends \Sherlock\components\BaseComponent implements \Sherloc
 {
     public function __construct($hashMap = null)
     {
+        $this->params['query'] = array();
+        $this->params['params'] = null;
+        $this->params['script'] = null;
         $this->params['lang'] = "mvel";
 
         parent::__construct($hashMap);
@@ -29,14 +32,14 @@ class CustomScore extends \Sherlock\components\BaseComponent implements \Sherloc
     public function toArray()
     {
         $ret = array (
-  'custom_score' =>
-  array (
-    'query' => $this->params["query"]->toArray(),
-    'params' => $this->params["params"],
-    'script' => $this->params["script"],
-    'lang' => $this->params["lang"],
-  ),
-);
+  			'custom_score' =>
+				 array (
+					'query' => $this->params["query"]->toArray(),
+					'params' => $this->params["params"],
+					'script' => $this->params["script"],
+					'lang' => $this->params["lang"],
+  				),
+		);
 
         return $ret;
     }
