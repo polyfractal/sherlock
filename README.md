@@ -17,6 +17,7 @@ Resources
 ---------------
  - Read the [Quickstart Guide](http://sherlockphp.com/quickstart/)
  - Read the [Full Documentation](http://sherlockphp.com/documentation/)
+ - [Roadmap for Sherlock](Roadmap.md)
 
 Installation via Composer
 -------------------------
@@ -66,7 +67,11 @@ The library interface is still under flux...this section will be updated once _S
 
 ```php
    require 'vendor/autoload.php';
+<<<<<<< HEAD
 	use Sherlock\Sherlock;
+=======
+   use \Sherlock\Sherlock;
+>>>>>>> 71030cee3bd5e2eecb3cfa2adbd0bf34ff98164d
 
    //The Sherlock object manages cluster state, builds queries, etc
    $sherlock = new Sherlock();
