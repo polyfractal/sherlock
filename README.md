@@ -129,8 +129,8 @@ E.g. if you'd like to use a _fuzzy like this (flt)_ query, you can build your qu
     $sherlock->addNode('localhost', 9200);
     $request = $sherlock->search();
 
-	$request->index('jdbc')
-			->type('jdbc')
+	$request->index('test')
+			->type('tweet')
 			->query(Sherlock::queryBuilder()
 				->FuzzyLikeThis()
 				->fields( array('description', 'tags', 'name') )
@@ -140,6 +140,24 @@ E.g. if you'd like to use a _fuzzy like this (flt)_ query, you can build your qu
 
 	$response = $request->execute();
 ```
+
+Filters
+-------
+Building filters is identical to building queries, but requires the use of _filterBuilder()_ instead of _queryBuilder()_.
+Again, a simple example would be:
+
+```php
+    $request->index('test')
+		->type('tweet')
+		->filter(Sherlock::filterBuilder()
+			->Term()
+			->field($type)
+			->term($value)
+		);
+	
+	$response = $request->execute();
+```
+
 
 
 Non-ORM style

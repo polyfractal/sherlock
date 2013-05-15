@@ -137,7 +137,7 @@ class Sherlock
      */
     public static function filterBuilder()
     {
-        Analog::log("Sherlock::filter()", Analog::DEBUG);
+        Analog::log(__METHOD__, Analog::DEBUG);
 
         return new wrappers\FilterWrapper();
     }

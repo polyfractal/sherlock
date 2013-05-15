@@ -28,12 +28,12 @@ class Term extends \Sherlock\components\BaseComponent implements \Sherlock\compo
     public function toArray()
     {
         $ret = array (
-  'term' =>
-  array (
-    $this->params["field"] => $this->params["term"],
-    '_cache' => $this->params["_cache"],
-  ),
-);
+			'term' =>
+			array (
+				$this->params["field"] => $this->params["term"],
+			    '_cache' => $this->params["_cache"],
+			),
+		);
 
         return $ret;
     }
