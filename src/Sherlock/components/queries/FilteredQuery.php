@@ -29,7 +29,7 @@ class FilteredQuery extends \Sherlock\components\BaseComponent implements \Sherl
   'filtered' =>
   array (
     'query' => $this->params["query"]->toArray(),
-    'filter' => $this->params["filter"],
+    'filter' => $this->params["filter"]->toArray(),
   ),
 );
 
