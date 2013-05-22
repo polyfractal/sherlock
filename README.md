@@ -118,10 +118,53 @@ The library interface is still under flux...this section will be updated once _S
    $request->query($bool);
    $request->execute();
 
-
 ```
 
+Other types of queries
+----------------------
+You can use _Sherlock_ with every type of query listed in the elasticsearch docs.
+E.g. if you'd like to use a _fuzzy like this (flt)_ query, you can build your query like this:
+
+```php
+	$sherlock = new Sherlock();
+    $sherlock->addNode('localhost', 9200);
+    $request = $sherlock->search();
+
+	$request->index('test')
+			->type('tweet')
+			->query(Sherlock::queryBuilder()
+				->FuzzyLikeThis()
+				->fields( array('description', 'tags', 'name') )
+				->like_text( $query )
+				->min_similarity( 0.6 )
+			);
+
+	$response = $request->execute();
+```
+
+Filters
+-------
+Building filters is identical to building queries, but requires the use of _filterBuilder()_ instead of _queryBuilder()_.
+Again, a simple example would be:
+
+```php
+    $request->index('test')
+		->type('tweet')
+		->filter(Sherlock::filterBuilder()
+			->Term()
+			->field($type)
+			->term($value)
+		);
+	
+	$response = $request->execute();
+```
+
+
+
+Non-ORM style
+-------------
 Not a fan of ORM style construction?  Don't worry, _Sherlock_ supports "raw" associative arrays
+
 ```php
     //Build a new search request
     $request = $sherlock->search();
@@ -147,7 +190,8 @@ Need to consume and use raw JSON?  No problem
 
 (There will be a RawQuery method soon, that lets you construct entirely arbitrary queries with arrays or JSON)
 
-For more examples check out the (Quickstart Guide)[http://sherlockphp.com/quickstart.html]
+For more examples check out the [Quickstart Guide](http://sherlockphp.com/quickstart.html)
+
 
 Philosophy
 ----------
