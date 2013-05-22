@@ -12,9 +12,9 @@ use Sherlock\components;
 use Sherlock\common\exceptions;
 
 /**
- * @method \Sherlock\components\mappings/field field() field(\string $value)
- * @method \Sherlock\components\mappings\GeoPoint latitude() field(\float $value)
- * @method \Sherlock\components\mappings\GeoPoint longitude() store(\float $value)
+ * @method \Sherlock\components\mappings\GeoPoint field() field(\string $value)
+ * @method \Sherlock\components\mappings\GeoPoint latitude() latitude(\float $value)
+ * @method \Sherlock\components\mappings\GeoPoint longitude() longitude(\float $value)
  */
 class GeoPoint extends \Sherlock\components\BaseComponent implements \Sherlock\components\MappingInterface
 {
