@@ -58,12 +58,11 @@ abstract class BaseComponent
 			if( $this->argumentExists( $name ) ) {
 				$this->params[$name] = $arguments[0];
 			} else {
-				throw new \Exception( sprintf( 'You called "%s()" on %s, but that object doesn\'t accept that call.', $name, get_class( $this ) ), 500 );
+				throw new \Sherlock\common\exceptions\BadMethodCallException( sprintf( 'You called "%s()" on %s, but that object doesn\'t accept that call.', $name, get_class( $this ) ), 500 );
 			}
 		} else {
 			$this->params[$name] = $arguments[0];
 		}
-
 
         return $this;
     }
