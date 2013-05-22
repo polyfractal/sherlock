@@ -135,6 +135,19 @@ class SearchRequest extends Request
     }
 
     /**
+     * Sets the fields that will be returned
+     * 
+     * @param $fields
+     * @return SearchRequest
+     */
+    public function fields($fields)
+    {
+        $this->params['fields'] = $fields;
+
+        return $this;
+    }
+
+    /**
      * Sets the filter that will be executed
      *
      * @param $filter
@@ -254,6 +267,10 @@ class SearchRequest extends Request
     {
         $finalQuery = array();
 
+        if (isset($this->params['fields'])) {
+            $finalQuery['fields'] = $this->params['fields'];
+        }
+        
         if (isset($this->params['query']) && $this->params['query'] instanceof components\QueryInterface) {
             $finalQuery['query'] = $this->params['query']->toArray();
         }
