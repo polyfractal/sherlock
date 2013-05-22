@@ -31,22 +31,26 @@ class IndexRequest extends Request
      */
     protected $params;
 
+
     /**
      * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
-     * @param $index
+     * @param                                                    $index
+     *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      * @internal param $node
      */
     public function __construct($dispatcher, $index)
     {
         if (!isset($dispatcher))
-            throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
+                {
+                    throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
+                }
         if (!isset($index))
             throw new \Sherlock\common\exceptions\BadMethodCallException("Index argument required for IndexRequest");
 
         $this->dispatcher = $dispatcher;
 
-        if(!is_array($index))
+        if (!is_array($index))
             $this->params['index'][] = $index;
         else
             $this->params['index'] = $index;
@@ -57,9 +61,11 @@ class IndexRequest extends Request
         parent::__construct($dispatcher);
     }
 
+
     /**
      * @param $name
      * @param $args
+     *
      * @return IndexRequest
      */
     public function __call($name, $args)
@@ -68,6 +74,7 @@ class IndexRequest extends Request
 
         return $this;
     }
+
 
     /**
      * ---- Settings / Parameters ----
@@ -81,12 +88,13 @@ class IndexRequest extends Request
      *
      * @param  string       $index     indices to operate on
      * @param  string       $index,... indices to operate on
+     *
      * @return IndexRequest
      */
     public function index($index)
     {
         $this->params['index'] = array();
-        $args = func_get_args();
+        $args                  = func_get_args();
         foreach ($args as $arg) {
             $this->params['index'][] = $arg;
         }
@@ -94,23 +102,26 @@ class IndexRequest extends Request
         return $this;
     }
 
+
     /**
      * Set the type to operate on
      *
      * @param  string       $type     indices to operate on
      * @param  string       $type,... indices to operate on
+     *
      * @return IndexRequest
      */
     public function type($type)
     {
         $this->params['type'] = array();
-        $args = func_get_args();
+        $args                 = func_get_args();
         foreach ($args as $arg) {
             $this->params['type'][] = $arg;
         }
 
         return $this;
     }
+
 
     /**
      * Set the mappings that are used for various operations (set mappings, index creation, etc)
@@ -119,6 +130,7 @@ class IndexRequest extends Request
      * @todo add json input
      *
      * @param  array|\sherlock\components\MappingInterface|bool   $mapping,...
+     *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      * @return \Sherlock\requests\IndexRequest
      */
@@ -141,12 +153,15 @@ class IndexRequest extends Request
                 }
 
                 if (isset($this->params['indexMappings'][$arg->getType()])) {
-                    $this->params['indexMappings'][$arg->getType()] = array_merge_recursive($this->params['indexMappings'][$arg->getType()], $mappingValue);
+                    $this->params['indexMappings'][$arg->getType()] = array_merge_recursive(
+                        $this->params['indexMappings'][$arg->getType()],
+                        $mappingValue
+                    );
                 } else {
                     $this->params['indexMappings'][$arg->getType()] = $mappingValue;
                 }
             } elseif (is_array($arg)) {
-                foreach($arg as $argMapping) {
+                foreach ($arg as $argMapping) {
 
                     //is this a core type?  Wrap in 'properties'
                     if (!($arg instanceof \Sherlock\components\mappings\Analyzer)) {
@@ -156,7 +171,10 @@ class IndexRequest extends Request
                     }
 
                     if (isset($this->params['indexMappings'][$argMapping->getType()])) {
-                        $this->params['indexMappings'][$argMapping->getType()] = array_merge_recursive($this->params['indexMappings'][$argMapping->getType()], $mappingValue);
+                        $this->params['indexMappings'][$argMapping->getType()] = array_merge_recursive(
+                            $this->params['indexMappings'][$argMapping->getType()],
+                            $mappingValue
+                        );
                     } else {
                         $this->params['indexMappings'][$argMapping->getType()] = $mappingValue;
                     }
@@ -171,11 +189,13 @@ class IndexRequest extends Request
         return $this;
     }
 
+
     /**
      * Set the index settings, used predominantly for index creation
      *
      * @param  array|\sherlock\wrappers\IndexSettingsWrapper      $settings
      * @param  bool                                               $merge
+     *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      * @return IndexRequest
      */
@@ -196,6 +216,7 @@ class IndexRequest extends Request
         return $this;
     }
 
+
     /*
      * ---- Actions -----
      * Actions are applied to the index through an HTTP request, and return a response
@@ -210,7 +231,7 @@ class IndexRequest extends Request
      */
     public function delete()
     {
-        Analog::debug("IndexRequest->execute() - ".print_r($this->params, true));
+        Analog::debug("IndexRequest->execute() - " . print_r($this->params, true));
 
         if (!isset($this->params['index']))
             throw new exceptions\RuntimeException("Index cannot be empty.");
@@ -219,15 +240,17 @@ class IndexRequest extends Request
 
         $command = new Command();
         $command->index($index)
-                ->action('delete');
+            ->action('delete');
 
         $this->batch->clearCommands();
         $this->batch->addCommand($command);
 
-        $ret =  parent::execute();
+        $ret = parent::execute();
 
         return $ret[0];
     }
+
+
     /**
      * Create an index
      *
@@ -236,7 +259,7 @@ class IndexRequest extends Request
      */
     public function create()
     {
-        Analog::log("IndexRequest->create() - ".print_r($this->params, true), Analog::DEBUG);
+        Analog::log("IndexRequest->create() - " . print_r($this->params, true), Analog::DEBUG);
 
         if (!isset($this->params['index']))
             throw new exceptions\RuntimeException("Index cannot be empty.");
@@ -249,13 +272,15 @@ class IndexRequest extends Request
         foreach ($this->params['indexMappings'] as $type => $mapping) {
             $mappings = array_merge($mappings, array($type => $mapping));
         }
-        $body = array("settings" => $this->params['indexSettings'],
-                        "mappings" => $mappings);
+        $body = array(
+            "settings" => $this->params['indexSettings'],
+            "mappings" => $mappings
+        );
 
         $command = new Command();
         $command->index($index)
-                ->action('put')
-                ->data(json_encode($body, JSON_FORCE_OBJECT));
+            ->action('put')
+            ->data(json_encode($body, JSON_FORCE_OBJECT));
 
         $this->batch->clearCommands();
         $this->batch->addCommand($command);
@@ -263,13 +288,14 @@ class IndexRequest extends Request
         /**
          * @var \Sherlock\responses\IndexResponse
          */
-        $ret =  parent::execute();
+        $ret = parent::execute();
 
         //clear out mappings, settings
         $this->resetIndex();
 
         return $ret[0];
     }
+
 
     /**
      * Update the settings of an index
@@ -281,7 +307,7 @@ class IndexRequest extends Request
      */
     public function updateSettings()
     {
-        Analog::log("IndexRequest->updateSettings() - ".print_r($this->params, true), Analog::DEBUG);
+        Analog::log("IndexRequest->updateSettings() - " . print_r($this->params, true), Analog::DEBUG);
 
         if (!isset($this->params['index'])) {
             Analog::log("Index cannot be empty.", Analog::ERROR);
@@ -294,14 +320,14 @@ class IndexRequest extends Request
 
         $command = new Command();
         $command->index($index)
-                ->id('_settings')
-                ->action('put')
-                ->data(json_encode($body, JSON_FORCE_OBJECT));
+            ->id('_settings')
+            ->action('put')
+            ->data(json_encode($body, JSON_FORCE_OBJECT));
 
         $this->batch->clearCommands();
         $this->batch->addCommand($command);
 
-        $ret =  parent::execute();
+        $ret = parent::execute();
 
         //clear out mappings, settings
         //$this->resetIndex();
@@ -309,6 +335,7 @@ class IndexRequest extends Request
         return $ret[0];
 
     }
+
 
     /**
      * Update/add the Mapping of an index
@@ -318,7 +345,7 @@ class IndexRequest extends Request
      */
     public function updateMapping()
     {
-        Analog::log("IndexRequest->updateMapping() - ".print_r($this->params, true), Analog::DEBUG);
+        Analog::log("IndexRequest->updateMapping() - " . print_r($this->params, true), Analog::DEBUG);
 
         if (!isset($this->params['index'])) {
             Analog::log("Index cannot be empty.", Analog::ERROR);
@@ -341,19 +368,19 @@ class IndexRequest extends Request
         }
 
         $index = implode(',', $this->params['index']);
-        $body = $this->params['indexMappings'];
+        $body  = $this->params['indexMappings'];
 
         $command = new Command();
         $command->index($index)
-                ->type($this->params['type'][0])
-                ->id('_mapping')
-                ->action('put')
-                ->data(json_encode($body, JSON_FORCE_OBJECT));
+            ->type($this->params['type'][0])
+            ->id('_mapping')
+            ->action('put')
+            ->data(json_encode($body, JSON_FORCE_OBJECT));
 
         $this->batch->clearCommands();
         $this->batch->addCommand($command);
 
-        $ret =  parent::execute();
+        $ret = parent::execute();
 
         //clear out mappings, settings
         //$this->resetIndex();

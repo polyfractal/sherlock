@@ -4,7 +4,7 @@
  * Date: 2/4/13
  * Time: 10:28 AM
  * @package Sherlock
- * @author Zachary Tong
+ * @author  Zachary Tong
  * @version 0.1.2
  */
 
@@ -37,8 +37,10 @@ class Sherlock
      */
     protected $templates = array();
 
+
     /**
      * Sherlock constructor, accepts optional user settings
+     *
      * @param array $userSettings Optional user settings to over-ride the default
      */
     public function __construct($userSettings = array())
@@ -55,10 +57,11 @@ class Sherlock
 
         //setup logging
         $this->setupLogging();
-        Analog::log("Settings: ".print_r($this->settings, true), Analog::DEBUG);
+        Analog::log("Settings: " . print_r($this->settings, true), Analog::DEBUG);
 
         $this->autodetect();
     }
+
 
     /********************************************************************************
      * PSR-0 Autoloader
@@ -71,7 +74,7 @@ class Sherlock
      */
     public static function autoload($className)
     {
-        $thisClass = str_replace(__NAMESPACE__.'\\', '', __CLASS__);
+        $thisClass = str_replace(__NAMESPACE__ . '\\', '', __CLASS__);
 
         $baseDir = __DIR__;
 
@@ -84,7 +87,7 @@ class Sherlock
         if ($lastNsPos = strripos($className, '\\')) {
             $namespace = substr($className, 0, $lastNsPos);
             $className = substr($className, $lastNsPos + 1);
-            $fileName  .= str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+            $fileName .= str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
         }
         $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
 
@@ -92,6 +95,7 @@ class Sherlock
             require $fileName;
         }
     }
+
 
     /**
      * Register Sherlock's PSR-0 autoloader
@@ -101,6 +105,7 @@ class Sherlock
         spl_autoload_register(__NAMESPACE__ . "\\Sherlock::autoload");
     }
 
+
     /**
      * @return array Default settings
      */
@@ -108,17 +113,18 @@ class Sherlock
     {
         return array(
             // Application
-            'base' => __DIR__.'/',
-            'mode' => 'development',
-            'log.enabled' => false,
-            'log.level' => 'error',
-            'log.handler' => null,
-            'log.file' => '../sherlock.log',
-            'event.dispatcher' => new EventDispatcher(),
-            'cluster' => null,
+            'base'               => __DIR__ . '/',
+            'mode'               => 'development',
+            'log.enabled'        => false,
+            'log.level'          => 'error',
+            'log.handler'        => null,
+            'log.file'           => '../sherlock.log',
+            'event.dispatcher'   => new EventDispatcher(),
+            'cluster'            => null,
             'cluster.autodetect' => false,
-            );
+        );
     }
+
 
     /**
      * Query builder, used to return a QueryWrapper through which a Query component can be selected
@@ -131,6 +137,7 @@ class Sherlock
         return new \Sherlock\wrappers\QueryWrapper();
     }
 
+
     /**
      * Filter builder, used to return a FilterWrapper through which a Filter component can be selected
      * @return wrappers\FilterWrapper
@@ -141,6 +148,7 @@ class Sherlock
 
         return new wrappers\FilterWrapper();
     }
+
 
     /**
      * Facet builder, used to return a FilterWrapper through which a Filter component can be selected
@@ -153,6 +161,7 @@ class Sherlock
         return new wrappers\FacetWrapper();
     }
 
+
     /**
      * Highlight builder, used to return a HighlightWrapper through which a Highlight component can be selected
      * @return wrappers\HighlightWrapper
@@ -163,6 +172,7 @@ class Sherlock
 
         return new wrappers\HighlightWrapper();
     }
+
 
     /**
      * Index builder, used to return a IndexWrapper through which an Index component can be selected
@@ -175,9 +185,12 @@ class Sherlock
         return new wrappers\IndexSettingsWrapper();
     }
 
+
     /**
      * Mapping builder, used to return a MappingWrapper through which a Mapping component can be selected
+     *
      * @param  null|string                     $type
+     *
      * @return wrappers\MappingPropertyWrapper
      */
     public static function mappingBuilder($type = null)
@@ -186,6 +199,7 @@ class Sherlock
 
         return new wrappers\MappingPropertyWrapper($type);
     }
+
 
     /**
      * @return wrappers\SortWrapper
@@ -197,6 +211,7 @@ class Sherlock
         return new wrappers\SortWrapper();
     }
 
+
     /**
      * Used to obtain a SearchRequest object, allows querying the cluster with searches
      * @return requests\SearchRequest
@@ -207,6 +222,7 @@ class Sherlock
 
         return new requests\SearchRequest($this->settings['event.dispatcher']);
     }
+
 
     /**
      * RawRequests allow the user to issue arbitrary commands to the ES cluster
@@ -221,6 +237,7 @@ class Sherlock
         return new requests\RawRequest($this->settings['event.dispatcher']);
     }
 
+
     /**
      * Used to return an IndexDocumentRequest object, allows adding a doc to the index
      * @return requests\IndexDocumentRequest
@@ -231,6 +248,7 @@ class Sherlock
 
         return new requests\IndexDocumentRequest($this->settings['event.dispatcher']);
     }
+
 
     /**
      * Used to return a DeleteDocumentRequest object, allows deleting a doc from the index
@@ -243,14 +261,16 @@ class Sherlock
         return new requests\DeleteDocumentRequest($this->settings['event.dispatcher']);
     }
 
+
     /**
      * @param  string                $index     Index to operate on
      * @param  string                $index,... Index to operate on
+     *
      * @return requests\IndexRequest
      */
     public function index($index = null)
     {
-        $args = func_get_args();
+        $args  = func_get_args();
         $index = array();
         foreach ($args as $arg) {
             $index[] = $arg;
@@ -260,6 +280,7 @@ class Sherlock
 
         return new requests\IndexRequest($this->settings['event.dispatcher'], $index);
     }
+
 
     /**
      * Autodetects various properties of the cluster and indices
@@ -274,22 +295,26 @@ class Sherlock
         }
     }
 
+
     /**
      * Add a new node to the ES cluster
+     *
      * @param  string                                     $host server host address (either IP or domain)
      * @param  int                                        $port ElasticSearch port (defaults to 9200)
+     *
      * @return \Sherlock\Sherlock
      * @throws common\exceptions\BadMethodCallException
      * @throws common\exceptions\InvalidArgumentException
      */
     public function addNode($host, $port = 9200)
     {
-        Analog::log("Sherlock->addNode(): ".print_r(func_get_args(), true), Analog::DEBUG);
+        Analog::log("Sherlock->addNode(): " . print_r(func_get_args(), true), Analog::DEBUG);
 
-          $this->settings['cluster']->addNode($host, $port, $this->settings['cluster.autodetect']);
+        $this->settings['cluster']->addNode($host, $port, $this->settings['cluster.autodetect']);
 
         return $this;
     }
+
 
     /**
      * @return array
@@ -299,9 +324,12 @@ class Sherlock
         return $this->settings;
     }
 
+
     /**
      * Recursively scans a directory and returns the files
+     *
      * @param $dir Path to directory to scan
+     *
      * @throws common\exceptions\RuntimeException
      * @throws common\exceptions\BadMethodCallException
      * @return array
@@ -371,18 +399,22 @@ class Sherlock
         }
 
         //if logging is disabled, use the null Analog logger
-        if ($this->settings['log.enabled'] == false)
+        if ($this->settings['log.enabled'] == false) {
             $this->settings['log.handler'] = \Analog\Handler\Null::init();
-        else {
+        } else {
             //if logging is enabled but no handler was specified by the user
             //use the default file logger
-            if ($this->settings['log.handler'] === null)
-                $this->settings['log.handler'] = \Analog\Handler\Threshold::init (\Analog\Handler\File::init ($this->settings['base'] . $this->settings['log.file']),$level);
+            if ($this->settings['log.handler'] === null) {
+                $this->settings['log.handler'] = \Analog\Handler\Threshold::init(
+                    \Analog\Handler\File::init($this->settings['base'] . $this->settings['log.file']),
+                    $level
+                );
+            }
         }
         Analog::handler($this->settings['log.handler']);
 
         Analog::log("--------------------------------------------------------", Analog::ALERT);
-        Analog::log("Logging setup at ".date("Y-m-d H:i:s.u"), Analog::INFO);
+        Analog::log("Logging setup at " . date("Y-m-d H:i:s.u"), Analog::INFO);
     }
 
 }

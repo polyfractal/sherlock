@@ -20,22 +20,23 @@ class Missing extends \Sherlock\components\BaseComponent implements \Sherlock\co
 {
     public function __construct($hashMap = null)
     {
-        $this->params['existence'] = true;
+        $this->params['existence']  = true;
         $this->params['null_value'] = false;
 
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'missing' =>
-  array (
-    'field' => $this->params["field"],
-    'existence' => $this->params["existence"],
-    'null_value' => $this->params["null_value"],
-  ),
-);
+        $ret = array(
+            'missing' =>
+            array(
+                'field'      => $this->params["field"],
+                'existence'  => $this->params["existence"],
+                'null_value' => $this->params["null_value"],
+            ),
+        );
 
         return $ret;
     }

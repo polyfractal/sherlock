@@ -11,4 +11,6 @@ namespace Sherlock\common\exceptions;
  * Class IndexAlreadyExistsException
  * @package Sherlock\common\exceptions
  */
-class IndexAlreadyExistsException extends ClientErrorResponseException {}
+class IndexAlreadyExistsException extends ClientErrorResponseException
+{
+}

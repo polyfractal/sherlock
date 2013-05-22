@@ -25,26 +25,27 @@ class NumericRange extends \Sherlock\components\BaseComponent implements \Sherlo
     {
         $this->params['include_lower'] = true;
         $this->params['include_upper'] = false;
-        $this->params['_cache'] = false;
+        $this->params['_cache']        = false;
 
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'numeric_range' =>
-  array (
-    $this->params["field"] =>
-    array (
-      'from' => $this->params["from"],
-      'to' => $this->params["to"],
-      'include_lower' => $this->params["include_lower"],
-      'include_upper' => $this->params["include_upper"],
-    ),
-    '_cache' => $this->params["_cache"],
-  ),
-);
+        $ret = array(
+            'numeric_range' =>
+            array(
+                $this->params["field"] =>
+                array(
+                    'from'          => $this->params["from"],
+                    'to'            => $this->params["to"],
+                    'include_lower' => $this->params["include_lower"],
+                    'include_upper' => $this->params["include_upper"],
+                ),
+                '_cache'               => $this->params["_cache"],
+            ),
+        );
 
         return $ret;
     }

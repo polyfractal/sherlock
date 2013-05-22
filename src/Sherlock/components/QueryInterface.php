@@ -13,5 +13,7 @@ namespace Sherlock\components;
 interface QueryInterface
 {
     public function toArray();
+
+
     public function toJSON();
 }

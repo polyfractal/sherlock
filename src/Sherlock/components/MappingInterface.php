@@ -14,6 +14,10 @@ namespace Sherlock\components;
 interface MappingInterface
 {
     public function getType();
+
+
     public function toArray();
+
+
     public function toJSON();
 }

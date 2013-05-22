@@ -13,5 +13,7 @@ namespace Sherlock\components;
 interface SortInterface
 {
     public function toArray();
+
+
     public function toJSON();
 }

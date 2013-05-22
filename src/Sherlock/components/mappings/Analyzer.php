@@ -19,6 +19,7 @@ class Analyzer extends \Sherlock\components\BaseComponent implements \Sherlock\c
 {
     protected $type;
 
+
     /**
      * @param null $type
      * @param null $hashMap
@@ -31,11 +32,12 @@ class Analyzer extends \Sherlock\components\BaseComponent implements \Sherlock\c
             $this->type = $type;
         }
 
-        $this->params['path'] = null;
+        $this->params['path']  = null;
         $this->params['index'] = null;
 
         parent::__construct($hashMap);
     }
+
 
     /**
      * @return array
@@ -59,6 +61,7 @@ class Analyzer extends \Sherlock\components\BaseComponent implements \Sherlock\c
         return $ret;
 
     }
+
 
     /**
      * @return null

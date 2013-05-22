@@ -6,11 +6,11 @@
  *
  * @package RollingCurl
  * @version 1.0
- * @author Jeff Minard (http://jrm.cc/)
- * @author Josh Fraser (www.joshfraser.com)
- * @author Alexander Makarov (http://rmcreative.ru/)
+ * @author  Jeff Minard (http://jrm.cc/)
+ * @author  Josh Fraser (www.joshfraser.com)
+ * @author  Alexander Makarov (http://rmcreative.ru/)
  * @license Apache License 2.0
- * @link https://github.com/chuyskywalker/rolling-curl
+ * @link    https://github.com/chuyskywalker/rolling-curl
  */
 
 namespace Sherlock\common\tmp\RollingCurl;
@@ -61,21 +61,25 @@ class Request
      */
     private $responseErrno;
 
+
     /**
      * @param  string               $url
      * @param  string               $method
+     *
      * @return \RollingCurl\Request
      */
-    public function __construct($url, $method="GET")
+    public function __construct($url, $method = "GET")
     {
         $this->setUrl($url);
         $this->setMethod($method);
     }
 
+
     /**
      * You may wish to store some "extra" info with this request, you can put any of that here.
      *
      * @param  mixed                $extraInfo
+     *
      * @return \RollingCurl\Request
      */
     public function setExtraInfo($extraInfo)
@@ -85,6 +89,7 @@ class Request
         return $this;
     }
 
+
     /**
      * @return mixed
      */
@@ -93,8 +98,10 @@ class Request
         return $this->extraInfo;
     }
 
+
     /**
      * @param  array                $headers
+     *
      * @return \RollingCurl\Request
      */
     public function setHeaders($headers)
@@ -104,6 +111,7 @@ class Request
         return $this;
     }
 
+
     /**
      * @return array
      */
@@ -112,8 +120,10 @@ class Request
         return $this->headers;
     }
 
+
     /**
      * @param  string               $method
+     *
      * @return \RollingCurl\Request
      */
     public function setMethod($method)
@@ -123,6 +133,7 @@ class Request
         return $this;
     }
 
+
     /**
      * @return string
      */
@@ -131,8 +142,10 @@ class Request
         return $this->method;
     }
 
+
     /**
      * @param  array                     $options
+     *
      * @throws \InvalidArgumentException
      * @return \RollingCurl\Request
      */
@@ -146,8 +159,10 @@ class Request
         return $this;
     }
 
+
     /**
      * @param  array                     $options
+     *
      * @throws \InvalidArgumentException
      * @return \RollingCurl\Request
      */
@@ -161,6 +176,7 @@ class Request
         return $this;
     }
 
+
     /**
      * @return array
      */
@@ -169,8 +185,10 @@ class Request
         return $this->options;
     }
 
+
     /**
      * @param  string               $postData
+     *
      * @return \RollingCurl\Request
      */
     public function setPostData($postData)
@@ -180,6 +198,7 @@ class Request
         return $this;
     }
 
+
     /**
      * @return string
      */
@@ -188,8 +207,10 @@ class Request
         return $this->postData;
     }
 
+
     /**
      * @param  int                  $responseErrno
+     *
      * @return \RollingCurl\Request
      */
     public function setResponseErrno($responseErrno)
@@ -199,6 +220,7 @@ class Request
         return $this;
     }
 
+
     /**
      * @return int
      */
@@ -207,8 +229,10 @@ class Request
         return $this->responseErrno;
     }
 
+
     /**
      * @param  string               $responseError
+     *
      * @return \RollingCurl\Request
      */
     public function setResponseError($responseError)
@@ -218,6 +242,7 @@ class Request
         return $this;
     }
 
+
     /**
      * @return string
      */
@@ -226,8 +251,10 @@ class Request
         return $this->responseError;
     }
 
+
     /**
      * @param  array                $responseInfo
+     *
      * @return \RollingCurl\Request
      */
     public function setResponseInfo($responseInfo)
@@ -237,6 +264,7 @@ class Request
         return $this;
     }
 
+
     /**
      * @return array
      */
@@ -245,8 +273,10 @@ class Request
         return $this->responseInfo;
     }
 
+
     /**
      * @param  string               $responseText
+     *
      * @return \RollingCurl\Request
      */
     public function setResponseText($responseText)
@@ -256,6 +286,7 @@ class Request
         return $this;
     }
 
+
     /**
      * @return string
      */
@@ -264,8 +295,10 @@ class Request
         return $this->responseText;
     }
 
+
     /**
      * @param  string               $url
+     *
      * @return \RollingCurl\Request
      */
     public function setUrl($url)
@@ -274,6 +307,7 @@ class Request
 
         return $this;
     }
+
 
     /**
      * @return string

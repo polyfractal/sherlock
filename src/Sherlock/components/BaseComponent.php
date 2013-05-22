@@ -23,6 +23,7 @@ abstract class BaseComponent
      */
     protected $params = array();
 
+
     /**
      * @param array $hashMap Optional hashmap parameter, accepts an associative array to set parameters manually
      */
@@ -35,6 +36,7 @@ abstract class BaseComponent
 
     }
 
+
     /**
      * Magic method, primary setter of the components.
      *
@@ -45,19 +47,25 @@ abstract class BaseComponent
      *
      * @param $name
      * @param $arguments
+     *
      * @return BaseComponent|string
      */
     public function __call($name, $arguments)
     {
-        \Analog\Analog::log("BaseComponent->".$name."(".print_r($arguments[0], true).")", \Analog\Analog::DEBUG);
+        \Analog\Analog::log(
+            "BaseComponent->" . $name . "(" . print_r($arguments[0], true) . ")",
+            \Analog\Analog::DEBUG
+        );
 
-        if ($name == 'toJSON')
+        if ($name == 'toJSON') {
             return $this->toJSON();
+        }
 
         $this->params[$name] = $arguments[0];
 
         return $this;
     }
+
 
     /**
      * Return a JSOn representation of this component
@@ -68,6 +76,7 @@ abstract class BaseComponent
     {
         return json_encode($this->toArray());
     }
+
 
     /**
      * Return an associative array representation of this component

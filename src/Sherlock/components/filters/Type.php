@@ -22,14 +22,15 @@ class Type extends \Sherlock\components\BaseComponent implements \Sherlock\compo
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'type' =>
-  array (
-    'value' => $this->params["value"],
-  ),
-);
+        $ret = array(
+            'type' =>
+            array(
+                'value' => $this->params["value"],
+            ),
+        );
 
         return $ret;
     }

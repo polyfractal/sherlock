@@ -21,6 +21,7 @@ class Cluster
     private $nodes = array();
     private $dispatcher;
 
+
     /**
      * @param $dispatcher
      */
@@ -29,23 +30,28 @@ class Cluster
         $this->dispatcher = $dispatcher;
     }
 
+
     /**
      * @param  string                              $host
      * @param  int                                 $port
      * @param  bool                                $autodetect
+     *
      * @throws exceptions\BadMethodCallException
      * @throws exceptions\InvalidArgumentException
      */
     public function addNode($host, $port, $autodetect = true)
     {
-        if (!isset($host))
+        if (!isset($host)) {
             throw new exceptions\BadMethodCallException("A server address must be provided when adding a node.");
+        }
 
-        if(!is_numeric($port))
+        if (!is_numeric($port)) {
             throw new exceptions\InvalidArgumentException("Port argument must be a number");
+        }
 
         $this->nodes[$host] = array('host' => $host, 'port' => $port);
     }
+
 
     /**
      * Autodect various cluster properties
@@ -55,10 +61,13 @@ class Cluster
         $this->autodetect_parseNodes();
     }
 
+
     /**
      * Triggered just prior to a request being executed
      * Inject a random node into the Request object
+     *
      * @param  RequestEvent                $event
+     *
      * @throws exceptions\RuntimeException
      */
     public function onRequestExecute(RequestEvent $event)
@@ -77,6 +86,7 @@ class Cluster
 
     }
 
+
     /**
      * Autodetect the nodes in this cluster through Cluster State API
      */
@@ -84,18 +94,19 @@ class Cluster
     {
         Analog::log("Autodetecting nodes in cluster...", Analog::DEBUG);
         foreach ($this->nodes as $node) {
-            Analog::log("Contacting node: ".print_r($node, true), Analog::DEBUG);
+            Analog::log("Contacting node: " . print_r($node, true), Analog::DEBUG);
 
             try {
-                $client = new Client('http://'.$node['host'].':'.$node['port']);
-                $request = $client->get('/_nodes/http');
+                $client   = new Client('http://' . $node['host'] . ':' . $node['port']);
+                $request  = $client->get('/_nodes/http');
                 $response = $request->send()->json();
 
                 foreach ($response['nodes'] as $newNode) {
 
                     //we don't want http-inaccessible nodes
-                    if (!isset($newNode['http_address']))
+                    if (!isset($newNode['http_address'])) {
                         continue;
+                    }
 
                     preg_match('/inet\[\/([0-9\.]+):([0-9]+)\]/i', $newNode['http_address'], $match);
 
@@ -104,7 +115,7 @@ class Cluster
                     //use host as key so that we don't add duplicates
                     $this->nodes[$match[1]] = $tNode;
 
-                    Analog::log("Autodetected node: ".print_r($tNode, true), Analog::INFO);
+                    Analog::log("Autodetected node: " . print_r($tNode, true), Analog::INFO);
                 }
 
                 //we have the complete node list, no need to keep checking

@@ -29,41 +29,42 @@ class MoreLikeThisField extends \Sherlock\components\BaseComponent implements \S
 {
     public function __construct($hashMap = null)
     {
-        $this->params['min_term_freq'] = 2;
-        $this->params['max_query_terms'] = 25;
+        $this->params['min_term_freq']          = 2;
+        $this->params['max_query_terms']        = 25;
         $this->params['percent_terms_to_match'] = 0.3;
-        $this->params['stop_words'] = array();
-        $this->params['min_doc_freq'] = 5;
-        $this->params['max_doc_freq'] = 0;
-        $this->params['min_word_len'] = 0;
-        $this->params['max_word_len'] = 0;
-        $this->params['boost_terms'] = 1;
-        $this->params['boost'] = 1.0;
+        $this->params['stop_words']             = array();
+        $this->params['min_doc_freq']           = 5;
+        $this->params['max_doc_freq']           = 0;
+        $this->params['min_word_len']           = 0;
+        $this->params['max_word_len']           = 0;
+        $this->params['boost_terms']            = 1;
+        $this->params['boost']                  = 1.0;
 
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'more_like_this_field' =>
-  array (
-    $this->params["field"] =>
-    array (
-      'like_text' => $this->params["like_text"],
-      'min_term_freq' => $this->params["min_term_freq"],
-      'max_query_terms' => $this->params["max_query_terms"],
-      'percent_terms_to_match' => $this->params["percent_terms_to_match"],
-      'stop_words' => $this->params["stop_words"],
-      'min_doc_freq' => $this->params["min_doc_freq"],
-      'max_doc_freq' => $this->params["max_doc_freq"],
-      'min_word_len' => $this->params["min_word_len"],
-      'max_word_len' => $this->params["max_word_len"],
-      'boost_terms' => $this->params["boost_terms"],
-      'boost' => $this->params["boost"],
-    ),
-  ),
-);
+        $ret = array(
+            'more_like_this_field' =>
+            array(
+                $this->params["field"] =>
+                array(
+                    'like_text'              => $this->params["like_text"],
+                    'min_term_freq'          => $this->params["min_term_freq"],
+                    'max_query_terms'        => $this->params["max_query_terms"],
+                    'percent_terms_to_match' => $this->params["percent_terms_to_match"],
+                    'stop_words'             => $this->params["stop_words"],
+                    'min_doc_freq'           => $this->params["min_doc_freq"],
+                    'max_doc_freq'           => $this->params["max_doc_freq"],
+                    'min_word_len'           => $this->params["min_word_len"],
+                    'max_word_len'           => $this->params["max_word_len"],
+                    'boost_terms'            => $this->params["boost_terms"],
+                    'boost'                  => $this->params["boost"],
+                ),
+            ),
+        );
 
         return $ret;
     }

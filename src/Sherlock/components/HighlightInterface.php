@@ -8,5 +8,7 @@ namespace Sherlock\components;
 interface HighlightInterface
 {
     public function toArray();
+
+
     public function toJSON();
 }

@@ -24,18 +24,19 @@ class GeoPolygon extends \Sherlock\components\BaseComponent implements \Sherlock
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'geo_polygon' =>
-  array (
-    'person.location' =>
-    array (
-      'points' => $this->params["points"],
-    ),
-    '_cache' => $this->params["_cache"],
-  ),
-);
+        $ret = array(
+            'geo_polygon' =>
+            array(
+                'person.location' =>
+                array(
+                    'points' => $this->params["points"],
+                ),
+                '_cache'          => $this->params["_cache"],
+            ),
+        );
 
         return $ret;
     }

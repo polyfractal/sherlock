@@ -23,29 +23,30 @@ class Fuzzy extends \Sherlock\components\BaseComponent implements \Sherlock\comp
 {
     public function __construct($hashMap = null)
     {
-        $this->params['boost'] = 1.0;
+        $this->params['boost']          = 1.0;
         $this->params['min_similarity'] = 0.2;
-        $this->params['prefix_length'] = 0;
+        $this->params['prefix_length']  = 0;
         $this->params['max_expansions'] = 10;
 
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'fuzzy' =>
-  array (
-    $this->params["field"] =>
-    array (
-      'value' => $this->params["value"],
-      'boost' => $this->params["boost"],
-      'min_similarity' => $this->params["min_similarity"],
-      'prefix_length' => $this->params["prefix_length"],
-      'max_expansions' => $this->params["max_expansions"],
-    ),
-  ),
-);
+        $ret = array(
+            'fuzzy' =>
+            array(
+                $this->params["field"] =>
+                array(
+                    'value'          => $this->params["value"],
+                    'boost'          => $this->params["boost"],
+                    'min_similarity' => $this->params["min_similarity"],
+                    'prefix_length'  => $this->params["prefix_length"],
+                    'max_expansions' => $this->params["max_expansions"],
+                ),
+            ),
+        );
 
         return $ret;
     }

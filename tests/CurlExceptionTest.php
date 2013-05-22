@@ -7,6 +7,7 @@
 
 
 namespace Sherlock\tests;
+
 use Sherlock;
 use Sherlock\common\exceptions;
 
@@ -21,6 +22,7 @@ class CurlExceptionTest extends \PHPUnit_Framework_TestCase
      */
     protected $object;
 
+
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
@@ -31,6 +33,7 @@ class CurlExceptionTest extends \PHPUnit_Framework_TestCase
         $this->object->addNode('localhost', '9200');
     }
 
+
     /**
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
@@ -39,6 +42,7 @@ class CurlExceptionTest extends \PHPUnit_Framework_TestCase
     {
 
     }
+
 
     public function assertThrowsException($exception_name, $code)
     {
@@ -52,16 +56,21 @@ class CurlExceptionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf($exception_name, $e);
     }
 
+
     public function testIndexMissing()
     {
         $sherlock = $this->object;
 
         $index = $sherlock->index('idonotexist');
 
-        $this->assertThrowsException('\Sherlock\common\exceptions\IndexMissingException', function () use ($index) {
-            $index->delete();
-        });
+        $this->assertThrowsException(
+            '\Sherlock\common\exceptions\IndexMissingException',
+            function () use ($index) {
+                $index->delete();
+            }
+        );
     }
+
 
     public function testIndexExists()
     {
@@ -78,9 +87,12 @@ class CurlExceptionTest extends \PHPUnit_Framework_TestCase
 
         $index->create();
 
-        $this->assertThrowsException('\Sherlock\common\exceptions\IndexAlreadyExistsException', function () use ($index) {
-            $index->create();
-        });
+        $this->assertThrowsException(
+            '\Sherlock\common\exceptions\IndexAlreadyExistsException',
+            function () use ($index) {
+                $index->create();
+            }
+        );
 
         //delete, just in case...
         try {
@@ -90,19 +102,23 @@ class CurlExceptionTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+
     public function testIllegalJson()
     {
         $sherlock = $this->object;
-        $req = $this->object->search();
+        $req      = $this->object->search();
         $req->index("testqueries")->type("test");
 
         $query = Sherlock\Sherlock::queryBuilder()->Raw('Illegal JSON');
 
         $req->query($query);
 
-        $this->assertThrowsException('\Sherlock\common\exceptions\SearchPhaseExecutionException', function () use ($req) {
-            $req->execute();
-        });
+        $this->assertThrowsException(
+            '\Sherlock\common\exceptions\SearchPhaseExecutionException',
+            function () use ($req) {
+                $req->execute();
+            }
+        );
 
     }
 }

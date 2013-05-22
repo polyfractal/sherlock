@@ -10,4 +10,6 @@ namespace Sherlock\common\exceptions;
 /**
  * InvalidArgumentException - Thrown when there is an arg mismatch (e.g. int instead of string)
  */
-class InvalidArgumentException extends \InvalidArgumentException implements SherlockException {}
+class InvalidArgumentException extends \InvalidArgumentException implements SherlockException
+{
+}

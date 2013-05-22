@@ -16,23 +16,25 @@ class Highlight extends \Sherlock\components\BaseComponent implements \Sherlock\
 
     public function __construct($hashMap = null)
     {
-        $this->params['pre_tags'] = null;
-        $this->params['post_tags'] = null;
+        $this->params['pre_tags']            = null;
+        $this->params['post_tags']           = null;
         $this->params['number_of_fragments'] = null;
-        $this->params['fragment_size'] = null;
+        $this->params['fragment_size']       = null;
     }
+
 
     public function toArray()
     {
-        $ret = array (
-            'pre_tags' => $this->params['pre_tags'],
-            'post_tags' => $this->params['post_tags'],
+        $ret = array(
+            'pre_tags'            => $this->params['pre_tags'],
+            'post_tags'           => $this->params['post_tags'],
             'number_of_fragments' => $this->params['number_of_fragments'],
-            'fragment_size' => $this->params['fragment_size'],
+            'fragment_size'       => $this->params['fragment_size'],
         );
-        $ret = array_merge($ret,
+        $ret = array_merge(
+            $ret,
             array(
-                'fields' => array (
+                'fields' => array(
                     $this->params["fields"]
                 )
             )

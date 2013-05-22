@@ -25,16 +25,17 @@ class Nested extends \Sherlock\components\BaseComponent implements \Sherlock\com
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'nested' =>
-  array (
-    'path' => $this->params["path"],
-    'score_mode' => $this->params["score_mode"],
-    'query' => $this->params["query"]->toArray(),
-  ),
-);
+        $ret = array(
+            'nested' =>
+            array(
+                'path'       => $this->params["path"],
+                'score_mode' => $this->params["score_mode"],
+                'query'      => $this->params["query"]->toArray(),
+            ),
+        );
 
         return $ret;
     }

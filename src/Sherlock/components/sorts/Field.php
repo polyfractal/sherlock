@@ -20,23 +20,24 @@ class Field extends components\BaseComponent implements components\SortInterface
 {
     public function __construct($hashMap = null)
     {
-        $this->params['order'] = null;
-        $this->params['sort_mode'] = null;
-        $this->params['order'] = null;
-        $this->params['missing'] = null;
+        $this->params['order']           = null;
+        $this->params['sort_mode']       = null;
+        $this->params['order']           = null;
+        $this->params['missing']         = null;
         $this->params['ignore_unmapped'] = null;
 
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
+        $ret = array(
             $this->params['name'] =>
-            array (
-                'sort_mode' => $this->params["sort_mode"],
-                'order' => $this->params["order"],
-                'missing' => $this->params["missing"],
+            array(
+                'sort_mode'       => $this->params["sort_mode"],
+                'order'           => $this->params["order"],
+                'missing'         => $this->params["missing"],
                 'ignore_unmapped' => $this->params["ignore_unmapped"],
             ),
         );

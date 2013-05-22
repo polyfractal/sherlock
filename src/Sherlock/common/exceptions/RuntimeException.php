@@ -10,4 +10,6 @@ namespace Sherlock\common\exceptions;
 /**
  * RuntimeException - something happened during runtime that was unexpected
  */
-class RuntimeException extends \RuntimeException implements SherlockException {}
+class RuntimeException extends \RuntimeException implements SherlockException
+{
+}

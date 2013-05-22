@@ -22,14 +22,15 @@ class Exists extends \Sherlock\components\BaseComponent implements \Sherlock\com
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'exists' =>
-  array (
-    'field' => $this->params["field"],
-  ),
-);
+        $ret = array(
+            'exists' =>
+            array(
+                'field' => $this->params["field"],
+            ),
+        );
 
         return $ret;
     }

@@ -26,16 +26,17 @@ class Script extends \Sherlock\components\BaseComponent implements \Sherlock\com
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'script' =>
-  array (
-    'script' => $this->params["script"],
-    'params' => $this->params["params"],
-    '_cache' => $this->params["_cache"],
-  ),
-);
+        $ret = array(
+            'script' =>
+            array(
+                'script' => $this->params["script"],
+                'params' => $this->params["params"],
+                '_cache' => $this->params["_cache"],
+            ),
+        );
 
         return $ret;
     }

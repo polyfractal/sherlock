@@ -23,15 +23,16 @@ class Ids extends \Sherlock\components\BaseComponent implements \Sherlock\compon
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'ids' =>
-  array (
-    'type' => $this->params["type"],
-    'values' => $this->params["values"],
-  ),
-);
+        $ret = array(
+            'ids' =>
+            array(
+                'type'   => $this->params["type"],
+                'values' => $this->params["values"],
+            ),
+        );
 
         return $ret;
     }

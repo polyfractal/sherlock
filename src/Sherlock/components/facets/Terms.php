@@ -35,44 +35,49 @@ class Terms extends components\BaseComponent implements components\FacetInterfac
      */
     public function __construct($hashMap = null)
     {
-        $this->params['order'] = 'count';
+        $this->params['order']     = 'count';
         $this->params['all_terms'] = false;
 
-        $this->params['facetname'] = null;
-        $this->params['size'] = null;
-        $this->params['exclude'] = null;
-        $this->params['regex'] = null;
-        $this->params['regex_flags'] = null;
-        $this->params['script'] = null;
+        $this->params['facetname']    = null;
+        $this->params['size']         = null;
+        $this->params['exclude']      = null;
+        $this->params['regex']        = null;
+        $this->params['regex_flags']  = null;
+        $this->params['script']       = null;
         $this->params['script_field'] = null;
-        $this->params['params'] = null;
-        $this->params['lang'] = null;
+        $this->params['params']       = null;
+        $this->params['lang']         = null;
         $this->params['facet_filter'] = null;
 
         parent::__construct($hashMap);
     }
 
+
     /**
      * @param $queries
+     *
      * @return $this
      */
     public function fields($queries)
     {
 
         $args = func_get_args();
-        Analog::debug("TermsFacet->fields(".print_r($args, true).")");
+        Analog::debug("TermsFacet->fields(" . print_r($args, true) . ")");
 
         //single param, array of fields
-        if (count($args) == 1 && is_array($args[0]))
+        if (count($args) == 1 && is_array($args[0])) {
             $args = $args[0];
+        }
 
         foreach ($args as $arg) {
-            if (is_string($arg))
+            if (is_string($arg)) {
                 $this->params['fields'][] = $arg;
+            }
         }
 
         return $this;
     }
+
 
     /**
      * @throws \Sherlock\common\exceptions\RuntimeException
@@ -99,20 +104,20 @@ class Terms extends components\BaseComponent implements components\FacetInterfac
             $this->params['facet_filter'] = $this->params['facet_filter']->toArray();
         }
 
-        $ret = array (
+        $ret = array(
             $this->params['facetname'] => array(
-                "terms" => array(
-                    "fields" => $this->params['fields'],
-                    "order" => $this->params['order'],
-                    "all_terms" => $this->params['all_terms'],
-                    "size" => $this->params['size'],
-                    "exclude" => $this->params['exclude'],
-                    "regex" => $this->params['regex'],
-                    "regex_flags" => $this->params['regex_flags'],
-                    "script" => $this->params['script'],
+                "terms"        => array(
+                    "fields"       => $this->params['fields'],
+                    "order"        => $this->params['order'],
+                    "all_terms"    => $this->params['all_terms'],
+                    "size"         => $this->params['size'],
+                    "exclude"      => $this->params['exclude'],
+                    "regex"        => $this->params['regex'],
+                    "regex_flags"  => $this->params['regex_flags'],
+                    "script"       => $this->params['script'],
                     "script_field" => $this->params['script_field'],
-                    "params" => $this->params['params'],
-                    "lang" => $this->params['lang']
+                    "params"       => $this->params['params'],
+                    "lang"         => $this->params['lang']
                 ),
                 "facet_filter" => $this->params['facet_filter']
             )

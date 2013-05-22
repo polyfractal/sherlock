@@ -13,6 +13,7 @@ class DeleteResponse extends Response
      */
     public $found;
 
+
     /**
      * @param \Sherlock\common\tmp\RollingCurl\Request $response
      */
@@ -20,8 +21,9 @@ class DeleteResponse extends Response
     {
         parent::__construct($response);
 
-        if (isset($this->responseData['found']))
+        if (isset($this->responseData['found'])) {
             $this->ok = $this->responseData['found'];
+        }
 
     }
 

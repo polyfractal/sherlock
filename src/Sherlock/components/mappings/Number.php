@@ -27,6 +27,7 @@ class Number extends \Sherlock\components\BaseComponent implements \Sherlock\com
 {
     protected $type;
 
+
     public function __construct($type = null, $hashMap = null)
     {
         //if $type is set, we need to wrap the mapping property in a type
@@ -38,21 +39,25 @@ class Number extends \Sherlock\components\BaseComponent implements \Sherlock\com
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
         $ret = array();
         foreach ($this->params as $key => $value) {
-            if($key == 'field')
+            if ($key == 'field') {
                 continue;
+            }
 
             $ret[$key] = $value;
         }
 
-        if (!isset($this->params['field']))
+        if (!isset($this->params['field'])) {
             throw new \Sherlock\common\exceptions\RuntimeException("Field name must be set for Number mapping");
+        }
 
-        if (!isset($this->params['type']))
+        if (!isset($this->params['type'])) {
             throw new \Sherlock\common\exceptions\RuntimeException("Field type must be set for Number mapping");
+        }
 
         $ret = array($this->params['field'] => $ret);
 
@@ -61,6 +66,8 @@ class Number extends \Sherlock\components\BaseComponent implements \Sherlock\com
         return $ret;
 
     }
+
+
     public function getType()
     {
         return $this->type;

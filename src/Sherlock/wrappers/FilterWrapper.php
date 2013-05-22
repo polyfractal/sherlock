@@ -41,21 +41,24 @@ class FilterWrapper
      */
     protected $filter;
 
+
     public function __call($name, $arguments)
     {
-        $class = '\\Sherlock\\components\\filters\\'.$name;
+        $class = '\\Sherlock\\components\\filters\\' . $name;
 
-        if (count($arguments) > 0)
-            $this->filter =  new $class($arguments[0]);
-        else
-            $this->filter =  new $class();
+        if (count($arguments) > 0) {
+            $this->filter = new $class($arguments[0]);
+        } else {
+            $this->filter = new $class();
+        }
 
         return $this->filter;
     }
 
+
     public function __toString()
     {
-        return (string) $this->filter;
+        return (string)$this->filter;
     }
 
 }

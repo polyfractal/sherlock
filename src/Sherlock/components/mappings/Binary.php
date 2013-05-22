@@ -19,6 +19,7 @@ class Binary extends \Sherlock\components\BaseComponent implements \Sherlock\com
 {
     protected $type;
 
+
     public function __construct($type = null, $hashMap = null)
     {
         //if $type is set, we need to wrap the mapping property in a type
@@ -31,17 +32,20 @@ class Binary extends \Sherlock\components\BaseComponent implements \Sherlock\com
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
         $ret = array();
         foreach ($this->params as $key => $value) {
-            if($key == 'field')
+            if ($key == 'field') {
                 continue;
+            }
             $ret[$key] = $value;
         }
 
-        if (!isset($this->params['field']))
+        if (!isset($this->params['field'])) {
             throw new \Sherlock\common\exceptions\RuntimeException("Field name must be set for Binary mapping");
+        }
 
         $ret = array($this->params['field'] => $ret);
 
@@ -50,6 +54,8 @@ class Binary extends \Sherlock\components\BaseComponent implements \Sherlock\com
         return $ret;
 
     }
+
+
     public function getType()
     {
         return $this->type;

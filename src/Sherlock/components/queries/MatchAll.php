@@ -23,14 +23,15 @@ class MatchAll extends \Sherlock\components\BaseComponent implements \Sherlock\c
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'match_all' =>
-  array (
-    'boost' => $this->params["boost"],
-  ),
-);
+        $ret = array(
+            'match_all' =>
+            array(
+                'boost' => $this->params["boost"],
+            ),
+        );
 
         return $ret;
     }

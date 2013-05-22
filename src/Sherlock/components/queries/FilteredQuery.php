@@ -23,15 +23,16 @@ class FilteredQuery extends \Sherlock\components\BaseComponent implements \Sherl
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'filtered' =>
-  array (
-    'query' => $this->params["query"]->toArray(),
-    'filter' => $this->params["filter"]->toArray(),
-  ),
-);
+        $ret = array(
+            'filtered' =>
+            array(
+                'query'  => $this->params["query"]->toArray(),
+                'filter' => $this->params["filter"]->toArray(),
+            ),
+        );
 
         return $ret;
     }

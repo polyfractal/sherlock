@@ -23,6 +23,7 @@ class IndexResponse extends Response
      */
     public $acknowledged;
 
+
     /**
      * @param \Sherlock\common\tmp\RollingCurl\Request $response
      */
@@ -30,11 +31,13 @@ class IndexResponse extends Response
     {
         parent::__construct($response);
 
-        if (isset($this->responseData['ok']))
+        if (isset($this->responseData['ok'])) {
             $this->ok = $this->responseData['ok'];
+        }
 
-        if (isset($this->responseData['acknowledged']))
+        if (isset($this->responseData['acknowledged'])) {
             $this->acknowledged = $this->responseData['acknowledged'];
+        }
     }
 
 }

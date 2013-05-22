@@ -22,14 +22,15 @@ class Limit extends \Sherlock\components\BaseComponent implements \Sherlock\comp
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'limit' =>
-  array (
-    'value' => $this->params["value"],
-  ),
-);
+        $ret = array(
+            'limit' =>
+            array(
+                'value' => $this->params["value"],
+            ),
+        );
 
         return $ret;
     }

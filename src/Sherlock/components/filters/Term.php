@@ -25,15 +25,16 @@ class Term extends \Sherlock\components\BaseComponent implements \Sherlock\compo
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'term' =>
-  array (
-    $this->params["field"] => $this->params["term"],
-    '_cache' => $this->params["_cache"],
-  ),
-);
+        $ret = array(
+            'term' =>
+            array(
+                $this->params["field"] => $this->params["term"],
+                '_cache'               => $this->params["_cache"],
+            ),
+        );
 
         return $ret;
     }

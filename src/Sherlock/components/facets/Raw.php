@@ -19,6 +19,7 @@ class Raw extends \Sherlock\components\BaseComponent implements \Sherlock\compon
 {
     /**
      * @param array|string $hashMap
+     *
      * @throws exceptions\BadMethodCallException
      */
     public function __construct($hashMap)
@@ -38,6 +39,7 @@ class Raw extends \Sherlock\components\BaseComponent implements \Sherlock\compon
         }
 
     }
+
 
     /**
      * @return array

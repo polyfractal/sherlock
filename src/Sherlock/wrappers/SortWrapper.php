@@ -19,26 +19,30 @@ class SortWrapper
      */
     protected $query;
 
+
     /**
      * @param $name
      * @param $arguments
+     *
      * @return \Sherlock\components\SortInterface
      */
     public function __call($name, $arguments)
     {
-        $class = '\\Sherlock\\components\\sorts\\'.$name;
+        $class = '\\Sherlock\\components\\sorts\\' . $name;
 
-        if (count($arguments) > 0)
-            $this->query =  new $class($arguments[0]);
-        else
-            $this->query =  new $class();
+        if (count($arguments) > 0) {
+            $this->query = new $class($arguments[0]);
+        } else {
+            $this->query = new $class();
+        }
 
         return $this->query;
     }
 
+
     public function __toString()
     {
-        return (string) $this->query;
+        return (string)$this->query;
     }
 
 }

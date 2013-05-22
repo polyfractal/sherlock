@@ -28,35 +28,40 @@ class IndexDocumentRequest extends Request
     /** @var Command */
     private $currentCommand;
 
+
     /**
      * @param  \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      * @internal param $node
      */
     public function __construct($dispatcher)
     {
-        if (!isset($dispatcher))
+        if (!isset($dispatcher)) {
             throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
+        }
 
         $this->dispatcher = $dispatcher;
 
         $this->params['index'] = array();
-        $this->params['type'] = array();
+        $this->params['type']  = array();
 
-        $this->currentCommand = null;
+        $this->currentCommand   = null;
         $this->params['update'] = false;
 
         $this->params['updateScript'] = null;
         $this->params['updateParams'] = null;
         $this->params['updateUpsert'] = null;
-        $this->params['doc'] = null;
+        $this->params['doc']          = null;
 
         parent::__construct($dispatcher);
     }
 
+
     /**
      * @param $name
      * @param $args
+     *
      * @return IndexDocumentRequest
      */
     public function __call($name, $args)
@@ -66,17 +71,19 @@ class IndexDocumentRequest extends Request
         return $this;
     }
 
+
     /**
      * Set the index to add documents to
      *
      * @param  string               $index     indices to query
      * @param  string               $index,... indices to query
+     *
      * @return IndexDocumentRequest
      */
     public function index($index)
     {
         $this->params['index'] = array();
-        $args = func_get_args();
+        $args                  = func_get_args();
         foreach ($args as $arg) {
             $this->params['index'][] = $arg;
         }
@@ -84,17 +91,19 @@ class IndexDocumentRequest extends Request
         return $this;
     }
 
+
     /**
      * Set the type to add documents to
      *
      * @param  string               $type
      * @param  string               $type,...
+     *
      * @return IndexDocumentRequest
      */
     public function type($type)
     {
         $this->params['type'] = array();
-        $args = func_get_args();
+        $args                 = func_get_args();
         foreach ($args as $arg) {
             $this->params['type'][] = $arg;
         }
@@ -102,8 +111,10 @@ class IndexDocumentRequest extends Request
         return $this;
     }
 
+
     /**
      * @param \string $script
+     *
      * @return $this
      */
     public function updateScript($script)
@@ -113,8 +124,10 @@ class IndexDocumentRequest extends Request
         return $this;
     }
 
+
     /**
      * @param \array $params
+     *
      * @return $this
      */
     public function updateParams($params)
@@ -124,8 +137,10 @@ class IndexDocumentRequest extends Request
         return $this;
     }
 
+
     /**
      * @param \string $upsert
+     *
      * @return $this
      */
     public function updateUpsert($upsert)
@@ -135,24 +150,25 @@ class IndexDocumentRequest extends Request
         return $this;
     }
 
+
     /**
      * The document to index
      *
      * @param  \string|\array $value
-     * @param  null $id
-     * @param bool|null $update
+     * @param  null           $id
+     * @param bool|null       $update
+     *
      * @throws \Sherlock\common\exceptions\RuntimeException
      * @return IndexDocumentRequest
      */
     public function document($value, $id = null, $update = false)
     {
-        if (! $this->batch instanceof BatchCommand) {
+        if (!$this->batch instanceof BatchCommand) {
             Analog::error("Cannot add a new document to an external BatchCommandInterface");
             throw new exceptions\RuntimeException("Cannot add a new document to an external BatchCommandInterface");
         }
 
         $this->finalizeCurrentCommand();
-
 
 
         if (is_array($value)) {
@@ -164,7 +180,7 @@ class IndexDocumentRequest extends Request
 
         if ($id !== null) {
             $this->currentCommand->id($id)
-                    ->action('put');
+                ->action('put');
 
             $this->params['update'] = $update;
 
@@ -175,13 +191,15 @@ class IndexDocumentRequest extends Request
         }
 
 
-
         return $this;
     }
 
+
     /**
      * Accepts an array of Commands or a BatchCommand
+     *
      * @param array|BatchCommandInterface $values
+     *
      * @return $this
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      */
@@ -192,7 +210,7 @@ class IndexDocumentRequest extends Request
         } elseif (is_array($values)) {
 
             $isBatch = true;
-            $batch = new BatchCommand();
+            $batch   = new BatchCommand();
 
             /**
              * @param mixed $value
@@ -223,6 +241,7 @@ class IndexDocumentRequest extends Request
 
     }
 
+
     /**
      * Perform the indexing operation
      *
@@ -231,7 +250,7 @@ class IndexDocumentRequest extends Request
      */
     public function execute()
     {
-        Analog::debug("IndexDocumentRequest->execute() - ".print_r($this->params, true));
+        Analog::debug("IndexDocumentRequest->execute() - " . print_r($this->params, true));
 
         /*
         foreach (array('index', 'type') as $key) {
@@ -293,15 +312,15 @@ class IndexDocumentRequest extends Request
                 }
 
                 if ($this->params['updateScript'] !== null) {
-                    $data["script"] =$this->params['updateScript'];
+                    $data["script"] = $this->params['updateScript'];
                 }
 
                 if ($this->params['updateParams'] !== null) {
-                    $data["params"] =$this->params['updateParams'];
+                    $data["params"] = $this->params['updateParams'];
                 }
 
                 if ($this->params['updateUpsert'] !== null) {
-                    $data["upsert"] =$this->params['updateUpsert'];
+                    $data["upsert"] = $this->params['updateUpsert'];
                 }
 
                 $this->currentCommand->data($data);

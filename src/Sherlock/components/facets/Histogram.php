@@ -35,29 +35,31 @@ class Histogram extends components\BaseComponent implements components\FacetInte
     public function __construct($hashMap = null)
     {
 
-        $this->params['facetname'] = null;
-        $this->params['interval'] = null;
+        $this->params['facetname']     = null;
+        $this->params['interval']      = null;
         $this->params['time_interval'] = null;
-        $this->params['params'] = null;
-        $this->params['key_field'] = null;
-        $this->params['value_field'] = null;
-        $this->params['key_script'] = null;
-        $this->params['value_script'] = null;
-        $this->params['lang'] = null;
-        $this->params['facet_filter'] = null;
+        $this->params['params']        = null;
+        $this->params['key_field']     = null;
+        $this->params['value_field']   = null;
+        $this->params['key_script']    = null;
+        $this->params['value_script']  = null;
+        $this->params['lang']          = null;
+        $this->params['facet_filter']  = null;
 
         parent::__construct($hashMap);
     }
 
+
     /**
      * @param $fieldName
+     *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      * @return $this
      */
     public function field($fieldName)
     {
 
-        Analog::debug("Histogram->field(".print_r($fieldName, true).")");
+        Analog::debug("Histogram->field(" . print_r($fieldName, true) . ")");
 
         if (is_string($fieldName)) {
             $this->params['field'] = $fieldName;
@@ -68,6 +70,7 @@ class Histogram extends components\BaseComponent implements components\FacetInte
 
         return $this;
     }
+
 
     /**
      * @throws \Sherlock\common\exceptions\RuntimeException
@@ -87,21 +90,21 @@ class Histogram extends components\BaseComponent implements components\FacetInte
         }
 
 
-        $ret = array (
+        $ret = array(
             $this->params['facetname'] => array(
                 "histogram" => array(
-                    "field" => $this->params['field'],
-                    "interval" => $this->params['interval'],
+                    "field"         => $this->params['field'],
+                    "interval"      => $this->params['interval'],
                     "time_interval" => $this->params['time_interval'],
-                    "key_field" => $this->params['key_field'],
-                    "value_field" => $this->params['value_field'],
-                    "key_script" => $this->params['key_script'],
-                    "value_script" => $this->params['value_script'],
-                    "params" => $this->params['params'],
-                    "lang" => $this->params['lang']
+                    "key_field"     => $this->params['key_field'],
+                    "value_field"   => $this->params['value_field'],
+                    "key_script"    => $this->params['key_script'],
+                    "value_script"  => $this->params['value_script'],
+                    "params"        => $this->params['params'],
+                    "lang"          => $this->params['lang']
                 )
             ),
-            "facet_filter" => $this->params['facet_filter']
+            "facet_filter"             => $this->params['facet_filter']
         );
 
         return $ret;

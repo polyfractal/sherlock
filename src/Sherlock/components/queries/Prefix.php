@@ -23,29 +23,30 @@ class Prefix extends \Sherlock\components\BaseComponent implements \Sherlock\com
 {
     public function __construct($hashMap = null)
     {
-        $this->params['boost'] = 2.0;
-        $this->params['analyzer'] = "default";
-        $this->params['slop'] = 3;
+        $this->params['boost']          = 2.0;
+        $this->params['analyzer']       = "default";
+        $this->params['slop']           = 3;
         $this->params['max_expansions'] = 100;
 
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'prefix' =>
-  array (
-    $this->params["field"] =>
-    array (
-      'value' => $this->params["value"],
-      'boost' => $this->params["boost"],
-      'analyzer' => $this->params["analyzer"],
-      'slop' => $this->params["slop"],
-      'max_expansions' => $this->params["max_expansions"],
-    ),
-  ),
-);
+        $ret = array(
+            'prefix' =>
+            array(
+                $this->params["field"] =>
+                array(
+                    'value'          => $this->params["value"],
+                    'boost'          => $this->params["boost"],
+                    'analyzer'       => $this->params["analyzer"],
+                    'slop'           => $this->params["slop"],
+                    'max_expansions' => $this->params["max_expansions"],
+                ),
+            ),
+        );
 
         return $ret;
     }

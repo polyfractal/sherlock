@@ -26,20 +26,21 @@ class GeoDistance extends \Sherlock\components\BaseComponent implements \Sherloc
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'geo_distance' =>
-  array (
-    'distance' => $this->params["distance"],
-    'pin.location' =>
-    array (
-      'lat' => $this->params["lat"],
-      'lon' => $this->params["lon"],
-    ),
-    '_cache' => $this->params["_cache"],
-  ),
-);
+        $ret = array(
+            'geo_distance' =>
+            array(
+                'distance'     => $this->params["distance"],
+                'pin.location' =>
+                array(
+                    'lat' => $this->params["lat"],
+                    'lon' => $this->params["lon"],
+                ),
+                '_cache'       => $this->params["_cache"],
+            ),
+        );
 
         return $ret;
     }

@@ -27,19 +27,20 @@ class GeoDistanceRange extends \Sherlock\components\BaseComponent implements \Sh
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
+        $ret = array(
             'geo_distance_range' =>
-            array (
-                'from' => $this->params["from"],
-                'to' => $this->params["to"],
+            array(
+                'from'         => $this->params["from"],
+                'to'           => $this->params["to"],
                 'pin.location' =>
-                array (
+                array(
                     'lat' => $this->params["lat"],
                     'lon' => $this->params["lon"],
                 ),
-                '_cache' => $this->params["_cache"],
+                '_cache'       => $this->params["_cache"],
             ),
         );
 

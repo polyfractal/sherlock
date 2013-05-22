@@ -19,6 +19,7 @@ class BatchCommand implements BatchCommandInterface
      */
     protected $commands = array();
 
+
     /**
      * @param null $commands
      */
@@ -30,8 +31,10 @@ class BatchCommand implements BatchCommandInterface
 
     }
 
+
     /**
      * @param \Sherlock\requests\Command $command
+     *
      * @return $this
      */
     public function addCommand($command)
@@ -40,6 +43,7 @@ class BatchCommand implements BatchCommandInterface
 
         return $this;
     }
+
 
     /**
      * @return $this
@@ -51,10 +55,12 @@ class BatchCommand implements BatchCommandInterface
         return $this;
     }
 
+
     /**
      * Fill all commands that don't have an index set
      *
      * @param $index
+     *
      * @return $this
      */
     public function fillIndex($index)
@@ -71,10 +77,12 @@ class BatchCommand implements BatchCommandInterface
         return $this;
     }
 
+
     /**
      * Fill all commands that don't have a type set
      *
      * @param $type
+     *
      * @return $this
      */
     public function fillType($type)
@@ -92,6 +100,7 @@ class BatchCommand implements BatchCommandInterface
         return $this;
     }
 
+
     /**
      *
      */
@@ -99,6 +108,7 @@ class BatchCommand implements BatchCommandInterface
     {
         reset($this->commands);
     }
+
 
     /**
      * @return Command
@@ -108,6 +118,7 @@ class BatchCommand implements BatchCommandInterface
         return current($this->commands);
     }
 
+
     /**
      * @return mixed
      */
@@ -116,6 +127,7 @@ class BatchCommand implements BatchCommandInterface
         return key($this->commands);
     }
 
+
     /**
      * @return Command|void
      */
@@ -123,6 +135,7 @@ class BatchCommand implements BatchCommandInterface
     {
         return next($this->commands);
     }
+
 
     /**
      * @return bool

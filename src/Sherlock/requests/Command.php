@@ -24,6 +24,7 @@ class Command implements CommandInterface
 
     private $params;
 
+
     /**
      * @param array $hashMap Optional hashmap parameter, accepts an associative array to set parameters manually
      */
@@ -34,18 +35,20 @@ class Command implements CommandInterface
             $this->params = array_merge($this->params, $hashMap);
         }
 
-        $this->params['index'] = null;
+        $this->params['index']  = null;
         $this->params['action'] = null;
-        $this->params['id'] = null;
-        $this->params['type'] = null;
-        $this->params['data'] = null;
+        $this->params['id']     = null;
+        $this->params['type']   = null;
+        $this->params['data']   = null;
         $this->params['suffix'] = null;
 
     }
 
+
     /**
      * @param $name
      * @param $args
+     *
      * @return \Sherlock\requests\Command
      */
     public function __call($name, $args)
@@ -54,6 +57,7 @@ class Command implements CommandInterface
 
         return $this;
     }
+
 
     /**
      * @param \string|\array $data
@@ -69,21 +73,23 @@ class Command implements CommandInterface
         return $this;
     }
 
+
     /**
      * @return string
      */
     public function getURI()
     {
-        $uri = '/'.$this->params['index'];
+        $uri = '/' . $this->params['index'];
 
         foreach (array('type', 'id', 'suffix') as $item) {
             if (isset($this->params[$item]) && $this->params[$item] !== null) {
-                $uri .= '/' .$this->params[$item];
+                $uri .= '/' . $this->params[$item];
             }
         }
 
         return $uri;
     }
+
 
     /**
      * @return string
@@ -93,6 +99,7 @@ class Command implements CommandInterface
         return $this->params['action'];
     }
 
+
     /**
      * @return string
      */
@@ -101,6 +108,7 @@ class Command implements CommandInterface
         return $this->params['data'];
     }
 
+
     /**
      * @return string
      */
@@ -108,6 +116,7 @@ class Command implements CommandInterface
     {
         return $this->params['index'];
     }
+
 
     /**
      * @return string

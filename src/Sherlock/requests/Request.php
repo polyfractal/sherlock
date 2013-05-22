@@ -7,6 +7,7 @@
  */
 
 namespace Sherlock\requests;
+
 use Sherlock\common\events\Events;
 use Sherlock\common\events\RequestEvent;
 use Sherlock\common\exceptions;
@@ -37,6 +38,7 @@ class Request
 
     /**
      * @param  \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      */
     public function __construct($dispatcher)
@@ -47,8 +49,9 @@ class Request
         }
 
         $this->dispatcher = $dispatcher;
-        $this->batch = new BatchCommand();
+        $this->batch      = new BatchCommand();
     }
+
 
     /**
      * Execute the Request, performs on the actual transport layer
@@ -61,7 +64,7 @@ class Request
     public function execute()
     {
         $reflector = new \ReflectionClass(get_class($this));
-        $class = $reflector->getShortName();
+        $class     = $reflector->getShortName();
 
         Analog::debug("Request->execute()");
 
@@ -87,31 +90,35 @@ class Request
             throw new exceptions\RuntimeException("Request requires a port to connect to");
         }
 
-        $path = 'http://'.$this->node['host'].':'.$this->node['port'];
+        $path = 'http://' . $this->node['host'] . ':' . $this->node['port'];
 
-        Analog::debug("Request->commands: ".print_r($this->batch, true));
+        Analog::debug("Request->commands: " . print_r($this->batch, true));
 
         $rolling = new RollingCurl\RollingCurl();
         $rolling->setHeaders(array('Content-Type: application/json'));
 
-        $window = 10;
+        $window  = 10;
         $counter = 0;
 
-        /** @var BatchCommandInterface $batch  */
+        /** @var BatchCommandInterface $batch */
         $batch = $this->batch;
 
         //prefill our buffer with a full window
         //the rest will be streamed by our callback closure
         foreach ($batch as $request) {
 
-            /** @var CommandInterface $req  */
-            $req = $request;
+            /** @var CommandInterface $req */
+            $req    = $request;
             $action = $req->getAction();
 
             if ($action == 'put' || $action == 'post') {
-                $rolling->$action($path.$req->getURI(), json_encode($req->getData()), array('Content-Type: application/json'));
+                $rolling->$action(
+                    $path . $req->getURI(),
+                    json_encode($req->getData()),
+                    array('Content-Type: application/json')
+                );
             } else {
-                $rolling->$action($path.$req->getURI());
+                $rolling->$action($path . $req->getURI());
             }
 
             if ($counter > $window) {
@@ -120,7 +127,7 @@ class Request
         }
 
         /**
-         * @param RollingCurl\Request $request
+         * @param RollingCurl\Request     $request
          * @param RollingCurl\RollingCurl $rolling
          */
         $callback = function (RollingCurl\Request $request, RollingCurl\RollingCurl $rolling) use ($batch, $path) {
@@ -140,9 +147,9 @@ class Request
                     $action = $data->getAction();
 
                     if ($action == 'put' || $action == 'post') {
-                        $rolling->$action($path.$data->getURI(), json_encode($data->getData()));
+                        $rolling->$action($path . $data->getURI(), json_encode($data->getData()));
                     } else {
-                        $rolling->$action($path.$data->getURI());
+                        $rolling->$action($path . $data->getURI());
                     }
                 }
             }
@@ -159,9 +166,9 @@ class Request
         //This is kinda gross...
         $returnResponse = '\Sherlock\responses\Response';
         if ($class == 'SearchRequest') {
-            $returnResponse =  '\Sherlock\responses\QueryResponse';
+            $returnResponse = '\Sherlock\responses\QueryResponse';
         } elseif ($class == 'IndexRequest') {
-            $returnResponse =  '\Sherlock\responses\IndexResponse';
+            $returnResponse = '\Sherlock\responses\IndexResponse';
         } elseif ($class == 'IndexDocumentRequest') {
             $returnResponse = '\Sherlock\responses\IndexResponse';
         } elseif ($class == 'DeleteDocumentRequest') {

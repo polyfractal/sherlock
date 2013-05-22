@@ -25,17 +25,18 @@ class Bool extends \Sherlock\components\BaseComponent implements \Sherlock\compo
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'bool' =>
-  array (
-    'must' => $this->params["must"],
-    'must_not' => $this->params["must_not"],
-    'should' => $this->params["should"],
-    '_cache' => $this->params["_cache"],
-  ),
-);
+        $ret = array(
+            'bool' =>
+            array(
+                'must'     => $this->params["must"],
+                'must_not' => $this->params["must_not"],
+                'should'   => $this->params["should"],
+                '_cache'   => $this->params["_cache"],
+            ),
+        );
 
         return $ret;
     }

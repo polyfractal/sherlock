@@ -36,54 +36,54 @@ class QueryStringMultiField extends \Sherlock\components\BaseComponent implement
 {
     public function __construct($hashMap = null)
     {
-        $this->params['boost'] = 2.0;
-        $this->params['enable_position_increments'] = true;
-        $this->params['default_operator'] = "OR";
-        $this->params['analyzer'] = "default";
-        $this->params['allow_leading_wildcard'] = false;
-        $this->params['lowercase_expanded_terms'] = 1;
-        $this->params['fuzzy_min_sim'] = 0.5;
-        $this->params['fuzzy_prefix_length'] = 2;
-        $this->params['lenient'] = 1;
-        $this->params['phrase_slop'] = 10;
-        $this->params['analyze_wildcard'] = true;
+        $this->params['boost']                        = 2.0;
+        $this->params['enable_position_increments']   = true;
+        $this->params['default_operator']             = "OR";
+        $this->params['analyzer']                     = "default";
+        $this->params['allow_leading_wildcard']       = false;
+        $this->params['lowercase_expanded_terms']     = 1;
+        $this->params['fuzzy_min_sim']                = 0.5;
+        $this->params['fuzzy_prefix_length']          = 2;
+        $this->params['lenient']                      = 1;
+        $this->params['phrase_slop']                  = 10;
+        $this->params['analyze_wildcard']             = true;
         $this->params['auto_generate_phrase_queries'] = false;
-        $this->params['rewrite'] = "constant_score_default";
-        $this->params['quote_analyzer'] = "standard";
-        $this->params['quote_field_suffix'] = ".unstemmed";
-        $this->params['use_dis_max'] = true;
-        $this->params['tie_breaker'] = 1;
+        $this->params['rewrite']                      = "constant_score_default";
+        $this->params['quote_analyzer']               = "standard";
+        $this->params['quote_field_suffix']           = ".unstemmed";
+        $this->params['use_dis_max']                  = true;
+        $this->params['tie_breaker']                  = 1;
 
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-                  'query_string' =>
-                      array (
-                        'query' => $this->params["query"],
-                        'fields' => $this->params["fields"],
-                        'boost' => $this->params["boost"],
-                        'enable_position_increments' => $this->params["enable_position_increments"],
-                        'default_operator' => $this->params["default_operator"],
-                        'analyzer' => $this->params["analyzer"],
-                        'allow_leading_wildcard' => $this->params["allow_leading_wildcard"],
-                        'lowercase_expanded_terms' => $this->params["lowercase_expanded_terms"],
-                        'fuzzy_min_sim' => $this->params["fuzzy_min_sim"],
-                        'fuzzy_prefix_length' => $this->params["fuzzy_prefix_length"],
-                        'lenient' => $this->params["lenient"],
-                        'phrase_slop' => $this->params["phrase_slop"],
-                        'analyze_wildcard' => $this->params["analyze_wildcard"],
-                        'auto_generate_phrase_queries' => $this->params["auto_generate_phrase_queries"],
-
-                        'quote_analyzer' => $this->params["quote_analyzer"],
-                        'quote_field_suffix' => $this->params["quote_field_suffix"],
-                        'use_dis_max' => $this->params["use_dis_max"],
-                        'tie_breaker' => $this->params["tie_breaker"],
-                      ),
-                    'rewrite' => $this->params["rewrite"],
-            );
+        $ret = array(
+            'query_string' =>
+            array(
+                'query'                        => $this->params["query"],
+                'fields'                       => $this->params["fields"],
+                'boost'                        => $this->params["boost"],
+                'enable_position_increments'   => $this->params["enable_position_increments"],
+                'default_operator'             => $this->params["default_operator"],
+                'analyzer'                     => $this->params["analyzer"],
+                'allow_leading_wildcard'       => $this->params["allow_leading_wildcard"],
+                'lowercase_expanded_terms'     => $this->params["lowercase_expanded_terms"],
+                'fuzzy_min_sim'                => $this->params["fuzzy_min_sim"],
+                'fuzzy_prefix_length'          => $this->params["fuzzy_prefix_length"],
+                'lenient'                      => $this->params["lenient"],
+                'phrase_slop'                  => $this->params["phrase_slop"],
+                'analyze_wildcard'             => $this->params["analyze_wildcard"],
+                'auto_generate_phrase_queries' => $this->params["auto_generate_phrase_queries"],
+                'quote_analyzer'               => $this->params["quote_analyzer"],
+                'quote_field_suffix'           => $this->params["quote_field_suffix"],
+                'use_dis_max'                  => $this->params["use_dis_max"],
+                'tie_breaker'                  => $this->params["tie_breaker"],
+            ),
+            'rewrite'      => $this->params["rewrite"],
+        );
 
         return $ret;
     }

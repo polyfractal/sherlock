@@ -28,21 +28,23 @@ class Filter extends components\BaseComponent implements components\FacetInterfa
     public function __construct($hashMap = null)
     {
 
-        $this->params['facetname'] = null;
+        $this->params['facetname']    = null;
         $this->params['facet_filter'] = null;
 
         parent::__construct($hashMap);
     }
 
+
     /**
      * @param $fieldName
+     *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      * @return $this
      */
     public function field($fieldName)
     {
 
-        Analog::debug("Filter->field(".print_r($fieldName, true).")");
+        Analog::debug("Filter->field(" . print_r($fieldName, true) . ")");
 
         if (is_string($fieldName)) {
             $this->params['field'] = $fieldName;
@@ -53,6 +55,7 @@ class Filter extends components\BaseComponent implements components\FacetInterfa
 
         return $this;
     }
+
 
     /**
      * @throws \Sherlock\common\exceptions\RuntimeException
@@ -89,9 +92,9 @@ class Filter extends components\BaseComponent implements components\FacetInterfa
             $this->params['facet_filter'] = $this->params['facet_filter']->toArray();
         }
 
-        $ret = array (
+        $ret = array(
             $this->params['facetname'] => array(
-                "filter" => $this->params['filter']->toArray(),
+                "filter"       => $this->params['filter']->toArray(),
                 "facet_filter" => $this->params['facet_filter']
             )
         );

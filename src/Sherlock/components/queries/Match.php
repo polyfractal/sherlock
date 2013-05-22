@@ -29,41 +29,42 @@ class Match extends \Sherlock\components\BaseComponent implements \Sherlock\comp
 {
     public function __construct($hashMap = null)
     {
-        $this->params['boost'] = 1.0;
-        $this->params['operator'] = 'and';
-        $this->params['analyzer'] = 'default';
+        $this->params['boost']     = 1.0;
+        $this->params['operator']  = 'and';
+        $this->params['analyzer']  = 'default';
         $this->params['fuzziness'] = null;
         //$this->params['fuzzy_rewrite'] = 'constant_score_default';
-        $this->params['lenient'] = true;
-        $this->params['max_expansions'] = 100;
+        $this->params['lenient']              = true;
+        $this->params['max_expansions']       = 100;
         $this->params['minimum_should_match'] = 2;
-        $this->params['prefix_length'] = 2;
-        $this->params['type'] = null;
+        $this->params['prefix_length']        = 2;
+        $this->params['type']                 = null;
 
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'match' =>
-  array (
-    $this->params["field"] =>
-    array (
-      'query' => $this->params["query"],
-      'boost' => $this->params["boost"],
-      'operator' => $this->params["operator"],
-      'analyzer' => $this->params["analyzer"],
-      'fuzziness' => $this->params["fuzziness"],
-     // 'fuzzy_rewrite' => $this->params["fuzzy_rewrite"],
-      'lenient' => $this->params["lenient"],
-      'max_expansions' => $this->params["max_expansions"],
-      'minimum_should_match' => $this->params["minimum_should_match"],
-      'prefix_length' => $this->params["prefix_length"],
-      'type' => $this->params["type"]
-    ),
-  ),
-);
+        $ret = array(
+            'match' =>
+            array(
+                $this->params["field"] =>
+                array(
+                    'query'                => $this->params["query"],
+                    'boost'                => $this->params["boost"],
+                    'operator'             => $this->params["operator"],
+                    'analyzer'             => $this->params["analyzer"],
+                    'fuzziness'            => $this->params["fuzziness"],
+                    // 'fuzzy_rewrite' => $this->params["fuzzy_rewrite"],
+                    'lenient'              => $this->params["lenient"],
+                    'max_expansions'       => $this->params["max_expansions"],
+                    'minimum_should_match' => $this->params["minimum_should_match"],
+                    'prefix_length'        => $this->params["prefix_length"],
+                    'type'                 => $this->params["type"]
+                ),
+            ),
+        );
 
         return $ret;
     }

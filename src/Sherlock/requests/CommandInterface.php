@@ -17,10 +17,12 @@ interface CommandInterface
      */
     public function getURI();
 
+
     /**
      * @return string
      */
     public function getAction();
+
 
     /**
      * @return string

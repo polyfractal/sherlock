@@ -23,12 +23,13 @@ class HasChild extends \Sherlock\components\BaseComponent implements \Sherlock\c
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
+        $ret = array(
             'has_child' =>
-            array (
-                'type' => $this->params["type"],
+            array(
+                'type'  => $this->params["type"],
                 'query' => $this->params["query"]->toArray(),
                 //'_cache' => $this->params["_cache"],
             ),

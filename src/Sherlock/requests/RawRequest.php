@@ -31,8 +31,10 @@ class RawRequest extends Request
      */
     protected $dispatcher;
 
+
     /**
      * @param  \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     *
      * @throws exceptions\BadMethodCallException
      */
     public function __construct($dispatcher)
@@ -46,9 +48,11 @@ class RawRequest extends Request
         parent::__construct($dispatcher);
     }
 
+
     /**
      * @param $name
      * @param $args
+     *
      * @return RawRequest
      */
     public function __call($name, $args)
@@ -58,8 +62,10 @@ class RawRequest extends Request
         return $this;
     }
 
+
     /**
      * @param $body
+     *
      * @return $this
      */
     public function body($body)
@@ -77,7 +83,6 @@ class RawRequest extends Request
     }
 
 
-
     /**
      * Execute the RawRequest
      *
@@ -86,7 +91,7 @@ class RawRequest extends Request
      */
     public function execute()
     {
-        Analog::debug("RawRequest->execute() - ".print_r($this->params, true));
+        Analog::debug("RawRequest->execute() - " . print_r($this->params, true));
 
         if (!isset($this->params['uri'])) {
             Analog::error("URI is required for RawRequest");
@@ -110,10 +115,11 @@ class RawRequest extends Request
         $this->batch->clearCommands();
         $this->batch->addCommand($command);
 
-        $ret =  parent::execute();
+        $ret = parent::execute();
 
         return $ret[0];
     }
+
 
     /**
      * Return a JSON representation of the final search request

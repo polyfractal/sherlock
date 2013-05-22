@@ -35,24 +35,29 @@ class SearchRequest extends Request
      */
     protected $dispatcher;
 
+
     /**
      * @param  \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      */
     public function __construct($dispatcher)
     {
-        if (!isset($dispatcher))
+        if (!isset($dispatcher)) {
             throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
+        }
 
         $this->params['filter'] = array();
-        $this->dispatcher = $dispatcher;
+        $this->dispatcher       = $dispatcher;
 
         parent::__construct($dispatcher);
     }
 
+
     /**
      * @param $name
      * @param $args
+     *
      * @return SearchRequest
      */
     public function __call($name, $args)
@@ -62,17 +67,19 @@ class SearchRequest extends Request
         return $this;
     }
 
+
     /**
      * Sets the index to operate on
      *
      * @param  string        $index     indices to query
      * @param  string        $index,... indices to query
+     *
      * @return SearchRequest
      */
     public function index($index)
     {
         $this->params['index'] = array();
-        $args = func_get_args();
+        $args                  = func_get_args();
         foreach ($args as $arg) {
             $this->params['index'][] = $arg;
         }
@@ -80,17 +87,19 @@ class SearchRequest extends Request
         return $this;
     }
 
+
     /**
      * Sets the type to operate on
      *
      * @param  string        $type     types to query
      * @param  string        $type,... types to query
+     *
      * @return SearchRequest
      */
     public function type($type)
     {
         $this->params['type'] = array();
-        $args = func_get_args();
+        $args                 = func_get_args();
         foreach ($args as $arg) {
             $this->params['type'][] = $arg;
         }
@@ -98,10 +107,12 @@ class SearchRequest extends Request
         return $this;
     }
 
+
     /**
      * Sets the query that will be executed
      *
      * @param $query
+     *
      * @return SearchRequest
      */
     public function query($query)
@@ -111,33 +122,39 @@ class SearchRequest extends Request
         return $this;
     }
 
+
     /**
      * Sets the query or queries that will be executed
      *
      * @param  \Sherlock\components\SortInterface|array,... $value
+     *
      * @return SearchRequest
      */
     public function sort($value)
     {
         $args = func_get_args();
-        Analog::debug("SearchRequest->sort(".print_r($args, true).")");
+        Analog::debug("SearchRequest->sort(" . print_r($args, true) . ")");
 
         //single param, array of sorts
-        if (count($args) == 1 && is_array($args[0]))
+        if (count($args) == 1 && is_array($args[0])) {
             $args = $args[0];
+        }
 
         foreach ($args as $arg) {
-            if ($arg instanceof \Sherlock\components\SortInterface)
+            if ($arg instanceof \Sherlock\components\SortInterface) {
                 $this->params['sort'][] = $arg->toArray();
+            }
         }
 
         return $this;
     }
 
+
     /**
      * Sets the fields that will be returned
-     * 
+     *
      * @param $fields
+     *
      * @return SearchRequest
      */
     public function fields($fields)
@@ -147,10 +164,12 @@ class SearchRequest extends Request
         return $this;
     }
 
+
     /**
      * Sets the filter that will be executed
      *
      * @param $filter
+     *
      * @return SearchRequest
      */
     public function filter($filter)
@@ -160,24 +179,28 @@ class SearchRequest extends Request
         return $this;
     }
 
+
     /**
      * Sets the facets to operate on
      *
      * @param  FacetInterface $facets     types to query
      * @param  FacetInterface $facets,... types to query
+     *
      * @return SearchRequest
      */
     public function facets($facets)
     {
         $this->params['facets'] = array();
-        $args = func_get_args();
+        $args                   = func_get_args();
         foreach ($args as $arg) {
-            if ($arg instanceof FacetInterface)
+            if ($arg instanceof FacetInterface) {
                 $this->params['facets'][] = $arg;
+            }
         }
 
         return $this;
     }
+
 
     /**
      * @param HighlightInterface $highlight
@@ -191,6 +214,7 @@ class SearchRequest extends Request
         return $this;
     }
 
+
     /**
      * Execute the search request on the ES cluster
      *
@@ -199,7 +223,7 @@ class SearchRequest extends Request
      */
     public function execute()
     {
-        Analog::debug("SearchRequest->execute() - ".print_r($this->params, true));
+        Analog::debug("SearchRequest->execute() - " . print_r($this->params, true));
 
         $finalQuery = $this->composeFinalQuery();
 
@@ -232,18 +256,19 @@ class SearchRequest extends Request
 
         $command = new Command();
         $command->index($index)
-                ->type($type)
-                ->id('_search'.$queryParams)
-                ->action('post')
-                ->data($finalQuery);
+            ->type($type)
+            ->id('_search' . $queryParams)
+            ->action('post')
+            ->data($finalQuery);
 
         $this->batch->clearCommands();
         $this->batch->addCommand($command);
 
-        $ret =  parent::execute();
+        $ret = parent::execute();
 
         return $ret[0];
     }
+
 
     /**
      * Return a JSON representation of the final search request
@@ -256,6 +281,7 @@ class SearchRequest extends Request
 
         return $finalQuery;
     }
+
 
     /**
      * Composes the final query, aggregating together the queries, filters, facets and associated parameters
@@ -270,7 +296,7 @@ class SearchRequest extends Request
         if (isset($this->params['fields'])) {
             $finalQuery['fields'] = $this->params['fields'];
         }
-        
+
         if (isset($this->params['query']) && $this->params['query'] instanceof components\QueryInterface) {
             $finalQuery['query'] = $this->params['query']->toArray();
         }

@@ -11,4 +11,6 @@ namespace Sherlock\common\exceptions;
  * Class IndexMissingException
  * @package Sherlock\common\exceptions
  */
-class IndexMissingException extends ClientErrorResponseException {}
+class IndexMissingException extends ClientErrorResponseException
+{
+}

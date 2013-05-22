@@ -25,26 +25,27 @@ class Range extends \Sherlock\components\BaseComponent implements \Sherlock\comp
     {
         $this->params['include_lower'] = true;
         $this->params['include_upper'] = false;
-        $this->params['_cache'] = true;
+        $this->params['_cache']        = true;
 
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'range' =>
-  array (
-    $this->params["field"] =>
-    array (
-      'from' => $this->params["from"],
-      'to' => $this->params["to"],
-      'include_lower' => $this->params["include_lower"],
-      'include_upper' => $this->params["include_upper"],
-    ),
-    '_cache' => $this->params["_cache"],
-  ),
-);
+        $ret = array(
+            'range' =>
+            array(
+                $this->params["field"] =>
+                array(
+                    'from'          => $this->params["from"],
+                    'to'            => $this->params["to"],
+                    'include_lower' => $this->params["include_lower"],
+                    'include_upper' => $this->params["include_upper"],
+                ),
+                '_cache'               => $this->params["_cache"],
+            ),
+        );
 
         return $ret;
     }

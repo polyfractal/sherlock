@@ -23,12 +23,13 @@ class AndFilter extends \Sherlock\components\BaseComponent implements \Sherlock\
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'and' => $this->params["and"],
-  '_cache' => $this->params["_cache"],
-);
+        $ret = array(
+            'and'    => $this->params["and"],
+            '_cache' => $this->params["_cache"],
+        );
 
         return $ret;
     }

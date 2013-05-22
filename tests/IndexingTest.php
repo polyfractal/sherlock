@@ -6,6 +6,7 @@
  */
 
 namespace Sherlock\tests;
+
 use Sherlock;
 
 /**
@@ -18,6 +19,7 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
      */
     protected $object;
 
+
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
@@ -27,6 +29,7 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
         $this->object = new Sherlock\Sherlock();
         $this->object->addNode('localhost', '9200');
     }
+
 
     /**
      * Tears down the fixture, for example, closes a network connection.
@@ -41,6 +44,7 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+
     public function assertThrowsException($exception_name, $code)
     {
         $e = null;
@@ -53,11 +57,12 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf($exception_name, $e);
     }
 
+
     public function testAddDoc()
     {
-         $sherlock = $this->object;
+        $sherlock = $this->object;
 
-        $doc = $sherlock->document()->index('testindexing')->type('tweet')->document(array("field" => "test"));
+        $doc      = $sherlock->document()->index('testindexing')->type('tweet')->document(array("field" => "test"));
         $response = $doc->execute();
 
         $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
@@ -65,12 +70,16 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
 
     }
 
+
     public function testUpdateDoc()
     {
         $sherlock = $this->object;
 
         //First insert a doc with a PUT
-        $doc = $sherlock->document()->index('testindexing')->type('tweet')->document(array("field" => "test"), 123);
+        $doc      = $sherlock->document()->index('testindexing')->type('tweet')->document(
+            array("field" => "test"),
+            123
+        );
         $response = $doc->execute();
 
         $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
@@ -79,7 +88,10 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
         $version = $response[0]->responseData['_version'];
 
         //Then insert it again.
-        $doc = $sherlock->document()->index('testindexing')->type('tweet')->document(array("field" => "test"), 123);
+        $doc      = $sherlock->document()->index('testindexing')->type('tweet')->document(
+            array("field" => "test"),
+            123
+        );
         $response = $doc->execute();
 
         $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
@@ -92,12 +104,16 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
 
     }
 
+
     public function testUpdateDocPartial()
     {
         $sherlock = $this->object;
 
         //First insert a doc with a PUT
-        $doc = $sherlock->document()->index('testindexing')->type('tweet')->document(array("field" => "test"), 456);
+        $doc      = $sherlock->document()->index('testindexing')->type('tweet')->document(
+            array("field" => "test"),
+            456
+        );
         $response = $doc->execute();
 
         $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
@@ -106,7 +122,11 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
         $version = $response[0]->responseData['_version'];
 
         //Then update with a partial
-        $doc = $sherlock->document()->index('testindexing')->type('tweet')->document(array("field2" => "test2"), 456, true);
+        $doc      = $sherlock->document()->index('testindexing')->type('tweet')->document(
+            array("field2" => "test2"),
+            456,
+            true
+        );
         $response = $doc->execute();
 
 
@@ -119,12 +139,16 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($version + 1, $version2);
     }
 
+
     public function testUpdateDocScript()
     {
         $sherlock = $this->object;
 
         //First insert a doc with a PUT
-        $doc = $sherlock->document()->index('testindexing')->type('tweet')->document(array("field" => "test"), 789);
+        $doc      = $sherlock->document()->index('testindexing')->type('tweet')->document(
+            array("field" => "test"),
+            789
+        );
         $response = $doc->execute();
 
         $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
@@ -133,7 +157,13 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
         $version = $response[0]->responseData['_version'];
 
         //Then update with a script
-        $doc = $sherlock->document()->index('testindexing')->type('tweet')->document(null,789,true)->updateScript('ctx._source.field += tag')->updateParams(array("tag" => 'blue'));
+        $doc      = $sherlock->document()->index('testindexing')->type('tweet')->document(
+            null,
+            789,
+            true
+        )->updateScript(
+            'ctx._source.field += tag'
+        )->updateParams(array("tag" => 'blue'));
         $response = $doc->execute();
 
         $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
@@ -164,6 +194,7 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
 
     }
 
+
     public function testAddBatchCommand()
     {
 
@@ -192,17 +223,18 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
         }
 
         $batchDocs = $sherlock->document();
-        $response = $batchDocs->documents($batch)->execute();
+        $response  = $batchDocs->documents($batch)->execute();
 
         $this->assertInstanceOf('\Sherlock\responses\IndexResponse', $response[0]);
         $this->assertEquals(true, $response[0]->ok);
     }
 
+
     public function testAddBatchIterator()
     {
         $sherlock = $this->object;
 
-        $batch = new CustomBatch();
+        $batch     = new CustomBatch();
         $batchDocs = $sherlock->document();
 
         $response = $batchDocs->documents($batch)->execute();
@@ -220,6 +252,7 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
 class CustomBatch implements Sherlock\requests\BatchCommandInterface
 {
     private $commands = array();
+
 
     /**
      * Pregenerate 2000 docs to insert, just as a demonstration
@@ -239,6 +272,7 @@ class CustomBatch implements Sherlock\requests\BatchCommandInterface
         }
     }
 
+
     /**
      *
      */
@@ -246,6 +280,7 @@ class CustomBatch implements Sherlock\requests\BatchCommandInterface
     {
         reset($this->commands);
     }
+
 
     /**
      * @return Command
@@ -255,6 +290,7 @@ class CustomBatch implements Sherlock\requests\BatchCommandInterface
         return current($this->commands);
     }
 
+
     /**
      * @return mixed
      */
@@ -263,6 +299,7 @@ class CustomBatch implements Sherlock\requests\BatchCommandInterface
         return key($this->commands);
     }
 
+
     /**
      * @return Command|void
      */
@@ -270,6 +307,7 @@ class CustomBatch implements Sherlock\requests\BatchCommandInterface
     {
         return next($this->commands);
     }
+
 
     /**
      * @return bool

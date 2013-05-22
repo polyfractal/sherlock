@@ -25,16 +25,17 @@ class Boosting extends \Sherlock\components\BaseComponent implements \Sherlock\c
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'boosting' =>
-  array (
-    'positive' => $this->params["positive"]->toArray(),
-    'negative' => $this->params["negative"]->toArray(),
-    'negative_boost' => $this->params["negative_boost"],
-  )
-);
+        $ret = array(
+            'boosting' =>
+            array(
+                'positive'       => $this->params["positive"]->toArray(),
+                'negative'       => $this->params["negative"]->toArray(),
+                'negative_boost' => $this->params["negative_boost"],
+            )
+        );
 
         return $ret;
     }

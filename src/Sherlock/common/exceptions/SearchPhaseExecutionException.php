@@ -11,4 +11,6 @@ namespace Sherlock\common\exceptions;
  * Class SearchPhaseExecutionException
  * @package Sherlock\common\exceptions
  */
-class SearchPhaseExecutionException extends ServerErrorResponseException {}
+class SearchPhaseExecutionException extends ServerErrorResponseException
+{
+}

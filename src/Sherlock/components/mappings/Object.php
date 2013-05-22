@@ -23,6 +23,7 @@ class Object extends \Sherlock\components\BaseComponent implements \Sherlock\com
 {
     protected $type;
 
+
     public function __construct($type = null, $hashMap = null)
     {
         //if $type is set, we need to wrap the mapping property in a type
@@ -34,6 +35,7 @@ class Object extends \Sherlock\components\BaseComponent implements \Sherlock\com
         $this->params['type'] = 'object';
         parent::__construct($hashMap);
     }
+
 
     public function toArray()
     {
@@ -52,8 +54,9 @@ class Object extends \Sherlock\components\BaseComponent implements \Sherlock\com
 
         $extra = array();
         foreach ($this->params as $key => $value) {
-            if($key == 'field' || $key == 'object')
+            if ($key == 'field' || $key == 'object') {
                 continue;
+            }
             $extra[$key] = $value;
         }
 
@@ -64,6 +67,8 @@ class Object extends \Sherlock\components\BaseComponent implements \Sherlock\com
         return $ret;
 
     }
+
+
     public function getType()
     {
         return $this->type;

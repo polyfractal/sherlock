@@ -25,15 +25,16 @@ class Prefix extends \Sherlock\components\BaseComponent implements \Sherlock\com
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'prefix' =>
-  array (
-    $this->params["field"] => $this->params["prefix"],
-    '_cache' => $this->params["_cache"],
-  ),
-);
+        $ret = array(
+            'prefix' =>
+            array(
+                $this->params["field"] => $this->params["prefix"],
+                '_cache'               => $this->params["_cache"],
+            ),
+        );
 
         return $ret;
     }

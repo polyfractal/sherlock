@@ -34,6 +34,7 @@ class Response
 
     /**
      * @param  \Sherlock\common\tmp\RollingCurl\Request $response
+     *
      * @throws \Sherlock\common\exceptions\ServerErrorResponseException
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      */
@@ -44,9 +45,9 @@ class Response
             throw new exceptions\BadMethodCallException("Response must be set in constructor.");
         }
 
-        Analog::debug("Response:".print_r($response, true));
+        Analog::debug("Response:" . print_r($response, true));
 
-        $this->responseInfo = $response->getResponseInfo();
+        $this->responseInfo  = $response->getResponseInfo();
         $this->responseError = $response->getResponseError();
 
         $this->responseData = json_decode($response->getResponseText(), true);
@@ -59,6 +60,7 @@ class Response
 
 
     }
+
 
     /**
      * @throws \Sherlock\common\exceptions\IndexAlreadyExistsException
@@ -79,6 +81,7 @@ class Response
         }
 
     }
+
 
     /**
      * @throws \Sherlock\common\exceptions\ServerErrorResponseException

@@ -58,13 +58,15 @@ class IndexSettingsWrapper
      */
     protected $params;
 
+
     public function __call($name, $arguments)
     {
-        $name = str_replace("__", ".", $name);
+        $name                = str_replace("__", ".", $name);
         $this->params[$name] = $arguments[0];
 
         return $this;
     }
+
 
     public function toArray()
     {

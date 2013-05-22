@@ -47,21 +47,24 @@ class QueryWrapper
      */
     protected $query;
 
+
     public function __call($name, $arguments)
     {
-        $class = '\\Sherlock\\components\\queries\\'.$name;
+        $class = '\\Sherlock\\components\\queries\\' . $name;
 
-        if (count($arguments) > 0)
-            $this->query =  new $class($arguments[0]);
-        else
-            $this->query =  new $class();
+        if (count($arguments) > 0) {
+            $this->query = new $class($arguments[0]);
+        } else {
+            $this->query = new $class();
+        }
 
         return $this->query;
     }
 
+
     public function __toString()
     {
-        return (string) $this->query;
+        return (string)$this->query;
     }
 
 }

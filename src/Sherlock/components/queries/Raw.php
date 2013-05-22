@@ -35,6 +35,7 @@ class Raw extends \Sherlock\components\BaseComponent implements \Sherlock\compon
 
     }
 
+
     public function toArray()
     {
         return $this->params['hash'];

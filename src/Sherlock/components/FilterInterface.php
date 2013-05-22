@@ -13,5 +13,7 @@ namespace Sherlock\components;
 interface FilterInterface
 {
     public function toArray();
+
+
     public function toJSON();
 }

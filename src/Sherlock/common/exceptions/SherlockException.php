@@ -11,4 +11,6 @@ namespace Sherlock\common\exceptions;
 /**
  * Generic Exception interface for Sherlock
  */
-interface SherlockException {}
+interface SherlockException
+{
+}

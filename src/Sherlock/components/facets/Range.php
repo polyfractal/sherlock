@@ -34,27 +34,29 @@ class Range extends components\BaseComponent implements components\FacetInterfac
     public function __construct($hashMap = null)
     {
 
-        $this->params['facetname'] = null;
-        $this->params['ranges'] = null;
-        $this->params['key_field'] = null;
-        $this->params['value_field'] = null;
-        $this->params['key_script'] = null;
+        $this->params['facetname']    = null;
+        $this->params['ranges']       = null;
+        $this->params['key_field']    = null;
+        $this->params['value_field']  = null;
+        $this->params['key_script']   = null;
         $this->params['value_script'] = null;
-        $this->params['params'] = null;
-        $this->params['lang'] = null;
+        $this->params['params']       = null;
+        $this->params['lang']         = null;
         $this->params['facet_filter'] = null;
 
         parent::__construct($hashMap);
     }
 
+
     /**
      * @param $fieldName
+     *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      * @return $this
      */
     public function field($fieldName)
     {
-        Analog::debug("Range->field(".print_r($fieldName, true).")");
+        Analog::debug("Range->field(" . print_r($fieldName, true) . ")");
 
         if (is_string($fieldName)) {
             $this->params['field'][] = $fieldName;
@@ -65,6 +67,7 @@ class Range extends components\BaseComponent implements components\FacetInterfac
 
         return $this;
     }
+
 
     /**
      * @throws \Sherlock\common\exceptions\RuntimeException
@@ -84,17 +87,17 @@ class Range extends components\BaseComponent implements components\FacetInterfac
         }
 
 
-        $ret = array (
+        $ret = array(
             $this->params['facetname'] => array(
-                "range" => array(
-                    "field" => $this->params['field'],
-                    "ranges" => $this->params['ranges'],
-                    "key_field" => $this->params['key_field'],
-                    "value_field" => $this->params['value_field'],
-                    "key_script" => $this->params['key_script'],
+                "range"        => array(
+                    "field"        => $this->params['field'],
+                    "ranges"       => $this->params['ranges'],
+                    "key_field"    => $this->params['key_field'],
+                    "value_field"  => $this->params['value_field'],
+                    "key_script"   => $this->params['key_script'],
                     "value_script" => $this->params['value_script'],
-                    "params" => $this->params['params'],
-                    "lang" => $this->params['lang']
+                    "params"       => $this->params['params'],
+                    "lang"         => $this->params['lang']
                 ),
                 "facet_filter" => $this->params['facet_filter']
             )

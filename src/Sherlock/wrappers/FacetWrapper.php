@@ -29,30 +29,33 @@ class FacetWrapper
      */
     protected $facet;
 
+
     /**
      * @param $name
      * @param $arguments
+     *
      * @return mixed
      */
     public function __call($name, $arguments)
     {
-        $class = '\\Sherlock\\components\\facets\\'.$name;
+        $class = '\\Sherlock\\components\\facets\\' . $name;
 
         if (count($arguments) > 0) {
-            $this->facet =  new $class($arguments[0]);
+            $this->facet = new $class($arguments[0]);
         } else {
-            $this->facet =  new $class();
+            $this->facet = new $class();
         }
 
         return $this->facet;
     }
+
 
     /**
      * @return string
      */
     public function __toString()
     {
-        return (string) $this->facet;
+        return (string)$this->facet;
     }
 
 }

@@ -6,11 +6,11 @@
  *
  * @package RollingCurl
  * @version 2.0
- * @author Jeff Minard (http://jrm.cc/)
- * @author Josh Fraser (www.joshfraser.com)
- * @author Alexander Makarov (http://rmcreative.ru/)
+ * @author  Jeff Minard (http://jrm.cc/)
+ * @author  Josh Fraser (www.joshfraser.com)
+ * @author  Alexander Makarov (http://rmcreative.ru/)
  * @license Apache License 2.0
- * @link https://github.com/chuyskywalker/rolling-curl
+ * @link    https://github.com/chuyskywalker/rolling-curl
  */
 
 namespace Sherlock\common\tmp\RollingCurl;
@@ -87,10 +87,12 @@ class RollingCurl
      */
     private $completedRequests = array();
 
+
     /**
      * Add a request to the request queue
      *
      * @param  Request     $request
+     *
      * @return RollingCurl
      */
     public function add(Request $request)
@@ -101,6 +103,7 @@ class RollingCurl
         return $this;
     }
 
+
     /**
      * Create new Request and add it to the request queue
      *
@@ -109,6 +112,7 @@ class RollingCurl
      * @param  array|string $postData
      * @param  array        $headers
      * @param  array        $options
+     *
      * @return RollingCurl
      */
     public function request($url, $method = "GET", $postData = null, $headers = null, $options = null)
@@ -127,18 +131,21 @@ class RollingCurl
         return $this->add($newRequest);
     }
 
+
     /**
      * Perform GET request
      *
      * @param  string      $url
      * @param  array       $headers
      * @param  array       $options
+     *
      * @return RollingCurl
      */
     public function get($url, $headers = null, $options = null)
     {
         return $this->request($url, "GET", null, $headers, $options);
     }
+
 
     /**
      * Perform POST request
@@ -147,12 +154,14 @@ class RollingCurl
      * @param  array|string $postData
      * @param  array        $headers
      * @param  array        $options
+     *
      * @return RollingCurl
      */
     public function post($url, $postData = null, $headers = null, $options = null)
     {
         return $this->request($url, "POST", $postData, $headers, $options);
     }
+
 
     /**
      * Perform PUT request
@@ -161,6 +170,7 @@ class RollingCurl
      * @param  null        $putData
      * @param  array       $headers
      * @param  array       $options
+     *
      * @return RollingCurl
      */
     public function put($url, $putData = null, $headers = null, $options = null)
@@ -168,18 +178,21 @@ class RollingCurl
         return $this->request($url, "PUT", $putData, $headers, $options);
     }
 
+
     /**
      * Perform DELETE request
      *
      * @param  string      $url
      * @param  array       $headers
      * @param  array       $options
+     *
      * @return RollingCurl
      */
     public function delete($url, $headers = null, $options = null)
     {
         return $this->request($url, "DELETE", null, $headers, $options);
     }
+
 
     /**
      * Run all queued requests
@@ -205,12 +218,14 @@ class RollingCurl
             $options = $this->prepareRequestOptions($request);
             curl_setopt_array($ch, $options);
             curl_multi_add_handle($master, $ch);
-            $this->activeRequests[(string) $ch] = $request;
+            $this->activeRequests[(string)$ch] = $request;
         }
 
         do {
 
-            while (($execrun = curl_multi_exec($master, $running)) == CURLM_CALL_MULTI_PERFORM);
+            while (($execrun = curl_multi_exec($master, $running)) == CURLM_CALL_MULTI_PERFORM) {
+                ;
+            }
 
             if ($execrun != CURLM_OK) {
                 // todo: throw exception
@@ -221,7 +236,7 @@ class RollingCurl
             while ($transfer = curl_multi_info_read($master)) {
 
                 // get the request object back and put the curl response into it
-                $key     = (string) $transfer['handle'];
+                $key     = (string)$transfer['handle'];
                 $request = $this->activeRequests[$key];
                 $request->setResponseText(curl_multi_getcontent($transfer['handle']));
                 $request->setResponseErrno(curl_errno($transfer['handle']));
@@ -247,7 +262,7 @@ class RollingCurl
                     $options = $this->prepareRequestOptions($nextRequest);
                     curl_setopt_array($ch, $options);
                     curl_multi_add_handle($master, $ch);
-                    $this->activeRequests[(string) $ch] = $nextRequest;
+                    $this->activeRequests[(string)$ch] = $nextRequest;
                 }
 
                 // remove the curl handle that just completed
@@ -265,10 +280,12 @@ class RollingCurl
         curl_multi_close($master);
     }
 
+
     /**
      * Helper function to gather all the curl options: global, inferred, and per request
      *
      * @param  Request $request
+     *
      * @return array
      */
     private function prepareRequestOptions(Request $request)
@@ -306,6 +323,7 @@ class RollingCurl
         return $options;
     }
 
+
     /**
      * Define an anonymous callback to handle the response:
      *
@@ -321,6 +339,7 @@ class RollingCurl
      * $rolling_curl is the current instance of the RollingCurl (useful if you want to requeue a URL)
      *
      * @param  \Closure    $callback
+     *
      * @return RollingCurl
      */
     public function setCallback(\Closure $callback)
@@ -330,6 +349,7 @@ class RollingCurl
         return $this;
     }
 
+
     /**
      * @return \Closure
      */
@@ -338,8 +358,10 @@ class RollingCurl
         return $this->callback;
     }
 
+
     /**
      * @param  array                     $headers
+     *
      * @throws \InvalidArgumentException
      * @return RollingCurl
      */
@@ -353,6 +375,7 @@ class RollingCurl
         return $this;
     }
 
+
     /**
      * @return array
      */
@@ -361,8 +384,10 @@ class RollingCurl
         return $this->headers;
     }
 
+
     /**
      * @param  array                     $options
+     *
      * @throws \InvalidArgumentException
      * @return RollingCurl
      */
@@ -376,10 +401,12 @@ class RollingCurl
         return $this;
     }
 
+
     /**
      * Override and add options
      *
      * @param  array                     $options
+     *
      * @throws \InvalidArgumentException
      * @return RollingCurl
      */
@@ -393,6 +420,7 @@ class RollingCurl
         return $this;
     }
 
+
     /**
      * @return array
      */
@@ -401,8 +429,10 @@ class RollingCurl
         return $this->options;
     }
 
+
     /**
      * @param  int                       $timeout
+     *
      * @throws \InvalidArgumentException
      * @return RollingCurl
      */
@@ -416,6 +446,7 @@ class RollingCurl
         return $this;
     }
 
+
     /**
      * @return float
      */
@@ -423,6 +454,7 @@ class RollingCurl
     {
         return $this->timeout;
     }
+
 
     /**
      * Set the limit for how many cURL requests will be execute simultaneously.
@@ -432,6 +464,7 @@ class RollingCurl
      * automatically block further requests.
      *
      * @param  int                       $count
+     *
      * @throws \InvalidArgumentException
      * @return RollingCurl
      */
@@ -445,6 +478,7 @@ class RollingCurl
         return $this;
     }
 
+
     /**
      * @return int
      */
@@ -453,10 +487,12 @@ class RollingCurl
         return $this->simultaneousLimit;
     }
 
+
     /**
      * Return the next $limit pending requests (may return nothing)
      *
      * @param  int       $limit
+     *
      * @return Request[]
      */
     public function getNextPendingRequests($limit = 1)
@@ -491,6 +527,7 @@ class RollingCurl
         //return array_splice($this->pendingRequests, 0, $limit);
     }
 
+
     /**
      * Return the next pending requests (may return nothing)
      *
@@ -505,6 +542,7 @@ class RollingCurl
 
         return null;
     }
+
 
     /**
      * @return Request[]
@@ -527,8 +565,8 @@ class RollingCurl
             $tmp[] = $this->pendingRequests[$i];
         }
 
-        $this->pendingRequests = $tmp;
-        $this->pendingRequestsCount = count($this->pendingRequests);
+        $this->pendingRequests         = $tmp;
+        $this->pendingRequestsCount    = count($this->pendingRequests);
         $this->pendingRequestsPosition = 0;
 
         return $this->completedRequests;

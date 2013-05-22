@@ -24,15 +24,16 @@ class CustomBoostFactor extends \Sherlock\components\BaseComponent implements \S
         parent::__construct($hashMap);
     }
 
+
     public function toArray()
     {
-        $ret = array (
-  'custom_boost_factor' =>
-  array (
-    'query' => $this->params["query"]->toArray(),
-    'boost_factor' => $this->params["boost_factor"],
-  ),
-);
+        $ret = array(
+            'custom_boost_factor' =>
+            array(
+                'query'        => $this->params["query"]->toArray(),
+                'boost_factor' => $this->params["boost_factor"],
+            ),
+        );
 
         return $ret;
     }
