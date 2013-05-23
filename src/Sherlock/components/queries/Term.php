@@ -13,13 +13,13 @@ use Sherlock\components;
 /**
  * @method \Sherlock\components\queries\Term field() field(\string $value)
  * @method \Sherlock\components\queries\Term term() term(\string $value)
-
+ * @method \Sherlock\components\queries\Term boost() boost(\float $value)
  */
 class Term extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
 {
     public function __construct($hashMap = null)
     {
-
+        $this->params['boost'] = 1;
         parent::__construct($hashMap);
     }
 
@@ -32,6 +32,7 @@ class Term extends \Sherlock\components\BaseComponent implements \Sherlock\compo
                 $this->params["field"] =>
                 array(
                     'value' => $this->params["term"],
+                    'boost' => $this->params["boost"],
                 ),
             ),
         );
