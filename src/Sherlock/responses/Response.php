@@ -63,23 +63,27 @@ class Response
 
 
     /**
+     * @throws \Sherlock\common\exceptions\DocumentMissingException
      * @throws \Sherlock\common\exceptions\IndexAlreadyExistsException
      * @throws \Sherlock\common\exceptions\ClientErrorResponseException
      * @throws \Sherlock\common\exceptions\IndexMissingException
      */
     private function process4xx()
     {
-        $error = $this->responseData['error'];
-        Analog::error($error);
-
-        if (strpos($error, "IndexMissingException") !== false) {
-            throw new exceptions\IndexMissingException($error);
-        } elseif (strpos($error, "IndexAlreadyExistsException") !== false) {
-            throw new exceptions\IndexAlreadyExistsException($error);
+        if ($this->responseData['found'] == false) {
+            throw new exceptions\DocumentMissingException("Document is missing from the index");
         } else {
-            throw new exceptions\ClientErrorResponseException($error);
-        }
+            $error = $this->responseData['error'];
+            Analog::error($error);
 
+            if (strpos($error, "IndexMissingException") !== false) {
+                throw new exceptions\IndexMissingException($error);
+            } elseif (strpos($error, "IndexAlreadyExistsException") !== false) {
+                throw new exceptions\IndexAlreadyExistsException($error);
+            } else {
+                throw new exceptions\ClientErrorResponseException($error);
+            }
+        }
     }
 
 
