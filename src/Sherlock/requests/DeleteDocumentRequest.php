@@ -26,7 +26,8 @@ class DeleteDocumentRequest extends Request
     public function __construct($dispatcher)
     {
         if (!isset($dispatcher))
-            throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
+            throw new \Sherlock\common\exceptions\BadMethodCallException(
+                "Dispatcher argument required for " . __CLASS__);
 
         $this->dispatcher = $dispatcher;
 
@@ -79,6 +80,21 @@ class DeleteDocumentRequest extends Request
         }
 
         return $this;
+    }
+
+    /**
+     * Retrieve the BatchCommand array, for
+     * instance for usage in the documents() method.
+     * @return object BatchCommand object of Commands
+     */
+    public function retrieveBatch()
+    {
+        if (!$this->batch || !$this->batch instanceof BatchCommand) {
+            Analog::error("There is no BatchCommand to be retrieved");
+            throw new exceptions\RuntimeException("There is no BatchCommand to be retrieved");
+        }
+
+        return $this->batch;
     }
 
     /**

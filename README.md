@@ -163,8 +163,6 @@ Again, a simple example would be:
 	$response = $request->execute();
 ```
 
-
-
 Non-ORM style
 -------------
 Not a fan of ORM style construction?  Don't worry, _Sherlock_ supports "raw" associative arrays

@@ -14,7 +14,6 @@ use Sherlock\components;
  * @method \Sherlock\components\queries\Bool minimum_number_should_match() minimum_number_should_match(\int $value) Default: 2
  * @method \Sherlock\components\queries\Bool boost() boost(\float $value) Default: 1.0
  * @method \Sherlock\components\queries\Bool disable_coord() disable_coord(\int $value) Default: 1
-
  */
 class Bool extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
 {
@@ -33,8 +32,6 @@ class Bool extends \Sherlock\components\BaseComponent implements \Sherlock\compo
     public function must($value)
     {
         $args = func_get_args();
-        if (count($args) == 1)
-            $args = $args[0];
 
         foreach ($args as $arg) {
             if ($arg instanceof \Sherlock\components\QueryInterface)
@@ -47,8 +44,6 @@ class Bool extends \Sherlock\components\BaseComponent implements \Sherlock\compo
     public function must_not($value)
     {
         $args = func_get_args();
-        if (count($args) == 1)
-            $args = $args[0];
 
         foreach ($args as $arg) {
             if ($arg instanceof \Sherlock\components\QueryInterface)
@@ -61,8 +56,6 @@ class Bool extends \Sherlock\components\BaseComponent implements \Sherlock\compo
     public function should($value)
     {
         $args = func_get_args();
-        if (count($args) == 1)
-            $args = $args[0];
 
         foreach ($args as $arg) {
             if ($arg instanceof \Sherlock\components\QueryInterface)
@@ -78,16 +71,16 @@ class Bool extends \Sherlock\components\BaseComponent implements \Sherlock\compo
     public function toArray()
     {
         $ret = array (
-  'bool' =>
-  array (
-    'must' => $this->params["must"],
-    'must_not' => $this->params["must_not"],
-    'should' => $this->params["should"],
-    'minimum_number_should_match' => $this->params["minimum_number_should_match"],
-    'boost' => $this->params["boost"],
-    'disable_coord' => $this->params["disable_coord"],
-  ),
-);
+            'bool' =>
+            array (
+                'must' => $this->params["must"],
+                'must_not' => $this->params["must_not"],
+                'should' => $this->params["should"],
+                'minimum_number_should_match' => $this->params["minimum_number_should_match"],
+                'boost' => $this->params["boost"],
+                'disable_coord' => $this->params["disable_coord"],
+            ),
+        );
 
         return $ret;
     }
