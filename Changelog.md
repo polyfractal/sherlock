@@ -5,6 +5,13 @@ Master
 ------
  - Fix: Fix _Analyzer mapping
  - Change: RawRequest added, RawQuery "downgraded" to affecting only "query: {}" portion of query, RawFilter + RawFacet added
+ - Fix: Bool Filter/Query fixed when a single object is provided
+ - Fix: Throw a new DocumentMissingException when attempting to delete a nonexistent document
+ - Fix: FilterQuery now correctly converts child filter data to json
+ - Feature: Add boost param to Term Query
+ - Feature: Add fields param to Search request
+ - Feature: Add GeoPoint mappings
+
 
 0.1.12
 ------
