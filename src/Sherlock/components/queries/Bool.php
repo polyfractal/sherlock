@@ -9,15 +9,20 @@
 namespace Sherlock\components\queries;
 
 use Sherlock\components;
+use Sherlock\components\QueryInterface;
 
 /**
+ * Bool Query
+ *
  * @method \Sherlock\components\queries\Bool minimum_number_should_match() minimum_number_should_match(\int $value) Default: 2
  * @method \Sherlock\components\queries\Bool boost() boost(\float $value) Default: 1.0
  * @method \Sherlock\components\queries\Bool disable_coord() disable_coord(\int $value) Default: 1
-
  */
-class Bool extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
+class Bool extends \Sherlock\components\BaseComponent implements QueryInterface
 {
+    /**
+     * @param null $hashMap Optional assoc array of values to prefill the Bool
+     */
     public function __construct($hashMap = null)
     {
         $this->params['must']                        = array();
@@ -31,15 +36,19 @@ class Bool extends \Sherlock\components\BaseComponent implements \Sherlock\compo
     }
 
 
+    /**
+     * Must clause of Bool
+     *
+     * @param QueryInterface|array $value Single or array of QueryInterface objects
+     *
+     * @return $this
+     */
     public function must($value)
     {
         $args = func_get_args();
-        if (count($args) == 1) {
-            $args = $args[0];
-        }
 
         foreach ($args as $arg) {
-            if ($arg instanceof \Sherlock\components\QueryInterface) {
+            if ($arg instanceof QueryInterface) {
                 $this->params['must'][] = $arg->toArray();
             }
         }
@@ -48,15 +57,19 @@ class Bool extends \Sherlock\components\BaseComponent implements \Sherlock\compo
     }
 
 
+    /**
+     * Must_not clause of Bool
+     *
+     * @param QueryInterface|array $value Single or array of QueryInterface objects
+     *
+     * @return $this
+     */
     public function must_not($value)
     {
         $args = func_get_args();
-        if (count($args) == 1) {
-            $args = $args[0];
-        }
 
         foreach ($args as $arg) {
-            if ($arg instanceof \Sherlock\components\QueryInterface) {
+            if ($arg instanceof QueryInterface) {
                 $this->params['must_not'][] = $arg->toArray();
             }
         }
@@ -65,15 +78,19 @@ class Bool extends \Sherlock\components\BaseComponent implements \Sherlock\compo
     }
 
 
+    /**
+     * Should clause of Bool
+     *
+     * @param QueryInterface|array $value Single or array of QueryInterface objects
+     *
+     * @return $this
+     */
     public function should($value)
     {
         $args = func_get_args();
-        if (count($args) == 1) {
-            $args = $args[0];
-        }
 
         foreach ($args as $arg) {
-            if ($arg instanceof \Sherlock\components\QueryInterface) {
+            if ($arg instanceof QueryInterface) {
                 $this->params['should'][] = $arg->toArray();
             }
         }

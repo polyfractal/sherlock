@@ -122,6 +122,69 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     * @covers sherlock\Sherlock\components\queries\Bool::must
+     * @covers sherlock\Sherlock\requests\SearchRequest::query
+     * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
+     */
+    public function testBoolSingleMust()
+    {
+        $req = $this->object->search();
+        $req->index("testqueries")->type("test");
+        $bool = Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary");
+        $query = Sherlock::queryBuilder()->Bool()->must($bool);
+        $req->query($query);
+
+        $data         = $req->toJSON();
+        $expectedData = '{"query":{"bool":{"must":[{"term":{"auxillary":{"value":"auxillary","boost":1}}}],"must_not":[],"should":[],"minimum_number_should_match":2,"boost":1,"disable_coord":1}}}';
+        $this->assertEquals($expectedData, $data);
+
+        $resp = $req->execute();
+
+    }
+
+    /**
+     * @covers sherlock\Sherlock\components\queries\Bool::should
+     * @covers sherlock\Sherlock\requests\SearchRequest::query
+     * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
+     */
+    public function testBoolSingleShould()
+    {
+        $req = $this->object->search();
+        $req->index("testqueries")->type("test");
+        $bool = Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary");
+        $query = Sherlock::queryBuilder()->Bool()->should($bool);
+        $req->query($query);
+
+        $data         = $req->toJSON();
+        $expectedData = '{"query":{"bool":{"must":[],"must_not":[],"should":[{"term":{"auxillary":{"value":"auxillary","boost":1}}}],"minimum_number_should_match":2,"boost":1,"disable_coord":1}}}';
+        $this->assertEquals($expectedData, $data);
+
+        $resp = $req->execute();
+
+    }
+
+    /**
+     * @covers sherlock\Sherlock\components\queries\Bool::should
+     * @covers sherlock\Sherlock\requests\SearchRequest::query
+     * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
+     */
+    public function testBoolSingleMustNot()
+    {
+        $req = $this->object->search();
+        $req->index("testqueries")->type("test");
+        $bool = Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary");
+        $query = Sherlock::queryBuilder()->Bool()->must_not($bool);
+        $req->query($query);
+
+        $data         = $req->toJSON();
+        $expectedData = '{"query":{"bool":{"must":[],"must_not":[{"term":{"auxillary":{"value":"auxillary","boost":1}}}],"should":[],"minimum_number_should_match":2,"boost":1,"disable_coord":1}}}';
+        $this->assertEquals($expectedData, $data);
+
+        $resp = $req->execute();
+
+    }
+
 
     /**
      * @covers sherlock\Sherlock\components\queries\Boosting::positive

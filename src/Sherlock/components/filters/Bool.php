@@ -9,23 +9,94 @@
 namespace Sherlock\components\filters;
 
 use Sherlock\components;
+use Sherlock\components\FilterInterface;
 
 /**
- * @method \Sherlock\components\filters\Bool must() must(array $value)
- * @method \Sherlock\components\filters\Bool must_not() must_not(array $value)
- * @method \Sherlock\components\filters\Bool should() should(array $value)
+ * Bool Filter
+ * 
  * @method \Sherlock\components\filters\Bool _cache() _cache(\bool $value) Default: false
  */
-class Bool extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface
+class Bool extends \Sherlock\components\BaseComponent implements FilterInterface
 {
+    /**
+     * @param null $hashMap Optional assoc array of values to prefill Filter
+     */
     public function __construct($hashMap = null)
     {
-        $this->params['_cache'] = false;
+        $this->params['_cache']   = false;
+        $this->params['must']     = array();
+        $this->params['must_not'] = array();
+        $this->params['should']   = array();
 
         parent::__construct($hashMap);
     }
 
+    /**
+     * Must clause of Bool
+     *
+     * @param FilterInterface|array $value Single or array of FilterInterface objects
+     *
+     * @return $this
+     */
+    public function must($value)
+    {
+        $args = func_get_args();
 
+        foreach ($args as $arg) {
+            if ($arg instanceof FilterInterface) {
+                $this->params['must'][] = $arg->toArray();
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * Must_not clause of Bool
+     *
+     * @param FilterInterface|array $value Single or array of FilterInterface objects
+     *
+     * @return $this
+     */
+    public function must_not($value)
+    {
+        $args = func_get_args();
+
+        foreach ($args as $arg) {
+            if ($arg instanceof FilterInterface) {
+                $this->params['must_not'][] = $arg->toArray();
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * Should clause of Bool
+     *
+     * @param FilterInterface|array $value Single or array of FilterInterface objects
+     *
+     * @return $this
+     */
+    public function should($value)
+    {
+        $args = func_get_args();
+
+        foreach ($args as $arg) {
+            if ($arg instanceof FilterInterface) {
+                $this->params['should'][] = $arg->toArray();
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @return array
+     */
     public function toArray()
     {
         $ret = array(
