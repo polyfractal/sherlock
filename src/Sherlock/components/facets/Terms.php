@@ -48,6 +48,7 @@ class Terms extends components\BaseComponent implements components\FacetInterfac
         $this->params['params']       = null;
         $this->params['lang']         = null;
         $this->params['facet_filter'] = null;
+        $this->params['nested']       = null;
 
         parent::__construct($hashMap);
     }
@@ -119,7 +120,8 @@ class Terms extends components\BaseComponent implements components\FacetInterfac
                     "params"       => $this->params['params'],
                     "lang"         => $this->params['lang']
                 ),
-                "facet_filter" => $this->params['facet_filter']
+                "facet_filter"  => $this->params['facet_filter'],
+                "nested"    => $this->params['nested']
             )
         );
 
