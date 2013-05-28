@@ -165,7 +165,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers sherlock\Sherlock\components\queries\Bool::should
+     * @covers sherlock\Sherlock\components\queries\Bool::must_not
      * @covers sherlock\Sherlock\requests\SearchRequest::query
      * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
      */

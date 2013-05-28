@@ -157,6 +157,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers sherlock\Sherlock\components\queries\Bool::must
      * @covers sherlock\Sherlock\requests\SearchRequest::query
+     * @covers sherlock\Sherlock\requests\SearchRequest::filter
      * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
      */
     public function testBoolSingleMust()
@@ -178,8 +179,9 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers sherlock\Sherlock\components\queries\Bool::must
+     * @covers sherlock\Sherlock\components\queries\Bool::should
      * @covers sherlock\Sherlock\requests\SearchRequest::query
+     * @covers sherlock\Sherlock\requests\SearchRequest::filter
      * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
      */
     public function testBoolSingleShould()
@@ -201,8 +203,9 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers sherlock\Sherlock\components\queries\Bool::must
+     * @covers sherlock\Sherlock\components\queries\Bool::must_not
      * @covers sherlock\Sherlock\requests\SearchRequest::query
+     * @covers sherlock\Sherlock\requests\SearchRequest::filter
      * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
      */
     public function testBoolSingleMustNot()
