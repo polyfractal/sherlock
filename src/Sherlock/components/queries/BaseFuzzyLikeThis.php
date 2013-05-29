@@ -8,7 +8,7 @@
 namespace Sherlock\components\queries;
 
 
-use sherlock\components\BaseComponent;
+use Sherlock\components\BaseComponent;
 
 /**
  * Class BaseFuzzyLikeThis
