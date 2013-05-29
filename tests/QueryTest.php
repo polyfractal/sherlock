@@ -863,14 +863,15 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->lenient(true)
             ->max_expansions(3)
             ->minimum_should_match(3)
-            ->prefix_length(3);
+            ->prefix_length(3)
+            ->type("testType");
 
         \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"match":{"testString":{"query":"testString","boost":0.5,"operator":"AND","analyzer":"default","fuzziness":0.5,"lenient":true,"max_expansions":3,"minimum_should_match":3,"prefix_length":3,"type":null}}}}';
+        $expectedData = '{"query":{"match":{"testString":{"query":"testString","boost":0.5,"operator":"AND","analyzer":"default","fuzziness":0.5,"lenient":true,"max_expansions":3,"minimum_should_match":3,"prefix_length":3,"type":"testType"}}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();

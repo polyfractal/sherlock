@@ -9,61 +9,169 @@
 namespace Sherlock\components\queries;
 
 use Sherlock\components;
+use Sherlock\components\QueryInterface;
 
-// method \Sherlock\components\queries\Match fuzzy_rewrite() fuzzy_rewrite(\string $value) Default: 'constant_score_default'
 /**
- * @method \Sherlock\components\queries\Match field() field(\string $value)
- * @method \Sherlock\components\queries\Match query() query(\string $value)
- * @method \Sherlock\components\queries\Match boost() boost(\float $value) Default: 1.0
- * @method \Sherlock\components\queries\Match operator() operator(\string $value) Default: 'and'
- * @method \Sherlock\components\queries\Match analyzer() analyzer(\string $value) Default: 'default'
- * @method \Sherlock\components\queries\Match fuzziness() fuzziness(\float $value) Default: null
- * @method \Sherlock\components\queries\Match lenient() lenient(\bool $value) Default: true
- * @method \Sherlock\components\queries\Match max_expansions() max_expansions(\int $value) Default: 100
- * @method \Sherlock\components\queries\Match minimum_should_match() minimum_should_match(\int $value) Default: 2
- * @method \Sherlock\components\queries\Match prefix_length() prefix_length(\int $value) Default: 2
- * @method \Sherlock\components\queries\Match type() type(\string $value) Default: null
-
+ * Class Match
+ * @package Sherlock\components\queries
  */
-class Match extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
+class Match extends components\BaseComponent implements QueryInterface
 {
-    public function __construct($hashMap = null)
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function field($value)
     {
-        $this->params['boost']     = 1.0;
-        $this->params['operator']  = 'and';
-        $this->params['analyzer']  = 'default';
-        $this->params['fuzziness'] = null;
-        //$this->params['fuzzy_rewrite'] = 'constant_score_default';
-        $this->params['lenient']              = true;
-        $this->params['max_expansions']       = 100;
-        $this->params['minimum_should_match'] = 2;
-        $this->params['prefix_length']        = 2;
-        $this->params['type']                 = null;
+        $this->params['field'] = $value;
+        return $this;
+    }
 
-        parent::__construct($hashMap);
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function query($value)
+    {
+        $this->params['query'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param float $value
+     *
+     * @return $this
+     */
+    public function boost($value)
+    {
+        $this->params['boost'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function values($value)
+    {
+        $this->params['values'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function operator($value)
+    {
+        $this->params['operator'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function analyzer($value)
+    {
+        $this->params['analyzer'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param float $value
+     *
+     * @return $this
+     */
+    public function fuzziness($value)
+    {
+        $this->params['fuzziness'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param bool $value
+     *
+     * @return $this
+     */
+    public function lenient($value)
+    {
+        $this->params['lenient'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function max_expansions($value)
+    {
+        $this->params['max_expansions'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function minimum_should_match($value)
+    {
+        $this->params['minimum_should_match'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function type($value)
+    {
+        $this->params['type'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function prefix_length($value)
+    {
+        $this->params['prefix_length'] = $value;
+        return $this;
     }
 
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
+        $params = $this->convertParams(
+            array(
+                'query',
+                'boost',
+                'operator',
+                'analyzer',
+                'fuzziness',
+                'lenient',
+                'max_expansions',
+                'minimum_should_match',
+                'prefix_length',
+                'type'
+            )
+        );
         $ret = array(
             'match' =>
-            array(
-                $this->params["field"] =>
-                array(
-                    'query'                => $this->params["query"],
-                    'boost'                => $this->params["boost"],
-                    'operator'             => $this->params["operator"],
-                    'analyzer'             => $this->params["analyzer"],
-                    'fuzziness'            => $this->params["fuzziness"],
-                    // 'fuzzy_rewrite' => $this->params["fuzzy_rewrite"],
-                    'lenient'              => $this->params["lenient"],
-                    'max_expansions'       => $this->params["max_expansions"],
-                    'minimum_should_match' => $this->params["minimum_should_match"],
-                    'prefix_length'        => $this->params["prefix_length"],
-                    'type'                 => $this->params["type"]
-                ),
-            ),
+            array($this->params["field"] => $params),
         );
 
         return $ret;
