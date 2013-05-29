@@ -1306,7 +1306,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"term":{"testString":{"value":"testString","boost":1}}}}';
+        $expectedData = '{"query":{"term":{"testString":{"value":"testString"}}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
