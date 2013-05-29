@@ -45,7 +45,7 @@ class Bool extends \Sherlock\components\BaseComponent implements QueryInterface
      */
     public function must($value)
     {
-        $args = func_get_args();
+        $args = $this->normalizeFuncArgs(func_get_args());
 
         foreach ($args as $arg) {
             if ($arg instanceof QueryInterface) {
@@ -66,7 +66,7 @@ class Bool extends \Sherlock\components\BaseComponent implements QueryInterface
      */
     public function must_not($value)
     {
-        $args = func_get_args();
+        $args = $this->normalizeFuncArgs(func_get_args());
 
         foreach ($args as $arg) {
             if ($arg instanceof QueryInterface) {
@@ -87,7 +87,7 @@ class Bool extends \Sherlock\components\BaseComponent implements QueryInterface
      */
     public function should($value)
     {
-        $args = func_get_args();
+        $args = $this->normalizeFuncArgs(func_get_args());
 
         foreach ($args as $arg) {
             if ($arg instanceof QueryInterface) {

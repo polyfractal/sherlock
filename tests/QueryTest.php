@@ -115,7 +115,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"bool":{"must":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}],"must_not":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}],"should":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}],"minimum_number_should_match":3,"boost":0.5,"disable_coord":3}}}';
+        $expectedData = '{"query":{"bool":{"must":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary2":{"value":"auxillary2","boost":1}}}],"must_not":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary2":{"value":"auxillary2","boost":1}}}],"should":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary2":{"value":"auxillary2","boost":1}}}],"minimum_number_should_match":3,"boost":0.5,"disable_coord":3}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -179,6 +179,70 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
         $data         = $req->toJSON();
         $expectedData = '{"query":{"bool":{"must":[],"must_not":[{"term":{"auxillary":{"value":"auxillary","boost":1}}}],"should":[],"minimum_number_should_match":2,"boost":1,"disable_coord":1}}}';
+        $this->assertEquals($expectedData, $data);
+
+        $resp = $req->execute();
+
+    }
+
+    /**
+     * @covers sherlock\Sherlock\components\queries\Bool::must
+     * @covers sherlock\Sherlock\requests\SearchRequest::query
+     * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
+     */
+    public function testBoolMultipleMustInline()
+    {
+        $req = $this->object->search();
+        $req->index("testqueries")->type("test");
+        $bool = Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary");
+        $query = Sherlock::queryBuilder()->Bool()->must($bool, $bool, $bool);
+        $req->query($query);
+
+        $data         = $req->toJSON();
+        $expectedData = '{"query":{"bool":{"must":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}}],"must_not":[],"should":[],"minimum_number_should_match":2,"boost":1,"disable_coord":1}}}';
+        $this->assertEquals($expectedData, $data);
+
+        $resp = $req->execute();
+
+    }
+
+    /**
+     * @covers sherlock\Sherlock\components\queries\Bool::should
+     * @covers sherlock\Sherlock\requests\SearchRequest::query
+     * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
+     */
+    public function testBoolMultipleShouldInline()
+    {
+        $req = $this->object->search();
+        $req->index("testqueries")->type("test");
+        $bool = Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary");
+        $query = Sherlock::queryBuilder()->Bool()->should($bool, $bool, $bool);
+        $req->query($query);
+
+        $data         = $req->toJSON();
+        $expectedData = '{"query":{"bool":{"must":[],"must_not":[],"should":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}}],"minimum_number_should_match":2,"boost":1,"disable_coord":1}}}';
+        $this->assertEquals($expectedData, $data);
+
+        $resp = $req->execute();
+
+    }
+
+
+    /**
+     * @covers sherlock\Sherlock\components\queries\Bool::must_not
+     * @covers sherlock\Sherlock\requests\SearchRequest::query
+     * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
+     */
+    public function testBoolMultipleMustNotInline()
+    {
+        $req = $this->object->search();
+        $req->index("testqueries")->type("test");
+        $bool = Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary");
+        $query = Sherlock::queryBuilder()->Bool()->should($bool, $bool, $bool);
+        $req->query($query);
+
+        $data         = $req->toJSON();
+        $expectedData = '{"query":{"bool":{"must":[],"must_not":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}}],"should":[],"minimum_number_should_match":2,"boost":1,"disable_coord":1}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();

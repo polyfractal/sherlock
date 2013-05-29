@@ -78,6 +78,17 @@ abstract class BaseComponent
     }
 
 
+
+
+    protected function normalizeFuncArgs($args)
+    {
+        if (count($args) === 1 && is_array($args[0])) {
+            $args = $args[0];
+        }
+
+        return $args;
+    }
+
     /**
      * Return an associative array representation of this component
      *
