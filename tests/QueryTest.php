@@ -353,7 +353,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"custom_boost_factor":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"boost_factor":0.5}}}';
+        $expectedData = '{"query":{"custom_boost_factor":{"query":{"term":{"auxillary":{"value":"auxillary","boost":1}}},"boost_factor":0.5}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();

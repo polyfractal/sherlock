@@ -9,31 +9,52 @@
 namespace Sherlock\components\queries;
 
 use Sherlock\components;
+use Sherlock\components\QueryInterface;
 
 /**
- * @method \Sherlock\components\queries\CustomBoostFactor query() query(\sherlock\components\QueryInterface $value)
- * @method \Sherlock\components\queries\CustomBoostFactor boost_factor() boost_factor(\float $value) Default: 3
-
+ * Class CustomBoostFactor
+ * @package Sherlock\components\queries
  */
-class CustomBoostFactor extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
+class CustomBoostFactor extends components\BaseComponent implements QueryInterface
 {
-    public function __construct($hashMap = null)
-    {
-        $this->params['boost_factor'] = 3;
 
-        parent::__construct($hashMap);
+    /**
+     * @param QueryInterface $value
+     *
+     * @return $this
+     */
+    public function query(QueryInterface $value)
+    {
+        $this->params['query'] = $value->toArray();
+        return $this;
     }
 
 
+    /**
+     * @param $value
+     *
+     * @return $this
+     */
+    public function boost_factor($value)
+    {
+        $this->params['boost_factor'] = $value;
+        return $this;
+    }
+
+
+    /**
+     * @return array
+     */
     public function toArray()
     {
-        $ret = array(
-            'custom_boost_factor' =>
+        $params = $this->paramsToArray(
             array(
-                'query'        => $this->params["query"]->toArray(),
-                'boost_factor' => $this->params["boost_factor"],
-            ),
+                'query',
+                'boost_factor',
+            )
         );
+
+        $ret = array('custom_boost_factor' => $params);
 
         return $ret;
     }
