@@ -238,7 +238,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req = $this->object->search();
         $req->index("testqueries")->type("test");
         $bool = Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary");
-        $query = Sherlock::queryBuilder()->Bool()->should($bool, $bool, $bool);
+        $query = Sherlock::queryBuilder()->Bool()->must_not($bool, $bool, $bool);
         $req->query($query);
 
         $data         = $req->toJSON();
