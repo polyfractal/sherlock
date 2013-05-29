@@ -70,7 +70,7 @@ class CustomScore extends components\BaseComponent implements QueryInterface
      */
     public function toArray()
     {
-        $params = $this->paramsToArray(
+        $params = $this->convertParams(
             array(
                 'query',
                 'params',

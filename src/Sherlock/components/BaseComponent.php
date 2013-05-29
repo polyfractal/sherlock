@@ -85,7 +85,7 @@ abstract class BaseComponent
      *
      * @return array
      */
-    protected function paramsToArray($params)
+    protected function convertParams($params)
     {
         $paramArray = array();
         foreach ($params as $param) {
@@ -121,5 +121,7 @@ abstract class BaseComponent
      * @return array
      */
     abstract public function toArray();
+
+
 
 }

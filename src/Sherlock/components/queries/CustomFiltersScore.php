@@ -76,7 +76,7 @@ class CustomFiltersScore extends components\BaseComponent implements QueryInterf
      */
     public function toArray()
     {
-        $params = $this->paramsToArray(
+        $params = $this->convertParams(
             array(
                 'query',
                 'filters',

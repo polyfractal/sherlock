@@ -47,7 +47,7 @@ class CustomBoostFactor extends components\BaseComponent implements QueryInterfa
      */
     public function toArray()
     {
-        $params = $this->paramsToArray(
+        $params = $this->convertParams(
             array(
                 'query',
                 'boost_factor',

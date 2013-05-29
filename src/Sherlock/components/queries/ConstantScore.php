@@ -46,7 +46,7 @@ class ConstantScore extends components\BaseComponent implements components\Query
      */
     public function toArray()
     {
-        $params = $this->paramsToArray(
+        $params = $this->convertParams(
             array(
                 'filter',
                 'boost',

@@ -104,7 +104,7 @@ class Bool extends \Sherlock\components\BaseComponent implements QueryInterface
      */
     public function toArray()
     {
-        $params = $this->paramsToArray(
+        $params = $this->convertParams(
             array(
                 'must',
                 'must_not',

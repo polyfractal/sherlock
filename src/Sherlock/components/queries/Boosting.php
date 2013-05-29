@@ -55,7 +55,7 @@ class Boosting extends \Sherlock\components\BaseComponent implements \Sherlock\c
      */
     public function toArray()
     {
-        $params = $this->paramsToArray(
+        $params = $this->convertParams(
             array(
                 'positive',
                 'negative',

@@ -65,7 +65,7 @@ class DisMax extends \Sherlock\components\BaseComponent implements \Sherlock\com
      */
     public function toArray()
     {
-        $params = $this->paramsToArray(
+        $params = $this->convertParams(
             array(
                 'tie_breaker',
                 'boost',
