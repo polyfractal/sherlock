@@ -31,25 +31,7 @@ use Sherlock\components;
  */
 class Field extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
 {
-    public function __construct($hashMap = null)
-    {
-        $this->params['boost']                        = 2.0;
-        $this->params['enable_position_increments']   = 1;
-        $this->params['default_operator']             = "AND";
-        $this->params['analyzer']                     = "default";
-        $this->params['allow_leading_wildcard']       = false;
-        $this->params['lowercase_expanded_terms']     = 1;
-        $this->params['fuzzy_min_sim']                = 0.5;
-        $this->params['fuzzy_prefix_length']          = 2;
-        $this->params['phrase_slop']                  = 10;
-        $this->params['analyze_wildcard']             = true;
-        $this->params['auto_generate_phrase_queries'] = 0;
-        $this->params['rewrite']                      = "constant_score_default";
-        $this->params['quote_analyzer']               = "standard";
-        $this->params['quote_field_suffix']           = ".unstemmed";
 
-        parent::__construct($hashMap);
-    }
 
 
     public function toArray()
