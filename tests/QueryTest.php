@@ -422,7 +422,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"custom_score":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"params":[{},{}],"script":"_score","lang":"mvel"}}}';
+        $expectedData = '{"query":{"custom_score":{"query":{"term":{"auxillary":{"value":"auxillary","boost":1}}},"params":[{},{}],"script":"_score","lang":"mvel"}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
