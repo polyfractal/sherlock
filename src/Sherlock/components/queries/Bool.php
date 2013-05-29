@@ -104,17 +104,18 @@ class Bool extends \Sherlock\components\BaseComponent implements QueryInterface
      */
     public function toArray()
     {
-        $ret = array(
-            'bool' =>
+        $params = $this->paramsToArray(
             array(
-                'must'                        => $this->params["must"],
-                'must_not'                    => $this->params["must_not"],
-                'should'                      => $this->params["should"],
-                'minimum_number_should_match' => $this->params["minimum_number_should_match"],
-                'boost'                       => $this->params["boost"],
-                'disable_coord'               => $this->params["disable_coord"],
-            ),
+                'must',
+                'must_not',
+                'should',
+                'minimum_number_should_match',
+                'boost',
+                'disable_coord',
+            )
         );
+
+        $ret = array('bool' => $params);
 
         return $ret;
     }
