@@ -739,7 +739,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"has_child":{"type":"testString","score_type":"none","query":{"term":{"auxillary":{"value":"auxillary"}}}}}}';
+        $expectedData = '{"query":{"has_child":{"type":"testString","score_type":"none","query":{"term":{"auxillary":{"value":"auxillary","boost":1}}}}}}';
         $this->assertEquals($expectedData, $data);
 
         //$resp = $req->execute();

@@ -9,33 +9,59 @@
 namespace Sherlock\components\queries;
 
 use Sherlock\components;
+use Sherlock\components\QueryInterface;
 
-/**
- * @method \Sherlock\components\queries\HasChild type() type(\string $value)
- * @method \Sherlock\components\queries\HasChild score_type() score_type(\string $value) Default: "sum"
- * @method \Sherlock\components\queries\HasChild query() query(\sherlock\components\QueryInterface $value)
-
- */
-class HasChild extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
+class HasChild extends components\BaseComponent implements QueryInterface
 {
-    public function __construct($hashMap = null)
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function type($value)
     {
-        $this->params['score_type'] = "sum";
+        $this->params['type'] = $value;
+        return $this;
+    }
 
-        parent::__construct($hashMap);
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function score_type($value)
+    {
+        $this->params['score_type'] = $value;
+        return $this;
     }
 
 
+    /**
+     * @param QueryInterface $value
+     *
+     * @return $this
+     */
+    public function query(QueryInterface $value)
+    {
+        $this->params['query'] = $value->toArray();
+        return $this;
+    }
+
+
+    /**
+     * @return array
+     */
     public function toArray()
     {
-        $ret = array(
-            'has_child' =>
+        $params = $this->convertParams(
             array(
-                'type'       => $this->params["type"],
-                'score_type' => $this->params["score_type"],
-                'query'      => $this->params["query"]->toArray(),
-            ),
+                'type',
+                'score_type',
+                'query',
+            )
         );
+
+        $ret = array('has_child' => $params);
 
         return $ret;
     }
