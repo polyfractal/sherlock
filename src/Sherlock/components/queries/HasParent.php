@@ -9,33 +9,64 @@
 namespace Sherlock\components\queries;
 
 use Sherlock\components;
+use Sherlock\components\QueryInterface;
 
 /**
- * @method \Sherlock\components\queries\HasParent parent_type() parent_type(\string $value)
- * @method \Sherlock\components\queries\HasParent score_type() score_type(\string $value) Default: "score"
- * @method \Sherlock\components\queries\HasParent query() query(\sherlock\components\QueryInterface $value)
-
+ * Class HasParent
+ * @package Sherlock\components\queries
  */
-class HasParent extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
+class HasParent extends components\BaseComponent implements QueryInterface
 {
-    public function __construct($hashMap = null)
-    {
-        $this->params['score_type'] = "score";
 
-        parent::__construct($hashMap);
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function parent_type($value)
+    {
+        $this->params['parent_type'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function score_type($value)
+    {
+        $this->params['score_type'] = $value;
+        return $this;
     }
 
 
+    /**
+     * @param QueryInterface $value
+     *
+     * @return $this
+     */
+    public function query(QueryInterface $value)
+    {
+        $this->params['query'] = $value->toArray();
+        return $this;
+    }
+
+
+    /**
+     * @return array
+     */
     public function toArray()
     {
-        $ret = array(
-            'has_parent' =>
+        $params = $this->convertParams(
             array(
-                'parent_type' => $this->params["parent_type"],
-                'score_type'  => $this->params["score_type"],
-                'query'       => $this->params["query"]->toArray(),
-            ),
+                'parent_type',
+                'score_type',
+                'query',
+            )
         );
+
+        $ret = array('has_parent' => $params);
 
         return $ret;
     }
