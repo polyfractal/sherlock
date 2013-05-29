@@ -385,7 +385,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"custom_filters_score":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"filters":[{"filter":{"term":{"auxillary":"auxillary","_cache":true}}}],"score_mode":"first","max_boost":0.5}}}';
+        $expectedData = '{"query":{"custom_filters_score":{"query":{"term":{"auxillary":{"value":"auxillary","boost":1}}},"filters":[{"filter":{"term":{"auxillary":"auxillary","_cache":true}}}],"score_mode":"first","max_boost":0.5}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
