@@ -9,48 +9,122 @@
 namespace Sherlock\components\queries;
 
 use Sherlock\components;
+use Sherlock\components\QueryInterface;
 
 /**
- * @method \Sherlock\components\queries\FuzzyLikeThis fields() fields(array $value)
- * @method \Sherlock\components\queries\FuzzyLikeThis like_text() like_text(\string $value)
- * @method \Sherlock\components\queries\FuzzyLikeThis max_query_terms() max_query_terms(\int $value) Default: 10
- * @method \Sherlock\components\queries\FuzzyLikeThis min_similarity() min_similarity(\float $value) Default: 0.5
- * @method \Sherlock\components\queries\FuzzyLikeThis prefix_length() prefix_length(\int $value) Default: 3
- * @method \Sherlock\components\queries\FuzzyLikeThis boost() boost(\float $value) Default: 2.0
- * @method \Sherlock\components\queries\FuzzyLikeThis analyzer() analyzer(\string $value) Default: "default"
- * @method \Sherlock\components\queries\FuzzyLikeThis ignore_tf() ignore_tf(\bool $value) Default: false
-
+ * Class FuzzyLikeThis
+ * @package Sherlock\components\queries
  */
-class FuzzyLikeThis extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
+class FuzzyLikeThis extends components\BaseComponent implements QueryInterface
 {
-    public function __construct($hashMap = null)
+    /**
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function fields($value)
     {
-        $this->params['max_query_terms'] = 10;
-        $this->params['min_similarity']  = 0.5;
-        $this->params['prefix_length']   = 3;
-        $this->params['boost']           = 2.0;
-        $this->params['analyzer']        = "default";
-        $this->params['ignore_tf']       = false;
+        $this->params['fields'] = $value;
+        return $this;
+    }
 
-        parent::__construct($hashMap);
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function like_text($value)
+    {
+        $this->params['like_text'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function max_query_terms($value)
+    {
+        $this->params['max_query_terms'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function analyzer($value)
+    {
+        $this->params['analyzer'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param bool $value
+     *
+     * @return $this
+     */
+    public function ignore_tf($value)
+    {
+        $this->params['ignore_tf'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param float $value
+     *
+     * @return $this
+     */
+    public function boost($value)
+    {
+        $this->params['boost'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param float $value
+     *
+     * @return $this
+     */
+    public function min_similarity($value)
+    {
+        $this->params['min_similarity'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function prefix_length($value)
+    {
+        $this->params['prefix_length'] = $value;
+        return $this;
     }
 
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
-        $ret = array(
-            'fuzzy_like_this' =>
+        $params = $this->convertParams(
             array(
-                'fields'          => $this->params["fields"],
-                'like_text'       => $this->params["like_text"],
-                'max_query_terms' => $this->params["max_query_terms"],
-                'min_similarity'  => $this->params["min_similarity"],
-                'prefix_length'   => $this->params["prefix_length"],
-                'boost'           => $this->params["boost"],
-                'analyzer'        => $this->params["analyzer"],
-                'ignore_tf'       => $this->params["ignore_tf"],
-            ),
+                'fields',
+                'like_text',
+                'max_query_terms',
+                'min_similarity',
+                'prefix_length',
+                'boost',
+                'analyzer',
+                'ignore_tf',
+            )
         );
+
+        $ret = array('fuzzy_like_this' => $params);
 
         return $ret;
     }
