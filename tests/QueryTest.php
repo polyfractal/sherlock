@@ -115,7 +115,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"bool":{"must":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary2":{"value":"auxillary2","boost":1}}}],"must_not":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary2":{"value":"auxillary2","boost":1}}}],"should":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary2":{"value":"auxillary2","boost":1}}}],"minimum_number_should_match":3,"boost":0.5,"disable_coord":3}}}';
+        $expectedData = '{"query":{"bool":{"must":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}],"must_not":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}],"should":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}],"minimum_number_should_match":3,"boost":0.5,"disable_coord":3}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -136,7 +136,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"bool":{"must":[{"term":{"auxillary":{"value":"auxillary","boost":1}}}],"must_not":[],"should":[],"minimum_number_should_match":2,"boost":1,"disable_coord":1}}}';
+        $expectedData = '{"query":{"bool":{"must":[{"term":{"auxillary":{"value":"auxillary"}}}],"must_not":[],"should":[]}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -157,7 +157,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"bool":{"must":[],"must_not":[],"should":[{"term":{"auxillary":{"value":"auxillary","boost":1}}}],"minimum_number_should_match":2,"boost":1,"disable_coord":1}}}';
+        $expectedData = '{"query":{"bool":{"must":[],"must_not":[],"should":[{"term":{"auxillary":{"value":"auxillary"}}}]}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -178,7 +178,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"bool":{"must":[],"must_not":[{"term":{"auxillary":{"value":"auxillary","boost":1}}}],"should":[],"minimum_number_should_match":2,"boost":1,"disable_coord":1}}}';
+        $expectedData = '{"query":{"bool":{"must":[],"must_not":[{"term":{"auxillary":{"value":"auxillary"}}}],"should":[]}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -199,7 +199,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"bool":{"must":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}}],"must_not":[],"should":[],"minimum_number_should_match":2,"boost":1,"disable_coord":1}}}';
+        $expectedData = '{"query":{"bool":{"must":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary":{"value":"auxillary"}}}],"must_not":[],"should":[]}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -220,7 +220,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"bool":{"must":[],"must_not":[],"should":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}}],"minimum_number_should_match":2,"boost":1,"disable_coord":1}}}';
+        $expectedData = '{"query":{"bool":{"must":[],"must_not":[],"should":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary":{"value":"auxillary"}}}]}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -242,7 +242,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"bool":{"must":[],"must_not":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}}],"should":[],"minimum_number_should_match":2,"boost":1,"disable_coord":1}}}';
+        $expectedData = '{"query":{"bool":{"must":[],"must_not":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary":{"value":"auxillary"}}}],"should":[]}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -272,7 +272,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"boosting":{"positive":{"term":{"auxillary":{"value":"auxillary","boost":1}}},"negative":{"term":{"auxillary":{"value":"auxillary","boost":1}}},"negative_boost":0.5}}}';
+        $expectedData = '{"query":{"boosting":{"positive":{"term":{"auxillary":{"value":"auxillary"}}},"negative":{"term":{"auxillary":{"value":"auxillary"}}},"negative_boost":0.5}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -353,7 +353,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"custom_boost_factor":{"query":{"term":{"auxillary":{"value":"auxillary","boost":1}}},"boost_factor":0.5}}}';
+        $expectedData = '{"query":{"custom_boost_factor":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"boost_factor":0.5}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -385,7 +385,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"custom_filters_score":{"query":{"term":{"auxillary":{"value":"auxillary","boost":1}}},"filters":[{"filter":{"term":{"auxillary":"auxillary","_cache":true}}}],"score_mode":"first","max_boost":0.5}}}';
+        $expectedData = '{"query":{"custom_filters_score":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"filters":[{"filter":{"term":{"auxillary":"auxillary","_cache":true}}}],"score_mode":"first","max_boost":0.5}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -422,7 +422,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"custom_score":{"query":{"term":{"auxillary":{"value":"auxillary","boost":1}}},"params":[{},{}],"script":"_score","lang":"mvel"}}}';
+        $expectedData = '{"query":{"custom_score":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"params":[{},{}],"script":"_score","lang":"mvel"}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -455,7 +455,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"dis_max":{"tie_breaker":0.5,"boost":0.5,"queries":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary2":{"value":"auxillary2","boost":1}}}]}}}';
+        $expectedData = '{"query":{"dis_max":{"tie_breaker":0.5,"boost":0.5,"queries":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}]}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -484,7 +484,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"dis_max":{"tie_breaker":0.5,"boost":0.5,"queries":[{"term":{"auxillary":{"value":"auxillary","boost":1}}}]}}}';
+        $expectedData = '{"query":{"dis_max":{"tie_breaker":0.5,"boost":0.5,"queries":[{"term":{"auxillary":{"value":"auxillary"}}}]}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -512,7 +512,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"dis_max":{"tie_breaker":0.5,"boost":0.5,"queries":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}}]}}}';
+        $expectedData = '{"query":{"dis_max":{"tie_breaker":0.5,"boost":0.5,"queries":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary":{"value":"auxillary"}}}]}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -595,7 +595,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"filtered":{"query":{"term":{"auxillary":{"value":"auxillary","boost":1}}},"filter":{"term":{"auxillary":"auxillary","_cache":true}}}}}';
+        $expectedData = '{"query":{"filtered":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"filter":{"term":{"auxillary":"auxillary","_cache":true}}}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -739,7 +739,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"has_child":{"type":"testString","score_type":"none","query":{"term":{"auxillary":{"value":"auxillary","boost":1}}}}}}';
+        $expectedData = '{"query":{"has_child":{"type":"testString","score_type":"none","query":{"term":{"auxillary":{"value":"auxillary"}}}}}}';
         $this->assertEquals($expectedData, $data);
 
         //$resp = $req->execute();
@@ -962,7 +962,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         }
 
         $data         = $request->toJSON();
-        $expectedData = '{"query":{"match_all":{"boost":1}},"size":5}';
+        $expectedData = '{"query":{"match_all":{"boost":1}},"from":2,"size":2}';
         $this->assertEquals($expectedData, $data);
 
     }
