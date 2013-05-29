@@ -79,6 +79,8 @@ abstract class BaseComponent
 
 
     /**
+     * Convert a parameter list into a composed parameter request array
+     *
      * @param array $params array of parameters to convert into assoc array
      *
      * @return array
@@ -96,6 +98,14 @@ abstract class BaseComponent
     }
 
 
+    /**
+     * Normalize func_get_args to a consistent format.
+     * This allows for single, array or inline syntax
+     *
+     * @param QueryInterface|array $args Singular QueryInterface, array of QueryInterfaces, or inline array
+     *
+     * @return mixed
+     */
     protected function normalizeFuncArgs($args)
     {
         if (count($args) === 1 && is_array($args[0])) {
