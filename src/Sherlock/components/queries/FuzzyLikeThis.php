@@ -15,7 +15,7 @@ use Sherlock\components\QueryInterface;
  * Class FuzzyLikeThis
  * @package Sherlock\components\queries
  */
-class FuzzyLikeThis extends components\BaseComponent implements QueryInterface
+class FuzzyLikeThis extends BaseFuzzyLikeThis implements QueryInterface
 {
     /**
      * @param array $value
@@ -27,84 +27,6 @@ class FuzzyLikeThis extends components\BaseComponent implements QueryInterface
         $this->params['fields'] = $value;
         return $this;
     }
-
-    /**
-     * @param string $value
-     *
-     * @return $this
-     */
-    public function like_text($value)
-    {
-        $this->params['like_text'] = $value;
-        return $this;
-    }
-
-    /**
-     * @param int $value
-     *
-     * @return $this
-     */
-    public function max_query_terms($value)
-    {
-        $this->params['max_query_terms'] = $value;
-        return $this;
-    }
-
-    /**
-     * @param string $value
-     *
-     * @return $this
-     */
-    public function analyzer($value)
-    {
-        $this->params['analyzer'] = $value;
-        return $this;
-    }
-
-    /**
-     * @param bool $value
-     *
-     * @return $this
-     */
-    public function ignore_tf($value)
-    {
-        $this->params['ignore_tf'] = $value;
-        return $this;
-    }
-
-    /**
-     * @param float $value
-     *
-     * @return $this
-     */
-    public function boost($value)
-    {
-        $this->params['boost'] = $value;
-        return $this;
-    }
-
-    /**
-     * @param float $value
-     *
-     * @return $this
-     */
-    public function min_similarity($value)
-    {
-        $this->params['min_similarity'] = $value;
-        return $this;
-    }
-
-    /**
-     * @param int $value
-     *
-     * @return $this
-     */
-    public function prefix_length($value)
-    {
-        $this->params['prefix_length'] = $value;
-        return $this;
-    }
-
 
     /**
      * @return array
