@@ -895,7 +895,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"match_all":{"boost":0.5}}}';
+        $expectedData = '{"query":{"match_all":[]}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();

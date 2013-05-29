@@ -9,29 +9,39 @@
 namespace Sherlock\components\queries;
 
 use Sherlock\components;
+use Sherlock\components\QueryInterface;
 
 /**
- * @method \Sherlock\components\queries\MatchAll boost() boost(\float $value) Default: 1
-
+ * Class MatchAll
+ * @package Sherlock\components\queries
  */
-class MatchAll extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
+class MatchAll extends components\BaseComponent implements QueryInterface
 {
-    public function __construct($hashMap = null)
-    {
-        $this->params['boost'] = 1;
 
-        parent::__construct($hashMap);
+    /**
+     * @param float $value
+     *
+     * @return $this
+     */
+    public function boost($value)
+    {
+        $this->params['boost'] = $value;
+        return $this;
     }
 
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
-        $ret = array(
-            'match_all' =>
+        $params = $this->convertParams(
             array(
-                'boost' => $this->params["boost"],
-            ),
+                'boost',
+            )
         );
+
+        $ret = array('match_all' => $params);
 
         return $ret;
     }
