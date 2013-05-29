@@ -78,6 +78,22 @@ abstract class BaseComponent
     }
 
 
+    /**
+     * @param array $params array of parameters to convert into assoc array
+     *
+     * @return array
+     */
+    protected function paramsToArray($params)
+    {
+        $paramArray = array();
+        foreach ($params as $param) {
+            if (isset($this->params[$param]) === true) {
+                $paramArray[$param] = $this->params[$param];
+            }
+        }
+
+        return $paramArray;
+    }
 
 
     protected function normalizeFuncArgs($args)
