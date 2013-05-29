@@ -9,21 +9,36 @@
 namespace Sherlock\components\queries;
 
 use Sherlock\components;
+use Sherlock\components\QueryInterface;
 
 /**
- * @method \Sherlock\components\queries\Terms field() field(\string $value)
- * @method \Sherlock\components\queries\Terms minimum_match() minimum_match(\int $value) Default: 2
-
+ * Class Terms
+ * @package Sherlock\components\queries
  */
-class Terms extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
+class Terms extends components\BaseComponent implements QueryInterface
 {
-    public function __construct($hashMap = null)
-    {
-        $this->params['minimum_match'] = 2;
 
-        parent::__construct($hashMap);
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function field($value)
+    {
+        $this->params['field'] = $value;
+        return $this;
     }
 
+    /**
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function minimum_match($value)
+    {
+        $this->params['minimum_match'] = $value;
+        return $this;
+    }
 
     /**
      * @param  \string | array $terms,...
@@ -33,13 +48,7 @@ class Terms extends \Sherlock\components\BaseComponent implements \Sherlock\comp
     public function terms($terms)
     {
 
-        $args = func_get_args();
-        \Analog\Analog::log("Terms->Terms(" . print_r($args, true) . ")", \Analog\Analog::DEBUG);
-
-        //single param, array of filters
-        if (count($args) == 1 && is_array($args[0])) {
-            $args = $args[0];
-        }
+        $args = $this->normalizeFuncArgs(func_get_args());
 
         foreach ($args as $arg) {
             if (is_string($arg)) {
@@ -51,16 +60,21 @@ class Terms extends \Sherlock\components\BaseComponent implements \Sherlock\comp
     }
 
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
         $ret = array(
             'terms' =>
-            array(
-                $this->params["field"] => $this->params["terms"],
-                'minimum_match'        => $this->params["minimum_match"],
-
-            ),
+            array($this->params["field"] => $this->params["terms"]),
         );
+
+        // Doing this manually (instead of convertParams) because it is simpler given
+        // the structure of Terms.
+        if (isset($this->params['minimum_match']) === true) {
+            $ret['terms']['minimum_match'] = $this->params["minimum_match"];
+        }
 
         return $ret;
     }
