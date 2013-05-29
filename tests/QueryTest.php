@@ -272,7 +272,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"boosting":{"positive":{"term":{"auxillary":{"value":"auxillary"}}},"negative":{"term":{"auxillary":{"value":"auxillary"}}},"negative_boost":0.5}}}';
+        $expectedData = '{"query":{"boosting":{"positive":{"term":{"auxillary":{"value":"auxillary","boost":1}}},"negative":{"term":{"auxillary":{"value":"auxillary","boost":1}}},"negative_boost":0.5}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
