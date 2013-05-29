@@ -595,7 +595,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"filtered":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"filter":{}}}}';
+        $expectedData = '{"query":{"filtered":{"query":{"term":{"auxillary":{"value":"auxillary","boost":1}}},"filter":{"term":{"auxillary":"auxillary","_cache":true}}}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
