@@ -895,7 +895,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"match_all":[]}}';
+        $expectedData = '{"query":{"match_all":{"boost":0.5}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -914,7 +914,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"match_all":{"boost":1}},"from":5}';
+        $expectedData = '{"query":{"match_all":[]},"from":5}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -933,7 +933,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"match_all":{"boost":1}},"size":5}';
+        $expectedData = '{"query":{"match_all":[]},"size":5}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -963,7 +963,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         }
 
         $data         = $request->toJSON();
-        $expectedData = '{"query":{"match_all":{"boost":1}},"from":2,"size":2}';
+        $expectedData = '{"query":{"match_all":[]},"from":2,"size":2}';
         $this->assertEquals($expectedData, $data);
 
     }
