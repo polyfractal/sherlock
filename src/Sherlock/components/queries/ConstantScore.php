@@ -11,29 +11,49 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\ConstantScore filter() filter(\sherlock\components\FilterInterface $value)
- * @method \Sherlock\components\queries\ConstantScore boost() boost(\float $value) Default: 1.2
-
+ * Class ConstantScore
+ * @package Sherlock\components\queries
  */
-class ConstantScore extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
+class ConstantScore extends components\BaseComponent implements components\QueryInterface
 {
-    public function __construct($hashMap = null)
-    {
-        $this->params['boost'] = 1.2;
 
-        parent::__construct($hashMap);
+    /**
+     * @param components\FilterInterface $value
+     *
+     * @return $this
+     */
+    public function filter(components\FilterInterface $value)
+    {
+        $this->params['filter'] = $value->toArray();
+        return $this;
     }
 
 
+    /**
+     * @param $value
+     *
+     * @return $this
+     */
+    public function boost($value)
+    {
+        $this->params['boost'] = $value;
+        return $this;
+    }
+
+
+    /**
+     * @return array
+     */
     public function toArray()
     {
-        $ret = array(
-            'constant_score' =>
+        $params = $this->paramsToArray(
             array(
-                'filter' => $this->params["filter"]->toArray(),
-                'boost'  => $this->params["boost"],
-            ),
+                'filter',
+                'boost',
+            )
         );
+
+        $ret = array('constant_score' => $params);
 
         return $ret;
     }

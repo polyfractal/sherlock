@@ -307,6 +307,31 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     * @covers sherlock\Sherlock\components\queries\ConstantScore::filter
+     * @covers sherlock\Sherlock\requests\SearchRequest::query
+     * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
+     */
+    public function testConstantScoreNoBoost()
+    {
+        $req = $this->object->search();
+        $req->index("testqueries")->type("test");
+        $query = Sherlock::queryBuilder()->ConstantScore()->filter(
+                     Sherlock::filterBuilder()->Term()->field("auxillary")->term("auxillary")
+                 );
+
+        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
+
+        $req->query($query);
+
+        $data         = $req->toJSON();
+        $expectedData = '{"query":{"constant_score":{"filter":{"term":{"auxillary":"auxillary","_cache":true}}}}}';
+        $this->assertEquals($expectedData, $data);
+
+        $resp = $req->execute();
+
+    }
+
 
     /**
      * @covers sherlock\Sherlock\components\queries\CustomBoostFactor::query
