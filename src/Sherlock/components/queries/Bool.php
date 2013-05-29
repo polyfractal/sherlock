@@ -28,9 +28,6 @@ class Bool extends \Sherlock\components\BaseComponent implements QueryInterface
         $this->params['must']                        = array();
         $this->params['must_not']                    = array();
         $this->params['should']                      = array();
-        $this->params['minimum_number_should_match'] = 2;
-        $this->params['boost']                       = 1.0;
-        $this->params['disable_coord']               = 1;
 
         parent::__construct($hashMap);
     }
