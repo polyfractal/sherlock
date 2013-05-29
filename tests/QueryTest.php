@@ -455,7 +455,64 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"dis_max":{"tie_breaker":0.5,"boost":0.5,"queries":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary2":{"value":"auxillary2"}}}]}}}';
+        $expectedData = '{"query":{"dis_max":{"tie_breaker":0.5,"boost":0.5,"queries":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary2":{"value":"auxillary2","boost":1}}}]}}}';
+        $this->assertEquals($expectedData, $data);
+
+        $resp = $req->execute();
+
+    }
+
+    /**
+     * @covers sherlock\Sherlock\components\queries\DisMax::tie_breaker
+     * @covers sherlock\Sherlock\components\queries\DisMax::boost
+     * @covers sherlock\Sherlock\components\queries\DisMax::queries
+     * @covers sherlock\Sherlock\requests\SearchRequest::query
+     * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
+     */
+    public function testDisMaxSingleQuery()
+    {
+        $req = $this->object->search();
+        $req->index("testqueries")->type("test");
+        $query = Sherlock::queryBuilder()->DisMax()->tie_breaker(0.5)
+                 ->boost(0.5)
+                 ->queries(
+                    Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary")
+                );
+
+        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
+
+        $req->query($query);
+
+        $data         = $req->toJSON();
+        $expectedData = '{"query":{"dis_max":{"tie_breaker":0.5,"boost":0.5,"queries":[{"term":{"auxillary":{"value":"auxillary","boost":1}}}]}}}';
+        $this->assertEquals($expectedData, $data);
+
+        $resp = $req->execute();
+
+    }
+
+    /**
+     * @covers sherlock\Sherlock\components\queries\DisMax::tie_breaker
+     * @covers sherlock\Sherlock\components\queries\DisMax::boost
+     * @covers sherlock\Sherlock\components\queries\DisMax::queries
+     * @covers sherlock\Sherlock\requests\SearchRequest::query
+     * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
+     */
+    public function testDisMaxMultipleInlineQueries()
+    {
+        $req = $this->object->search();
+        $req->index("testqueries")->type("test");
+        $term = Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary");
+        $query = Sherlock::queryBuilder()->DisMax()->tie_breaker(0.5)
+                 ->boost(0.5)
+                 ->queries($term, $term, $term);
+
+        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
+
+        $req->query($query);
+
+        $data         = $req->toJSON();
+        $expectedData = '{"query":{"dis_max":{"tie_breaker":0.5,"boost":0.5,"queries":[{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}},{"term":{"auxillary":{"value":"auxillary","boost":1}}}]}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
