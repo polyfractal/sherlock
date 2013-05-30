@@ -299,7 +299,8 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         );
 
         $index->create();
-
+        $response = $index->delete();
+        $this->assertEquals(true, $response->ok);
     }
 
 }
