@@ -9,35 +9,77 @@
 namespace Sherlock\components\queries;
 
 use Sherlock\components;
+use Sherlock\components\QueryInterface;
 
 /**
- * @method \Sherlock\components\queries\CustomScore query() query(\sherlock\components\QueryInterface $value)
- * @method \Sherlock\components\queries\CustomScore params() params(array $value)
- * @method \Sherlock\components\queries\CustomScore script() script(\string $value)
- * @method \Sherlock\components\queries\CustomScore lang() lang(\string $value) Default: "mvel"
-
+ * Class CustomScore
+ * @package Sherlock\components\queries
  */
-class CustomScore extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
+class CustomScore extends components\BaseComponent implements QueryInterface
 {
-    public function __construct($hashMap = null)
+    /**
+     * @param QueryInterface $value
+     *
+     * @return $this
+     */
+    public function query(QueryInterface $value)
     {
-        $this->params['lang'] = "mvel";
-
-        parent::__construct($hashMap);
+        $this->params['query'] = $value->toArray();
+        return $this;
     }
 
 
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function params($value)
+    {
+        $this->params['params'] = $value;
+        return $this;
+    }
+
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function script($value)
+    {
+        $this->params['script'] = $value;
+        return $this;
+    }
+
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function lang($value)
+    {
+        $this->params['lang'] = $value;
+        return $this;
+    }
+
+
+    /**
+     * @return array
+     */
     public function toArray()
     {
-        $ret = array(
-            'custom_score' =>
+        $params = $this->convertParams(
             array(
-                'query'  => $this->params["query"]->toArray(),
-                'params' => $this->params["params"],
-                'script' => $this->params["script"],
-                'lang'   => $this->params["lang"],
-            ),
+                'query',
+                'params',
+                'script',
+                'lang',
+            )
         );
+
+        $ret = array('custom_score' => $params);
 
         return $ret;
     }

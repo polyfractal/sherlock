@@ -52,11 +52,6 @@ abstract class BaseComponent
      */
     public function __call($name, $arguments)
     {
-        \Analog\Analog::log(
-            "BaseComponent->" . $name . "(" . print_r($arguments[0], true) . ")",
-            \Analog\Analog::DEBUG
-        );
-
         if ($name == 'toJSON') {
             return $this->toJSON();
         }
@@ -79,10 +74,49 @@ abstract class BaseComponent
 
 
     /**
+     * Convert a parameter list into a composed parameter request array
+     *
+     * @param array $params array of parameters to convert into assoc array
+     *
+     * @return array
+     */
+    protected function convertParams($params)
+    {
+        $paramArray = array();
+        foreach ($params as $param) {
+            if (isset($this->params[$param]) === true) {
+                $paramArray[$param] = $this->params[$param];
+            }
+        }
+
+        return $paramArray;
+    }
+
+
+    /**
+     * Normalize func_get_args to a consistent format.
+     * This allows for single, array or inline syntax
+     *
+     * @param QueryInterface|array $args Singular QueryInterface, array of QueryInterfaces, or inline array
+     *
+     * @return mixed
+     */
+    protected function normalizeFuncArgs($args)
+    {
+        if (count($args) === 1 && is_array($args[0])) {
+            $args = $args[0];
+        }
+
+        return $args;
+    }
+
+    /**
      * Return an associative array representation of this component
      *
      * @return array
      */
     abstract public function toArray();
+
+
 
 }

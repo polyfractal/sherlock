@@ -7,7 +7,6 @@
 
 namespace Sherlock\components\facets;
 
-use Analog\Analog;
 use Sherlock\common\exceptions\BadMethodCallException;
 use Sherlock\common\exceptions\RuntimeException;
 use Sherlock\components;
@@ -56,13 +55,10 @@ class DateHistogram extends components\BaseComponent implements components\Facet
      */
     public function field($fieldName)
     {
-
-        Analog::debug("DateHistogram->field(" . print_r($fieldName, true) . ")");
-
         if (is_string($fieldName)) {
             $this->params['field'] = $fieldName;
         } else {
-            Analog::error("Field must be a string");
+
             throw new BadMethodCallException("Field must be a string");
         }
 

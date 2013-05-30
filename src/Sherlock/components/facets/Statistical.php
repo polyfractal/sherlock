@@ -7,7 +7,7 @@
 
 namespace Sherlock\components\facets;
 
-use Analog\Analog;
+
 use Sherlock\common\exceptions\RuntimeException;
 use Sherlock\components;
 
@@ -47,7 +47,6 @@ class Statistical extends components\BaseComponent implements components\FacetIn
     {
 
         $args = func_get_args();
-        Analog::debug("Statistical->fields(" . print_r($args, true) . ")");
 
         //single param, array of fields
         if (count($args) == 1 && is_array($args[0])) {
@@ -71,13 +70,11 @@ class Statistical extends components\BaseComponent implements components\FacetIn
     public function toArray()
     {
         if (!isset($this->params['fields'])) {
-            Analog::error("Fields parameter is required for a Statistical Facet");
-            throw new RuntimeException("Fields parameter is required for a Statistical Facet");
+                        throw new RuntimeException("Fields parameter is required for a Statistical Facet");
         }
 
         if ($this->params['fields'] === null) {
-            Analog::error("Fields parameter may not be null");
-            throw new RuntimeException("Fields parameter may not be null");
+                        throw new RuntimeException("Fields parameter may not be null");
         }
 
         //if the user didn't provide a facetname, use the field as a default name

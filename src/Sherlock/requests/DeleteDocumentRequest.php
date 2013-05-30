@@ -2,7 +2,7 @@
 
 namespace Sherlock\requests;
 
-use Analog\Analog;
+
 use Sherlock\common\exceptions;
 
 /**
@@ -102,8 +102,7 @@ class DeleteDocumentRequest extends Request
     public function document($id)
     {
         if (!$this->batch instanceof BatchCommand) {
-            Analog::error("Cannot delete a document from an external BatchCommandInterface");
-            throw new exceptions\RuntimeException("Cannot delete a document from an external BatchCommandInterface");
+                        throw new exceptions\RuntimeException("Cannot delete a document from an external BatchCommandInterface");
         }
 
         $command = new Command();
@@ -150,15 +149,13 @@ class DeleteDocumentRequest extends Request
             array_map($map, $values);
 
             if (!$isBatch) {
-                Analog::error("If an array is supplied, all elements must be a Command object.");
-                throw new exceptions\BadMethodCallException("If an array is supplied, all elements must be a Command object.");
+                                throw new exceptions\BadMethodCallException("If an array is supplied, all elements must be a Command object.");
             }
 
             $this->batch = $batch;
 
         } else {
-            Analog::error("Documents method only accepts arrays of Commands or BatchCommandInterface objects");
-            throw new exceptions\BadMethodCallException("Documents method only accepts arrays of Commands or BatchCommandInterface objects");
+                        throw new exceptions\BadMethodCallException("Documents method only accepts arrays of Commands or BatchCommandInterface objects");
         }
 
         return $this;
@@ -174,7 +171,6 @@ class DeleteDocumentRequest extends Request
      */
     public function execute()
     {
-        Analog::debug("DeleteDocumentRequest->execute() - " . print_r($this->params, true));
 
         //if this is an internal Sherlock BatchCommand, make sure index/types/action are filled
         if ($this->batch instanceof BatchCommand) {

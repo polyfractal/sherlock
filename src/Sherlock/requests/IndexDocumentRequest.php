@@ -8,7 +8,7 @@
 
 namespace Sherlock\requests;
 
-use Analog\Analog;
+
 use Sherlock\common\exceptions;
 
 /**
@@ -164,8 +164,7 @@ class IndexDocumentRequest extends Request
     public function document($value, $id = null, $update = false)
     {
         if (!$this->batch instanceof BatchCommand) {
-            Analog::error("Cannot add a new document to an external BatchCommandInterface");
-            throw new exceptions\RuntimeException("Cannot add a new document to an external BatchCommandInterface");
+                        throw new exceptions\RuntimeException("Cannot add a new document to an external BatchCommandInterface");
         }
 
         $this->finalizeCurrentCommand();
@@ -226,15 +225,13 @@ class IndexDocumentRequest extends Request
             array_map($map, $values);
 
             if (!$isBatch) {
-                Analog::error("If an array is supplied, all elements must be a Command object.");
-                throw new exceptions\BadMethodCallException("If an array is supplied, all elements must be a Command object.");
+                                throw new exceptions\BadMethodCallException("If an array is supplied, all elements must be a Command object.");
             }
 
             $this->batch = $batch;
 
         } else {
-            Analog::error("Documents method only accepts arrays of Commands or BatchCommandInterface objects");
-            throw new exceptions\BadMethodCallException("Documents method only accepts arrays of Commands or BatchCommandInterface objects");
+                        throw new exceptions\BadMethodCallException("Documents method only accepts arrays of Commands or BatchCommandInterface objects");
         }
 
         return $this;
@@ -250,20 +247,17 @@ class IndexDocumentRequest extends Request
      */
     public function execute()
     {
-        Analog::debug("IndexDocumentRequest->execute() - " . print_r($this->params, true));
 
         /*
         foreach (array('index', 'type') as $key) {
             if (!isset($this->params[$key])) {
-                Analog::error($key." cannot be empty.");
-                throw new exceptions\RuntimeException($key." cannot be empty.");
+                                throw new exceptions\RuntimeException($key." cannot be empty.");
             }
         }
 
         foreach (array('index', 'type') as $key) {
             if (count($this->params[$key]) > 1) {
-                Analog::error("Only one ".$key." may be inserted into at a time.");
-                throw new exceptions\RuntimeException("Only one ".$key." may be inserted into at a time.");
+                                throw new exceptions\RuntimeException("Only one ".$key." may be inserted into at a time.");
             }
         }
 

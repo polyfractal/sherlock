@@ -7,7 +7,7 @@
  */
 namespace Sherlock\requests;
 
-use Analog\Analog;
+
 use Sherlock\common\exceptions;
 use Sherlock\components;
 use Sherlock\components\queries;
@@ -133,7 +133,6 @@ class SearchRequest extends Request
     public function sort($value)
     {
         $args = func_get_args();
-        Analog::debug("SearchRequest->sort(" . print_r($args, true) . ")");
 
         //single param, array of sorts
         if (count($args) == 1 && is_array($args[0])) {
@@ -223,7 +222,6 @@ class SearchRequest extends Request
      */
     public function execute()
     {
-        Analog::debug("SearchRequest->execute() - " . print_r($this->params, true));
 
         $finalQuery = $this->composeFinalQuery();
 

@@ -7,7 +7,7 @@
 
 namespace Sherlock\components\facets;
 
-use Analog\Analog;
+
 use Sherlock\common\exceptions\RuntimeException;
 use Sherlock\components;
 
@@ -66,7 +66,6 @@ class TermsStats extends components\BaseComponent implements components\FacetInt
     {
 
         $args = func_get_args();
-        Analog::debug("TermsStats->fields(" . print_r($args, true) . ")");
 
         //single param, array of fields
         if (count($args) == 1 && is_array($args[0])) {

@@ -11,41 +11,98 @@ namespace Sherlock\components\queries;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\queries\Fuzzy field() field(\string $value)
- * @method \Sherlock\components\queries\Fuzzy value() value(\string $value)
- * @method \Sherlock\components\queries\Fuzzy boost() boost(\float $value) Default: 1.0
- * @method \Sherlock\components\queries\Fuzzy min_similarity() min_similarity(\float $value) Default: 0.2
- * @method \Sherlock\components\queries\Fuzzy prefix_length() prefix_length(\int $value) Default: 0
- * @method \Sherlock\components\queries\Fuzzy max_expansions() max_expansions(\int $value) Default: 10
-
+ * Class Fuzzy
+ * @package Sherlock\components\queries
  */
 class Fuzzy extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
 {
-    public function __construct($hashMap = null)
-    {
-        $this->params['boost']          = 1.0;
-        $this->params['min_similarity'] = 0.2;
-        $this->params['prefix_length']  = 0;
-        $this->params['max_expansions'] = 10;
 
-        parent::__construct($hashMap);
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function field($value)
+    {
+        $this->params['field'] = $value;
+        return $this;
     }
 
 
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function value($value)
+    {
+        $this->params['value'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param float $value
+     *
+     * @return $this
+     */
+    public function boost($value)
+    {
+        $this->params['boost'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param float $value
+     *
+     * @return $this
+     */
+    public function min_similarity($value)
+    {
+        $this->params['min_similarity'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function prefix_length($value)
+    {
+        $this->params['prefix_length'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function max_expansions($value)
+    {
+        $this->params['max_expansions'] = $value;
+        return $this;
+    }
+
+
+    /**
+     * @return array
+     */
     public function toArray()
     {
+        $params = $this->convertParams(
+            array(
+                'value',
+                'boost',
+                'min_similarity',
+                'prefix_length',
+                'max_expansions',
+            )
+        );
+
         $ret = array(
             'fuzzy' =>
-            array(
-                $this->params["field"] =>
-                array(
-                    'value'          => $this->params["value"],
-                    'boost'          => $this->params["boost"],
-                    'min_similarity' => $this->params["min_similarity"],
-                    'prefix_length'  => $this->params["prefix_length"],
-                    'max_expansions' => $this->params["max_expansions"],
-                ),
-            ),
+            array($this->params["field"] => $params),
         );
 
         return $ret;

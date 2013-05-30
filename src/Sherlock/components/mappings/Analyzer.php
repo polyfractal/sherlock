@@ -6,7 +6,7 @@
  */
 namespace Sherlock\components\mappings;
 
-use Analog\Analog;
+
 use Sherlock\components;
 use Sherlock\common\exceptions;
 
@@ -48,8 +48,7 @@ class Analyzer extends \Sherlock\components\BaseComponent implements \Sherlock\c
         $ret = array();
 
         if (!isset($this->params['path'])) {
-            Analog::error("Path must be set for Analyzer mapping");
-            throw new exceptions\RuntimeException("Path must be set for Analyzer mapping");
+                        throw new exceptions\RuntimeException("Path must be set for Analyzer mapping");
         }
 
         $ret['_analyzer']['path'] = $this->params['path'];

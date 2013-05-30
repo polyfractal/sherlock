@@ -9,30 +9,53 @@
 namespace Sherlock\components\queries;
 
 use Sherlock\components;
+use Sherlock\components\FilterInterface;
+use Sherlock\components\QueryInterface;
 
 /**
- * @method \Sherlock\components\queries\FilteredQuery query() query(\sherlock\components\QueryInterface $value)
- * @method \Sherlock\components\queries\FilteredQuery filter() filter(\sherlock\components\FilterInterface $value)
-
+ * Class FilteredQuery
+ * @package Sherlock\components\queries
  */
 class FilteredQuery extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
 {
-    public function __construct($hashMap = null)
-    {
 
-        parent::__construct($hashMap);
+    /**
+     * @param QueryInterface $value
+     *
+     * @return $this
+     */
+    public function query(QueryInterface $value)
+    {
+        $this->params['query'] = $value->toArray();
+        return $this;
     }
 
 
+    /**
+     * @param FilterInterface $value
+     *
+     * @return $this
+     */
+    public function filter(FilterInterface $value)
+    {
+        $this->params['filter'] = $value->toArray();
+        return $this;
+    }
+
+
+    /**
+     * @return array
+     */
     public function toArray()
     {
-        $ret = array(
-            'filtered' =>
+        $params = $this->convertParams(
             array(
-                'query'  => $this->params["query"]->toArray(),
-                'filter' => $this->params["filter"]->toArray(),
-            ),
+                'query',
+                'filter',
+            )
         );
+
+        $ret = array('filtered' => $params);
 
         return $ret;
     }

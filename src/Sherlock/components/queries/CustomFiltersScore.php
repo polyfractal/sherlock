@@ -9,43 +9,61 @@
 namespace Sherlock\components\queries;
 
 use Sherlock\components;
+use Sherlock\components\QueryInterface;
 
 /**
- * @method \Sherlock\components\queries\CustomFiltersScore query() query(\sherlock\components\QueryInterface $value)
- * @method \Sherlock\components\queries\CustomFiltersScore score_mode() score_mode(\string $value) Default: "first"
- * @method \Sherlock\components\queries\CustomFiltersScore max_boost() max_boost(\float $value) Default: 10
-
+ * Class CustomFiltersScore
+ * @package Sherlock\components\queries
  */
-class CustomFiltersScore extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
+class CustomFiltersScore extends components\BaseComponent implements QueryInterface
 {
-    public function __construct($hashMap = null)
+    /**
+     * @param QueryInterface $value
+     *
+     * @return $this
+     */
+    public function query(QueryInterface $value)
     {
-        $this->params['score_mode'] = "first";
-        $this->params['max_boost']  = 10;
-
-        parent::__construct($hashMap);
+        $this->params['query'] = $value->toArray();
+        return $this;
     }
 
 
     /**
-     * @param  \Sherlock\components\FilterInterface | array $filter,... - one or more Filters can be specified individually, or an array of filters
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function score_mode($value)
+    {
+        $this->params['score_mode'] = $value;
+        return $this;
+    }
+
+
+    /**
+     * @param float $value
+     *
+     * @return $this
+     */
+    public function max_boost($value)
+    {
+        $this->params['max_boost'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param \Sherlock\components\FilterInterface | array $filter,... - one or more Filters can be specified individually, or an array of filters
      *
      * @return CustomFiltersScore
      */
     public function filters($filter)
     {
-
-        $args = func_get_args();
-        \Analog\Analog::log("CustomFiltersScore->Filters(" . print_r($args, true) . ")", \Analog\Analog::DEBUG);
-
-        //single param, array of filters
-        if (count($args) == 1 && is_array($args[0])) {
-            $args = $args[0];
-        }
+        $args = $this->normalizeFuncArgs(func_get_args());
 
         foreach ($args as $arg) {
             if ($arg instanceof \Sherlock\components\FilterInterface) {
-                $this->params['filters'][] = $arg->toArray();
+                $this->params['filters'][] = array("filter" => $arg->toArray());
             }
         }
 
@@ -53,22 +71,21 @@ class CustomFiltersScore extends \Sherlock\components\BaseComponent implements \
     }
 
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
-        $filters = array();
-        foreach ($this->params['filters'] as $filter) {
-            $filters[] = array("filter" => $filter);
-        }
-
-        $ret = array(
-            'custom_filters_score' =>
+        $params = $this->convertParams(
             array(
-                'query'      => $this->params["query"]->toArray(),
-                'filters'    => $filters,
-                'score_mode' => $this->params["score_mode"],
-                'max_boost'  => $this->params["max_boost"],
-            ),
+                'query',
+                'filters',
+                'score_mode',
+                'max_boost',
+            )
         );
+
+        $ret = array('custom_filters_score' => $params);
 
         return $ret;
     }

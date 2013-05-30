@@ -41,13 +41,11 @@ class Object extends \Sherlock\components\BaseComponent implements \Sherlock\com
     {
         $ret = array();
         if (!isset($this->params['field'])) {
-            \Analog\Analog::log("Field name must be set for Object mapping", \Analog\Analog::ERROR);
-            throw new \Sherlock\common\exceptions\RuntimeException("Field name must be set for Object mapping");
+                        throw new \Sherlock\common\exceptions\RuntimeException("Field name must be set for Object mapping");
         }
 
         if (!isset($this->params['object'])) {
-            \Analog\Analog::log("Object parameter name must be set for Object mapping", \Analog\Analog::ERROR);
-            throw new \Sherlock\common\exceptions\RuntimeException("Object parameter must be set for Object mapping");
+                        throw new \Sherlock\common\exceptions\RuntimeException("Object parameter must be set for Object mapping");
         }
 
         $object = $this->params['object']->toArray();

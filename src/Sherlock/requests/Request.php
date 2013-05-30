@@ -13,7 +13,7 @@ use Sherlock\common\events\RequestEvent;
 use Sherlock\common\exceptions;
 use Sherlock\common\tmp\RollingCurl;
 use Sherlock\responses\IndexResponse;
-use Analog\Analog;
+
 use Sherlock\responses\Response;
 
 /**
@@ -44,8 +44,7 @@ class Request
     public function __construct($dispatcher)
     {
         if (!isset($dispatcher)) {
-            Analog::log("An Event Dispatcher must be injected into all Request objects", Analog::ERROR);
-            throw new exceptions\BadMethodCallException("An Event Dispatcher must be injected into all Request objects");
+                        throw new exceptions\BadMethodCallException("An Event Dispatcher must be injected into all Request objects");
         }
 
         $this->dispatcher = $dispatcher;
@@ -66,7 +65,6 @@ class Request
         $reflector = new \ReflectionClass(get_class($this));
         $class     = $reflector->getShortName();
 
-        Analog::debug("Request->execute()");
 
         //construct a requestEvent and dispatch it with the "request.preexecute" event
         //This will, among potentially other things, populate the $node variable with
@@ -76,23 +74,19 @@ class Request
 
         //Make sure the node variable is set correctly after the event
         if (!isset($this->node)) {
-            Analog::error("Request requires a valid, non-empty node");
-            throw new exceptions\RuntimeException("Request requires a valid, non-empty node");
+                        throw new exceptions\RuntimeException("Request requires a valid, non-empty node");
         }
 
         if (!isset($this->node['host'])) {
-            Analog::error("Request requires a host to connect to");
-            throw new exceptions\RuntimeException("Request requires a host to connect to");
+                        throw new exceptions\RuntimeException("Request requires a host to connect to");
         }
 
         if (!isset($this->node['port'])) {
-            Analog::error("Request requires a port to connect to");
-            throw new exceptions\RuntimeException("Request requires a port to connect to");
+                        throw new exceptions\RuntimeException("Request requires a port to connect to");
         }
 
         $path = 'http://' . $this->node['host'] . ':' . $this->node['port'];
 
-        Analog::debug("Request->commands: " . print_r($this->batch, true));
 
         $rolling = new RollingCurl\RollingCurl();
         $rolling->setHeaders(array('Content-Type: application/json'));

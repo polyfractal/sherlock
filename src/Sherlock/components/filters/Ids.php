@@ -31,8 +31,6 @@ class Ids extends \Sherlock\components\BaseComponent implements \Sherlock\compon
     {
 
         $args = func_get_args();
-        \Analog\Analog::log("Ids->Values(" . print_r($args, true) . ")", \Analog\Analog::DEBUG);
-
         //single param, array of ids
         if (count($args) == 1 && is_array($args[0])) {
             $args = $args[0];

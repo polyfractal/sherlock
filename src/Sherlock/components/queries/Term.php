@@ -9,32 +9,60 @@
 namespace Sherlock\components\queries;
 
 use Sherlock\components;
+use Sherlock\components\QueryInterface;
 
 /**
- * @method \Sherlock\components\queries\Term field() field(\string $value)
- * @method \Sherlock\components\queries\Term term() term(\string $value)
- * @method \Sherlock\components\queries\Term boost() boost(\float $value)
+ * Class Term
+ * @package Sherlock\components\queries
  */
-class Term extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
+class Term extends components\BaseComponent implements QueryInterface
 {
-    public function __construct($hashMap = null)
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function field($value)
     {
-        $this->params['boost'] = 1;
-        parent::__construct($hashMap);
+        $this->params['field'] = $value;
+        return $this;
     }
 
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function term($value)
+    {
+        $this->params['value'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param float $value
+     *
+     * @return $this
+     */
+    public function boost($value)
+    {
+        $this->params['boost'] = $value;
+        return $this;
+    }
 
     public function toArray()
     {
+        $params = $this->convertParams(
+            array(
+                'value',
+                'boost',
+            )
+        );
+
         $ret = array(
             'term' =>
-            array(
-                $this->params["field"] =>
-                array(
-                    'value' => $this->params["term"],
-                    'boost' => $this->params["boost"],
-                ),
-            ),
+            array($this->params["field"] => $params),
         );
 
         return $ret;

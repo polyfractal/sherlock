@@ -9,33 +9,61 @@
 namespace Sherlock\components\queries;
 
 use Sherlock\components;
+use Sherlock\components\QueryInterface;
 
 /**
- * @method \Sherlock\components\queries\Boosting positive() positive(\sherlock\components\QueryInterface $value)
- * @method \Sherlock\components\queries\Boosting negative() negative(\sherlock\components\QueryInterface $value)
- * @method \Sherlock\components\queries\Boosting negative_boost() negative_boost(\float $value) Default: 0.2
-
+ * Class Boosting
+ * @package Sherlock\components\queries
  */
 class Boosting extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
 {
-    public function __construct($hashMap = null)
+    /**
+     * @param QueryInterface $value
+     * @return $this
+     */
+    public function positive(QueryInterface $value)
     {
-        $this->params['negative_boost'] = 0.2;
-
-        parent::__construct($hashMap);
+        $this->params["positive"] = $value->toArray();
+        return $this;
     }
 
 
+    /**
+     * @param QueryInterface $value
+     * @return $this
+     */
+    public function negative(QueryInterface $value)
+    {
+        $this->params["negative"] = $value->toArray();
+        return $this;
+    }
+
+
+    /**
+     * @param float $value
+     * @return $this
+     */
+    public function negative_boost($value)
+    {
+        $this->params["negative_boost"] = $value;
+        return $this;
+    }
+
+
+    /**
+     * @return array
+     */
     public function toArray()
     {
-        $ret = array(
-            'boosting' =>
+        $params = $this->convertParams(
             array(
-                'positive'       => $this->params["positive"]->toArray(),
-                'negative'       => $this->params["negative"]->toArray(),
-                'negative_boost' => $this->params["negative_boost"],
+                'positive',
+                'negative',
+                'negative_boost',
             )
         );
+
+        $ret = array('boosting' => $params);
 
         return $ret;
     }

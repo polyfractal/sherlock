@@ -9,40 +9,49 @@
 namespace Sherlock\components\queries;
 
 use Sherlock\components;
+use Sherlock\components\QueryInterface;
 
 /**
- * @method \Sherlock\components\queries\DisMax tie_breaker() tie_breaker(\float $value) Default: 0.5
- * @method \Sherlock\components\queries\DisMax boost() boost(\float $value) Default: 2
+ * Class DisMax
+ * @package Sherlock\components\queries
  */
 class DisMax extends \Sherlock\components\BaseComponent implements \Sherlock\components\QueryInterface
 {
-    public function __construct($hashMap = null)
+    /**
+     * @param float $value
+     *
+     * @return $this
+     */
+    public function tie_breaker($value)
     {
-        $this->params['tie_breaker'] = 0.5;
-        $this->params['boost']       = 2;
-
-        parent::__construct($hashMap);
+        $this->params['tie_breaker'] = $value;
+        return $this;
     }
 
 
     /**
-     * @param  \Sherlock\components\QueryInterface | array $queries,... - one or more Queries can be specified individually, or an array of filters
+     * @param float $value
      *
-     * @return DisMax
+     * @return $this
+     */
+    public function boost($value)
+    {
+        $this->params['boost'] = $value;
+        return $this;
+    }
+
+    /**
+     * @param \Sherlock\components\QueryInterface | array $queries,... - one or more Queries can be specified individually, or an array of filters
+     *
+     * @return $this
      */
     public function queries($queries)
     {
 
-        $args = func_get_args();
-        \Analog\Analog::log("DisMax->Queries(" . print_r($args, true) . ")", \Analog\Analog::DEBUG);
-
-        //single param, array of filters
-        if (count($args) == 1 && is_array($args[0])) {
-            $args = $args[0];
-        }
+        $args = $this->normalizeFuncArgs(func_get_args());
 
         foreach ($args as $arg) {
-            if ($arg instanceof \Sherlock\components\QueryInterface) {
+            if ($arg instanceof QueryInterface) {
                 $this->params['queries'][] = $arg->toArray();
             }
         }
@@ -51,16 +60,20 @@ class DisMax extends \Sherlock\components\BaseComponent implements \Sherlock\com
     }
 
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
-        $ret = array(
-            'dis_max' =>
+        $params = $this->convertParams(
             array(
-                'tie_breaker' => $this->params["tie_breaker"],
-                'boost'       => $this->params["boost"],
-                'queries'     => $this->params['queries'],
-            ),
+                'tie_breaker',
+                'boost',
+                'queries',
+            )
         );
+
+        $ret = array('dis_max' => $params);
 
         return $ret;
     }

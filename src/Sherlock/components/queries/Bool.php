@@ -28,9 +28,6 @@ class Bool extends \Sherlock\components\BaseComponent implements QueryInterface
         $this->params['must']                        = array();
         $this->params['must_not']                    = array();
         $this->params['should']                      = array();
-        $this->params['minimum_number_should_match'] = 2;
-        $this->params['boost']                       = 1.0;
-        $this->params['disable_coord']               = 1;
 
         parent::__construct($hashMap);
     }
@@ -45,7 +42,7 @@ class Bool extends \Sherlock\components\BaseComponent implements QueryInterface
      */
     public function must($value)
     {
-        $args = func_get_args();
+        $args = $this->normalizeFuncArgs(func_get_args());
 
         foreach ($args as $arg) {
             if ($arg instanceof QueryInterface) {
@@ -66,7 +63,7 @@ class Bool extends \Sherlock\components\BaseComponent implements QueryInterface
      */
     public function must_not($value)
     {
-        $args = func_get_args();
+        $args = $this->normalizeFuncArgs(func_get_args());
 
         foreach ($args as $arg) {
             if ($arg instanceof QueryInterface) {
@@ -87,7 +84,7 @@ class Bool extends \Sherlock\components\BaseComponent implements QueryInterface
      */
     public function should($value)
     {
-        $args = func_get_args();
+        $args = $this->normalizeFuncArgs(func_get_args());
 
         foreach ($args as $arg) {
             if ($arg instanceof QueryInterface) {
@@ -104,17 +101,18 @@ class Bool extends \Sherlock\components\BaseComponent implements QueryInterface
      */
     public function toArray()
     {
-        $ret = array(
-            'bool' =>
+        $params = $this->convertParams(
             array(
-                'must'                        => $this->params["must"],
-                'must_not'                    => $this->params["must_not"],
-                'should'                      => $this->params["should"],
-                'minimum_number_should_match' => $this->params["minimum_number_should_match"],
-                'boost'                       => $this->params["boost"],
-                'disable_coord'               => $this->params["disable_coord"],
-            ),
+                'must',
+                'must_not',
+                'should',
+                'minimum_number_should_match',
+                'boost',
+                'disable_coord',
+            )
         );
+
+        $ret = array('bool' => $params);
 
         return $ret;
     }

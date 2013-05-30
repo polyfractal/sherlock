@@ -33,7 +33,6 @@ class OrFilter extends \Sherlock\components\BaseComponent implements \Sherlock\c
     {
 
         $args = func_get_args();
-        \Analog\Analog::log("OrFilter->Queries(" . print_r($args, true) . ")", \Analog\Analog::DEBUG);
 
         //single param, array of queries\filters
         if (count($args) == 1 && is_array($args[0])) {
