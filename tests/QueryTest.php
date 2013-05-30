@@ -8,7 +8,6 @@
 
 namespace Sherlock\tests;
 
-use Analog\Analog;
 use Sherlock\Sherlock;
 
 class QueryTest extends \PHPUnit_Framework_TestCase
@@ -110,7 +109,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->boost(0.5)
             ->disable_coord(3);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -267,7 +265,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->negative(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
             ->negative_boost(0.5);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -295,7 +292,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         )
             ->boost(0.5);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -320,7 +316,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
                      Sherlock::filterBuilder()->Term()->field("auxillary")->term("auxillary")
                  );
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -348,7 +343,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         )
             ->boost_factor(0.5);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -380,7 +374,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->score_mode("first")
             ->max_boost(0.5);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -417,7 +410,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->script("_score")
             ->lang("mvel");
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -450,7 +442,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -479,7 +470,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
                     Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary")
                 );
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -507,7 +497,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
                  ->boost(0.5)
                  ->queries($term, $term, $term);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -562,7 +551,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->quote_analyzer("standard")
             ->quote_field_suffix(".unstemmed");
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -590,7 +578,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         )
             ->filter(Sherlock::filterBuilder()->Term()->field("auxillary")->term("auxillary"));
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -624,7 +611,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->prefix_length(3)
             ->max_expansions(3);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -667,7 +653,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->analyzer("testString")
             ->ignore_tf("testString");
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -705,7 +690,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->analyzer("testString")
             ->ignore_tf("testString");
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -734,7 +718,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->score_type("none")
             ->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"));
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -763,7 +746,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->score_type("none")
             ->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"));
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -794,7 +776,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -822,7 +803,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
             ->no_match_query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"));
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -866,7 +846,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->prefix_length(3)
             ->type("testType");
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -890,7 +869,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->index("testqueries")->type("test");
         $query = Sherlock::queryBuilder()->MatchAll()->boost(0.5);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -909,7 +887,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->index("testqueries")->type("test")->from(5);
         $query = Sherlock::queryBuilder()->MatchAll();
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -928,7 +905,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $req->index("testqueries")->type("test")->size(5);
         $query = Sherlock::queryBuilder()->MatchAll();
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -1012,7 +988,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->boost_terms(3)
             ->boost(0.5);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -1058,7 +1033,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->boost_terms(3)
             ->boost(0.5);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -1087,7 +1061,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->score_mode("avg")
             ->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"));
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -1121,7 +1094,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->slop(3)
             ->max_expansions(3);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -1177,7 +1149,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->quote_analyzer("standard")
             ->quote_field_suffix(".unstemmed");
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -1242,7 +1213,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->use_dis_max(true)
             ->tie_breaker(3);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -1276,7 +1246,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->include_upper(true)
             ->boost(0.5);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -1302,7 +1271,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $query = Sherlock::queryBuilder()->Term()->field("testString")
             ->term("testString");
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -1330,7 +1298,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->terms('term', 'term2')
             ->minimum_match(3);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -1346,7 +1313,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->terms(array('term', 'term2'))
             ->minimum_match(3);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -1379,7 +1345,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->factor(3)
             ->incremental_factor(3);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -1407,7 +1372,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->value("testString")
             ->boost(0.5);
 
-        \Analog\Analog::log($query->toJSON(), \Analog\Analog::DEBUG);
 
         $req->query($query);
 
@@ -1443,8 +1407,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $sortValues[] = $sort->Field()->name("sort3")->ignore_unmapped(true);
 
         $req->sort($sortValues);
-
-        Analog::log($req->toJSON(), \Analog\Analog::DEBUG);
 
         $data = $req->toJSON();
 

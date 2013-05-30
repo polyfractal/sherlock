@@ -30,8 +30,6 @@ class Not extends \Sherlock\components\BaseComponent implements \Sherlock\compon
      */
     public function not($value)
     {
-        \Analog\Analog::log("Not->not(" . print_r($value, true) . ")", \Analog\Analog::DEBUG);
-
         if ($value instanceof \Sherlock\components\QueryInterface) {
             $this->params['not'] = $value->toArray();
         } elseif ($value instanceof \Sherlock\components\FilterInterface) {

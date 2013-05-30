@@ -11,7 +11,6 @@ namespace Sherlock\common;
  * Class Cluster - provides functionality to deal with cluster state
  * @package Sherlock\common
  */
-use Analog\Analog;
 use Guzzle\Http\Client;
 use Sherlock\common\events\RequestEvent;
 use Sherlock\common\exceptions\RuntimeException;
@@ -72,12 +71,10 @@ class Cluster
      */
     public function onRequestExecute(RequestEvent $event)
     {
-        Analog::debug("Cluster->onRequestExecute()");
         $request = $event->getRequest();
 
         //Make sure we have some nodes to choose from
         if (count($this->nodes) === 0) {
-            Analog::error("No nodes in cluster, request failed");
             throw new RuntimeException("No nodes in cluster, request failed");
         }
 
@@ -92,10 +89,7 @@ class Cluster
      */
     private function autodetect_parseNodes()
     {
-        Analog::log("Autodetecting nodes in cluster...", Analog::DEBUG);
         foreach ($this->nodes as $node) {
-            Analog::log("Contacting node: " . print_r($node, true), Analog::DEBUG);
-
             try {
                 $client   = new Client('http://' . $node['host'] . ':' . $node['port']);
                 $request  = $client->get('/_nodes/http');
@@ -115,7 +109,6 @@ class Cluster
                     //use host as key so that we don't add duplicates
                     $this->nodes[$match[1]] = $tNode;
 
-                    Analog::log("Autodetected node: " . print_r($tNode, true), Analog::INFO);
                 }
 
                 //we have the complete node list, no need to keep checking
@@ -123,7 +116,6 @@ class Cluster
 
             } catch (\Guzzle\Http\Exception\BadResponseException $e) {
                 //error with this node, continue onto the next one
-                Analog::log("Node inaccessible, trying next node in list.", Analog::DEBUG);
             }
         }
     }

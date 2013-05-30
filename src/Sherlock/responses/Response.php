@@ -7,7 +7,7 @@
 
 namespace Sherlock\responses;
 
-use Analog\Analog;
+
 use Sherlock\common\exceptions;
 
 /**
@@ -41,11 +41,9 @@ class Response
     public function __construct($response)
     {
         if (!isset($response)) {
-            Analog::error("Response must be set in constructor.");
-            throw new exceptions\BadMethodCallException("Response must be set in constructor.");
+                        throw new exceptions\BadMethodCallException("Response must be set in constructor.");
         }
 
-        Analog::debug("Response:" . print_r($response, true));
 
         $this->responseInfo  = $response->getResponseInfo();
         $this->responseError = $response->getResponseError();
@@ -124,8 +122,7 @@ class Response
      */
     private function logErrorMessage($error)
     {
-        Analog::error($error);
-    }
+            }
 
     /**
      * @throws \Sherlock\common\exceptions\ServerErrorResponseException
@@ -134,7 +131,6 @@ class Response
     private function process5xx()
     {
         $error = $this->responseData['error'];
-        Analog::error($error);
 
         if (strpos($error, "SearchPhaseExecutionException") !== false) {
             throw new exceptions\SearchPhaseExecutionException($error);

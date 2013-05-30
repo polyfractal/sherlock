@@ -36,7 +36,6 @@ class Terms extends \Sherlock\components\BaseComponent implements \Sherlock\comp
     {
 
         $args = func_get_args();
-        \Analog\Analog::log("Terms->Terms(" . print_r($args, true) . ")", \Analog\Analog::DEBUG);
 
         //single param, array of filters
         if (count($args) == 1 && is_array($args[0])) {

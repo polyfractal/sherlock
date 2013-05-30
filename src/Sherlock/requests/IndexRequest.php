@@ -8,7 +8,7 @@
 
 namespace Sherlock\requests;
 
-use Analog\Analog;
+
 use Sherlock\common\exceptions;
 use Sherlock\wrappers;
 
@@ -231,7 +231,6 @@ class IndexRequest extends Request
      */
     public function delete()
     {
-        Analog::debug("IndexRequest->execute() - " . print_r($this->params, true));
 
         if (!isset($this->params['index']))
             throw new exceptions\RuntimeException("Index cannot be empty.");
@@ -259,7 +258,6 @@ class IndexRequest extends Request
      */
     public function create()
     {
-        Analog::log("IndexRequest->create() - " . print_r($this->params, true), Analog::DEBUG);
 
         if (!isset($this->params['index']))
             throw new exceptions\RuntimeException("Index cannot be empty.");
@@ -307,11 +305,9 @@ class IndexRequest extends Request
      */
     public function updateSettings()
     {
-        Analog::log("IndexRequest->updateSettings() - " . print_r($this->params, true), Analog::DEBUG);
 
         if (!isset($this->params['index'])) {
-            Analog::log("Index cannot be empty.", Analog::ERROR);
-            throw new exceptions\RuntimeException("Index cannot be empty.");
+                        throw new exceptions\RuntimeException("Index cannot be empty.");
         }
 
         $index = implode(',', $this->params['index']);
@@ -345,26 +341,21 @@ class IndexRequest extends Request
      */
     public function updateMapping()
     {
-        Analog::log("IndexRequest->updateMapping() - " . print_r($this->params, true), Analog::DEBUG);
 
         if (!isset($this->params['index'])) {
-            Analog::log("Index cannot be empty.", Analog::ERROR);
-            throw new exceptions\RuntimeException("Index cannot be empty.");
+                        throw new exceptions\RuntimeException("Index cannot be empty.");
         }
 
         if (count($this->params['indexMappings']) > 1) {
-            Analog::log("May only update one mapping at a time.", Analog::ERROR);
-            throw new exceptions\RuntimeException("May only update one mapping at a time.");
+                        throw new exceptions\RuntimeException("May only update one mapping at a time.");
         }
 
         if (!isset($this->params['type'])) {
-            Analog::log("Type must be specified.", Analog::ERROR);
-            throw new exceptions\RuntimeException("Type must be specified.");
+                        throw new exceptions\RuntimeException("Type must be specified.");
         }
 
         if (count($this->params['type']) > 1) {
-            Analog::log("Only one type may be updated at a time.", Analog::ERROR);
-            throw new exceptions\RuntimeException("Only one type may be updated at a time.");
+                        throw new exceptions\RuntimeException("Only one type may be updated at a time.");
         }
 
         $index = implode(',', $this->params['index']);

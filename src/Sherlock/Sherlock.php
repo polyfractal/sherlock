@@ -14,17 +14,12 @@ use Sherlock\common\Cluster;
 use Sherlock\common\events\Events;
 use Sherlock\requests;
 use Sherlock\common\exceptions;
-use Analog\Analog;
 use Sherlock\wrappers;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
- * Primary object through which the ElasticSearch cluster is accessed.
- *
- * <code>
- * require 'vendor/autoload.php';
- * $sherlock = new Sherlock();
- * </code>
+ * Class Sherlock
+ * @package Sherlock
  */
 class Sherlock
 {
@@ -46,7 +41,6 @@ class Sherlock
     public function __construct($userSettings = array())
     {
         $this->initializeSherlock($userSettings);
-        $this->setupLogging();
         $this->autodetectClusterState();
     }
 
@@ -99,8 +93,6 @@ class Sherlock
      */
     public static function queryBuilder()
     {
-        Analog::log("Sherlock::query()", Analog::DEBUG);
-
         return new \Sherlock\wrappers\QueryWrapper();
     }
 
@@ -111,8 +103,6 @@ class Sherlock
      */
     public static function filterBuilder()
     {
-        Analog::log("Sherlock::filter()", Analog::DEBUG);
-
         return new wrappers\FilterWrapper();
     }
 
@@ -123,8 +113,6 @@ class Sherlock
      */
     public static function facetBuilder()
     {
-        Analog::log("Sherlock::facetBuilder()", Analog::DEBUG);
-
         return new wrappers\FacetWrapper();
     }
 
@@ -135,8 +123,6 @@ class Sherlock
      */
     public static function highlightBuilder()
     {
-        Analog::log("Sherlock::highlightBuilder()", Analog::DEBUG);
-
         return new wrappers\HighlightWrapper();
     }
 
@@ -147,8 +133,6 @@ class Sherlock
      */
     public static function indexSettingsBuilder()
     {
-        Analog::log("Sherlock::indexSettings()", Analog::DEBUG);
-
         return new wrappers\IndexSettingsWrapper();
     }
 
@@ -162,8 +146,6 @@ class Sherlock
      */
     public static function mappingBuilder($type = null)
     {
-        Analog::log("Sherlock::mappingProperty()", Analog::DEBUG);
-
         return new wrappers\MappingPropertyWrapper($type);
     }
 
@@ -173,8 +155,6 @@ class Sherlock
      */
     public static function sortBuilder()
     {
-        Analog::log("Sherlock::sortBuilder()", Analog::DEBUG);
-
         return new wrappers\SortWrapper();
     }
 
@@ -185,8 +165,6 @@ class Sherlock
      */
     public function search()
     {
-        Analog::log("Sherlock->search()", Analog::DEBUG);
-
         return new requests\SearchRequest($this->settings['event.dispatcher']);
     }
 
@@ -199,8 +177,6 @@ class Sherlock
      */
     public function raw()
     {
-        Analog::log("Sherlock->raw()", Analog::DEBUG);
-
         return new requests\RawRequest($this->settings['event.dispatcher']);
     }
 
@@ -211,8 +187,6 @@ class Sherlock
      */
     public function document()
     {
-        Analog::log("Sherlock->indexDocument()", Analog::DEBUG);
-
         return new requests\IndexDocumentRequest($this->settings['event.dispatcher']);
     }
 
@@ -223,8 +197,6 @@ class Sherlock
      */
     public function deleteDocument()
     {
-        Analog::log("Sherlock->deleteDocument()", Analog::DEBUG);
-
         return new requests\DeleteDocumentRequest($this->settings['event.dispatcher']);
     }
 
@@ -243,8 +215,6 @@ class Sherlock
             $index[] = $arg;
         }
 
-        Analog::log("Sherlock->index()", Analog::DEBUG);
-
         return new requests\IndexRequest($this->settings['event.dispatcher'], $index);
     }
 
@@ -254,8 +224,6 @@ class Sherlock
      */
     public function autodetectClusterState()
     {
-        Analog::log("Start autodetect.", Analog::DEBUG);
-
         //If we have nodes and are supposed to detect cluster settings/configuration
         if ($this->settings['cluster.autodetect'] == true) {
             $this->settings['cluster']->autodetect();
@@ -275,8 +243,6 @@ class Sherlock
      */
     public function addNode($host, $port = 9200)
     {
-        Analog::log("Sherlock->addNode(): " . print_r(func_get_args(), true), Analog::DEBUG);
-
         $this->settings['cluster']->addNode($host, $port, $this->settings['cluster.autodetect']);
 
         return $this;
@@ -330,67 +296,10 @@ class Sherlock
             // Application
             'base'               => __DIR__ . '/',
             'mode'               => 'development',
-            'log.enabled'        => false,
-            'log.level'          => 'error',
-            'log.handler'        => null,
-            'log.file'           => '../sherlock.log',
             'event.dispatcher'   => new EventDispatcher(),
             'cluster'            => null,
             'cluster.autodetect' => false,
         );
-    }
-
-
-    /**
-     * Setup Analog logger
-     */
-    private function setupLogging()
-    {
-
-        $level = Analog::DEBUG;
-
-        switch ($this->settings['log.level']) {
-            case 'debug':
-                $level = Analog::DEBUG;
-                break;
-            case 'info':
-                $level = Analog::INFO;
-                break;
-            case 'notice':
-                $level = Analog::NOTICE;
-                break;
-            case 'warning':
-                $level = Analog::WARNING;
-                break;
-            case 'error':
-                $level = Analog::ERROR;
-                break;
-            case 'critical':
-                $level = Analog::CRITICAL;
-                break;
-            case 'alert':
-                $level = Analog::ALERT;
-                break;
-        }
-
-        //if logging is disabled, use the null Analog logger
-        if ($this->settings['log.enabled'] == false) {
-            $this->settings['log.handler'] = \Analog\Handler\Null::init();
-        } else {
-            //if logging is enabled but no handler was specified by the user
-            //use the default file logger
-            if ($this->settings['log.handler'] === null) {
-                $this->settings['log.handler'] = \Analog\Handler\Threshold::init(
-                    \Analog\Handler\File::init($this->settings['base'] . $this->settings['log.file']),
-                    $level
-                );
-            }
-        }
-        Analog::handler($this->settings['log.handler']);
-
-        Analog::log("--------------------------------------------------------", Analog::ALERT);
-        Analog::log("Logging setup at " . date("Y-m-d H:i:s.u"), Analog::INFO);
-        Analog::log("Settings: " . print_r($this->settings, true), Analog::DEBUG);
     }
 
 }

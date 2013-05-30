@@ -35,8 +35,7 @@ class MappingPropertyWrapper
     public function __construct($type)
     {
         if (!isset($type)) {
-            \Analog\Analog::log("Type must be set for mapping property.", \Analog\Analog::ERROR);
-            throw new \Sherlock\common\exceptions\BadMethodCallException("Type must be set for mapping property");
+                        throw new \Sherlock\common\exceptions\BadMethodCallException("Type must be set for mapping property");
         }
 
         $this->type = $type;

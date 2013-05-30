@@ -7,7 +7,7 @@
  */
 namespace Sherlock\requests;
 
-use Analog\Analog;
+
 use Sherlock\common\exceptions;
 use Sherlock\components;
 use Sherlock\components\queries;
@@ -91,16 +91,13 @@ class RawRequest extends Request
      */
     public function execute()
     {
-        Analog::debug("RawRequest->execute() - " . print_r($this->params, true));
 
         if (!isset($this->params['uri'])) {
-            Analog::error("URI is required for RawRequest");
-            throw new exceptions\RuntimeException("URI is required for RawRequest");
+                        throw new exceptions\RuntimeException("URI is required for RawRequest");
         }
 
         if (!isset($this->params['method'])) {
-            Analog::error("Method is required for RawRequest");
-            throw new exceptions\RuntimeException("Method is required for RawRequest");
+                        throw new exceptions\RuntimeException("Method is required for RawRequest");
         }
 
         $command = new Command();
