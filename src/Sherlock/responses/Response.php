@@ -90,7 +90,6 @@ class Response
     private function ifIndexMissingThrowException()
     {
         if (strpos($this->responseData['error'], "IndexMissingException") !== false) {
-            $this->logErrorMessage($this->responseData['error']);
             throw new exceptions\IndexMissingException($this->responseData['error']);
         }
     }
@@ -102,7 +101,6 @@ class Response
     private function ifIndexExistsThrowException()
     {
         if (strpos($this->responseData['error'], "IndexAlreadyExistsException") !== false) {
-            $this->logErrorMessage($this->responseData['error']);
             throw new exceptions\IndexAlreadyExistsException($this->responseData['error']);
         }
     }
@@ -113,16 +111,9 @@ class Response
      */
     private function unknownErrorFound()
     {
-        $this->logErrorMessage($this->responseData['error']);
         throw new exceptions\ClientErrorResponseException($this->responseData['error']);
     }
 
-    /**
-     * @param string $error
-     */
-    private function logErrorMessage($error)
-    {
-            }
 
     /**
      * @throws \Sherlock\common\exceptions\ServerErrorResponseException
