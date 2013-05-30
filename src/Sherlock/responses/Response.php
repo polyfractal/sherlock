@@ -35,7 +35,6 @@ class Response
     /**
      * @param  \Sherlock\common\tmp\RollingCurl\Request $response
      *
-     * @throws \Sherlock\common\exceptions\ServerErrorResponseException
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      */
     public function __construct($response)
