@@ -7,24 +7,31 @@
 
 namespace Sherlock\common;
 
-/**
- * Class Cluster - provides functionality to deal with cluster state
- * @package Sherlock\common
- */
-use Guzzle\Http\Client;
 use Sherlock\common\events\RequestEvent;
 use Sherlock\common\exceptions\RuntimeException;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
+/**
+ * Class Cluster
+ * @package Sherlock\common
+ */
 class Cluster
 {
+    /**
+     * @var array
+     */
     private $nodes = array();
+
+    /**
+     * @var EventDispatcher
+     */
     private $dispatcher;
 
 
     /**
-     * @param $dispatcher
+     * @param EventDispatcher $dispatcher
      */
-    public function __construct($dispatcher)
+    public function __construct(EventDispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
     }
