@@ -341,49 +341,6 @@ class Sherlock
     }
 
 
-
-    /**
-     * Recursively scans a directory and returns the files
-     *
-     * @param $dir Path to directory to scan
-     *
-     * @throws common\exceptions\RuntimeException
-     * @throws common\exceptions\BadMethodCallException
-     * @return array
-     */
-    /*
-    private function directoryScan($dir)
-    {
-        if (!isset($dir))
-             throw new exceptions\BadMethodCallException("Directory path cannot be empty");
-
-        if (!is_readable($dir))
-            throw new exceptions\RuntimeException("Directory is not readable.");
-
-        $files = Array();
-        $dir = realpath($dir);
-        $objects = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir,\FilesystemIterator::SKIP_DOTS ));
-
-        foreach ($objects as $entry => $object) {
-
-            $entry = str_replace($dir, '', $entry);
-
-            $entry = ltrim($entry,'\\/');
-
-            $filetype = pathinfo($entry, PATHINFO_EXTENSION);
-            if (in_array(strtolower($filetype), $this->settings['templates.extension'])) {
-                $fullPath = $entry;
-                $entry = rtrim(str_replace($this->settings['templates.extension'],"",$entry), '.');
-                $files[$entry] = $fullPath;
-            }
-
-        }
-
-        return $files;
-
-    }
-    */
-
     /**
      * Setup Analog logger
      */
