@@ -41,24 +41,35 @@ class Response
     public function __construct($response)
     {
         if (!isset($response)) {
-                        throw new exceptions\BadMethodCallException("Response must be set in constructor.");
+            throw new exceptions\BadMethodCallException("Response must be set in constructor.");
         }
 
+        $this->parseResponse($response);
+        $this->checkForErrorsInResponse();
 
+    }
+
+
+    /**
+     * @param \Sherlock\common\tmp\RollingCurl\Request $response
+     */
+    private function parseResponse($response)
+    {
         $this->responseInfo  = $response->getResponseInfo();
         $this->responseError = $response->getResponseError();
-
         $this->responseData = json_decode($response->getResponseText(), true);
 
+    }
+
+
+    private function checkForErrorsInResponse()
+    {
         if ($this->responseInfo['http_code'] >= 400 && $this->responseInfo['http_code'] < 500) {
             $this->process4xx();
         } elseif ($this->responseInfo['http_code'] >= 500) {
             $this->process5xx();
         }
-
-
     }
-
 
     /**
      * @throws \Exception
@@ -69,7 +80,7 @@ class Response
             $this->ifDocumentMissingThrowException();
             $this->ifIndexMissingThrowException();
             $this->ifIndexExistsThrowException();
-            $this->unknownErrorFound();
+            $this->unknownClientErrorFound();
         } catch (\Exception $exception) {
             throw $exception;
         }
@@ -112,25 +123,43 @@ class Response
     /**
      * @throws \Sherlock\common\exceptions\ClientErrorResponseException
      */
-    private function unknownErrorFound()
+    private function unknownClientErrorFound()
     {
         throw new exceptions\ClientErrorResponseException($this->responseData['error']);
     }
 
 
     /**
-     * @throws \Sherlock\common\exceptions\ServerErrorResponseException
-     * @throws \Sherlock\common\exceptions\SearchPhaseExecutionException
+     * @throws \Exception
      */
     private function process5xx()
     {
-        $error = $this->responseData['error'];
-
-        if (strpos($error, "SearchPhaseExecutionException") !== false) {
-            throw new exceptions\SearchPhaseExecutionException($error);
-        } else {
-            throw new exceptions\ServerErrorResponseException($error);
+        try {
+            $this->ifSearchPhaseErrorThrowException();
+            $this->unknownServerErrorFound();
+        } catch (\Exception $exception) {
+            throw $exception;
         }
 
+    }
+
+
+    /**
+     * @throws \Sherlock\common\exceptions\SearchPhaseExecutionException
+     */
+    private function ifSearchPhaseErrorThrowException()
+    {
+        if (strpos($this->responseData['error'], "SearchPhaseExecutionException") !== false) {
+            throw new exceptions\SearchPhaseExecutionException($this->responseData['error']);
+        }
+    }
+
+
+    /**
+     * @throws \Sherlock\common\exceptions\ServerErrorResponseException
+     */
+    private function unknownServerErrorFound()
+    {
+        throw new exceptions\ServerErrorResponseException($this->responseData['error']);
     }
 }
