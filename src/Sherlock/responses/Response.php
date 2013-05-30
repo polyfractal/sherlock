@@ -61,17 +61,20 @@ class Response
 
 
     /**
-     * @throws \Sherlock\common\exceptions\ClientErrorResponseException
+     * @throws \Exception
      */
     private function process4xx()
     {
-        $this->ifDocumentMissingThrowException();
-        $this->ifIndexMissingThrowException();
-        $this->ifIndexExistsThrowException();
-        $this->unknownErrorFound();
+        try {
+            $this->ifDocumentMissingThrowException();
+            $this->ifIndexMissingThrowException();
+            $this->ifIndexExistsThrowException();
+            $this->unknownErrorFound();
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
 
     }
-
 
     /**
      * @throws \Sherlock\common\exceptions\DocumentMissingException
