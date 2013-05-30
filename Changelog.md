@@ -11,7 +11,9 @@ Master
  - Feature: Add boost param to Term Query
  - Feature: Add fields param to Search request
  - Feature: Add GeoPoint mappings
-
+ - In-progress: Refactor components to use static methods
+ - In-progress: Refactor components to set only arguments that have been sepcified (no more defaults)
+ - Fix: General refactoring
 
 0.1.12
 ------
