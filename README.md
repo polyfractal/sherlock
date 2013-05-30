@@ -198,6 +198,6 @@ Philosophy
 ----------
 _Sherlock_ aims to continue the precendent set by ElasticSearch: work out of the box with minimal configuration and provide a simple interface.
 
-_Sherlock's_ API uses a "Fluid" interface that relies heavily on method chaining and type hinting for brevity.  The developer should never need to stop and look up a class name to instantiate, or dig through docs to remember which class accepts which arguments.
+_Sherlock's_ API uses a "fluent" interface that relies heavily on method chaining and type hinting for brevity.  The developer should never need to stop and look up a class name to instantiate, or dig through docs to remember which class accepts which arguments.
 
 Secondary to the interface comes _Sherlock_ developer sanity: reduce code as much as possible.  Rather than write a million getter/setter functions to expose ElasticSearch's various parameters, _Sherlock_ relies heavily upon templates, auto-generated class stubs, magic methods and PHPdoc.
