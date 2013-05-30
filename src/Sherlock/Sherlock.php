@@ -45,21 +45,9 @@ class Sherlock
      */
     public function __construct($userSettings = array())
     {
-
-        $this->settings = array_merge(static::getDefaultSettings(), $userSettings);
-
-        //Build a cluster and inject our dispatcher
-        $this->settings['cluster'] = new Cluster($this->settings['event.dispatcher']);
-
-        //Connect Cluster's listener to the dispatcher
-        $eventCallback = array($this->settings['cluster'], 'onRequestExecute');
-        $this->settings['event.dispatcher']->addListener(Events::REQUEST_PREEXECUTE, $eventCallback);
-
-        //setup logging
+        $this->initializeSherlock($userSettings);
         $this->setupLogging();
-        Analog::log("Settings: " . print_r($this->settings, true), Analog::DEBUG);
-
-        $this->autodetect();
+        $this->autodetectClusterState();
     }
 
 
@@ -104,27 +92,6 @@ class Sherlock
     {
         spl_autoload_register(__NAMESPACE__ . "\\Sherlock::autoload");
     }
-
-
-    /**
-     * @return array Default settings
-     */
-    private static function getDefaultSettings()
-    {
-        return array(
-            // Application
-            'base'               => __DIR__ . '/',
-            'mode'               => 'development',
-            'log.enabled'        => false,
-            'log.level'          => 'error',
-            'log.handler'        => null,
-            'log.file'           => '../sherlock.log',
-            'event.dispatcher'   => new EventDispatcher(),
-            'cluster'            => null,
-            'cluster.autodetect' => false,
-        );
-    }
-
 
     /**
      * Query builder, used to return a QueryWrapper through which a Query component can be selected
@@ -285,7 +252,7 @@ class Sherlock
     /**
      * Autodetects various properties of the cluster and indices
      */
-    public function autodetect()
+    public function autodetectClusterState()
     {
         Analog::log("Start autodetect.", Analog::DEBUG);
 
@@ -323,6 +290,56 @@ class Sherlock
     {
         return $this->settings;
     }
+
+
+    /**
+     * @param $userSettings
+     */
+    private function initializeSherlock($userSettings)
+    {
+        $this->mergeUserSettingsWithDefault($userSettings);
+        $this->initializeCluster();
+        $this->initializeEventDispatcher();
+    }
+
+    /**
+     * @param array $userSettings
+     */
+    private function mergeUserSettingsWithDefault($userSettings)
+    {
+        $this->settings = array_merge($this->getDefaultSettings(), $userSettings);
+    }
+
+    private function initializeCluster()
+    {
+        $this->settings['cluster'] = new Cluster($this->settings['event.dispatcher']);
+    }
+
+    private function initializeEventDispatcher()
+    {
+        $eventCallback = array($this->settings['cluster'], 'onRequestExecute');
+        $this->settings['event.dispatcher']->addListener(Events::REQUEST_PREEXECUTE, $eventCallback);
+    }
+
+    /**
+     * @return array Default settings
+     */
+    private function getDefaultSettings()
+    {
+        return array(
+            // Application
+            'base'               => __DIR__ . '/',
+            'mode'               => 'development',
+            'log.enabled'        => false,
+            'log.level'          => 'error',
+            'log.handler'        => null,
+            'log.file'           => '../sherlock.log',
+            'event.dispatcher'   => new EventDispatcher(),
+            'cluster'            => null,
+            'cluster.autodetect' => false,
+        );
+    }
+
 
 
     /**
@@ -372,6 +389,7 @@ class Sherlock
      */
     private function setupLogging()
     {
+
         $level = Analog::DEBUG;
 
         switch ($this->settings['log.level']) {
@@ -415,6 +433,7 @@ class Sherlock
 
         Analog::log("--------------------------------------------------------", Analog::ALERT);
         Analog::log("Logging setup at " . date("Y-m-d H:i:s.u"), Analog::INFO);
+        Analog::log("Settings: " . print_r($this->settings, true), Analog::DEBUG);
     }
 
 }
