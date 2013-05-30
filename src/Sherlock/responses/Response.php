@@ -63,29 +63,69 @@ class Response
 
 
     /**
-     * @throws \Sherlock\common\exceptions\DocumentMissingException
-     * @throws \Sherlock\common\exceptions\IndexAlreadyExistsException
      * @throws \Sherlock\common\exceptions\ClientErrorResponseException
-     * @throws \Sherlock\common\exceptions\IndexMissingException
      */
     private function process4xx()
     {
-        if ($this->responseData['found'] == false) {
-            throw new exceptions\DocumentMissingException("Document is missing from the index");
-        } else {
-            $error = $this->responseData['error'];
-            Analog::error($error);
+        $this->ifDocumentMissingThrowException();
+        $this->ifIndexMissingThrowException();
+        $this->ifIndexExistsThrowException();
+        $this->unknownErrorFound();
 
-            if (strpos($error, "IndexMissingException") !== false) {
-                throw new exceptions\IndexMissingException($error);
-            } elseif (strpos($error, "IndexAlreadyExistsException") !== false) {
-                throw new exceptions\IndexAlreadyExistsException($error);
-            } else {
-                throw new exceptions\ClientErrorResponseException($error);
-            }
+    }
+
+
+    /**
+     * @throws \Sherlock\common\exceptions\DocumentMissingException
+     */
+    private function ifDocumentMissingThrowException()
+    {
+        if (isset($this->responseData['found']) && $this->responseData['found'] === false) {
+            throw new exceptions\DocumentMissingException("Document is missing from the index");
         }
     }
 
+
+    /**
+     * @throws \Sherlock\common\exceptions\IndexMissingException
+     */
+    private function ifIndexMissingThrowException()
+    {
+        if (strpos($this->responseData['error'], "IndexMissingException") !== false) {
+            $this->logErrorMessage($this->responseData['error']);
+            throw new exceptions\IndexMissingException($this->responseData['error']);
+        }
+    }
+
+
+    /**
+     * @throws \Sherlock\common\exceptions\IndexAlreadyExistsException
+     */
+    private function ifIndexExistsThrowException()
+    {
+        if (strpos($this->responseData['error'], "IndexAlreadyExistsException") !== false) {
+            $this->logErrorMessage($this->responseData['error']);
+            throw new exceptions\IndexAlreadyExistsException($this->responseData['error']);
+        }
+    }
+
+
+    /**
+     * @throws \Sherlock\common\exceptions\ClientErrorResponseException
+     */
+    private function unknownErrorFound()
+    {
+        $this->logErrorMessage($this->responseData['error']);
+        throw new exceptions\ClientErrorResponseException($this->responseData['error']);
+    }
+
+    /**
+     * @param string $error
+     */
+    private function logErrorMessage($error)
+    {
+        Analog::error($error);
+    }
 
     /**
      * @throws \Sherlock\common\exceptions\ServerErrorResponseException
