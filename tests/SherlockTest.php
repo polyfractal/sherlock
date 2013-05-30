@@ -71,7 +71,7 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedData, $data);
 
         //Now provide an array hashmap instead of using the ORM, to make sure manual creation works
-        $manualData = array("field" => "field1", "term" => "town");
+        $manualData = array("field" => "field1", "value" => "town");
         $req->query(Sherlock::queryBuilder()->Term($manualData));
         $data = $req->toJSON();
         $this->assertEquals($expectedData, $data);
