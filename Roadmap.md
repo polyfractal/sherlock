@@ -3,6 +3,18 @@ Roadmap
 
 Sherlock development has begun to run into growing pains as more advanced features are added.  What originally started as a hobby project is quickly being used by multiple people and companies.  It is important that feature additions are balanced by robust internal code organization, proper documentation and a full test suite.
 
+0.2 Roadmap
+-----------
+ - **First class Facade pattern**: Sherlock is currently using a half-baked Facade pattern, but its kludgy and inconsistent (and clutters up the main class).  Builder methods will be moved into their own Builder class, accessible by statics for convenience.  These will simply be a facade for the underlying component objects.  Taking a lot of inspiration from Laravel here
+
+ - **Dependency injection makeover**: DI is used sporadically in Sherlock, but there is also a lot of hard-coding and just plain weird shit (EventDispatcher usage...I'm looking at you).  All of this needs to be refactored into a simple DIC, probably Pimple.  This will also make it easier to configure Sherlock, and instead of a gross parameter array you can simply operate on the DIC.  Consistent DI is needed to make Sherlock testable.
+
+ - **Syntax**: generally make the syntax consistent and fluent.  Singular/plural methods.  Make constructors consistent (e.g. everyone can use array and inline)
+
+
+
+General, long-term Roadmap
+--------------------------
 This is a rough roadmap that Sherlock will follow.  No deadlines, but a general overview of what is coming down the pipeline.  If you have questions or comments, please send a message to the mailing list.
 
  - Transport refactoring
