@@ -76,10 +76,11 @@ class CustomFiltersScore extends components\BaseComponent implements QueryInterf
     private function parseFiltersArray($arg)
     {
         if (isset($arg['filter']) === true && isset($arg['boost']) === true) {
-           $this->filter($arg['filter'], $arg['boost']);
+            $this->filter($arg['filter'], $arg['boost']);
         } elseif (is_array($arg) === true) {
-            foreach ($arg as $a)
-            $this->parseFiltersArray($a);
+            foreach ($arg as $a) {
+                $this->parseFiltersArray($a);
+            }
         }
     }
 
@@ -87,6 +88,7 @@ class CustomFiltersScore extends components\BaseComponent implements QueryInterf
     /**
      * @param components\FilterInterface $filter
      * @param                            $boost
+     * @return $this
      */
     public function filter(components\FilterInterface $filter, $boost)
     {
