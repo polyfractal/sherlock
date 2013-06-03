@@ -47,6 +47,12 @@ class SearchFacade
         return new SearchWhereFacade($this->transport, $this->responseFactory, $query);
     }
 
+
+    /**
+     * @param QueryInterface $query
+     *
+     * @return SearchQueryFacade
+     */
     public function query(QueryInterface $query)
     {
         return new SearchQueryFacade($this->transport, $this->responseFactory, $query);
