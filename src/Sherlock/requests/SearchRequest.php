@@ -26,19 +26,19 @@ abstract class SearchRequest extends Request
     /** @var  array */
     protected $type;
 
-    /** @var  QueryInterface */
+    /** @var  array */
     protected $query;
 
-    /** @var  FilterInterface */
+    /** @var  array */
     protected $filter;
 
-    /** @var  FacetInterface */
+    /** @var  array */
     protected $facet;
 
-    /** @var  SortInterface */
+    /** @var  array */
     protected $sort;
 
-    /** @var  HighlightInterface */
+    /** @var  array */
     protected $highlighter;
 
     /** @var  array */
@@ -71,6 +71,89 @@ abstract class SearchRequest extends Request
      */
     abstract protected function getParamArray();
 
+
+    /**
+     * @param string $index
+     *
+     * @return $this
+     */
+    public function index($index)
+    {
+        $this->index[] = $index;
+        return $this;
+    }
+
+
+    /**
+     * @param string[] $indices
+     *
+     * @return $this
+     */
+    public function indices($indices)
+    {
+        $this->index = $indices;
+        return $this;
+    }
+
+
+    /**
+     * @param string $type
+     *
+     * @return $this
+     */
+    public function type($type)
+    {
+        $this->type[] = $type;
+        return $this;
+    }
+
+
+    /**
+     * @param string[] $types
+     *
+     * @return $this
+     */
+    public function types($types)
+    {
+        $this->type = $types;
+        return $this;
+    }
+
+
+    /**
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function from($value)
+    {
+        $this->from = $value;
+        return $this;
+    }
+
+
+    /**
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function size($value)
+    {
+        $this->size = $value;
+        return $this;
+    }
+
+
+    /**
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function timeout($value)
+    {
+        $this->timeout = $value;
+        return $this;
+    }
 
     /**
      * @return array

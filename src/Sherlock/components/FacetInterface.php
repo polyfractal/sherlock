@@ -12,4 +12,5 @@ namespace Sherlock\components;
  */
 interface FacetInterface
 {
+    public function toArray();
 }

@@ -22,82 +22,68 @@ use Sherlock\responses\ResponseFactory;
  */
 class SearchQueryFacade extends SearchRequest
 {
-
+    /**
+     * @param Transport       $transport
+     * @param ResponseFactory $responseFactory
+     * @param QueryInterface  $query
+     */
     public function __construct(Transport $transport, ResponseFactory $responseFactory, QueryInterface $query)
     {
-        $this->query = $query;
+        $this->query = $query->toArray();
 
         parent::__construct($transport, $responseFactory);
 
     }
 
+
+    /**
+     * @param FilterInterface $filter
+     *
+     * @return $this
+     */
     public function filter(FilterInterface $filter)
     {
-        $this->filter = $filter;
+        $this->filter = $filter->toArray();
         return $this;
     }
 
+
+    /**
+     * @param FacetInterface $facet
+     *
+     * @return $this
+     */
     public function facet(FacetInterface $facet)
     {
-        $this->facet = $facet;
+        $this->facet = $facet->toArray();
         return $this;
     }
 
+
+    /**
+     * @param SortInterface $sort
+     *
+     * @return $this
+     */
     public function sort(SortInterface $sort)
     {
-        $this->sort = $sort;
-        return $this;
-    }
-
-    public function from($value)
-    {
-        $this->from = $value;
-        return $this;
-    }
-
-    public function size($value)
-    {
-        $this->size = $value;
-        return $this;
-    }
-
-    public function timeout($value)
-    {
-        $this->timeout = $value;
-        return $this;
-    }
-
-    public function index($index)
-    {
-        $this->index[] = $index;
-        return $this;
-    }
-
-    public function indices($indices)
-    {
-        $this->index = $indices;
-        return $this;
-    }
-
-    public function type($type)
-    {
-        $this->type[] = $type;
-        return $this;
-    }
-
-    public function types($types)
-    {
-        $this->type = $types;
+        $this->sort = $sort->toArray();
         return $this;
     }
 
 
-
+    /**
+     * @return array
+     */
     protected function getQueryArray()
     {
-        return $this->query->toArray();
+        return $this->query;
     }
 
+
+    /**
+     * @return array
+     */
     protected function getParamArray()
     {
         $params = array('size', 'from');

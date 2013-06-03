@@ -52,8 +52,14 @@ class SearchFacade
         return new SearchQueryFacade($this->transport, $this->responseFactory, $query);
     }
 
+
+    /**
+     * @param array $query
+     *
+     * @return SearchRawFacade
+     */
     public function raw($query)
     {
-
+        return new SearchRawFacade($this->transport, $this->responseFactory, $query);
     }
 }
