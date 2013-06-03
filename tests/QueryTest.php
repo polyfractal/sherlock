@@ -356,37 +356,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @covers sherlock\Sherlock\components\queries\CustomFiltersScore::query
-     * @covers sherlock\Sherlock\components\queries\CustomFiltersScore::filters
-     * @covers sherlock\Sherlock\components\queries\CustomFiltersScore::score_mode
-     * @covers sherlock\Sherlock\components\queries\CustomFiltersScore::max_boost
-     * @covers sherlock\Sherlock\requests\SearchRequest::query
-     * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
-     */
-    public function testCustomFiltersScore()
-    {
-        $req = $this->object->search();
-        $req->index("testqueries")->type("test");
-        $query = Sherlock::queryBuilder()->CustomFiltersScore()->query(
-            Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary")
-        )
-            ->filters(Sherlock::filterBuilder()->Term()->field("auxillary")->term("auxillary"))
-            ->score_mode("first")
-            ->max_boost(0.5);
-
-
-        $req->query($query);
-
-        $data         = $req->toJSON();
-        $expectedData = '{"query":{"custom_filters_score":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"filters":[{"filter":{"term":{"auxillary":"auxillary","_cache":true}}}],"score_mode":"first","max_boost":0.5}}}';
-        $this->assertEquals($expectedData, $data);
-
-        $resp = $req->execute();
-
-    }
-
-
-    /**
      * @covers sherlock\Sherlock\components\queries\CustomScore::query
      * @covers sherlock\Sherlock\components\queries\CustomScore::params
      * @covers sherlock\Sherlock\components\queries\CustomScore::script

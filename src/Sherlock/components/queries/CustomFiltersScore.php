@@ -8,6 +8,7 @@
  */
 namespace Sherlock\components\queries;
 
+use Sherlock\common\exceptions\InvalidArgumentException;
 use Sherlock\components;
 use Sherlock\components\QueryInterface;
 
@@ -53,20 +54,46 @@ class CustomFiltersScore extends components\BaseComponent implements QueryInterf
     }
 
     /**
-     * @param \Sherlock\components\FilterInterface | array $filter,... - one or more Filters can be specified individually, or an array of filters
+     * @param \Sherlock\components\FilterInterface[]
      *
      * @return CustomFiltersScore
      */
     public function filters($filter)
     {
-        $args = $this->normalizeFuncArgs(func_get_args());
+        $args = func_get_args();
 
         foreach ($args as $arg) {
-            if ($arg instanceof \Sherlock\components\FilterInterface) {
-                $this->params['filters'][] = array("filter" => $arg->toArray());
-            }
+            $this->parseFiltersArray($arg);
         }
 
+        return $this;
+    }
+
+
+    /**
+     * @param $arg
+     */
+    private function parseFiltersArray($arg)
+    {
+        if (isset($arg['filter']) === true && isset($arg['boost']) === true) {
+           $this->filter($arg['filter'], $arg['boost']);
+        } elseif (is_array($arg) === true) {
+            foreach ($arg as $a)
+            $this->parseFiltersArray($a);
+        }
+    }
+
+
+    /**
+     * @param components\FilterInterface $filter
+     * @param                            $boost
+     */
+    public function filter(components\FilterInterface $filter, $boost)
+    {
+        $this->params['filters'][] = array(
+            "filter" => $filter->toArray(),
+            'boost' => $boost
+        );
         return $this;
     }
 
