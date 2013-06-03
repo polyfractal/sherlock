@@ -1,15 +1,15 @@
 <?php
 
-namespace Sherlock\wrappers;
+namespace Sherlock\facades;
 
 /**
- * Class HighlightWrapper
- * @package Sherlock\wrappers
+ * Class HighlightFacade
+ * @package Sherlock\facades
  *
  *
  * @method \Sherlock\components\highlights\Highlight Highlight() Highlight()
  */
-class HighlightWrapper
+class HighlightFacade
 {
     /**
      * @var \Sherlock\components\HighlightInterface

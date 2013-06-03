@@ -4,7 +4,7 @@
  * Date: 2/19/13
  * Time: 9:21 PM
  */
-namespace Sherlock\wrappers;
+namespace Sherlock\facades;
 
 use Sherlock\components\filters;
 
@@ -34,7 +34,7 @@ use Sherlock\components\filters;
  * @method \Sherlock\components\filters\Terms Terms() Terms()
  * @method \Sherlock\components\filters\Type Type() Type()
  */
-class FilterWrapper
+class FilterFacade
 {
     /**
      * @var \Sherlock\components\FilterInterface

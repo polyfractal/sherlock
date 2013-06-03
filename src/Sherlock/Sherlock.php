@@ -14,7 +14,7 @@ use Sherlock\common\Cluster;
 use Sherlock\common\events\Events;
 use Sherlock\requests;
 use Sherlock\common\exceptions;
-use Sherlock\wrappers;
+use Sherlock\facades;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -87,75 +87,66 @@ class Sherlock
         spl_autoload_register(__NAMESPACE__ . "\\Sherlock::autoload");
     }
 
-    /**
-     * Query builder, used to return a QueryWrapper through which a Query component can be selected
-     * @return wrappers\QueryWrapper
-     */
-    public static function queryBuilder()
-    {
-        return new \Sherlock\wrappers\QueryWrapper();
-    }
-
 
     /**
-     * Filter builder, used to return a FilterWrapper through which a Filter component can be selected
-     * @return wrappers\FilterWrapper
+     * Filter builder, used to return a FilterFacade through which a Filter component can be selected
+     * @return facades\FilterFacade
      */
     public static function filterBuilder()
     {
-        return new wrappers\FilterWrapper();
+        return new facades\FilterFacade();
     }
 
 
     /**
-     * Facet builder, used to return a FilterWrapper through which a Filter component can be selected
-     * @return wrappers\FacetWrapper
+     * Facet builder, used to return a FilterFacade through which a Filter component can be selected
+     * @return facades\FacetFacade
      */
     public static function facetBuilder()
     {
-        return new wrappers\FacetWrapper();
+        return new facades\FacetFacade();
     }
 
 
     /**
-     * Highlight builder, used to return a HighlightWrapper through which a Highlight component can be selected
-     * @return wrappers\HighlightWrapper
+     * Highlight builder, used to return a HighlightFacade through which a Highlight component can be selected
+     * @return facades\HighlightFacade
      */
     public static function highlightBuilder()
     {
-        return new wrappers\HighlightWrapper();
+        return new facades\HighlightFacade();
     }
 
 
     /**
-     * Index builder, used to return a IndexWrapper through which an Index component can be selected
-     * @return wrappers\IndexSettingsWrapper
+     * Index builder, used to return a IndexFacade through which an Index component can be selected
+     * @return facades\IndexSettingsFacade
      */
     public static function indexSettingsBuilder()
     {
-        return new wrappers\IndexSettingsWrapper();
+        return new facades\IndexSettingsFacade();
     }
 
 
     /**
-     * Mapping builder, used to return a MappingWrapper through which a Mapping component can be selected
+     * Mapping builder, used to return a MappingFacade through which a Mapping component can be selected
      *
      * @param  null|string                     $type
      *
-     * @return wrappers\MappingPropertyWrapper
+     * @return facades\MappingPropertyFacade
      */
     public static function mappingBuilder($type = null)
     {
-        return new wrappers\MappingPropertyWrapper($type);
+        return new facades\MappingPropertyFacade($type);
     }
 
 
     /**
-     * @return wrappers\SortWrapper
+     * @return facades\SortFacade
      */
     public static function sortBuilder()
     {
-        return new wrappers\SortWrapper();
+        return new facades\SortFacade();
     }
 
 

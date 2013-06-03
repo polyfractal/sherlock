@@ -5,14 +5,14 @@
  * Time: 8:07 PM
  */
 
-namespace Sherlock\wrappers;
+namespace Sherlock\facades;
 
 use Sherlock\components\sorts;
 
 /**
  * @method \Sherlock\components\sorts\Field Field() Field()
  */
-class SortWrapper
+class SortFacade
 {
     /**
      * @var \Sherlock\components\SortInterface

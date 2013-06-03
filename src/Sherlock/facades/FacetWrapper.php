@@ -5,11 +5,11 @@
  * Time: 6:54 AM
  */
 
-namespace Sherlock\wrappers;
+namespace Sherlock\facades;
 
 /**
- * Class FacetWrapper
- * @package Sherlock\wrappers
+ * Class FacetFacade
+ * @package Sherlock\facades
  *
  *
  * @method \Sherlock\components\facets\Terms Terms() Terms()
@@ -22,7 +22,7 @@ namespace Sherlock\wrappers;
  * @method \Sherlock\components\facets\TermsStats TermsStats() TermsStats()
  * @method \Sherlock\components\facets\GeoDistance GeoDistance() GeoDistance()
  */
-class FacetWrapper
+class FacetFacade
 {
     /**
      * @var \Sherlock\components\FacetInterface

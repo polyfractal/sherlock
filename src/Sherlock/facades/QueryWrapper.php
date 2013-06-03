@@ -4,7 +4,7 @@
  * Date: 2/10/13
  * Time: 1:05 PM
  */
-namespace Sherlock\wrappers;
+namespace Sherlock\facades;
 
 use Sherlock\components\queries;
 
@@ -40,7 +40,7 @@ use Sherlock\components\queries;
  * @method \Sherlock\components\queries\Wildcard Wildcard() Wildcard()
  * @method \Sherlock\components\queries\Raw Raw() Raw()
  */
-class QueryWrapper
+class QueryFacade
 {
     /**
      * @var \Sherlock\components\QueryInterface

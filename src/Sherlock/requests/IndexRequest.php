@@ -10,7 +10,7 @@ namespace Sherlock\requests;
 
 
 use Sherlock\common\exceptions;
-use Sherlock\wrappers;
+use Sherlock\facades;
 
 /**
  * IndexRequest manages index-specific operations
@@ -193,7 +193,7 @@ class IndexRequest extends Request
     /**
      * Set the index settings, used predominantly for index creation
      *
-     * @param  array|\sherlock\wrappers\IndexSettingsWrapper      $settings
+     * @param  array|\Sherlock\facades\IndexSettingsFacade      $settings
      * @param  bool                                               $merge
      *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
@@ -201,12 +201,12 @@ class IndexRequest extends Request
      */
     public function settings($settings, $merge = true)
     {
-        if ($settings instanceof \Sherlock\wrappers\IndexSettingsWrapper)
+        if ($settings instanceof \Sherlock\facades\IndexSettingsFacade)
             $newSettings = $settings->toArray();
         else if (is_array($settings))
             $newSettings = $settings;
         else
-            throw new \Sherlock\common\exceptions\BadMethodCallException("Unknown parameter provided to settings(). Must be array of settings or IndexSettingsWrapper.");
+            throw new \Sherlock\common\exceptions\BadMethodCallException("Unknown parameter provided to settings(). Must be array of settings or IndexSettingsFacade.");
 
         if ($merge)
             $this->params['indexSettings'] = array_merge($this->params['indexSettings'], $newSettings);

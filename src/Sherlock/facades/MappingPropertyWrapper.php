@@ -5,7 +5,7 @@
  * Time: 8:12 PM
  */
 
-namespace Sherlock\wrappers;
+namespace Sherlock\facades;
 
 use Sherlock\common\exceptions;
 
@@ -18,7 +18,7 @@ use Sherlock\common\exceptions;
  * @method \Sherlock\components\mappings\Object Object() Object()
  * @method \Sherlock\components\mappings\Analyzer Analyzer() Analyzer()
  */
-class MappingPropertyWrapper
+class MappingPropertyFacade
 {
     /**
      * @var \Sherlock\components\MappingInterface
