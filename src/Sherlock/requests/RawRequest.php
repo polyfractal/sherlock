@@ -3,7 +3,7 @@
  * User: Zachary Tong
  * Date: 4/30/13
  * Time: 1:20 PM
- * @package Sherlock\requests
+ * @package Sherlock\Requests
  */
 namespace Sherlock\requests;
 
@@ -14,10 +14,10 @@ use Sherlock\components\queries;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
- * RawRequest allows arbitrary requests on an ES index
+ * RawRequest allows arbitrary Requests on an ES index
  *
- * @method \Sherlock\requests\RawRequest uri() uri(\string $value)
- * @method \Sherlock\requests\RawRequest method() method(\int $value)
+ * @method \Sherlock\Requests\RawRequest uri() uri(\string $value)
+ * @method \Sherlock\Requests\RawRequest method() method(\int $value)
  */
 class RawRequest extends Request
 {

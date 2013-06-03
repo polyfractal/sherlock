@@ -9,7 +9,7 @@ namespace Sherlock\requests;
 
 /**
  * Class BatchCommand
- * @package Sherlock\requests
+ * @package Sherlock\Requests
  */
 class BatchCommand implements BatchCommandInterface
 {

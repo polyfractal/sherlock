@@ -9,7 +9,7 @@ namespace Sherlock\responses;
 
 /**
  * Class IndexResponse
- * @package Sherlock\responses
+ * @package Sherlock\Responses
  */
 class IndexResponse extends Response
 {

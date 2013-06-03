@@ -4,7 +4,7 @@ namespace Sherlock\responses;
 
 /**
  * Class DeleteResponse
- * @package Sherlock\responses
+ * @package Sherlock\Responses
  */
 class DeleteResponse extends Response
 {

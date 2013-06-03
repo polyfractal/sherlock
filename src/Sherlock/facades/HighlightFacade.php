@@ -4,7 +4,7 @@ namespace Sherlock\facades;
 
 /**
  * Class HighlightFacade
- * @package Sherlock\facades
+ * @package Sherlock\Facades
  *
  *
  * @method \Sherlock\components\highlights\Highlight Highlight() Highlight()

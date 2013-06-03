@@ -3,7 +3,7 @@
  * User: Zachary Tong
  * Date: 2/12/13
  * Time: 7:37 PM
- * @package Sherlock\requests
+ * @package Sherlock\Requests
  */
 
 namespace Sherlock\requests;

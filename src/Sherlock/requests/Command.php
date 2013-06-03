@@ -11,13 +11,13 @@ namespace Sherlock\requests;
 
 /**
  * Class Command
- * @package Sherlock\requests
+ * @package Sherlock\Requests
  *
- * @method \Sherlock\requests\Command action() action(\string $value)
- * @method \Sherlock\requests\Command id() id(\string $value)
- * @method \Sherlock\requests\Command index() index(\string $value)
- * @method \Sherlock\requests\Command type() type(\string $value)
- * @method \Sherlock\requests\Command suffix() suffix(\string $value)
+ * @method \Sherlock\Requests\Command action() action(\string $value)
+ * @method \Sherlock\Requests\Command id() id(\string $value)
+ * @method \Sherlock\Requests\Command index() index(\string $value)
+ * @method \Sherlock\Requests\Command type() type(\string $value)
+ * @method \Sherlock\Requests\Command suffix() suffix(\string $value)
  */
 class Command implements CommandInterface
 {

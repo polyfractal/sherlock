@@ -7,7 +7,7 @@
 
 namespace Sherlock\responses;
 
-class QueryResponse extends Response implements \IteratorAggregate, \Countable
+class SearchResponse extends Response implements \IteratorAggregate, \Countable
 {
     /**
      * @var int
@@ -36,7 +36,6 @@ class QueryResponse extends Response implements \IteratorAggregate, \Countable
 
 
     /**
-     * @param  \Sherlock\common\tmp\RollingCurl\Request           $response
      *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      */

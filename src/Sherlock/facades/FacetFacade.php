@@ -9,7 +9,7 @@ namespace Sherlock\facades;
 
 /**
  * Class FacetFacade
- * @package Sherlock\facades
+ * @package Sherlock\Facades
  *
  *
  * @method \Sherlock\components\facets\Terms Terms() Terms()

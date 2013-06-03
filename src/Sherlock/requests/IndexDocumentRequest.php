@@ -3,7 +3,7 @@
  * User: Zachary Tong
  * Date: 2/17/13
  * Time: 6:39 PM
- * @package Sherlock\requests
+ * @package Sherlock\Requests
  */
 
 namespace Sherlock\requests;
@@ -286,7 +286,7 @@ class IndexDocumentRequest extends Request
      *This is all horribly terible and will be ripped out as soon as possible.
      *
      * Basically, This class stores an intermediate Command that maintains state across
-     * chained requests, which allows updates (scripts, params, etc) to affect it.
+     * chained Requests, which allows updates (scripts, params, etc) to affect it.
      *
      * The command is finalized when a new document is added, or the request is executed.
      * Finalization means collapsing the doc field data into a param, as well as updating

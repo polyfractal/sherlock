@@ -18,7 +18,7 @@ use Sherlock\common\exceptions;
  * @method \Sherlock\components\mappings\Object Object() Object()
  * @method \Sherlock\components\mappings\Analyzer Analyzer() Analyzer()
  */
-class MappingPropertyFacade
+class MappingFacade
 {
     /**
      * @var \Sherlock\components\MappingInterface

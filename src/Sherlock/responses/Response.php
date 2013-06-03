@@ -12,7 +12,7 @@ use Sherlock\common\exceptions;
 
 /**
  * Class Response
- * @package Sherlock\responses
+ * @package Sherlock\Responses
  */
 class Response
 {
