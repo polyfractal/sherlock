@@ -14,6 +14,8 @@ Master
  - In-progress: Refactor components to use static methods
  - In-progress: Refactor components to set only arguments that have been sepcified (no more defaults)
  - Fix: General refactoring
+ - Fix: CustomFilterScore now supports the boost parameter
+ - Addition: custom CodeSniffer code standard now included in repo for contributors to use
 
 0.1.12
 ------
