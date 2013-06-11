@@ -3,6 +3,9 @@ Changelog
 
 Master
 ------
+
+0.1.13
+------
  - Fix: Fix _Analyzer mapping
  - Change: RawRequest added, RawQuery "downgraded" to affecting only "query: {}" portion of query, RawFilter + RawFacet added
  - Fix: Bool Filter/Query fixed when a single object is provided
