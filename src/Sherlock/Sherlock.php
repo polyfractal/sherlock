@@ -33,7 +33,7 @@ class Sherlock extends Pimple
 
     public function search()
     {
-        return new SearchFacade($this['transport'], $this['responseFactory']);
+        return $this['search'];
     }
 
 
@@ -64,6 +64,10 @@ class Sherlock extends Pimple
 
         $this['responseFactory'] = function($dicParams) {
             return new ResponseFactory();
+        };
+
+        $this['search'] = function($dicParams) {
+            return new SearchFacade($dicParams['transport'], $dicParams['responseFactory']);
         };
     }
 
