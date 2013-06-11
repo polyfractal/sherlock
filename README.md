@@ -28,7 +28,7 @@ The recommended method to install _Sherlock_ is through [Composer](http://getcom
 
         {
             "require": {
-                "sherlock/sherlock": "~0.1"
+                "sherlock/sherlock": "~0.1.0"
             }
         }
 
