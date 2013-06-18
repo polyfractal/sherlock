@@ -16,6 +16,7 @@ use Sherlock\components;
  * @method \Sherlock\components\filters\GeoBoundingBox bottom_right_lat() bottom_right_lat(\float $value)
  * @method \Sherlock\components\filters\GeoBoundingBox bottom_right_lon() bottom_right_lon(\float $value)
  * @method \Sherlock\components\filters\GeoBoundingBox type() type(\string $value) Default: "memory"
+ * @method \Sherlock\components\filters\GeoBoundingBox field() field(\float $value) Default: pin.location
  * @method \Sherlock\components\filters\GeoBoundingBox _cache() _cache(\bool $value) Default: false
 
  */
@@ -25,6 +26,7 @@ class GeoBoundingBox extends \Sherlock\components\BaseComponent implements \Sher
     {
         $this->params['type']   = "memory";
         $this->params['_cache'] = false;
+        $this->params['field'] = 'pin.location';
 
         parent::__construct($hashMap);
     }
@@ -35,7 +37,7 @@ class GeoBoundingBox extends \Sherlock\components\BaseComponent implements \Sher
         $ret = array(
             'geo_bounding_box' =>
             array(
-                'pin.location' =>
+                $this->params["field"] =>
                 array(
                     'top_left'     =>
                     array(
