@@ -10,6 +10,7 @@ namespace Sherlock\requests;
 
 
 use Sherlock\common\exceptions;
+use Sherlock\responses\IndexResponse;
 
 /**
  * This class facilitates indexing single documents into an ElasticSearch index
@@ -343,6 +344,15 @@ class IndexDocumentRequest extends Request
             $this->currentCommand = new Command();
         }
 
+    }
+
+    /**
+     * @param $response
+     * @return \Sherlock\responses\IndexResponse|\Sherlock\responses\Response
+     */
+    protected function getReturnResponse($response)
+    {
+        return new IndexResponse($response);
     }
 
 }
