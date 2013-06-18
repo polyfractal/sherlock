@@ -12,6 +12,7 @@ use Sherlock\components;
 use Sherlock\components\queries;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use sherlock\components\FacetInterface;
+use Sherlock\responses\DocumentResponse;
 
 /**
  * SearchRequest facilitates document retrieval by id
@@ -136,5 +137,14 @@ class GetDocumentRequest extends Request
         $ret = parent::execute();
 
         return $ret[0];
+    }
+
+    /**
+     * @param $response
+     * @return \Sherlock\responses\DocumentResponse|\Sherlock\responses\Response
+     */
+    protected function getReturnResponse($response)
+    {
+        return new DocumentResponse($response);
     }
 }

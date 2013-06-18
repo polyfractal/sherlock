@@ -4,6 +4,7 @@ namespace Sherlock\requests;
 
 
 use Sherlock\common\exceptions;
+use Sherlock\responses\DeleteResponse;
 
 /**
  * This class facilitates deleting single documents into an ElasticSearch index
@@ -181,4 +182,12 @@ class DeleteDocumentRequest extends Request
         return parent::execute();
     }
 
+    /**
+     * @param $response
+     * @return \Sherlock\responses\DeleteResponse|\Sherlock\responses\Response
+     */
+    protected function getReturnResponse($response)
+    {
+        return new DeleteResponse($response);
+    }
 }
