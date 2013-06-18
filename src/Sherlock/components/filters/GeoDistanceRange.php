@@ -15,6 +15,7 @@ use Sherlock\components;
  * @method \Sherlock\components\filters\GeoDistanceRange to() to(\string $value)
  * @method \Sherlock\components\filters\GeoDistanceRange lat() lat(\float $value)
  * @method \Sherlock\components\filters\GeoDistanceRange lon() lon(\float $value)
+ * @method \Sherlock\components\filters\GeoDistanceRange field() field(\float $value) Default: pin.location
  * @method \Sherlock\components\filters\GeoDistanceRange _cache() _cache(\bool $value) Default: false
 
  */
@@ -23,6 +24,7 @@ class GeoDistanceRange extends \Sherlock\components\BaseComponent implements \Sh
     public function __construct($hashMap = null)
     {
         $this->params['_cache'] = false;
+        $this->params['field'] = 'pin.location';
 
         parent::__construct($hashMap);
     }
@@ -35,7 +37,7 @@ class GeoDistanceRange extends \Sherlock\components\BaseComponent implements \Sh
             array(
                 'from'         => $this->params["from"],
                 'to'           => $this->params["to"],
-                'pin.location' =>
+                $this->params["field"] =>
                 array(
                     'lat' => $this->params["lat"],
                     'lon' => $this->params["lon"],
