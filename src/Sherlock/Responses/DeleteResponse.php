@@ -1,6 +1,6 @@
 <?php
 
-namespace Sherlock\responses;
+namespace Sherlock\Responses;
 
 /**
  * Class DeleteResponse

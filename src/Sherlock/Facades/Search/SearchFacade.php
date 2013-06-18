@@ -7,11 +7,11 @@
 
 namespace Sherlock\search\facades;
 
-use Sherlock\common\Transport;
+use Elasticsearch\Client;
 use Sherlock\components\QueryInterface;
-use Sherlock\Facades\Search\SearchQueryFacade;
-use Sherlock\Facades\Search\SearchWhereFacade;
+use Sherlock\Facades\Search\QueryComposer;
 use Sherlock\responses\ResponseFactory;
+
 
 
 /**
@@ -27,10 +27,10 @@ class SearchFacade
 
 
     /**
-     * @param Transport       $transport
-     * @param ResponseFactory $responseFactory
+     * @param \Elasticsearch\Client $transport
+     * @param ResponseFactory       $responseFactory
      */
-    public function __construct(Transport $transport, ResponseFactory $responseFactory)
+    public function __construct(Client $transport, ResponseFactory $responseFactory)
     {
         $this->transport = $transport;
         $this->responseFactory = $responseFactory;
@@ -40,22 +40,11 @@ class SearchFacade
     /**
      * @param QueryInterface $query
      *
-     * @return SearchWhereRequest
-     */
-    public function where(QueryInterface $query)
-    {
-        return new SearchWhereFacade($this->transport, $this->responseFactory, $query);
-    }
-
-
-    /**
-     * @param QueryInterface $query
-     *
-     * @return SearchQueryFacade
+     * @return QueryComposer
      */
     public function query(QueryInterface $query)
     {
-        return new SearchQueryFacade($this->transport, $this->responseFactory, $query);
+        return new QueryComposer($this->transport, $this->responseFactory, $query);
     }
 
 

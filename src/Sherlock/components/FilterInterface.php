@@ -10,7 +10,7 @@ namespace Sherlock\components;
 /**
  * Interface for filter components, always used in conjunction with the BaseComponent class
  */
-interface FilterInterface
+interface FilterInterface extends QueryOrFilterInterface
 {
     public function toArray();
 

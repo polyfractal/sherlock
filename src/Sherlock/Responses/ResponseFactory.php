@@ -5,7 +5,7 @@
  * Time: 5:07 PM
  */
 
-namespace Sherlock\responses;
+namespace Sherlock\Responses;
 
 /**
  * Class ResponseFactory

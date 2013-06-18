@@ -24,46 +24,73 @@ use Sherlock\search\facades\SearchFacade;
 class Sherlock extends Pimple
 {
 
-
-    public function __construct()
+    /**
+     * @param array $userParameters
+     */
+    public function __construct($userParameters = array())
     {
-        $this->buildDIC();
+        $this->buildDIC($userParameters);
 
     }
 
+
+    /**
+     * @return SearchFacade
+     */
     public function search()
     {
         return $this['search'];
     }
 
 
+    /**
+     * @param array $userParameters
+     */
+    private function buildDIC($userParameters)
+    {
+        $this->setDICParams($userParameters);
+        $this->populateDIC();
+
+    }
 
 
     /**
-     * Add a new node to the ES cluster
+     * @param array $userParameters
      *
-     * @param  string                                     $host server host address (either IP or domain)
-     * @param  int                                        $port ElasticSearch port (defaults to 9200)
-     *
-     * @return \Sherlock\Sherlock
-     * @throws common\exceptions\BadMethodCallException
-     * @throws common\exceptions\InvalidArgumentException
+     * @return array
      */
-    public function addNode($host, $port = 9200)
+    private function setDICParams($userParameters)
     {
+        $defaultParams = $this->getDefaultParams();
+        $params        = array_merge($defaultParams, $userParameters);
 
+        foreach ($params as $key => $value) {
+            $this[$key] = $value;
+        }
 
-        return $this;
     }
 
-    private function buildDIC()
+
+    /**
+     * @return array
+     */
+    private function getDefaultParams()
     {
+        return array(
+            'responseFactoryClass' => 'ResponseFactory'
+        );
+    }
+
+
+    private function populateDIC()
+    {
+
         $this['transport'] = function($dicParams) {
-            return new Transport();
+            return new \Elasticsearch\Client();
         };
 
         $this['responseFactory'] = function($dicParams) {
-            return new ResponseFactory();
+            return new $dicParams['responseFactoryClass']();
         };
 
         $this['search'] = function($dicParams) {

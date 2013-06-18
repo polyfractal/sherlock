@@ -20,12 +20,14 @@
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
         "squizlabs/php_codesniffer": "1.*",
-        "phpmd/phpmd" : "1.4.*"
+        "phpmd/phpmd" : "1.4.*",
+        "mockery/mockery": "dev-master@dev"
     },
     "autoload": {
         "psr-0": {
             "Sherlock": "src/",
-            "Sherlock/tests" : "tests/"
+            "Sherlock/tests" : "tests/",
+            "Elasticsearch" : "vendor/elasticsearch/src"
         }
     }
 }

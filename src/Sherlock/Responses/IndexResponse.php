@@ -5,7 +5,7 @@
  * Time: 9:29 PM
  */
 
-namespace Sherlock\responses;
+namespace Sherlock\Responses;
 
 /**
  * Class IndexResponse

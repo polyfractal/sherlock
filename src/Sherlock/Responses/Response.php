@@ -5,7 +5,7 @@
  * Time: 9:18 PM
  */
 
-namespace Sherlock\responses;
+namespace Sherlock\Responses;
 
 
 use Sherlock\common\exceptions;

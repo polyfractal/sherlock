@@ -5,7 +5,7 @@
  * Time: 7:27 PM
  */
 
-namespace Sherlock\responses;
+namespace Sherlock\Responses;
 
 class SearchResponse extends Response implements \IteratorAggregate, \Countable
 {

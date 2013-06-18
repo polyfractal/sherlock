@@ -13,7 +13,7 @@ use Sherlock\Facades\Search\SearchQueryFacade;
 
 /**
  * Class SearchQueryFacadeTest
- * @package Sherlock\tests\Facades\Search
+ * @package Sherlock\tests\Facades\SearchWhere
  */
 class SearchQueryFacadeTest extends \PHPUnit_Framework_TestCase
 {
