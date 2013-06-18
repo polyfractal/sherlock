@@ -1,7 +1,7 @@
 Sherlock
 ========
 
-_Sherlock_ is a PHP (>=5.3.0) client for [ElasticSearch](http://www.elasticsearch.org/).  _Sherlock_ can be used to search and manage ElasticSearch clusters.
+_Sherlock_ is a PHP (>=5.3.9) client for [ElasticSearch](http://www.elasticsearch.org/).  _Sherlock_ can be used to search and manage ElasticSearch clusters.
 
 Features
 --------
