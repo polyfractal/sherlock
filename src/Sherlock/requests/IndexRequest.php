@@ -11,6 +11,7 @@ namespace Sherlock\requests;
 
 use Sherlock\common\exceptions;
 use Sherlock\wrappers;
+use Sherlock\responses\IndexResponse;
 
 /**
  * IndexRequest manages index-specific operations
@@ -387,5 +388,14 @@ class IndexRequest extends Request
     {
         $this->params['indexMappings'] = array();
         $this->params['indexSettings'] = array();
+    }
+
+    /**
+     * @param $response
+     * @return \Sherlock\responses\IndexResponse|\Sherlock\responses\Response
+     */
+    protected function getReturnResponse($response)
+    {
+        return new IndexResponse($response);
     }
 }

@@ -202,6 +202,16 @@ class Sherlock
 
 
     /**
+     * Used to return a GetDocumentRequest object, allows retrieving a doc by id
+     * @return requests\GetDocumentRequest
+     */
+    public function getDocument()
+    {
+        return new requests\GetDocumentRequest($this->settings['event.dispatcher']);
+    }
+
+
+    /**
      * @param  string                $index     Index to operate on
      * @param  string                $index,... Index to operate on
      *

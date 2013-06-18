@@ -13,6 +13,7 @@ use Sherlock\components;
 use Sherlock\components\queries;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use sherlock\components\FacetInterface;
+use Sherlock\responses\QueryResponse;
 
 /**
  * SearchRequest facilitates searching an ES index using the ES query DSL
@@ -329,6 +330,15 @@ class SearchRequest extends Request
         $finalQuery = json_encode($finalQuery, true);
 
         return $finalQuery;
+    }
+
+    /**
+     * @param $response
+     * @return \Sherlock\responses\QueryResponse|\Sherlock\responses\Response
+     */
+    protected function getReturnResponse($response)
+    {
+        return new QueryResponse($response);
     }
 
 }

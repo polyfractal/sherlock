@@ -62,10 +62,6 @@ class Request
      */
     public function execute()
     {
-        $reflector = new \ReflectionClass(get_class($this));
-        $class     = $reflector->getShortName();
-
-
         //construct a requestEvent and dispatch it with the "request.preexecute" event
         //This will, among potentially other things, populate the $node variable with
         //values from Cluster
@@ -157,23 +153,20 @@ class Request
 
         $this->batch = new BatchCommand();
 
-        //This is kinda gross...
-        $returnResponse = '\Sherlock\responses\Response';
-        if ($class == 'SearchRequest') {
-            $returnResponse = '\Sherlock\responses\QueryResponse';
-        } elseif ($class == 'IndexRequest') {
-            $returnResponse = '\Sherlock\responses\IndexResponse';
-        } elseif ($class == 'IndexDocumentRequest') {
-            $returnResponse = '\Sherlock\responses\IndexResponse';
-        } elseif ($class == 'DeleteDocumentRequest') {
-            $returnResponse = '\Sherlock\responses\DeleteResponse';
-        }
-
         $finalResponse = array();
         foreach ($ret as $response) {
-            $finalResponse[] = new $returnResponse($response);
+            $finalResponse[] = $this->getReturnResponse($response);
         }
 
         return $finalResponse;
+    }
+
+    /**
+     * @param $response
+     * @return \Sherlock\responses\Response
+     */
+    protected function getReturnResponse($response)
+    {
+        return new Response($response);
     }
 }
