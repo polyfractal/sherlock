@@ -5,7 +5,7 @@
  * Time: 12:50 PM
  */
 
-namespace Sherlock\search\facades;
+namespace Sherlock\Facades\Search;
 
 use Elasticsearch\Client;
 use Sherlock\components\QueryInterface;
