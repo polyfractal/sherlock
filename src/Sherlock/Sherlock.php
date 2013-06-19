@@ -10,8 +10,11 @@
 
 namespace Sherlock;
 
+use Elasticsearch\Client;
 use Pimple;
 use Sherlock\common\Transport;
+use Sherlock\Composers\Document\DocumentComposer;
+use Sherlock\facades\Document\DocumentFacade;
 use Sherlock\requests;
 use Sherlock\common\exceptions;
 use Sherlock\responses\ResponseFactory;
@@ -40,6 +43,23 @@ class Sherlock extends Pimple
     public function search()
     {
         return $this['search'];
+    }
+
+    /**
+     * @return DocumentFacade
+     */
+    public function document()
+    {
+        return $this['document'];
+    }
+
+
+    /**
+     * @return Client
+     */
+    public function raw()
+    {
+        return $this['transport'];
     }
 
 
@@ -95,6 +115,20 @@ class Sherlock extends Pimple
 
         $this['search'] = function($dicParams) {
             return new SearchFacade($dicParams['transport'], $dicParams['responseFactory']);
+        };
+
+        $this['documentComposer'] = function($dicParams) {
+            return new DocumentComposer($dicParams['transport'], $dicParams['responseFactory']);
+        };
+
+        $this['document'] = function($dicParams) {
+            return function (DocumentComposer $documentComposer = null) use ($dicParams) {
+                if (isset($documentComposer) === true) {
+                    return new DocumentFacade($documentComposer);
+                } else {
+                    return new DocumentFacade($dicParams['documentComposer']);
+                }
+            };
         };
     }
 
