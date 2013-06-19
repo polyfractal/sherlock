@@ -178,12 +178,16 @@ class IndexComposer extends AbstractDocumentComposer
      */
     public function enqueue()
     {
-        $documentComposer = $this->documentComposer->enqueue($this->request);
-        return $documentComposer;
+        return $this->documentComposer->enqueueIndex($this->request);
     }
 
+
+    /**
+     * @return array
+     */
     public function execute()
     {
+        $this->enqueue();
         return $this->documentComposer->execute();
     }
 
