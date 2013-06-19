@@ -9,6 +9,7 @@ namespace Sherlock\Composers\Document;
 
 use Elasticsearch\Client;
 use Sherlock\common\exceptions\InvalidArgumentException;
+use Sherlock\common\exceptions\RuntimeException;
 use Sherlock\Facades\Document\DocumentFacade;
 use Sherlock\Responses\ResponseFactory;
 
@@ -152,12 +153,12 @@ class DocumentComposer
     /**
      * @param array $request
      *
-     * @throws \Sherlock\common\exceptions\InvalidArgumentException
+     * @throws \Sherlock\common\exceptions\RuntimeException
      */
     private function checkEnqueuedRequest($request)
     {
         if (is_array($request) !== true || count($request) === 0) {
-            throw new InvalidArgumentException('Cannot enqueue an empty request.');
+            throw new RuntimeException('Cannot enqueue an empty request.');
         }
     }
 }
