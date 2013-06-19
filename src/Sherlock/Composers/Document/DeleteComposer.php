@@ -9,7 +9,10 @@ namespace Sherlock\Composers\Document;
 
 use Sherlock\facades\Document\DocumentFacade;
 
-
+/**
+ * Class DeleteComposer
+ * @package Sherlock\Composers\Document
+ */
 class DeleteComposer extends AbstractDocumentComposer
 {
     /** @var DocumentComposer  */
@@ -113,12 +116,16 @@ class DeleteComposer extends AbstractDocumentComposer
      */
     public function enqueue()
     {
-        $documentComposer = $this->documentComposer->enqueue($this->request);
-        return $documentComposer;
+        return $this->documentComposer->enqueueDelete($this->request);
     }
 
+
+    /**
+     * @return array
+     */
     public function execute()
     {
+        $this->documentComposer->enqueueDelete($this->request);
         return $this->documentComposer->execute();
     }
 
