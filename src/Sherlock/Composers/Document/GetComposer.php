@@ -127,7 +127,7 @@ class GetComposer extends AbstractDocumentComposer
     {
         $this->translateFieldsField();
         $this->checkSourceOnly();
-        return $this->documentComposer->enqueueDelete($this->request);
+        return $this->documentComposer->enqueueGet($this->request);
     }
 
 
