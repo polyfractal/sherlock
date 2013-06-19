@@ -19,7 +19,7 @@ use Sherlock\Responses\SearchResponse;
 
 /**
  * Class QueryComposer
- * @package Sherlock\Facades\Search
+ * @package Sherlock\Composers\Search
  */
 class QueryComposer
 {
@@ -47,7 +47,7 @@ class QueryComposer
 
     }
 
-    public function queue()
+    public function enqueue()
     {
         if ($this->currentRequest !== array()) {
             $this->translateIndexField();
