@@ -92,6 +92,19 @@ class DocumentComposer
 
 
     /**
+     * @param array $request
+     *
+     * @return DocumentFacade
+     */
+    public function enqueueExists($request)
+    {
+        $this->checkEnqueuedRequest($request);
+        $request = array('exists' => $request);
+        return $this->enqueue($request);
+    }
+
+
+    /**
      * @return array
      */
     public function execute()
@@ -118,19 +131,20 @@ class DocumentComposer
     {
         reset($request);
         $key   = key($request);
+        $value = $request[$key];
 
         switch ($key) {
             case 'index':
-                return $this->transport->index($request);
+                return $this->transport->index($value);
 
             case 'delete':
-                return $this->transport->delete($request);
+                return $this->transport->delete($value);
 
             case 'get':
-                return $this->transport->get($request);
+                return $this->transport->get($value);
 
             case 'exists':
-                return $this->transport->exists($request);
+                return $this->transport->exists($value);
 
             default:
                 return array();
@@ -146,6 +160,7 @@ class DocumentComposer
     private function enqueue($request)
     {
         $this->requestQueue[] = $request;
+        $this->checkIfFacadeSet();
         return $this->facade;
     }
 
@@ -159,6 +174,17 @@ class DocumentComposer
     {
         if (is_array($request) !== true || count($request) === 0) {
             throw new RuntimeException('Cannot enqueue an empty request.');
+        }
+    }
+
+
+    /**
+     * @throws \Sherlock\common\exceptions\RuntimeException
+     */
+    private function checkIfFacadeSet()
+    {
+        if (isset($this->facade) !== true) {
+            throw new RuntimeException('Critical internal error: facade is not set. Please report this!');
         }
     }
 }
