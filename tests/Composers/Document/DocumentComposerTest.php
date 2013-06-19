@@ -76,7 +76,8 @@ class DocumentComposerTest extends PHPUnit_Framework_TestCase
             'enqueueDelete',
             'enqueueGet',
             'enqueueIndex',
-            'enqueueExists'
+            'enqueueExists',
+            //'enqueueUpdate'
         );
 
         foreach ($methods as $method) {
