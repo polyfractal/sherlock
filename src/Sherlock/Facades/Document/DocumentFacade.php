@@ -11,6 +11,7 @@ namespace Sherlock\Facades\Document;
 use Elasticsearch\Client;
 use Sherlock\Composers\Document\DeleteComposer;
 use Sherlock\Composers\Document\DocumentComposer;
+use Sherlock\Composers\Document\ExistsComposer;
 use Sherlock\Composers\Document\GetComposer;
 use Sherlock\Composers\Document\IndexComposer;
 use Sherlock\Responses\ResponseFactory;
@@ -69,6 +70,10 @@ class DocumentFacade
         return new GetComposer($this->documentComposer);
     }
 
+
+    /**
+     * @return ExistsComposer
+     */
     public function exists()
     {
         return new ExistsComposer($this->documentComposer);
