@@ -69,5 +69,10 @@ class DocumentFacade
         return new GetComposer($this->documentComposer);
     }
 
+    public function exists()
+    {
+        return new ExistsComposer($this->documentComposer);
+    }
+
 
 }
