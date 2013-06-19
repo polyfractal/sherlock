@@ -9,7 +9,9 @@ namespace Sherlock\facades\Document;
 
 
 use Elasticsearch\Client;
+use Sherlock\Composers\Document\DeleteComposer;
 use Sherlock\Composers\Document\DocumentComposer;
+use Sherlock\Composers\Document\GetComposer;
 use Sherlock\Composers\Document\IndexComposer;
 use Sherlock\Responses\ResponseFactory;
 
@@ -40,13 +42,32 @@ class DocumentFacade
         return new IndexComposer($this->documentComposer);
     }
 
+
+    /**
+     * @return DeleteComposer
+     */
     public function delete()
     {
-
+        return new DeleteComposer($this->documentComposer);
     }
 
+
+    /**
+     * @return UpdateComposer
+     */
     public function update()
     {
-
+        return new UpdateComposer($this->documentComposer);
     }
+
+
+    /**
+     * @return GetComposer
+     */
+    public function get()
+    {
+        return new GetComposer($this->documentComposer);
+    }
+
+
 }
