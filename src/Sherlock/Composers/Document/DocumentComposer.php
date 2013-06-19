@@ -77,6 +77,18 @@ class DocumentComposer
         return $this->enqueue($request);
     }
 
+    /**
+     * @param array $request
+     *
+     * @return DocumentFacade
+     */
+    public function enqueueGet($request)
+    {
+        $this->checkEnqueuedRequest($request);
+        $request = array('get' => $request);
+        return $this->enqueue($request);
+    }
+
 
     /**
      * @return array
@@ -112,6 +124,12 @@ class DocumentComposer
 
             case 'delete':
                 return $this->transport->delete($request);
+
+            case 'get':
+                return $this->transport->get($request);
+
+            case 'exists':
+                return $this->transport->exists($request);
 
             default:
                 return array();
