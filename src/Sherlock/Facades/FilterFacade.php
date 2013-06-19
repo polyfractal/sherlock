@@ -4,7 +4,7 @@
  * Date: 2/19/13
  * Time: 9:21 PM
  */
-namespace Sherlock\facades;
+namespace Sherlock\Facades;
 
 use Sherlock\components\filters;
 

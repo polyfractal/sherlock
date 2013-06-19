@@ -14,7 +14,7 @@ use Elasticsearch\Client;
 use Pimple;
 use Sherlock\common\Transport;
 use Sherlock\Composers\Document\DocumentComposer;
-use Sherlock\facades\Document\DocumentFacade;
+use Sherlock\Facades\Document\DocumentFacade;
 use Sherlock\requests;
 use Sherlock\common\exceptions;
 use Sherlock\responses\ResponseFactory;

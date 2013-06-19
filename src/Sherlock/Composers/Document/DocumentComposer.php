@@ -9,7 +9,7 @@ namespace Sherlock\Composers\Document;
 
 use Elasticsearch\Client;
 use Sherlock\common\exceptions\InvalidArgumentException;
-use Sherlock\facades\Document\DocumentFacade;
+use Sherlock\Facades\Document\DocumentFacade;
 use Sherlock\Responses\ResponseFactory;
 
 /**

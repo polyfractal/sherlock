@@ -5,7 +5,7 @@
  * Time: 8:12 PM
  */
 
-namespace Sherlock\facades;
+namespace Sherlock\Facades;
 
 use Sherlock\common\exceptions;
 

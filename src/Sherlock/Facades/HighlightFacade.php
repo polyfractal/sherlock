@@ -1,6 +1,6 @@
 <?php
 
-namespace Sherlock\facades;
+namespace Sherlock\Facades;
 
 /**
  * Class HighlightFacade

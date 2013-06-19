@@ -5,7 +5,7 @@
  * Time: 6:54 AM
  */
 
-namespace Sherlock\facades;
+namespace Sherlock\Facades;
 
 /**
  * Class FacetFacade

@@ -4,7 +4,7 @@
  * Date: 2/10/13
  * Time: 1:05 PM
  */
-namespace Sherlock\facades;
+namespace Sherlock\Facades;
 
 use Sherlock\components\queries;
 

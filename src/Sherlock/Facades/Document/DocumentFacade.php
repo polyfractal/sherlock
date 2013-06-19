@@ -5,7 +5,7 @@
  * Time: 4:58 PM
  */
 
-namespace Sherlock\facades\Document;
+namespace Sherlock\Facades\Document;
 
 
 use Elasticsearch\Client;
@@ -17,7 +17,7 @@ use Sherlock\Responses\ResponseFactory;
 
 /**
  * Class DocumentFacade
- * @package Sherlock\facades\Document
+ * @package Sherlock\Facades\Document
  */
 class DocumentFacade
 {

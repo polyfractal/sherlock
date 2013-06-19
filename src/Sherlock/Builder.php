@@ -7,7 +7,7 @@
 
 namespace Sherlock;
 
-use Sherlock\facades;
+use Sherlock\Facades;
 
 /**
  * Class Builder

@@ -7,7 +7,7 @@
 
 namespace Sherlock\Composers\Document;
 
-use Sherlock\facades\Document\DocumentFacade;
+use Sherlock\Facades\Document\DocumentFacade;
 
 /**
  * Class ExistsComposer

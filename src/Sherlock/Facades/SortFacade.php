@@ -5,7 +5,7 @@
  * Time: 8:07 PM
  */
 
-namespace Sherlock\facades;
+namespace Sherlock\Facades;
 
 use Sherlock\components\sorts;
 
