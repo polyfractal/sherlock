@@ -125,7 +125,7 @@ class DeleteComposer extends AbstractDocumentComposer
      */
     public function execute()
     {
-        $this->documentComposer->enqueueDelete($this->request);
+        $this->enqueue($this->request);
         return $this->documentComposer->execute();
     }
 
