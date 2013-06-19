@@ -10,6 +10,10 @@ use Sherlock\Facades\Document\DocumentFacade;
  * Time: 5:10 PM
  */
 
+/**
+ * Class IndexComposer
+ * @package Sherlock\Composers\Document
+ */
 class IndexComposer extends AbstractDocumentComposer
 {
     /** @var DocumentComposer  */
