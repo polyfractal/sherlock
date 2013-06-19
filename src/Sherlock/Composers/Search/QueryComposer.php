@@ -49,13 +49,15 @@ class QueryComposer
 
     public function enqueue()
     {
-        if ($this->currentRequest !== array()) {
-            $this->translateIndexField();
-            $this->translateTypeField();
-
-            $this->requestQueue[] = $this->currentRequest;
-            $this->currentRequest = array();
+        if ($this->currentRequest === array()) {
+            return $this;
         }
+
+        $this->translateIndexField();
+        $this->translateTypeField();
+
+        $this->requestQueue[] = $this->currentRequest;
+        $this->currentRequest = array();
 
         return $this;
     }
@@ -66,7 +68,7 @@ class QueryComposer
      */
     public function execute()
     {
-        $this->queue();
+        $this->enqueue();
 
         $responses = array();
         if (count($this->requestQueue) === 0) {
