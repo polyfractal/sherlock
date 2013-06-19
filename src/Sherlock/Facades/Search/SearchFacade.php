@@ -9,7 +9,7 @@ namespace Sherlock\search\facades;
 
 use Elasticsearch\Client;
 use Sherlock\components\QueryInterface;
-use Sherlock\Facades\Search\QueryComposer;
+use Sherlock\Composers\Search\QueryComposer;
 use Sherlock\responses\ResponseFactory;
 
 
@@ -47,14 +47,4 @@ class SearchFacade
         return new QueryComposer($this->transport, $this->responseFactory, $query);
     }
 
-
-    /**
-     * @param array $query
-     *
-     * @return SearchRawFacade
-     */
-    public function raw($query)
-    {
-        return new SearchRawFacade($this->transport, $this->responseFactory, $query);
-    }
 }
