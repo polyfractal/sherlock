@@ -103,19 +103,20 @@ The library interface is still under flux...this section will be updated once _S
 
    //Let's try a more advanced query now.
    //Each section is it's own variable to help show how everything fits together
-   $must = Sherlock::query()->Term()->field("message")
+   $must = Sherlock::queryBuilder()->Term()->field("message")
                                      ->term("ElasticSearch");
 
-   $should = Sherlock::query()->Match()->field("author")
+   $should = Sherlock::queryBuilder()->Match()->field("author")
                                         ->query("Zachary Tong")
                                         ->boost(2.5);
 
-   $must_not = Sherlock::query()->Term()->field("message")
+   $must_not = Sherlock::queryBuilder()->Term()->field("message")
                                            ->term("Solr");
 
-   $bool = Sherlock::query()->Bool->must($must)
-                                   ->should($should)
-                                   ->must_not($must_not);
+   $bool = Sherlock::queryBuilder()->Bool->must( array( $must ) )
+                                   ->should( array( $should ) )
+                                   ->must_not( array ( $must_not ) );
+                                   
    $request->query($bool);
    $request->execute();
 
