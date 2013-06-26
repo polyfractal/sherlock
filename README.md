@@ -80,7 +80,7 @@ The library interface is still under flux...this section will be updated once _S
    $request = $sherlock->search();
 
    //Set the index, type and from/to parameters of the request.
-   //The query is at at the end of the chain, although it could be placed anywhere
+   //The query is at the end of the chain, although it could be placed anywhere
    $request->index("test")
             ->type("tweet")
             ->from(0)
