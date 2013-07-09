@@ -59,8 +59,10 @@ class OrFilter extends \Sherlock\components\BaseComponent implements \Sherlock\c
     public function toArray()
     {
         $ret = array(
-            'or'     => $this->params["queries"],
-            '_cache' => $this->params["_cache"],
+            'or' => array(
+                'filters' => $this->params["queries"],
+                '_cache'  => $this->params["_cache"],
+            ),
         );
 
         return $ret;
