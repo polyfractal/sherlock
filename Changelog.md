@@ -6,6 +6,10 @@ Master
 
 0.1.14
 ------
+ - Fix: Facets now accepts arrays and inline arguments
+
+0.1.14
+------
  - Fix: OrFilter now works appropriately if _cache is specified with multiple filters/queries
  - Fix: AndFilter now behaves like OrFilter
 
