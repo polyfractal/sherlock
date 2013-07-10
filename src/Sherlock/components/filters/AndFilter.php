@@ -11,11 +11,16 @@ namespace Sherlock\components\filters;
 use Sherlock\components;
 
 /**
- * @method \Sherlock\components\filters\AndFilter and() and(array $value)
+ * Class AndFilter
+ * @package Sherlock\components\filters
+ *
  * @method \Sherlock\components\filters\AndFilter _cache() _cache(\bool $value) Default: false
  */
-class AndFilter extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface
+class AndFilter extends \Sherlock\components\BaseComponent implements components\FilterInterface
 {
+    /**
+     * @param null|array $hashMap
+     */
     public function __construct($hashMap = null)
     {
         $this->params['_cache'] = false;
@@ -24,11 +29,43 @@ class AndFilter extends \Sherlock\components\BaseComponent implements \Sherlock\
     }
 
 
+    /**
+     * @param  components\QueryInterface | components\QueryInterface | array $values,... - one or more Queries can be specified individually, or an array of filters
+     *
+     * @return AndFilter
+     */
+    public function queries($values)
+    {
+
+        $args = func_get_args();
+
+        //single param, array of queries\filters
+        if (count($args) == 1 && is_array($args[0])) {
+            $args = $args[0];
+        }
+
+        foreach ($args as $arg) {
+            if ($arg instanceof components\QueryInterface) {
+                $this->params['queries'][] = $arg->toArray();
+            } elseif ($arg instanceof components\FilterInterface) {
+                $this->params['queries'][] = $arg->toArray();
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @return array
+     */
     public function toArray()
     {
         $ret = array(
-            'and'    => $this->params["and"],
-            '_cache' => $this->params["_cache"],
+            'and' => array(
+                'filters' => $this->params["queries"],
+                '_cache'  => $this->params["_cache"],
+            ),
         );
 
         return $ret;
