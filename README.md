@@ -12,6 +12,11 @@ Features
  - Autodetection of cluster nodes and subsequent round-robin requests to the entire cluster
  - Configurable logging capabilities
 
+Disclaimer
+--------
+Sherlock should be considered **Alpha** status.  Use in production at your own risk!  The current 0.1 branch is in maintenance mode - I'm only fixing bugs and accepting PRs.
+
+The new 0.2 branch that is coming *will* break backwards compatibility in places.  The new 0.2 branch, however, should be a lot easier to maintain and I'll likely be promoting it to true 1.0 status soon after release (along with associated SemVer, backwards compatibility, etc).
 
 Resources
 ---------------
