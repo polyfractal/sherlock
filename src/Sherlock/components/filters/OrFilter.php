@@ -11,11 +11,16 @@ namespace Sherlock\components\filters;
 use Sherlock\components;
 
 /**
+ * Class OrFilter
+ * @package Sherlock\components\filters
+ *
  * @method \Sherlock\components\filters\OrFilter _cache() _cache(\bool $value) Default: false
-
  */
 class OrFilter extends \Sherlock\components\BaseComponent implements \Sherlock\components\FilterInterface
 {
+    /**
+     * @param null|array $hashMap
+     */
     public function __construct($hashMap = null)
     {
         $this->params['_cache'] = false;
@@ -47,15 +52,13 @@ class OrFilter extends \Sherlock\components\BaseComponent implements \Sherlock\c
             }
         }
 
-        //was this a set of filters?  Assume it was if the first arg is a filter
-        if ($args[0] instanceof \Sherlock\components\FilterInterface) {
-            $this->params['queries'] = array("filters" => $this->params['queries']);
-        }
-
         return $this;
     }
 
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
         $ret = array(

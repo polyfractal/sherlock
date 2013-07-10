@@ -782,7 +782,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $req->filter($filter);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"match_all":[]},"filter":{"or":[{"term":{"auxillary":{"value":"auxillary"}}}],"_cache":true}}';
+        $expectedData = '{"query":{"match_all":[]},"filter":{"or":{"filters":[{"term":{"auxillary":{"value":"auxillary"}}}],"_cache":true}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -803,7 +803,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $req->filter($filter);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"match_all":[]},"filter":{"or":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary":{"value":"auxillary"}}}],"_cache":true}}';
+        $expectedData = '{"query":{"match_all":[]},"filter":{"or":{"filters":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary":{"value":"auxillary"}}}],"_cache":true}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -826,7 +826,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $req->filter($filter);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"match_all":[]},"filter":{"or":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary":{"value":"auxillary"}}}],"_cache":true}}';
+        $expectedData = '{"query":{"match_all":[]},"filter":{"or":{"filters":[{"term":{"auxillary":{"value":"auxillary"}}},{"term":{"auxillary":{"value":"auxillary"}}}],"_cache":true}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -847,7 +847,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $req->filter($filter);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"match_all":[]},"filter":{"or":{"filters":[{"term":{"auxillary":"auxillary","_cache":true}}]},"_cache":true}}';
+        $expectedData = '{"query":{"match_all":[]},"filter":{"or":{"filters":[{"term":{"auxillary":"auxillary","_cache":true}}],"_cache":true}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -868,7 +868,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $req->filter($filter);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"match_all":[]},"filter":{"or":{"filters":[{"term":{"auxillary":"auxillary","_cache":true}},{"term":{"auxillary":"auxillary","_cache":true}}]},"_cache":true}}';
+        $expectedData = '{"query":{"match_all":[]},"filter":{"or":{"filters":[{"term":{"auxillary":"auxillary","_cache":true}},{"term":{"auxillary":"auxillary","_cache":true}}],"_cache":true}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -891,7 +891,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $req->filter($filter);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"match_all":[]},"filter":{"or":{"filters":[{"term":{"auxillary":"auxillary","_cache":true}},{"term":{"auxillary":"auxillary","_cache":true}}]},"_cache":true}}';
+        $expectedData = '{"query":{"match_all":[]},"filter":{"or":{"filters":[{"term":{"auxillary":"auxillary","_cache":true}},{"term":{"auxillary":"auxillary","_cache":true}}],"_cache":true}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
