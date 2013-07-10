@@ -191,7 +191,11 @@ class SearchRequest extends Request
     public function facets($facets)
     {
         $this->params['facets'] = array();
-        $args                   = func_get_args();
+        if (is_array($facets)){
+            $args = $facets;
+        }else{
+            $args = func_get_args();
+        }
         foreach ($args as $arg) {
             if ($arg instanceof FacetInterface) {
                 $this->params['facets'][] = $arg;
