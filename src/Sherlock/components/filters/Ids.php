@@ -36,11 +36,7 @@ class Ids extends \Sherlock\components\BaseComponent implements \Sherlock\compon
             $args = $args[0];
         }
 
-        foreach ($args as $arg) {
-            if (is_string($arg)) {
-                $this->params['values'][] = $arg;
-            }
-        }
+        $this->params['values'] = $args;
 
         return $this;
     }
