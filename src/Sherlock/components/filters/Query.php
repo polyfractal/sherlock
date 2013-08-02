@@ -28,8 +28,10 @@ class Query extends \Sherlock\components\BaseComponent implements \Sherlock\comp
     public function toArray()
     {
         $ret = array(
-            'query'  => $this->params["query"]->toArray(),
-            '_cache' => $this->params["_cache"],
+            'fquery' => array(
+                'query'  => $this->params["query"]->toArray(),
+                '_cache' => $this->params["_cache"],
+            ),
         );
 
         return $ret;
