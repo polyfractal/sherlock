@@ -220,6 +220,18 @@ class SearchRequest extends Request
 
 
     /**
+     * Set the min_score value
+     * Documents with a score below this value will be discarded
+     * @param Integer $score minimal score
+     */
+    public function min_score($score)
+    {
+        $this->params['min_score'] =  $score;
+        return $this;
+    }
+
+
+    /**
      * Execute the search request on the ES cluster
      *
      * @throws \Sherlock\common\exceptions\RuntimeException
@@ -325,7 +337,7 @@ class SearchRequest extends Request
             $finalQuery['highlight'] = $this->params['highlight']->toArray();
         }
 
-        foreach (array('from', 'size', 'timeout', 'sort') as $key) {
+        foreach (array('from', 'size', 'timeout', 'sort', 'min_score') as $key) {
             if (isset($this->params[$key])) {
                 $finalQuery[$key] = $this->params[$key];
             }
