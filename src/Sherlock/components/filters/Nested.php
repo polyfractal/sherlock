@@ -12,7 +12,7 @@ use Sherlock\components;
 
 /**
  * @method \Sherlock\components\filters\Nested path() path(\string $value)
- * @method \Sherlock\components\filters\Nested query() query(\sherlock\components\QueryInterface $value)
+ * @method \Sherlock\components\filters\Nested filter() filter(\sherlock\components\FilterInterface $value)
  * @method \Sherlock\components\filters\Nested _cache() _cache(\bool $value) Default: false
 
  */
@@ -32,7 +32,7 @@ class Nested extends \Sherlock\components\BaseComponent implements \Sherlock\com
             'nested' =>
             array(
                 'path'   => $this->params["path"],
-                'query'  => $this->params["query"],
+                'filter'  => $this->params["filter"]->toArray(),
                 '_cache' => $this->params["_cache"],
             ),
         );
