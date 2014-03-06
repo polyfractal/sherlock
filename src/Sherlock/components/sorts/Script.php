@@ -12,6 +12,9 @@ use Sherlock\components;
 
 /**
  * @method \Sherlock\components\sorts\Script script() script(\string $value)
+ * @method \Sherlock\components\sorts\Script type() type(\string $value)
+ * @method \Sherlock\components\sorts\Script order() order(\string $value) Default: asc
+ * @method \Sherlock\components\sorts\Script lang() lang(\string $value) Default: mvel
  */
 
 class Script extends components\BaseComponent implements components\SortInterface
@@ -20,6 +23,9 @@ class Script extends components\BaseComponent implements components\SortInterfac
     public function __construct($hashMap = null)
     {
         $this->params['script'] = null;
+        $this->params['type']   = null;
+        $this->params['order']  = 'asc';
+        $this->params['lang']   = 'mvel';
 
         parent::__construct($hashMap);
     }
@@ -30,6 +36,9 @@ class Script extends components\BaseComponent implements components\SortInterfac
             '_script' =>
             array(
                 'script' => $this->params["script"],
+                'type'   => $this->params["type"],
+                'order'  => $this->params["order"],
+                'lang'   => $this->params["lang"],
             ),
         );
 
