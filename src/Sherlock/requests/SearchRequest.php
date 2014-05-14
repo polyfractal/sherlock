@@ -33,10 +33,6 @@ class SearchRequest
      */
     protected $params;
 
-    /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
-     */
-    protected $dispatcher;
 
     /**
      * @var \Elasticsearch\Client
@@ -55,8 +51,6 @@ class SearchRequest
 
         $this->params['filter'] = array();
         $this->esClient       = $esClient;
-
-        parent::__construct($esClient);
     }
 
 
