@@ -15,6 +15,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use sherlock\components\FacetInterface;
 use Sherlock\responses\QueryResponse;
 
+use Elasticsearch\Client as ESClient;
+
 /**
  * SearchRequest facilitates searching an ES index using the ES query DSL
  *
@@ -24,7 +26,7 @@ use Sherlock\responses\QueryResponse;
  * @method \Sherlock\requests\SearchRequest search_type() search_type(\int $value)
  * @method \Sherlock\requests\SearchRequest routing() routing(mixed $value)
  */
-class SearchRequest extends Request
+class SearchRequest
 {
     /**
      * @var array
@@ -36,22 +38,25 @@ class SearchRequest extends Request
      */
     protected $dispatcher;
 
-
     /**
-     * @param  \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @var \Elasticsearch\Client
+     */
+    protected $esClient;
+    /**
+     * @param  \Elasticsearch\Client $esClient
      *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      */
-    public function __construct($dispatcher)
+    public function __construct($esClient)
     {
-        if (!isset($dispatcher)) {
+        /*if (!isset($dispatcher)) {
             throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
-        }
+        }*/
 
         $this->params['filter'] = array();
-        $this->dispatcher       = $dispatcher;
+        $this->esClient       = $esClient;
 
-        parent::__construct($dispatcher);
+        parent::__construct($esClient);
     }
 
 
@@ -269,19 +274,13 @@ class SearchRequest extends Request
         }
 
 
-        $command = new Command();
-        $command->index($index)
-            ->type($type)
-            ->id('_search' . $queryParams)
-            ->action('post')
-            ->data($finalQuery);
-
-        $this->batch->clearCommands();
-        $this->batch->addCommand($command);
-
-        $ret = parent::execute();
-
-        return $ret[0];
+        $searchParams = array(
+            "index" => $index,
+            "type" => $type,
+            "body" => $finalQuery
+        );
+        $resultSet = $this->esClient->search($searchParams);
+        return $resultSet;
     }
 
 

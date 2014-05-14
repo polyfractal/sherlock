@@ -16,7 +16,7 @@ use Sherlock\requests;
 use Sherlock\common\exceptions;
 use Sherlock\wrappers;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-
+use Elasticsearch\Client as ESClient;
 /**
  * Class Sherlock
  * @package Sherlock
@@ -27,6 +27,12 @@ class Sherlock
      * @var array Sherlock settings, can be replaced with user-settings through constructor
      */
     protected $settings;
+
+    /**
+     * @var object Elasticsearch Client
+     */
+    protected $esClient;
+
     /**
      * @var array Templates - not used at the moment
      */
@@ -40,8 +46,9 @@ class Sherlock
      */
     public function __construct($userSettings = array())
     {
-        $this->initializeSherlock($userSettings);
-        $this->autodetectClusterState();
+        $this->esClient = new ESClient($userSettings);
+        //$this->initializeSherlock($userSettings);
+        //$this->autodetectClusterState();
     }
 
 
@@ -165,7 +172,7 @@ class Sherlock
      */
     public function search()
     {
-        return new requests\SearchRequest($this->settings['event.dispatcher']);
+        return new requests\SearchRequest($this->esClient);
     }
 
 
