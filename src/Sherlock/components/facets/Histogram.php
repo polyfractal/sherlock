@@ -24,8 +24,8 @@ use Sherlock\components;
  * @method \Sherlock\components\facets\Histogram key_script() key_script(\string $value)
  * @method \Sherlock\components\facets\Histogram value_script() value_script(\string $value)
  * @method \Sherlock\components\facets\Histogram params() params(array $value)
- * @method \Sherlock\components\facets\TermsStats lang() lang(\string $value)
- * @method \Sherlock\components\facets\DateHistogram facet_filter() facet_filter(\Sherlock\components\FilterInterface $value)
+ * @method \Sherlock\components\facets\Histogram lang() lang(\string $value)
+ * @method \Sherlock\components\facets\Histogram facet_filter() facet_filter(\Sherlock\components\FilterInterface $value)
  */
 class Histogram extends components\BaseComponent implements components\FacetInterface
 {
@@ -84,7 +84,7 @@ class Histogram extends components\BaseComponent implements components\FacetInte
         }
 
         if ($this->params['facet_filter'] !== null) {
-            $this->params['facet_filter'] = $this->params['facet_filter']->toArray();
+            $facet_filter = $this->params['facet_filter']->toArray();
         }
 
 
@@ -100,9 +100,10 @@ class Histogram extends components\BaseComponent implements components\FacetInte
                     "value_script"  => $this->params['value_script'],
                     "params"        => $this->params['params'],
                     "lang"          => $this->params['lang']
-                )
-            ),
-            "facet_filter"             => $this->params['facet_filter']
+                ),
+                "facet_filter"             => $facet_filter
+            )
+
         );
 
         return $ret;
