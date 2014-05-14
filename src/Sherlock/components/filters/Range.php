@@ -23,9 +23,12 @@ class Range extends \Sherlock\components\BaseComponent implements \Sherlock\comp
 {
     public function __construct($hashMap = null)
     {
-        $this->params['include_lower'] = true;
-        $this->params['include_upper'] = false;
+
         $this->params['_cache']        = true;
+        $this->params['lte'] = null;
+        $this->params['gte'] = null;
+        $this->params['lt'] = null;
+        $this->params['gt'] = null;
 
         parent::__construct($hashMap);
     }
@@ -33,18 +36,22 @@ class Range extends \Sherlock\components\BaseComponent implements \Sherlock\comp
 
     public function toArray()
     {
+        $boundaries = array();
+        if (isset($this->params['lte']))
+            $boundaries['lte'] = $this->params['lte'];
+        if (isset($this->params['gte']))
+            $boundaries['gte'] = $this->params['gte'];
+        if (isset($this->params['lt']) && !isset($this->params['lte']) )
+            $boundaries['lt'] = $this->params['lt'];
+        if (isset($this->params['gt']) && !isset($this->params['gte']) )
+            $boundaries['gt'] = $this->params['gt'];
+
         $ret = array(
             'range' =>
-            array(
-                $this->params["field"] =>
                 array(
-                    'from'          => $this->params["from"],
-                    'to'            => $this->params["to"],
-                    'include_lower' => $this->params["include_lower"],
-                    'include_upper' => $this->params["include_upper"],
+                    $this->params["field"] => $boundaries,
+                    '_cache'               => $this->params["_cache"],
                 ),
-                '_cache'               => $this->params["_cache"],
-            ),
         );
 
         return $ret;
