@@ -3,6 +3,17 @@ Sherlock
 
 _Sherlock_ is a PHP (>=5.3.9) client for [ElasticSearch](http://www.elasticsearch.org/).  _Sherlock_ can be used to search and manage ElasticSearch clusters.
 
+## Sherlock is Unmaintained! DO NOT USE!
+Sherlock is no longer maintained and should not be considered a usable Elasticsearch client for anything remotely resembling a production environment.  It is *not* compatible with Elasticsearch 1.0+, nor does it have complete API coverage of Elasticsearch 0.90.x
+
+*Please* use the official Elasticsearch client (which I wrote, and maintaine):  https://github.com/elasticsearch/elasticsearch-php
+
+The official client is actively maintained and well-tested against ES and PHP versions.
+
+If you are interested in updating Sherlock to use the official client, please open a ticket and let me know! I'd love to see the syntax of Sherlock on top of the new client...but I just don't have time myself.
+
+
+
 Features
 --------
 
