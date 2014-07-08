@@ -48,7 +48,7 @@ class QueryStringMultiField extends \Sherlock\components\BaseComponent implement
         $this->params['phrase_slop']                  = 10;
         $this->params['analyze_wildcard']             = true;
         $this->params['auto_generate_phrase_queries'] = false;
-        $this->params['rewrite']                      = "constant_score_default";
+        $this->params['rewrite']                      = "constant_score_auto";
         $this->params['quote_analyzer']               = "standard";
         $this->params['quote_field_suffix']           = ".unstemmed";
         $this->params['use_dis_max']                  = true;
@@ -81,8 +81,8 @@ class QueryStringMultiField extends \Sherlock\components\BaseComponent implement
                 'quote_field_suffix'           => $this->params["quote_field_suffix"],
                 'use_dis_max'                  => $this->params["use_dis_max"],
                 'tie_breaker'                  => $this->params["tie_breaker"],
+                'rewrite'                      => $this->params["rewrite"],
             ),
-            'rewrite'      => $this->params["rewrite"],
         );
 
         return $ret;

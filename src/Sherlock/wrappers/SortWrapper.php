@@ -11,6 +11,8 @@ use Sherlock\components\sorts;
 
 /**
  * @method \Sherlock\components\sorts\Field Field() Field()
+ * @method \Sherlock\components\sorts\GeoDistance GeoDistance() GeoDistance()
+ * @method \Sherlock\components\sorts\Script Script() Script()
  */
 class SortWrapper
 {
