@@ -182,10 +182,10 @@ class Sherlock
      *
      * @return requests\RawRequest
      */
-    public function raw()
-    {
-        return new requests\RawRequest($this->settings['event.dispatcher']);
-    }
+//    public function raw()
+//    {
+//        return new requests\RawRequest($this->settings['event.dispatcher']);
+//    }
 
 
     /**
@@ -194,7 +194,7 @@ class Sherlock
      */
     public function document()
     {
-        return new requests\IndexDocumentRequest($this->settings['event.dispatcher']);
+        return new requests\IndexDocumentRequest($this->esClient);
     }
 
 
@@ -204,7 +204,7 @@ class Sherlock
      */
     public function deleteDocument()
     {
-        return new requests\DeleteDocumentRequest($this->settings['event.dispatcher']);
+        return new requests\DeleteDocumentRequest($this->esClient);
     }
 
 
@@ -214,7 +214,7 @@ class Sherlock
      */
     public function getDocument()
     {
-        return new requests\GetDocumentRequest($this->settings['event.dispatcher']);
+        return new requests\GetDocumentRequest($this->esClient);
     }
 
 
@@ -232,7 +232,7 @@ class Sherlock
             $index[] = $arg;
         }
 
-        return new requests\IndexRequest($this->settings['event.dispatcher'], $index);
+        return new requests\IndexRequest($this->esClient, $index);
     }
 
 
@@ -258,12 +258,12 @@ class Sherlock
      * @throws common\exceptions\BadMethodCallException
      * @throws common\exceptions\InvalidArgumentException
      */
-    public function addNode($host, $port = 9200)
-    {
-        $this->settings['cluster']->addNode($host, $port, $this->settings['cluster.autodetect']);
-
-        return $this;
-    }
+//    public function addNode($host, $port = 9200)
+//    {
+//        $this->settings['cluster']->addNode($host, $port, $this->settings['cluster.autodetect']);
+//
+//        return $this;
+//    }
 
 
     /**
