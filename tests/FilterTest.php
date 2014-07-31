@@ -759,7 +759,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     /**
      * @todo construct proper test for Nested types
      * @covers sherlock\Sherlock\components\filters\Nested::path
-     * @covers sherlock\Sherlock\components\filters\Nested::query
+     * @covers sherlock\Sherlock\components\filters\Nested::filter
      * @covers sherlock\Sherlock\components\filters\Nested::_cache
      * @covers sherlock\Sherlock\requests\SearchRequest::query
      * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
