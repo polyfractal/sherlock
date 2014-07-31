@@ -90,8 +90,8 @@ class IndexOperationsTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(true, $response["acknowledged"]);
 
-//        $response = $index->delete();
-//        $this->assertEquals(true, $response["acknowledged"]);
+        $response = $index->delete();
+        $this->assertEquals(true, $response["acknowledged"]);
 
     }
 
@@ -101,16 +101,16 @@ class IndexOperationsTest extends \PHPUnit_Framework_TestCase
 
         $index = $sherlock->index('testindexoperations');
 
-//        $response = $index->create();
-//        $this->assertEquals(true, $response["acknowledged"]);
+        $response = $index->create();
+        $this->assertEquals(true, $response["acknowledged"]);
 
         $mapping = Sherlock::mappingBuilder("testtype")->String()->field("name");
         $response = $index->mappings($mapping)->type("testtype")->updateMapping();
 
         $this->assertEquals(true, $response["acknowledged"]);
 
-//        $response = $index->delete();
-//        $this->assertEquals(true, $response["acknowledged"]);
+        $response = $index->delete();
+        $this->assertEquals(true, $response["acknowledged"]);
 
     }
 
