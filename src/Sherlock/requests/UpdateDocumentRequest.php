@@ -1,7 +1,6 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: umutcan
+ * User: Umutcan Onal
  * Date: 22.05.2014
  * Time: 17:22
  */
