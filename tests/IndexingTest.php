@@ -76,6 +76,22 @@ class IndexingTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testGetDoc()
+    {
+        $sherlock = $this->object;
+
+        $doc      = $sherlock->document()->index('testindexing')->type('tweet')->document(
+            array("field" => "test"),
+            123
+        );
+        $response = $doc->execute();
+        $this->assertEquals(true, $response['created']);
+
+        $response = $sherlock->getDocument()->id(123)->index('testindexing')->type('tweet')->execute();
+        $this->assertEquals(array("field" => "test"), $response["_source"]);
+
+    }
+
 
     public function testUpdateDoc()
     {
