@@ -10,30 +10,8 @@ use Sherlock\responses\DeleteResponse;
  * This class facilitates deleting single documents into an ElasticSearch index
  *
  */
-class DeleteDocumentRequest
+class DeleteDocumentRequest extends Request
 {
-    /**
-     * @var \Elasticsearch\Client
-     */
-    protected $esClient;
-
-    /**
-     * @var array
-     */
-    protected $params;
-
-
-    /**
-     * @param  \Elasticsearch\Client $esClient
-     *
-     * @throws \Sherlock\common\exceptions\BadMethodCallException
-     * @internal param $node
-     */
-    public function __construct($esClient)
-    {
-        $this->esClient       = $esClient;
-    }
-
 
     /**
      * @param $name
@@ -45,46 +23,6 @@ class DeleteDocumentRequest
     {
         $this->params[$name] = $args[0];
 
-        return $this;
-    }
-
-
-    /**
-     * Set the index to delete documents from
-     *
-     * @param  string               $index     indices to query
-     * @param  string               $index,... indices to query
-     *
-     * @return DeleteDocumentRequest
-     */
-    public function index($index)
-    {
-        $this->params['index'] = array();
-        $args                  = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['index'][] = $arg;
-        }
-//        $this->params['index'] = $index;
-        return $this;
-    }
-
-
-    /**
-     * Set the type to delete documents from
-     *
-     * @param  string               $type
-     * @param  string               $type,...
-     *
-     * @return DeleteDocumentRequest
-     */
-    public function type($type)
-    {
-        $this->params['type'] = array();
-        $args                 = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['type'][] = $arg;
-        }
-//        $this->params['type'] = $type;
         return $this;
     }
 

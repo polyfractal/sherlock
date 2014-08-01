@@ -23,19 +23,8 @@ use Elasticsearch\Client as ESClient;
  * Note, this is distinct from the IndexDocument class, which is solely responsible
  * for indexing documents
  */
-class IndexRequest
+class IndexRequest extends Request
 {
-
-    /**
-     * @var \Elasticsearch\Client
-     */
-    protected $esClient;
-
-    /**
-     * @var array
-     */
-    protected $params;
-
 
     /**
      * @param  \Elasticsearch\Client $esClient
@@ -46,14 +35,6 @@ class IndexRequest
      */
     public function __construct($esClient, $index)
     {
-//        if (!isset($dispatcher))
-//                {
-//                    throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
-//                }
-        if (!isset($index))
-            throw new \Sherlock\common\exceptions\BadMethodCallException("Index argument required for IndexRequest");
-
-        $this->esClient = $esClient;
 
         if (!is_array($index))
             $this->params['index'][] = $index;
@@ -63,7 +44,7 @@ class IndexRequest
         $this->params['indexSettings'] = array();
         $this->params['indexMappings'] = array();
 
-//        parent::__construct($dispatcher);
+        parent::__construct($esClient);
     }
 
 
@@ -79,54 +60,6 @@ class IndexRequest
 
         return $this;
     }
-
-
-    /**
-     * ---- Settings / Parameters ----
-     * Various settings and parameters to be set before invoking an action
-     * Returns $this
-     *
-     */
-
-    /**
-     * Set the index to operate on
-     *
-     * @param  string       $index     indices to operate on
-     * @param  string       $index,... indices to operate on
-     *
-     * @return IndexRequest
-     */
-    public function index($index)
-    {
-        $this->params['index'] = array();
-        $args                  = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['index'][] = $arg;
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * Set the type to operate on
-     *
-     * @param  string       $type     indices to operate on
-     * @param  string       $type,... indices to operate on
-     *
-     * @return IndexRequest
-     */
-    public function type($type)
-    {
-        $this->params['type'] = array();
-        $args                 = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['type'][] = $arg;
-        }
-
-        return $this;
-    }
-
 
     /**
      * Set the mappings that are used for various operations (set mappings, index creation, etc)

@@ -9,22 +9,11 @@ namespace Sherlock\requests;
 
 use \Elasticsearch\Client;
 
-class UpdateDocumentRequest {
-    /**
-     * @var \Elasticsearch\Client
-     */
-    protected $esClient;
-
-    /**
-     * @var array
-     */
-    protected $params;
+class UpdateDocumentRequest extends Request
+{
 
     public function __construct($esClient)
     {
-
-        $this->esClient = $esClient;
-
         $this->params['index'] = null;
         $this->params['type']  = null;
         $this->params['id']  = null;
@@ -32,6 +21,8 @@ class UpdateDocumentRequest {
         $this->params['updateParams'] = null;
         $this->params['updateUpsert'] = null;
         $this->params['doc']          = null;
+
+        parent::__construct($esClient);
 
     }
 
@@ -56,36 +47,6 @@ class UpdateDocumentRequest {
     public function document($id)
     {
         $this->params['id'] = $id;
-        return $this;
-    }
-
-    /**
-     * Set the index to add documents to
-     *
-     * @param  string               $index     indices to query
-     * @param  string               $index,... indices to query
-     *
-     * @return UpdateDocumentRequest
-     */
-    public function index($index)
-    {
-//        $this->params['index'] = array();
-//        $args                  = func_get_args();
-//        foreach ($args as $arg) {
-//            $this->params['index'][] = $arg;
-//        }
-        $this->params['index'] = $index;
-        return $this;
-    }
-
-    public function type($type)
-    {
-//        $this->params['type'] = array();
-//        $args                 = func_get_args();
-//        foreach ($args as $arg) {
-//            $this->params['type'][] = $arg;
-//        }
-        $this->params['type'] = $type;
         return $this;
     }
 

@@ -26,18 +26,8 @@ use Elasticsearch\Client as ESClient;
  * @method \Sherlock\requests\SearchRequest search_type() search_type(\int $value)
  * @method \Sherlock\requests\SearchRequest routing() routing(mixed $value)
  */
-class SearchRequest
+class SearchRequest extends Request
 {
-    /**
-     * @var array
-     */
-    protected $params;
-
-
-    /**
-     * @var \Elasticsearch\Client
-     */
-    protected $esClient;
     /**
      * @param  \Elasticsearch\Client $esClient
      *
@@ -50,7 +40,7 @@ class SearchRequest
         }*/
 
         $this->params['filter'] = array();
-        $this->esClient       = $esClient;
+        parent::__construct($esClient);
     }
 
 
@@ -63,46 +53,6 @@ class SearchRequest
     public function __call($name, $args)
     {
         $this->params[$name] = $args[0];
-
-        return $this;
-    }
-
-
-    /**
-     * Sets the index to operate on
-     *
-     * @param  string        $index     indices to query
-     * @param  string        $index,... indices to query
-     *
-     * @return SearchRequest
-     */
-    public function index($index)
-    {
-        $this->params['index'] = array();
-        $args                  = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['index'][] = $arg;
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * Sets the type to operate on
-     *
-     * @param  string        $type     types to query
-     * @param  string        $type,... types to query
-     *
-     * @return SearchRequest
-     */
-    public function type($type)
-    {
-        $this->params['type'] = array();
-        $args                 = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['type'][] = $arg;
-        }
 
         return $this;
     }

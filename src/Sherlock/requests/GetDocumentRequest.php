@@ -17,26 +17,8 @@ use Sherlock\responses\DocumentResponse;
 /**
  * SearchRequest facilitates document retrieval by id
  */
-class GetDocumentRequest
+class GetDocumentRequest extends Request
 {
-    /**
-     * @var \Elasticsearch\Client
-     */
-    protected $esClient;
-
-    protected $params;
-
-
-    /**
-     * @param  \Elasticsearch\Client $esClient
-     *
-     * @throws \Sherlock\common\exceptions\BadMethodCallException
-     */
-    public function __construct($esClient)
-    {
-        $this->esClient       = $esClient;
-    }
-
     /**
      * Sets the id of the document
      * @param $id
@@ -46,43 +28,6 @@ class GetDocumentRequest
     {
         $this->params['id'] = $id;
 
-        return $this;
-    }
-
-    /**
-     * Sets the index to operate on
-     *
-     * @param  string        $index     indices to query
-     * @param  string        $index,... indices to query
-     *
-     * @return GetDocumentRequest
-     */
-    public function index($index)
-    {
-        $this->params['index'] = array();
-        $args                  = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['index'][] = $arg;
-        }
-        return $this;
-    }
-
-
-    /**
-     * Sets the type to operate on
-     *
-     * @param  string        $type     types to query
-     * @param  string        $type,... types to query
-     *
-     * @return GetDocumentRequest
-     */
-    public function type($type)
-    {
-        $this->params['type'] = array();
-        $args                 = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['type'][] = $arg;
-        }
         return $this;
     }
 

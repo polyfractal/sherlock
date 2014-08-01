@@ -17,17 +17,8 @@ use Sherlock\responses\IndexResponse;
  * @todo Refactor this whole damn thing
  *
  */
-class IndexDocumentRequest
+class IndexDocumentRequest extends Request
 {
-    /**
-     * @var \Elasticsearch\Client
-     */
-    protected $esClient;
-
-    /**
-     * @var array
-     */
-    protected $params;
 
     /** @var Command */
     private $currentCommand;
@@ -41,11 +32,6 @@ class IndexDocumentRequest
      */
     public function __construct($esClient)
     {
-//        if (!isset($dispatcher)) {
-//            throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
-//        }
-
-        $this->esClient = $esClient;
 
         $this->params['index'] = array();
         $this->params['type']  = array();
@@ -58,7 +44,7 @@ class IndexDocumentRequest
         $this->params['updateUpsert'] = null;
         $this->params['doc']          = null;
 
-//        parent::__construct($dispatcher);
+        parent::__construct($esClient);
     }
 
 
@@ -75,45 +61,6 @@ class IndexDocumentRequest
         return $this;
     }
 
-
-    /**
-     * Set the index to add documents to
-     *
-     * @param  string               $index     indices to query
-     * @param  string               $index,... indices to query
-     *
-     * @return IndexDocumentRequest
-     */
-    public function index($index)
-    {
-//        $this->params['index'] = array();
-//        $args                  = func_get_args();
-//        foreach ($args as $arg) {
-//            $this->params['index'][] = $arg;
-//        }
-        $this->params['index'] = $index;
-        return $this;
-    }
-
-
-    /**
-     * Set the type to add documents to
-     *
-     * @param  string               $type
-     * @param  string               $type,...
-     *
-     * @return IndexDocumentRequest
-     */
-    public function type($type)
-    {
-//        $this->params['type'] = array();
-//        $args                 = func_get_args();
-//        foreach ($args as $arg) {
-//            $this->params['type'][] = $arg;
-//        }
-        $this->params['type'] = $type;
-        return $this;
-    }
 
 
 //    /**
