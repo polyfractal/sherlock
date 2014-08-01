@@ -43,8 +43,6 @@ class FilterTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-//        $this->object = new Sherlock;
-//        $this->object->addNode('localhost', '9200');
         $this->object = new Sherlock(
             array(
                 "hosts" => array(
