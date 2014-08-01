@@ -197,6 +197,15 @@ class Sherlock
         return new requests\IndexDocumentRequest($this->esClient);
     }
 
+    /**
+     * Used to return an UpdateDocumentRequest object, allows adding a doc to the index
+     * @return requests\UpdateDocumentRequest
+     */
+    public function update()
+    {
+        return new requests\UpdateDocumentRequest($this->esClient);
+    }
+
 
     /**
      * Used to return a DeleteDocumentRequest object, allows deleting a doc from the index
