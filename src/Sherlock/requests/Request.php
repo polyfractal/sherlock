@@ -43,6 +43,10 @@ class Request
      */
     public function __construct($esClient)
     {
+        if (!isset($esClient))
+        {
+            throw new \Sherlock\common\exceptions\BadMethodCallException("esClient argument required for Request");
+        }
         $this->esClient = $esClient;
     }
 
