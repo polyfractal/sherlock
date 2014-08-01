@@ -20,15 +20,18 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
     public function __construct()
     {
-        /*
         try {
-            $sherlock = new \Sherlock\sherlock;
-            $sherlock->addNode('localhost', '9200');
+            $sherlock = new Sherlock(
+                array(
+                    "hosts" => array(
+                        "localhost:9200"
+                    )
+                )
+            );
             //Create the index
             $index = $sherlock->index('testqueries');
             $response = $index->create();
         } catch (\Exception $e) {}
-        */
     }
 
 
@@ -38,8 +41,13 @@ class QueryTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Sherlock();
-        $this->object->addNode('localhost', '9200');
+        $this->object = new Sherlock(
+            array(
+                "hosts" => array(
+                    "localhost:9200"
+                )
+            )
+        );
     }
 
 
@@ -329,69 +337,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @covers sherlock\Sherlock\components\queries\CustomBoostFactor::query
-     * @covers sherlock\Sherlock\components\queries\CustomBoostFactor::boost_factor
-     * @covers sherlock\Sherlock\requests\SearchRequest::query
-     * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
-     */
-    public function testCustomBoostFactor()
-    {
-        $req = $this->object->search();
-        $req->index("testqueries")->type("test");
-        $query = Sherlock::queryBuilder()->CustomBoostFactor()->query(
-            Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary")
-        )
-            ->boost_factor(0.5);
-
-
-        $req->query($query);
-
-        $data         = $req->toJSON();
-        $expectedData = '{"query":{"custom_boost_factor":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"boost_factor":0.5}}}';
-        $this->assertEquals($expectedData, $data);
-
-        $resp = $req->execute();
-
-    }
-
-
-    /**
-     * @covers sherlock\Sherlock\components\queries\CustomScore::query
-     * @covers sherlock\Sherlock\components\queries\CustomScore::params
-     * @covers sherlock\Sherlock\components\queries\CustomScore::script
-     * @covers sherlock\Sherlock\components\queries\CustomScore::lang
-     * @covers sherlock\Sherlock\requests\SearchRequest::query
-     * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
-     */
-    public function testCustomScore()
-    {
-        $req = $this->object->search();
-        $req->index("testqueries")->type("test");
-        $query = Sherlock::queryBuilder()->CustomScore()->query(
-            Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary")
-        )
-            ->params(
-                array(
-                    Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"),
-                    Sherlock::queryBuilder()->Term()->field("auxillary2")->term("auxillary2")
-                )
-            )
-            ->script("_score")
-            ->lang("mvel");
-
-
-        $req->query($query);
-
-        $data         = $req->toJSON();
-        $expectedData = '{"query":{"custom_score":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"params":[{},{}],"script":"_score","lang":"mvel"}}}';
-        $this->assertEquals($expectedData, $data);
-
-        $resp = $req->execute();
-
-    }
-
-
-    /**
      * @covers sherlock\Sherlock\components\queries\DisMax::tie_breaker
      * @covers sherlock\Sherlock\components\queries\DisMax::boost
      * @covers sherlock\Sherlock\components\queries\DisMax::queries
@@ -476,61 +421,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $resp = $req->execute();
 
     }
-
-
-    /**
-     * @covers sherlock\Sherlock\components\queries\Field::field
-     * @covers sherlock\Sherlock\components\queries\Field::query
-     * @covers sherlock\Sherlock\components\queries\Field::boost
-     * @covers sherlock\Sherlock\components\queries\Field::enable_position_increments
-     * @covers sherlock\Sherlock\components\queries\Field::default_operator
-     * @covers sherlock\Sherlock\components\queries\Field::analyzer
-     * @covers sherlock\Sherlock\components\queries\Field::allow_leading_wildcard
-     * @covers sherlock\Sherlock\components\queries\Field::lowercase_expanded_terms
-     * @covers sherlock\Sherlock\components\queries\Field::fuzzy_min_sim
-     * @covers sherlock\Sherlock\components\queries\Field::fuzzy_prefix_length
-     * @covers sherlock\Sherlock\components\queries\Field::lenient
-     * @covers sherlock\Sherlock\components\queries\Field::phrase_slop
-     * @covers sherlock\Sherlock\components\queries\Field::analyze_wildcard
-     * @covers sherlock\Sherlock\components\queries\Field::auto_generate_phrase_queries
-     * @covers sherlock\Sherlock\components\queries\Field::rewrite
-     * @covers sherlock\Sherlock\components\queries\Field::quote_analyzer
-     * @covers sherlock\Sherlock\components\queries\Field::quote_field_suffix
-     * @covers sherlock\Sherlock\requests\SearchRequest::query
-     * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
-     */
-    public function testField()
-    {
-        $req = $this->object->search();
-        $req->index("testqueries")->type("test");
-        $query = Sherlock::queryBuilder()->Field()->field("testString")
-            ->query("testString")
-            ->boost(0.5)
-            ->enable_position_increments(3)
-            ->default_operator("AND")
-            ->analyzer("default")
-            ->allow_leading_wildcard(true)
-            ->lowercase_expanded_terms(3)
-            ->fuzzy_min_sim(0.5)
-            ->fuzzy_prefix_length(3)
-            ->phrase_slop(3)
-            ->analyze_wildcard(true)
-            ->auto_generate_phrase_queries(3)
-            ->rewrite("constant_score_default")
-            ->quote_analyzer("standard")
-            ->quote_field_suffix(".unstemmed");
-
-
-        $req->query($query);
-
-        $data         = $req->toJSON();
-        $expectedData = '{"query":{"field":{"testString":{"query":"testString","boost":0.5,"enable_position_increments":3,"default_operator":"AND","analyzer":"default","allow_leading_wildcard":true,"lowercase_expanded_terms":3,"fuzzy_min_sim":0.5,"fuzzy_prefix_length":3,"phrase_slop":3,"analyze_wildcard":true,"auto_generate_phrase_queries":3,"quote_analyzer":"standard","quote_field_suffix":".unstemmed"},"rewrite":"constant_score_default"}}}';
-        $this->assertEquals($expectedData, $data);
-
-        $resp = $req->execute();
-
-    }
-
 
     /**
      * @covers sherlock\Sherlock\components\queries\FilteredQuery::query
@@ -813,13 +703,13 @@ class QueryTest extends \PHPUnit_Framework_TestCase
             ->max_expansions(3)
             ->minimum_should_match(3)
             ->prefix_length(3)
-            ->type("testType");
+            ->type("phrase");
 
 
         $req->query($query);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"match":{"testString":{"query":"testString","boost":0.5,"operator":"AND","analyzer":"default","fuzziness":0.5,"lenient":true,"max_expansions":3,"minimum_should_match":3,"prefix_length":3,"type":"testType"}}}}';
+        $expectedData = '{"query":{"match":{"testString":{"query":"testString","boost":0.5,"operator":"AND","analyzer":"default","fuzziness":0.5,"lenient":true,"max_expansions":3,"minimum_should_match":3,"prefix_length":3,"type":"phrase"}}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -1385,37 +1275,37 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    public function testRawRequest()
-    {
-        $req = $this->object->raw();
-        $req->uri("testindex/_search")->method("post")->body('{"query":{"match_all":{"boost":0.5}}}');
-
-        $data         = $req->toJSON();
-        $expectedData = '{"query":{"match_all":{"boost":0.5}}}';
-        $this->assertEquals($expectedData, $data);
-
-        $resp = $req->execute();
-
-        print_r($resp);
-
-    }
-
-
-    public function testRawQueryBuilding()
-    {
-
-        $req = $this->object->search();
-        $req->index("test3")->type("benchmark");
-
-        $expectedData = array("query" => array("term" => array("field1" => array("value" => "town"))));
-
-        $req->query(Sherlock::queryBuilder()->Raw($expectedData['query']));
-        $data = $req->toJSON();
-
-        $expectedData = json_encode($expectedData);
-        $this->assertEquals($expectedData, $data);
-
-    }
+//    public function testRawRequest()
+//    {
+//        $req = $this->object->raw();
+//        $req->uri("testindex/_search")->method("post")->body('{"query":{"match_all":{"boost":0.5}}}');
+//
+//        $data         = $req->toJSON();
+//        $expectedData = '{"query":{"match_all":{"boost":0.5}}}';
+//        $this->assertEquals($expectedData, $data);
+//
+//        $resp = $req->execute();
+//
+//        print_r($resp);
+//
+//    }
+//
+//
+//    public function testRawQueryBuilding()
+//    {
+//
+//        $req = $this->object->search();
+//        $req->index("test3")->type("benchmark");
+//
+//        $expectedData = array("query" => array("term" => array("field1" => array("value" => "town"))));
+//
+//        $req->query(Sherlock::queryBuilder()->Raw($expectedData['query']));
+//        $data = $req->toJSON();
+//
+//        $expectedData = json_encode($expectedData);
+//        $this->assertEquals($expectedData, $data);
+//
+//    }
 
 
 }
