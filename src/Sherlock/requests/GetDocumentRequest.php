@@ -17,36 +17,30 @@ use Sherlock\responses\DocumentResponse;
 /**
  * SearchRequest facilitates document retrieval by id
  */
-class GetDocumentRequest extends Request
+class GetDocumentRequest
 {
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     * @var \Elasticsearch\Client
      */
-    protected $dispatcher;
+    protected $esClient;
 
     protected $params;
 
 
     /**
-     * @param  \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @param  \Elasticsearch\Client $esClient
      *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      */
-    public function __construct($dispatcher)
+    public function __construct($esClient)
     {
-        if (!isset($dispatcher)) {
-            throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for DocumentRequest");
-        }
-
-        $this->dispatcher       = $dispatcher;
-
-        parent::__construct($dispatcher);
+        $this->esClient       = $esClient;
     }
 
     /**
      * Sets the id of the document
      * @param $id
-     * @return DocumentRequest
+     * @return GetDocumentRequest
      */
     public function id($id)
     {
@@ -61,7 +55,7 @@ class GetDocumentRequest extends Request
      * @param  string        $index     indices to query
      * @param  string        $index,... indices to query
      *
-     * @return SearchRequest
+     * @return GetDocumentRequest
      */
     public function index($index)
     {
@@ -70,7 +64,6 @@ class GetDocumentRequest extends Request
         foreach ($args as $arg) {
             $this->params['index'][] = $arg;
         }
-
         return $this;
     }
 
@@ -81,7 +74,7 @@ class GetDocumentRequest extends Request
      * @param  string        $type     types to query
      * @param  string        $type,... types to query
      *
-     * @return SearchRequest
+     * @return GetDocumentRequest
      */
     public function type($type)
     {
@@ -90,7 +83,6 @@ class GetDocumentRequest extends Request
         foreach ($args as $arg) {
             $this->params['type'][] = $arg;
         }
-
         return $this;
     }
 
@@ -124,19 +116,13 @@ class GetDocumentRequest extends Request
             $queryParams = '';
         }
 
-
-        $command = new \Sherlock\requests\Command();
-        $command->index($index)
-            ->type($type)
-            ->id($id . $queryParams)
-            ->action('get');
-
-        $this->batch->clearCommands();
-        $this->batch->addCommand($command);
-
-        $ret = parent::execute();
-
-        return $ret[0];
+        $params = array(
+            "index" => $index,
+            "id" => $id,
+            "type" => $type,
+        );
+        $ret= $this->esClient->get($params);
+        return $ret;
     }
 
     /**
