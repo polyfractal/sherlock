@@ -6,7 +6,7 @@
  * @package Sherlock\components
  */
 
-namespace sherlock\components;
+namespace Sherlock\components;
 
 /**
  * BaseComponent is an abstract class for various components (filters, queries, mappings, etc)
