@@ -125,6 +125,16 @@ class Sherlock
 
 
     /**
+     * Facet builder, used to return a FilterWrapper through which a Filter component can be selected
+     * @return wrappers\FacetWrapper
+     */
+    public static function aggregationBuilder()
+    {
+        return new wrappers\AggregationWrapper();
+    }
+
+
+    /**
      * Highlight builder, used to return a HighlightWrapper through which a Highlight component can be selected
      * @return wrappers\HighlightWrapper
      */

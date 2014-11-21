@@ -128,6 +128,19 @@ class SearchRequest extends Request
         return $this;
     }
 
+    /**
+     * Sets the aggregations that will be executed
+     *
+     * @param $aggs
+     *
+     * @return SearchRequest
+     */
+    public function aggs($aggs)
+    {
+        $this->params['aggs'] = $aggs;
+
+        return $this;
+    }
 
     /**
      * Sets the facets to operate on
@@ -261,6 +274,10 @@ class SearchRequest extends Request
 
         if (isset($this->params['filter']) && $this->params['filter'] instanceof components\FilterInterface) {
             $finalQuery['filter'] = $this->params['filter']->toArray();
+        }
+
+        if (isset($this->params['aggs']) && $this->params['aggs'] instanceof components\AggregationInterface) {
+            $finalQuery['aggs'] = $this->params['aggs']->toArray();
         }
 
         if (isset($this->params['facets'])) {
