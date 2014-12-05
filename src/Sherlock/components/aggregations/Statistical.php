@@ -1,11 +1,6 @@
 <?php
-/**
- * User: Zachary Tong
- * Date: 3/16/13
- * Time: 11:15 AM
- */
 
-namespace Sherlock\components\facets;
+namespace Sherlock\components\aggregations;
 
 
 use Sherlock\common\exceptions\RuntimeException;
@@ -13,50 +8,43 @@ use Sherlock\components;
 
 /**]
  * Class Statistical
- * @package Sherlock\components\facets
+ * @package Sherlock\components\aggregations
  *
- * @method \Sherlock\components\facets\Statistical facetname() facetname(\string $value)
- * @method \Sherlock\components\facets\Statistical script() script(\string $value)
- * @method \Sherlock\components\facets\Statistical params() params(array $value)
- * @method \Sherlock\components\facets\Statistical lang() lang(\string $value)
- * @method \Sherlock\components\facets\DateHistogram facet_filter() facet_filter(\Sherlock\components\FilterInterface $value)
+ * @method \Sherlock\components\aggregations\Statistical aggsname() aggsname(\string $value)
+ * @method \Sherlock\components\aggregations\Statistical script() script(\string $value)
+ * @method \Sherlock\components\aggregations\Statistical params() params(array $value)
+ * @method \Sherlock\components\aggregations\Statistical lang() lang(\string $value)
  */
-class Statistical extends components\BaseComponent implements components\FacetInterface
+class Statistical extends components\BaseComponent implements components\AggregationInterface
 {
     /**
      * @param null $hashMap
      */
     public function __construct($hashMap = null)
     {
-        $this->params['facetname']    = null;
+        $this->params['aggsname']    = null;
         $this->params['script']       = null;
         $this->params['params']       = null;
         $this->params['lang']         = null;
-        $this->params['facet_filter'] = null;
 
         parent::__construct($hashMap);
     }
 
 
     /**
-     * @param $queries
+     * @param $fieldName
      *
+     * @throws \Sherlock\common\exceptions\BadMethodCallException
      * @return $this
      */
-    public function fields($queries)
+    public function field($fieldName)
     {
 
-        $args = func_get_args();
 
-        //single param, array of fields
-        if (count($args) == 1 && is_array($args[0])) {
-            $args = $args[0];
-        }
-
-        foreach ($args as $arg) {
-            if (is_string($arg)) {
-                $this->params['fields'][] = $arg;
-            }
+        if (is_string($fieldName)) {
+            $this->params['field'] = $fieldName;
+        } else {
+            throw new BadMethodCallException("Field must be a string");
         }
 
         return $this;
@@ -69,34 +57,34 @@ class Statistical extends components\BaseComponent implements components\FacetIn
      */
     public function toArray()
     {
-        if (!isset($this->params['fields'])) {
-                        throw new RuntimeException("Fields parameter is required for a Statistical Facet");
+        $params = array();
+        if (!isset($this->params['field'])) {
+                        throw new RuntimeException("Fields parameter is required for a Statistical Aggregation");
         }
 
-        if ($this->params['fields'] === null) {
-                        throw new RuntimeException("Fields parameter may not be null");
+        if ($this->params['field'] === null) {
+                        throw new RuntimeException("Field parameter may not be null");
         }
 
         //if the user didn't provide a facetname, use the field as a default name
-        if ($this->params['facetname'] === null) {
-            $this->params['facetname'] = $this->params['field'][0];
+        if ($this->params['aggsname'] === null) {
+            $this->params['aggsname'] = $this->params['field'];
         }
 
-        if ($this->params['facet_filter'] !== null) {
-            $this->params['facet_filter'] = $this->params['facet_filter']->toArray();
-        }
-
-
-        $ret = array(
-            $this->params['facetname'] => array(
-                "statistical"  => array(
-                    "fields" => $this->params['fields'],
-                    "script" => $this->params['script'],
-                    "params" => $this->params['params'],
-                    "lang"   => $this->params['lang']
-                ),
-                "facet_filter" => $this->params['facet_filter']
+        $params = array(
+            "stats"  => array(
+                "field" => $this->params['field']
             )
+        );
+
+        if ($this->params['script'] !== null) {
+            $params['stats']["script"] = $this->params['script'];
+        }
+        if ($this->params['lang'] !== null) {
+            $params['stats']["lang"] = $this->params['lang'];
+        }
+        $ret = array(
+            $this->params['aggsname'] => $params
         );
 
         return $ret;

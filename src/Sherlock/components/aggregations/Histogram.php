@@ -16,7 +16,7 @@ use Sherlock\components;
  * @method \Sherlock\components\aggregations\Histogram interval() interval(\int $value)
  * @method \Sherlock\components\aggregations\Histogram min_doc_count() time_interval(\string $value)
  */
-class Histogram extends components\BaseComponent implements components\AggregationInterface
+class Histogram extends BaseAggs implements components\AggregationInterface
 {
     /**
      * @param null $hashMap
@@ -58,7 +58,7 @@ class Histogram extends components\BaseComponent implements components\Aggregati
      */
     public function toArray()
     {
-
+        $params = array();
 
         //if the user didn't provide a facetname, use the field as a default name
         if ($this->params['aggsname'] === null) {
@@ -68,15 +68,19 @@ class Histogram extends components\BaseComponent implements components\Aggregati
             $this->params['min_doc_count'] = 0;
         }
 
-        $ret = array(
-            $this->params['aggsname'] => array(
-                "histogram" => array(
-                    "field"         => $this->params['field'],
-                    "interval"      => $this->params['interval'],
-                    "min_doc_count" => $this->params['min_doc_count']
-                )
+        $params = array(
+            "histogram" => array(
+                "field"         => $this->params['field'],
+                "interval"      => $this->params['interval'],
+                "min_doc_count" => $this->params['min_doc_count'],
             )
+        );
+        if ($this->params['aggs'] !== null) {
+            $params["aggs"] = $this->params['aggs']->toArray();
+        }
 
+        $ret = array(
+            $this->params['aggsname'] => $params
         );
 
         return $ret;

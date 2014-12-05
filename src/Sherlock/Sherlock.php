@@ -126,7 +126,7 @@ class Sherlock
 
     /**
      * Facet builder, used to return a FilterWrapper through which a Filter component can be selected
-     * @return wrappers\FacetWrapper
+     * @return wrappers\AggregationWrapper
      */
     public static function aggregationBuilder()
     {
