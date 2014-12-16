@@ -303,7 +303,7 @@ class SearchRequest extends Request
             }
         }
 
-        $finalQuery = json_encode($finalQuery, true);
+        $finalQuery = json_encode($finalQuery, JSON_PRETTY_PRINT);
 
         return $finalQuery;
     }

@@ -1,11 +1,6 @@
 <?php
-/**
- * User: Zachary Tong
- * Date: 3/16/13
- * Time: 11:06 AM
- */
 
-namespace Sherlock\components\facets;
+namespace Sherlock\components\aggregations;
 
 use Sherlock\common\exceptions\BadMethodCallException;
 use Sherlock\common\exceptions\RuntimeException;
@@ -13,13 +8,12 @@ use Sherlock\components;
 
 /**]
  * Class Filter
- * @package Sherlock\components\facets
+ * @package Sherlock\components\aggregations
  *
- * @method \Sherlock\components\facets\Filter facetname() facetname(\string $value)
- * @method \Sherlock\components\facets\Filter filter() filter(\Sherlock\components\FilterInterface $value)
- * @method \Sherlock\components\facets\DateHistogram facet_filter() facet_filter(\Sherlock\components\FilterInterface $value)
+ * @method \Sherlock\components\aggregations\Filter aggsname() aggsname(\string $value)
+ * @method \Sherlock\components\aggregations\Filter filter() filter(\Sherlock\components\FilterInterface $value)
  */
-class Filter extends components\BaseComponent implements components\FacetInterface
+class Filter extends components\aggregations\BaseAggs implements components\AggregationInterface
 {
     /**
      * @param null $hashMap
@@ -27,8 +21,7 @@ class Filter extends components\BaseComponent implements components\FacetInterfa
     public function __construct($hashMap = null)
     {
 
-        $this->params['facetname']    = null;
-        $this->params['facet_filter'] = null;
+        $this->params['aggsname']     = null;
 
         parent::__construct($hashMap);
     }
@@ -59,8 +52,10 @@ class Filter extends components\BaseComponent implements components\FacetInterfa
      */
     public function toArray()
     {
+        $params = array();
+
         if (!isset($this->params['field'])) {
-            throw new RuntimeException("Field parameter is required for a Filter Facet");
+            throw new RuntimeException("Field parameter is required for a Filter Aggregation");
         }
 
         if ($this->params['field'] === null) {
@@ -68,7 +63,7 @@ class Filter extends components\BaseComponent implements components\FacetInterfa
         }
 
         if (!isset($this->params['filter'])) {
-            throw new RuntimeException("Filter parameter is required for a Filter Facet");
+            throw new RuntimeException("Filter parameter is required for a Filter Aggregation");
         }
 
         if (!$this->params['filter'] instanceof components\FilterInterface) {
@@ -76,19 +71,21 @@ class Filter extends components\BaseComponent implements components\FacetInterfa
         }
 
         //if the user didn't provide a facetname, use the field as a default name
-        if ($this->params['facetname'] === null) {
-            $this->params['facetname'] = $this->params['field'];
+        if ($this->params['aggname'] === null) {
+            $this->params['aggname'] = $this->params['field'];
         }
 
-        if ($this->params['facet_filter'] !== null) {
-            $this->params['facet_filter'] = $this->params['facet_filter']->toArray();
+
+        $params = array(
+            "filter"       => $this->params['filter']->toArray()
+        );
+
+        if ($this->params['aggs'] !== null) {
+            $params["aggs"] = $this->params['aggs']->toArray();
         }
 
         $ret = array(
-            $this->params['facetname'] => array(
-                "filter"       => $this->params['filter']->toArray(),
-                "facet_filter" => $this->params['facet_filter']
-            )
+            $this->params['aggname'] => $params
         );
 
         return $ret;

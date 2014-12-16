@@ -12,6 +12,7 @@ namespace Sherlock\wrappers;
  * @method \Sherlock\components\aggregations\Histogram Histogram() Histogram()
  * @method \Sherlock\components\aggregations\DateHistogram DateHistogram() DateHistogram()
  * @method \Sherlock\components\aggregations\Filter Filter() Filter()
+ * @method \Sherlock\components\aggregations\Filters Filters() Filters()
  * @method \Sherlock\components\aggregations\Query Query() Query()
  * @method \Sherlock\components\aggregations\Statistical Statistical() Statistical()
  * @method \Sherlock\components\aggregations\TermsStats TermsStats() TermsStats()
