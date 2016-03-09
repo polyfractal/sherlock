@@ -12,6 +12,7 @@ namespace Sherlock\requests;
 use Sherlock\common\exceptions;
 use Sherlock\wrappers;
 use Sherlock\responses\IndexResponse;
+use Elasticsearch\Client as ESClient;
 
 /**
  * IndexRequest manages index-specific operations
@@ -25,31 +26,15 @@ use Sherlock\responses\IndexResponse;
 class IndexRequest extends Request
 {
 
-    protected $dispatcher;
-
     /**
-     * @var array
-     */
-    protected $params;
-
-
-    /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @param  \Elasticsearch\Client $esClient
      * @param                                                    $index
      *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      * @internal param $node
      */
-    public function __construct($dispatcher, $index)
+    public function __construct($esClient, $index)
     {
-        if (!isset($dispatcher))
-                {
-                    throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
-                }
-        if (!isset($index))
-            throw new \Sherlock\common\exceptions\BadMethodCallException("Index argument required for IndexRequest");
-
-        $this->dispatcher = $dispatcher;
 
         if (!is_array($index))
             $this->params['index'][] = $index;
@@ -59,7 +44,7 @@ class IndexRequest extends Request
         $this->params['indexSettings'] = array();
         $this->params['indexMappings'] = array();
 
-        parent::__construct($dispatcher);
+        parent::__construct($esClient);
     }
 
 
@@ -75,54 +60,6 @@ class IndexRequest extends Request
 
         return $this;
     }
-
-
-    /**
-     * ---- Settings / Parameters ----
-     * Various settings and parameters to be set before invoking an action
-     * Returns $this
-     *
-     */
-
-    /**
-     * Set the index to operate on
-     *
-     * @param  string       $index     indices to operate on
-     * @param  string       $index,... indices to operate on
-     *
-     * @return IndexRequest
-     */
-    public function index($index)
-    {
-        $this->params['index'] = array();
-        $args                  = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['index'][] = $arg;
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * Set the type to operate on
-     *
-     * @param  string       $type     indices to operate on
-     * @param  string       $type,... indices to operate on
-     *
-     * @return IndexRequest
-     */
-    public function type($type)
-    {
-        $this->params['type'] = array();
-        $args                 = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['type'][] = $arg;
-        }
-
-        return $this;
-    }
-
 
     /**
      * Set the mappings that are used for various operations (set mappings, index creation, etc)
@@ -238,16 +175,10 @@ class IndexRequest extends Request
 
         $index = implode(',', $this->params['index']);
 
-        $command = new Command();
-        $command->index($index)
-            ->action('delete');
+        $deleteParams['index'] = $index;
+        $ret = $this->esClient->indices()->delete($deleteParams);
 
-        $this->batch->clearCommands();
-        $this->batch->addCommand($command);
-
-        $ret = parent::execute();
-
-        return $ret[0];
+        return $ret;
     }
 
 
@@ -271,28 +202,30 @@ class IndexRequest extends Request
         foreach ($this->params['indexMappings'] as $type => $mapping) {
             $mappings = array_merge($mappings, array($type => $mapping));
         }
-        $body = array(
-            "settings" => $this->params['indexSettings'],
-            "mappings" => $mappings
-        );
+        $settings = $this->params['indexSettings'];
+        $body = array();
 
-        $command = new Command();
-        $command->index($index)
-            ->action('put')
-            ->data(json_encode($body, JSON_FORCE_OBJECT));
-
-        $this->batch->clearCommands();
-        $this->batch->addCommand($command);
+        // set body if arrays not empty. Empty arrays causes problems in api calls.
+        if(count($mappings) > 0){
+            $body["mappings"] = $mappings;
+        }
+        if(count($settings) > 0){
+            $body["settings"] = $settings;
+        }
 
         /**
          * @var \Sherlock\responses\IndexResponse
          */
-        $ret = parent::execute();
+        $indexParams = array(
+            "index" => $index,
+            "body" => $body
+        );
 
+        $ret =$this->esClient->indices()->create($indexParams);
         //clear out mappings, settings
         $this->resetIndex();
 
-        return $ret[0];
+        return $ret;
     }
 
 
@@ -315,21 +248,17 @@ class IndexRequest extends Request
 
         $body = array("index" => $this->params['indexSettings']);
 
-        $command = new Command();
-        $command->index($index)
-            ->id('_settings')
-            ->action('put')
-            ->data(json_encode($body, JSON_FORCE_OBJECT));
 
-        $this->batch->clearCommands();
-        $this->batch->addCommand($command);
-
-        $ret = parent::execute();
+        $settingsParams = array(
+            "index" => $index,
+            "body" => $body
+        );
+        $ret = $this->esClient->indices()->putSettings($settingsParams);
 
         //clear out mappings, settings
         //$this->resetIndex();
 
-        return $ret[0];
+        return $ret;
 
     }
 
@@ -362,22 +291,17 @@ class IndexRequest extends Request
         $index = implode(',', $this->params['index']);
         $body  = $this->params['indexMappings'];
 
-        $command = new Command();
-        $command->index($index)
-            ->type($this->params['type'][0])
-            ->id('_mapping')
-            ->action('put')
-            ->data(json_encode($body, JSON_FORCE_OBJECT));
-
-        $this->batch->clearCommands();
-        $this->batch->addCommand($command);
-
-        $ret = parent::execute();
+        $mappingsParams = array(
+            "type" => $this->params['type'][0],
+            "index" => $index,
+            "body" => $body,
+        );
+        $ret = $this->esClient->indices()->putMapping($mappingsParams);
 
         //clear out mappings, settings
         //$this->resetIndex();
 
-        return $ret[0];
+        return $ret;
     }
 
 

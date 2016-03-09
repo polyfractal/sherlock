@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  * @method \Sherlock\requests\RawRequest uri() uri(\string $value)
  * @method \Sherlock\requests\RawRequest method() method(\int $value)
  */
-class RawRequest extends Request
+class RawRequest
 {
     /**
      * @var array
@@ -27,9 +27,9 @@ class RawRequest extends Request
     protected $params;
 
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     * @var \Elasticsearch\Client
      */
-    protected $dispatcher;
+    protected $esClient;
 
 
     /**
@@ -37,15 +37,9 @@ class RawRequest extends Request
      *
      * @throws exceptions\BadMethodCallException
      */
-    public function __construct($dispatcher)
+    public function __construct($esClient)
     {
-        if (!isset($dispatcher)) {
-            throw new exceptions\BadMethodCallException("Dispatcher argument required for RawRequest");
-        }
-
-        $this->dispatcher = $dispatcher;
-
-        parent::__construct($dispatcher);
+        $this->$esClient = $esClient;
     }
 
 

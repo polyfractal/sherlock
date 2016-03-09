@@ -15,6 +15,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use sherlock\components\FacetInterface;
 use Sherlock\responses\QueryResponse;
 
+use Elasticsearch\Client as ESClient;
+
 /**
  * SearchRequest facilitates searching an ES index using the ES query DSL
  *
@@ -27,31 +29,18 @@ use Sherlock\responses\QueryResponse;
 class SearchRequest extends Request
 {
     /**
-     * @var array
-     */
-    protected $params;
-
-    /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
-     */
-    protected $dispatcher;
-
-
-    /**
-     * @param  \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @param  \Elasticsearch\Client $esClient
      *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      */
-    public function __construct($dispatcher)
+    public function __construct($esClient)
     {
-        if (!isset($dispatcher)) {
+        /*if (!isset($dispatcher)) {
             throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
-        }
+        }*/
 
         $this->params['filter'] = array();
-        $this->dispatcher       = $dispatcher;
-
-        parent::__construct($dispatcher);
+        parent::__construct($esClient);
     }
 
 
@@ -64,46 +53,6 @@ class SearchRequest extends Request
     public function __call($name, $args)
     {
         $this->params[$name] = $args[0];
-
-        return $this;
-    }
-
-
-    /**
-     * Sets the index to operate on
-     *
-     * @param  string        $index     indices to query
-     * @param  string        $index,... indices to query
-     *
-     * @return SearchRequest
-     */
-    public function index($index)
-    {
-        $this->params['index'] = array();
-        $args                  = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['index'][] = $arg;
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * Sets the type to operate on
-     *
-     * @param  string        $type     types to query
-     * @param  string        $type,... types to query
-     *
-     * @return SearchRequest
-     */
-    public function type($type)
-    {
-        $this->params['type'] = array();
-        $args                 = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['type'][] = $arg;
-        }
 
         return $this;
     }
@@ -179,6 +128,19 @@ class SearchRequest extends Request
         return $this;
     }
 
+    /**
+     * Sets the aggregations that will be executed
+     *
+     * @param $aggs
+     *
+     * @return SearchRequest
+     */
+    public function aggs($aggs)
+    {
+        $this->params['aggs'] = $aggs;
+
+        return $this;
+    }
 
     /**
      * Sets the facets to operate on
@@ -269,19 +231,13 @@ class SearchRequest extends Request
         }
 
 
-        $command = new Command();
-        $command->index($index)
-            ->type($type)
-            ->id('_search' . $queryParams)
-            ->action('post')
-            ->data($finalQuery);
-
-        $this->batch->clearCommands();
-        $this->batch->addCommand($command);
-
-        $ret = parent::execute();
-
-        return $ret[0];
+        $searchParams = array(
+            "index" => $index,
+            "type" => $type,
+            "body" => $finalQuery
+        );
+        $resultSet = $this->esClient->search($searchParams);
+        return $resultSet;
     }
 
 
@@ -320,6 +276,10 @@ class SearchRequest extends Request
             $finalQuery['filter'] = $this->params['filter']->toArray();
         }
 
+        if (isset($this->params['aggs']) && $this->params['aggs'] instanceof components\AggregationInterface) {
+            $finalQuery['aggs'] = $this->params['aggs']->toArray();
+        }
+
         if (isset($this->params['facets'])) {
             $tFacets = array();
             foreach ($this->params['facets'] as $facet) {
@@ -343,7 +303,7 @@ class SearchRequest extends Request
             }
         }
 
-        $finalQuery = json_encode($finalQuery, true);
+        $finalQuery = json_encode($finalQuery, JSON_PRETTY_PRINT);
 
         return $finalQuery;
     }

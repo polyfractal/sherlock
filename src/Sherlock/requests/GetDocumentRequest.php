@@ -20,76 +20,13 @@ use Sherlock\responses\DocumentResponse;
 class GetDocumentRequest extends Request
 {
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
-     */
-    protected $dispatcher;
-
-    protected $params;
-
-
-    /**
-     * @param  \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
-     *
-     * @throws \Sherlock\common\exceptions\BadMethodCallException
-     */
-    public function __construct($dispatcher)
-    {
-        if (!isset($dispatcher)) {
-            throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for DocumentRequest");
-        }
-
-        $this->dispatcher       = $dispatcher;
-
-        parent::__construct($dispatcher);
-    }
-
-    /**
      * Sets the id of the document
      * @param $id
-     * @return DocumentRequest
+     * @return GetDocumentRequest
      */
     public function id($id)
     {
         $this->params['id'] = $id;
-
-        return $this;
-    }
-
-    /**
-     * Sets the index to operate on
-     *
-     * @param  string        $index     indices to query
-     * @param  string        $index,... indices to query
-     *
-     * @return SearchRequest
-     */
-    public function index($index)
-    {
-        $this->params['index'] = array();
-        $args                  = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['index'][] = $arg;
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * Sets the type to operate on
-     *
-     * @param  string        $type     types to query
-     * @param  string        $type,... types to query
-     *
-     * @return SearchRequest
-     */
-    public function type($type)
-    {
-        $this->params['type'] = array();
-        $args                 = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['type'][] = $arg;
-        }
 
         return $this;
     }
@@ -124,19 +61,13 @@ class GetDocumentRequest extends Request
             $queryParams = '';
         }
 
-
-        $command = new \Sherlock\requests\Command();
-        $command->index($index)
-            ->type($type)
-            ->id($id . $queryParams)
-            ->action('get');
-
-        $this->batch->clearCommands();
-        $this->batch->addCommand($command);
-
-        $ret = parent::execute();
-
-        return $ret[0];
+        $params = array(
+            "index" => $index,
+            "id" => $id,
+            "type" => $type,
+        );
+        $ret= $this->esClient->get($params);
+        return $ret;
     }
 
     /**

@@ -12,31 +12,6 @@ use Sherlock\responses\DeleteResponse;
  */
 class DeleteDocumentRequest extends Request
 {
-    protected $dispatcher;
-
-    /**
-     * @var array
-     */
-    protected $params;
-
-
-    /**
-     * @param  \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
-     *
-     * @throws \Sherlock\common\exceptions\BadMethodCallException
-     * @internal param $node
-     */
-    public function __construct($dispatcher)
-    {
-        if (!isset($dispatcher)) {
-            throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
-        }
-
-        $this->dispatcher = $dispatcher;
-
-        parent::__construct($dispatcher);
-    }
-
 
     /**
      * @param $name
@@ -53,46 +28,6 @@ class DeleteDocumentRequest extends Request
 
 
     /**
-     * Set the index to delete documents from
-     *
-     * @param  string               $index     indices to query
-     * @param  string               $index,... indices to query
-     *
-     * @return DeleteDocumentRequest
-     */
-    public function index($index)
-    {
-        $this->params['index'] = array();
-        $args                  = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['index'][] = $arg;
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * Set the type to delete documents from
-     *
-     * @param  string               $type
-     * @param  string               $type,...
-     *
-     * @return DeleteDocumentRequest
-     */
-    public function type($type)
-    {
-        $this->params['type'] = array();
-        $args                 = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['type'][] = $arg;
-        }
-
-        return $this;
-    }
-
-
-    /**
      * The document to delete
      *
      * @param  null                                         $id
@@ -102,19 +37,7 @@ class DeleteDocumentRequest extends Request
      */
     public function document($id)
     {
-        if (!$this->batch instanceof BatchCommand) {
-                        throw new exceptions\RuntimeException("Cannot delete a document from an external BatchCommandInterface");
-        }
-
-        $command = new Command();
-        $command->id($id)
-            ->action('delete');
-
-        //Only doing this because typehinting is wonky without it...
-        if ($this->batch instanceof BatchCommand) {
-            $this->batch->addCommand($command);
-        }
-
+        $this->params['id'] = $id;
         return $this;
     }
 
@@ -172,14 +95,26 @@ class DeleteDocumentRequest extends Request
      */
     public function execute()
     {
+        $id = $this->params['id'];
 
-        //if this is an internal Sherlock BatchCommand, make sure index/types/action are filled
-        if ($this->batch instanceof BatchCommand) {
-            $this->batch->fillIndex($this->params['index'][0])
-                ->fillType($this->params['type'][0]);
+        if (isset($this->params['index'])) {
+            $index = implode(',', $this->params['index']);
+        } else {
+            $index = '';
         }
 
-        return parent::execute();
+        if (isset($this->params['type'])) {
+            $type = implode(',', $this->params['type']);
+        } else {
+            $type = '';
+        }
+
+        $params = array(
+            "index" => $index,
+            "id" => $id,
+            "type" => $type,
+        );
+        return $this->esClient->delete($this->params);
     }
 
     /**

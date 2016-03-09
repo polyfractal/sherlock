@@ -20,8 +20,14 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Sherlock;
-        $this->object->addNode('localhost', '9200');
+        $this->object = new Sherlock(
+            array(
+                "hosts" => array(
+                    "localhost:9200"
+                )
+            )
+        );
+        //$this->object->addNode('localhost', '9200');
     }
 
 
@@ -37,12 +43,12 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers sherlock\Sherlock::addNode
      */
-    public function testAddNode()
-    {
-        $ret = $this->object->addNode('localhost');
-        $this->assertInstanceOf('\sherlock\sherlock', $ret);
-
-    }
+//    public function testAddNode()
+//    {
+//        $ret = $this->object->addNode('localhost');
+//        $this->assertInstanceOf('\sherlock\sherlock', $ret);
+//
+//    }
 
 
     public function assertThrowsException($exception_name, $code)
@@ -133,20 +139,20 @@ class SherlockTest extends \PHPUnit_Framework_TestCase
         $index = $sherlock->index('testnewindex');
         $this->assertInstanceOf('\sherlock\requests\IndexRequest', $index);
         $response = $index->create();
-        $this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);
-        $this->assertEquals(true, $response->ok);
+//        $this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);
+        $this->assertEquals(true, $response["acknowledged"]);
 
         //set a setting
         $index->settings(Sherlock::indexSettingsBuilder()->refresh_interval("1s"));
         $this->assertInstanceOf('\sherlock\requests\IndexRequest', $index);
         $response = $index->updateSettings();
-        $this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);
-        $this->assertEquals(true, $response->ok);
+//        $this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);
+        $this->assertEquals(true, $response["acknowledged"]);
 
         //Delete the index first
         $response = $sherlock->index('testnewindex')->delete();
-        $this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);
-        $this->assertEquals(true, $response->ok);
+//        $this->assertInstanceOf('\sherlock\responses\IndexResponse', $response);
+        $this->assertEquals(true, $response["acknowledged"]);
 
     }
 

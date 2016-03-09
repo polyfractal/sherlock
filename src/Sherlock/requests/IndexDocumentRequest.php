@@ -19,30 +19,19 @@ use Sherlock\responses\IndexResponse;
  */
 class IndexDocumentRequest extends Request
 {
-    protected $dispatcher;
-
-    /**
-     * @var array
-     */
-    protected $params;
 
     /** @var Command */
     private $currentCommand;
 
 
     /**
-     * @param  \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @param  \Elasticsearch\Client $esClient
      *
      * @throws \Sherlock\common\exceptions\BadMethodCallException
      * @internal param $node
      */
-    public function __construct($dispatcher)
+    public function __construct($esClient)
     {
-        if (!isset($dispatcher)) {
-            throw new \Sherlock\common\exceptions\BadMethodCallException("Dispatcher argument required for IndexRequest");
-        }
-
-        $this->dispatcher = $dispatcher;
 
         $this->params['index'] = array();
         $this->params['type']  = array();
@@ -55,7 +44,7 @@ class IndexDocumentRequest extends Request
         $this->params['updateUpsert'] = null;
         $this->params['doc']          = null;
 
-        parent::__construct($dispatcher);
+        parent::__construct($esClient);
     }
 
 
@@ -73,83 +62,44 @@ class IndexDocumentRequest extends Request
     }
 
 
-    /**
-     * Set the index to add documents to
-     *
-     * @param  string               $index     indices to query
-     * @param  string               $index,... indices to query
-     *
-     * @return IndexDocumentRequest
-     */
-    public function index($index)
-    {
-        $this->params['index'] = array();
-        $args                  = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['index'][] = $arg;
-        }
 
-        return $this;
-    }
-
-
-    /**
-     * Set the type to add documents to
-     *
-     * @param  string               $type
-     * @param  string               $type,...
-     *
-     * @return IndexDocumentRequest
-     */
-    public function type($type)
-    {
-        $this->params['type'] = array();
-        $args                 = func_get_args();
-        foreach ($args as $arg) {
-            $this->params['type'][] = $arg;
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * @param \string $script
-     *
-     * @return $this
-     */
-    public function updateScript($script)
-    {
-        $this->params['updateScript'] = $script;
-        $this->currentCommandCheck();
-        return $this;
-    }
-
-
-    /**
-     * @param \array $params
-     *
-     * @return $this
-     */
-    public function updateParams($params)
-    {
-        $this->params['updateParams'] = $params;
-        $this->currentCommandCheck();
-        return $this;
-    }
-
-
-    /**
-     * @param \string $upsert
-     *
-     * @return $this
-     */
-    public function updateUpsert($upsert)
-    {
-        $this->params['updateUpsert'] = $upsert;
-        $this->currentCommandCheck();
-        return $this;
-    }
+//    /**
+//     * @param \string $script
+//     *
+//     * @return $this
+//     */
+//    public function updateScript($script)
+//    {
+//        $this->params['updateScript'] = $script;
+//        $this->currentCommandCheck();
+//        return $this;
+//    }
+//
+//
+//    /**
+//     * @param \array $params
+//     *
+//     * @return $this
+//     */
+//    public function updateParams($params)
+//    {
+//        $this->params['updateParams'] = $params;
+//        $this->currentCommandCheck();
+//        return $this;
+//    }
+//
+//
+//    /**
+//     * @param \string $upsert
+//     *
+//     * @return $this
+//     */
+//    public function updateUpsert($upsert)
+//    {
+//        $this->params['updateUpsert'] = $upsert;
+//        $this->currentCommandCheck();
+//        return $this;
+//    }
 
 
     /**
@@ -164,33 +114,40 @@ class IndexDocumentRequest extends Request
      */
     public function document($value, $id = null, $update = false)
     {
-        if (!$this->batch instanceof BatchCommand) {
-                        throw new exceptions\RuntimeException("Cannot add a new document to an external BatchCommandInterface");
-        }
-
-        $this->finalizeCurrentCommand();
-
-
-        if (is_array($value)) {
-            $this->params['doc'] = $value;
-
-        } elseif (is_string($value)) {
-            $this->params['doc'] = json_decode($value, true);
-        }
-
-        if ($id !== null) {
-            $this->currentCommand->id($id)
-                ->action('put');
-
-            $this->params['update'] = $update;
-
+//        if (!$this->batch instanceof BatchCommand) {
+//                        throw new exceptions\RuntimeException("Cannot add a new document to an external BatchCommandInterface");
+//        }
+//
+//        $this->finalizeCurrentCommand();
+//
+//
+//        if (is_array($value)) {
+//            $this->params['doc'] = $value;
+//
+//        } elseif (is_string($value)) {
+//            $this->params['doc'] = json_decode($value, true);
+//        }
+//
+//        if ($id !== null) {
+//            $this->currentCommand->id($id)
+//                ->action('put');
+//
+//            $this->params['update'] = $update;
+//
+//        } else {
+//            $this->currentCommand->action('post');
+//
+//            $this->params['update'] = false;
+//        }
+        if($update){
+            $this->params['body']['doc'] = $value;
         } else {
-            $this->currentCommand->action('post');
-
-            $this->params['update'] = false;
+            $this->params['body'] = $value;
         }
 
-
+        $this->params['id'] = $id;
+        $this->params['update'] = $update;
+        //print_r($this->params);
         return $this;
     }
 
@@ -265,22 +222,18 @@ class IndexDocumentRequest extends Request
         */
 
 
-        $this->finalizeCurrentCommand();
 
-        //if this is an internal Sherlock BatchCommand, make sure index/types/action are filled
-        if ($this->batch instanceof BatchCommand) {
-            if (isset($this->params['index'][0])) {
-                $this->batch->fillIndex($this->params['index'][0]);
-            }
 
-            if (isset($this->params['type'][0])) {
-                $this->batch->fillType($this->params['type'][0]);
-            }
+        $params['index']=$this->params['index'];
+        $params['type']=$this->params['type'];
+        $params['id']=$this->params['id'];
+        $params['body']=$this->params['body'];
+        //print_r($this->params);
 
-        }
+        return $this->esClient->index($params);
 
-        return parent::execute();
     }
+
 
 
     /**

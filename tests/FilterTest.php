@@ -20,15 +20,20 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
     public function __construct()
     {
-        /*
+
         try {
-            $sherlock = new Sherlock;
-            $sherlock->addNode('localhost', '9200');
+            $sherlock = new Sherlock(
+                array(
+                    "hosts" => array(
+                        "localhost:9200"
+                    )
+                )
+            );
             //Create the index
             $index = $sherlock->index('testfilters');
             $response = $index->create();
         } catch (\Exception $e) {}
-        */
+
     }
 
 
@@ -38,8 +43,14 @@ class FilterTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Sherlock;
-        $this->object->addNode('localhost', '9200');
+        $this->object = new Sherlock(
+            array(
+                "hosts" => array(
+                    "localhost:9200"
+                )
+            )
+        );
+
     }
 
 
@@ -746,7 +757,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     /**
      * @todo construct proper test for Nested types
      * @covers sherlock\Sherlock\components\filters\Nested::path
-     * @covers sherlock\Sherlock\components\filters\Nested::query
+     * @covers sherlock\Sherlock\components\filters\Nested::filter
      * @covers sherlock\Sherlock\components\filters\Nested::_cache
      * @covers sherlock\Sherlock\requests\SearchRequest::query
      * @covers sherlock\Sherlock\requests\SearchRequest::toJSON
@@ -756,8 +767,8 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $req = $this->object->search();
         $req->index("testfilters")->type("test");
         $filter = Sherlock::filterBuilder()->Nested()->path("testString")
-            ->query(Sherlock::queryBuilder()->Term()->field("auxillary")->term("auxillary"))
-            ->_cache(true);
+            ->_cache(true)
+            ->filter(Sherlock::filterBuilder()->Term()->field("auxillary")->term("auxillary"));
 
         $query = Sherlock::queryBuilder()->MatchAll();
 
@@ -766,7 +777,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $req->filter($filter);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"match_all":[]},"filter":{"nested":{"path":"testString","query":{},"_cache":true}}}';
+        $expectedData = '{"query":{"match_all":[]},"filter":{"nested":{"path":"testString","filter":{"term":{"auxillary":"auxillary","_cache":true}},"_cache":true}}}';
         $this->assertEquals($expectedData, $data);
 
         //$resp = $req->execute();
@@ -1052,7 +1063,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $req->filter($filter);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"match_all":[]},"filter":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"_cache":true}}';
+        $expectedData = '{"query":{"match_all":[]},"filter":{"fquery":{"query":{"term":{"auxillary":{"value":"auxillary"}}},"_cache":true}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();
@@ -1075,10 +1086,8 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $req = $this->object->search();
         $req->index("testfilters")->type("test");
         $filter = Sherlock::filterBuilder()->Range()->field("testString")
-            ->from("testString")
-            ->to("testString")
-            ->include_lower(true)
-            ->include_upper(true)
+            ->lt("testString")
+            ->gt("testString")
             ->_cache(true);
 
         $query = Sherlock::queryBuilder()->MatchAll();
@@ -1088,7 +1097,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $req->filter($filter);
 
         $data         = $req->toJSON();
-        $expectedData = '{"query":{"match_all":[]},"filter":{"range":{"testString":{"from":"testString","to":"testString","include_lower":true,"include_upper":true},"_cache":true}}}';
+        $expectedData = '{"query":{"match_all":[]},"filter":{"range":{"testString":{"lt":"testString","gt":"testString"},"_cache":true}}}';
         $this->assertEquals($expectedData, $data);
 
         $resp = $req->execute();

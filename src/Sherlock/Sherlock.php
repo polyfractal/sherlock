@@ -16,7 +16,7 @@ use Sherlock\requests;
 use Sherlock\common\exceptions;
 use Sherlock\wrappers;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-
+use Elasticsearch\Client as ESClient;
 /**
  * Class Sherlock
  * @package Sherlock
@@ -27,6 +27,12 @@ class Sherlock
      * @var array Sherlock settings, can be replaced with user-settings through constructor
      */
     protected $settings;
+
+    /**
+     * @var object Elasticsearch Client
+     */
+    protected $esClient;
+
     /**
      * @var array Templates - not used at the moment
      */
@@ -40,8 +46,9 @@ class Sherlock
      */
     public function __construct($userSettings = array())
     {
-        $this->initializeSherlock($userSettings);
-        $this->autodetectClusterState();
+        $this->esClient = new ESClient($userSettings);
+        //$this->initializeSherlock($userSettings);
+        //$this->autodetectClusterState();
     }
 
 
@@ -118,6 +125,16 @@ class Sherlock
 
 
     /**
+     * Facet builder, used to return a FilterWrapper through which a Filter component can be selected
+     * @return wrappers\AggregationWrapper
+     */
+    public static function aggregationBuilder()
+    {
+        return new wrappers\AggregationWrapper();
+    }
+
+
+    /**
      * Highlight builder, used to return a HighlightWrapper through which a Highlight component can be selected
      * @return wrappers\HighlightWrapper
      */
@@ -165,7 +182,7 @@ class Sherlock
      */
     public function search()
     {
-        return new requests\SearchRequest($this->settings['event.dispatcher']);
+        return new requests\SearchRequest($this->esClient);
     }
 
 
@@ -175,10 +192,10 @@ class Sherlock
      *
      * @return requests\RawRequest
      */
-    public function raw()
-    {
-        return new requests\RawRequest($this->settings['event.dispatcher']);
-    }
+//    public function raw()
+//    {
+//        return new requests\RawRequest($this->settings['event.dispatcher']);
+//    }
 
 
     /**
@@ -187,7 +204,16 @@ class Sherlock
      */
     public function document()
     {
-        return new requests\IndexDocumentRequest($this->settings['event.dispatcher']);
+        return new requests\IndexDocumentRequest($this->esClient);
+    }
+
+    /**
+     * Used to return an UpdateDocumentRequest object, allows adding a doc to the index
+     * @return requests\UpdateDocumentRequest
+     */
+    public function update()
+    {
+        return new requests\UpdateDocumentRequest($this->esClient);
     }
 
 
@@ -197,7 +223,7 @@ class Sherlock
      */
     public function deleteDocument()
     {
-        return new requests\DeleteDocumentRequest($this->settings['event.dispatcher']);
+        return new requests\DeleteDocumentRequest($this->esClient);
     }
 
 
@@ -207,7 +233,7 @@ class Sherlock
      */
     public function getDocument()
     {
-        return new requests\GetDocumentRequest($this->settings['event.dispatcher']);
+        return new requests\GetDocumentRequest($this->esClient);
     }
 
 
@@ -225,7 +251,7 @@ class Sherlock
             $index[] = $arg;
         }
 
-        return new requests\IndexRequest($this->settings['event.dispatcher'], $index);
+        return new requests\IndexRequest($this->esClient, $index);
     }
 
 
@@ -251,12 +277,12 @@ class Sherlock
      * @throws common\exceptions\BadMethodCallException
      * @throws common\exceptions\InvalidArgumentException
      */
-    public function addNode($host, $port = 9200)
-    {
-        $this->settings['cluster']->addNode($host, $port, $this->settings['cluster.autodetect']);
-
-        return $this;
-    }
+//    public function addNode($host, $port = 9200)
+//    {
+//        $this->settings['cluster']->addNode($host, $port, $this->settings['cluster.autodetect']);
+//
+//        return $this;
+//    }
 
 
     /**

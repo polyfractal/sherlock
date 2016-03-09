@@ -19,7 +19,18 @@ class FacetTest extends \PHPUnit_Framework_TestCase
 
     public function __construct()
     {
-
+        try {
+            $sherlock = new Sherlock(
+                array(
+                    "hosts" => array(
+                        "localhost:9200"
+                    )
+                )
+            );
+            //Create the index
+            $index = $sherlock->index('testfacets');
+            $response = $index->create();
+        } catch (\Exception $e) {}
     }
 
 
@@ -29,8 +40,13 @@ class FacetTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Sherlock;
-        $this->object->addNode('localhost', '9200');
+        $this->object = new Sherlock(
+            array(
+                "hosts" => array(
+                    "localhost:9200"
+                )
+            )
+        );
     }
 
 
